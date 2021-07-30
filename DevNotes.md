@@ -3,8 +3,10 @@
 #### Naming conventions used in Vita
 1. variables: camelCase (including constants)
 ```
-int helloWorld; // local
-int g_helloWorld // global
+int helloWorld;     // local
+int g_helloWorld    // global
+int gi_helloWorld;  // global private (static)
+int time_secs;      // append units of measurement at the end
 ```
 2. structures: PascalCase
 3. struct members: camelCase
@@ -21,12 +23,12 @@ void module_function_name(struct BlackBox* blackBox);
 5. enum: ePascalCase
 6. enum members: eEnumName_CAPITALIZED
 ```
-enum eWorldElements {
-    eWorldElements_AIR,
-    eWorldElements_WATER,
-    eWorldElements_EARTH,
-    eWorldElements_FIRE,
-    eWorldElements_COUNT // to check how many elements does an enum contain
+enum EWorldElements {
+    EWorldElements_AIR,
+    EWorldElements_WATER,
+    EWorldElements_EARTH,
+    EWorldElements_FIRE,
+    EWorldElements_COUNT // to check how many elements does an enum contain
 }
 ```
 7. macros : mCAPITALIZED
@@ -34,7 +36,7 @@ enum eWorldElements {
 #define mMAX(a, b) (((a)>(b)) ? (a) : (b)) // dont use a macro, if a function can be used instead
 ```
 
-##### Naming notes
+##### Naming
 - `module` name must be prepended to every `function`.
 - if a `struct` or an `enum` is typedef'ed, then `_t` must be appended at the end
 
@@ -43,8 +45,8 @@ enum eWorldElements {
 - declarations of public variables and functions should be palced into .h and marked as `extern` and defined in .c file
 - if you need to hide the `stuct` contents from the user, `struct` declaration should be placed into .h file and defition into .c file, otherwise, put everyhing in the .h file
 
-#### Coding notes
-- variables should be declared and initialized simoultaneously, even if you reinitialize them later; 
+#### Coding
+* variables should be declared and initialized simoultaneously, even if you reinitialize them later; 
 don't:
 ```
 int a, b = 0, c;
@@ -61,7 +63,7 @@ float d = 0;
 ```
 It seams so trivial, yet this is something people always forget to do, including myself (sometimes).
 
-- braces: always use curly braces
+* braces: always use curly braces
 don't:
 ```
 if(condition)
@@ -72,6 +74,26 @@ instead do:
 if(condition) {
     action
 }
+```
+
+* commets
+for commenting out functions and in general use: `/* ... */` or `//...` for one-line comments
+```
+/* void some_func() {...} */
+```
+for documentation: `/** ... */`
+```
+/** some_func ==> what does it do (short description, for long description use: notes)
+    params:
+        param1
+        param2
+    returns:
+        type (clarify here if needed; if the return type is void, the section should be omitted)
+    notes or requires:
+        additional information about the function, or requirements (if both are needed, seperate 
+        them into different sections)
+*/
+void some_func() {...}
 ```
 
 ---

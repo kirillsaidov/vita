@@ -9,5 +9,5 @@ coming soon...
 * simple memory management model
 * string manipulation
 
-Check out the TODO list.
+Check out the [TODO](https://trello.com/b/MFeDGO8u/vita-c-library) list.
 

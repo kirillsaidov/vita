@@ -1,6 +1,6 @@
 all:
-	mkdir -p bin && gcc -o bin/$(FILE) src/$(FILE).c -L../lib -lcomet
+	mkdir -p bin && gcc -o bin/$(FILE) src/$(FILE).c -L../lib -lvita
 run:
-	./bin/$(BIN)
+	./bin/$(FILE)
 clean:
 	rm -rf bin
