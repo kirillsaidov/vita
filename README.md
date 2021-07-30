@@ -1,29 +1,13 @@
-# README #
+# Vita
 
-This README would normally document whatever steps are necessary to get your application up and running.
+A custom C library for memory management, string manipulation and more. 
 
-### What is this repository for? ###
+### Motivation
+coming soon...
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Features
+* simple memory management model
+* string manipulation
 
-### How do I get set up? ###
+Check out the TODO list.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
