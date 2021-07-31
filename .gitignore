@@ -4,6 +4,7 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # custom
+lib/
 bin/
 build/
 __internal/
