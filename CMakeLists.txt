@@ -15,14 +15,14 @@ file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # include directories
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 # building library
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-message("Installing the library to lib/...")
-install(TARGETS ${PROJECT_NAME}
-		ARCHIVE DESTINATION ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+#message("Installing the library to lib/...")
+#install(TARGETS ${PROJECT_NAME}
+#		ARCHIVE DESTINATION ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 
 
 
