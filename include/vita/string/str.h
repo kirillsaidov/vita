@@ -1,7 +1,7 @@
 #ifndef VITA_STR
 #define VITA_STR
 
-/* VITA_STR MODULE (string : assign any value, but cannot change individual chars)
+/** VITA_STR MODULE (string : assign any value, but cannot change individual chars)
     - str
     - as_cstr
 */

@@ -1,7 +1,7 @@
 #ifndef VITA_MEM_H
 #define VITA_MEM_H
 
-/* VITA_MEM MODULE (memory management)
+/** VITA_MEM MODULE (memory management)
     - mem_malloc
     - mem_calloc
     - mem_realloc
@@ -58,7 +58,8 @@ extern bool mem_realloc(void** ptr, const size_t n, const size_t size);
     params:
         void* ptr
     notes:
-        if ptr is NULL, safely exits
+        1. if ptr is NULL, safely exits
+        2. sets ptr to NULL after deallocation
 */
 extern void mem_free(void* ptr);
 

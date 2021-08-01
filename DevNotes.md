@@ -1,4 +1,5 @@
 # Dev notes
+This is a list of guidelines (my coding style) that I adhere to while developing Vita library.
 
 #### Naming conventions used in Vita
 1. variables: camelCase (including constants)
@@ -38,7 +39,7 @@ enum EWorldElements {
 
 ##### Naming
 - `module` name must be prepended to every `function`.
-- if a `struct` or an `enum` is typedef'ed, then `_t` must be appended at the end
+- if a `struct` or an `enum` is typedef'ed, then `_t` must be appended at the end; if it's a pointer, then `_pt` should be appended instead.
 
 #### Separating code into .h and .c
 - private variables and functions should be marked as `static` and placed into .c file, both the declaration at the top of the file folllowed by its definition in the same order down below
