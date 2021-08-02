@@ -5,6 +5,7 @@
 	- memhandler_create
 	- memhandler_destroy
 	- memhandler_internal_create
+	- memhandler_internal_destroy
 	- memhandler_internal
 
 	- memhandler_add
@@ -51,9 +52,18 @@ extern memhandler_pt memhandler_create(void);
 */
 extern void memhandler_destroy(memhandler_pt mh);
 
-/** v ==> creates an internal memory handler
+/** memhandler_internal_create ==> creates an internal memory handler
+	returns:
+		bool
+	notes:
+		true 	upon success
+		false 	upon failure
 */
-extern void memhandler_internal_create(void);
+extern bool memhandler_internal_create(void);
+
+/** memhandler_internal_destroy ==> destroys an internal memory handler
+*/
+extern void memhandler_internal_destroy(void);
 
 /** memhandler_internal ==> returns a pointer to the internal memory handler
 	returns:
@@ -61,7 +71,7 @@ extern void memhandler_internal_create(void);
 	notes:
 		to destroy the internal memory handler use `memhandler_destroy(memhandler_internal())`
 */
-extern memhandler_pt memhandler_internal(void);
+extern const memhandler_pt memhandler_internal(void);
 
 
 
@@ -108,7 +118,7 @@ extern bool memhandler_remove(memhandler_pt mh, const void* ptr);
 		void* ptr 	to a valid memory address
 		NULL 		upon failure
 	notes:
-		if failes to add new memory to memory handler, frees the memory and return NULL
+		if failes to add new memory to memory handler, frees the memory and returns NULL
 */
 extern void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t size);
 
@@ -121,7 +131,7 @@ extern void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t si
 		void* ptr 	to a valid memory address
 		NULL 		upon failure
 	notes:
-		if failes to add new memory to memory handler, frees the memory and return NULL
+		if failes to add new memory to memory handler, frees the memory and returns NULL
 */
 extern void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t size);
 
@@ -153,35 +163,68 @@ extern void memhandler_free(memhandler_pt mh, const void* ptr);
 
 
 
+
+/** memhandler_malloc_2d ==> allocates a 2d array and adds the ptr to memory handler automatically
+	params:
+		memhandler_pt mh
+		const size_t rows
+		const size_t cols
+		const size_t size
+	retuns:
+		void** ptr 	to a valid memory address
+		NULL 		upon failure
+	notes:
+		if failes to add new memory to memory handler, frees the memory and returns NULL
+*/
+void** memhandler_malloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size);
+
+/** memhandler_calloc_2d ==> allocates a 2d array and adds the ptr to memory handler automatically (initializes with zeros)
+	params:
+		memhandler_pt mh
+		const size_t rows
+		const size_t cols
+		const size_t size
+	retuns:
+		void** ptr 	to a valid memory address
+		NULL 		upon failure
+	notes:
+		if failes to add new memory to memory handler, frees the memory and returns NULL
+*/
+void** memhandler_calloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size);
+
+/** memhandler_realloc_2d ==> reallocates a 2d array in sync with memory handler
+	params:
+		memhandler_pt mh
+		const void*** ptr
+		const size_t rows
+		const size_t cols
+		const size_t size
+	retuns:
+		bool
+	notes:
+		true 	upon success
+		false	upon failure
+
+		the function removes ptrs from memory handler, reallocs, add them back to memory handler;
+		in case of failure, it adds ptrs back to memory handler
+*/
+bool memhandler_realloc_2d(memhandler_pt mh, void*** ptr, const size_t rows, const size_t cols, const size_t size);
+
+/** memhandler_free_2d ==> frees the 2d array ptrs and removes them from memory handler automatically
+	params:
+		memhandler_pt mh
+		const void** ptr
+	notes:
+		if it failes to remove a pointer from memory handler, then it DOES NOT free that pointer
+*/
+void memhandler_free_2d(memhandler_pt mh, void** ptr);
+
+
+
+
+
+
 #endif // VITA_MEMHANDLER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

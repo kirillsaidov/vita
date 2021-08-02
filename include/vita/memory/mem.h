@@ -19,6 +19,7 @@
 #include <stdbool.h>
 
 // vita includes
+#include "../core/core.h"
 #include "../logger/logger.h"
 
 /** mem_malloc ==> same as malloc, but tracks total number of allocations

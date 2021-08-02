@@ -1,7 +1,7 @@
-#ifndef VITA_STR
-#define VITA_STR
+#ifndef VITA_STR_H
+#define VITA_STR_H
 
-/** VITA_STR MODULE (string : assign any value, but cannot change individual chars)
+/** VITA_STR MODULE (static string with length: assign any value, but cannot change its contents)
     - str
     - as_cstr
 */
@@ -31,7 +31,7 @@ extern str_t str(const char* s);
 */
 extern const char* as_cstr(const str_t s);
 
-#endif // VITA_STR
+#endif // VITA_STR_H
 
 
 

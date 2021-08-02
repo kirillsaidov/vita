@@ -5,7 +5,7 @@ void* mem_malloc(const size_t n, const size_t size) {
     void* ptr = malloc(n*size);
     
     // error checking
-    if(ptr == NULL) {
+    if(is_null(ptr)) {
         logger_error(str("unable to allocate memory!"), str("mem_malloc"));
     }
     
@@ -17,7 +17,7 @@ void* mem_calloc(const size_t n, const size_t size) {
     void* ptr = calloc(n, size);
     
     // error checking
-    if(ptr == NULL) {
+    if(is_null(ptr)) {
         logger_error(str("unable to allocate memory!"), str("mem_calloc"));
     }
     
@@ -29,7 +29,7 @@ bool mem_realloc(void** ptr, const size_t n, const size_t size) {
     void* ptrNew = realloc(*ptr, n*size);
     
     // error checking
-    if(ptrNew == NULL) {
+    if(is_null(ptrNew)) {
         logger_error(str("unable to reallocate memory!"), str("mem_realloc"));
         return false;
     } else {
@@ -41,7 +41,7 @@ bool mem_realloc(void** ptr, const size_t n, const size_t size) {
 
 void mem_free(void* ptr) {
     // check if ptr is NULL to avoid double frees
-    if(ptr == NULL) {
+    if(is_null(ptr)) {
         logger_warn(str("ptr is NULL; skipping..."), str("mem_free"));
         return;
     }
@@ -62,14 +62,14 @@ void mem_free(void* ptr) {
 void** mem_malloc_2d(const size_t rows, const size_t cols, const size_t size) {
     // allocate rows and do error checking
     void** ptr = mem_malloc(rows, sizeof(void*));
-    if(ptr == NULL) {
+    if(is_null(ptr)) {
         logger_error(str("unable to allocate memory!"), str("mem_malloc_2d"));
         return NULL;
     }
     
     // allocate cols and do error checking
     void* temp = mem_malloc(rows*cols, size);
-    if(temp == NULL) {
+    if(is_null(temp)) {
         logger_error(str("unable to allocate memory!"), str("mem_malloc_2d"));
         
         // free rows
@@ -89,14 +89,14 @@ void** mem_malloc_2d(const size_t rows, const size_t cols, const size_t size) {
 void** mem_calloc_2d(const size_t rows, const size_t cols, const size_t size) {
     // allocate rows and do error checking
     void** ptr = mem_calloc(rows, sizeof(void*));
-    if(ptr == NULL) {
+    if(is_null(ptr)) {
         logger_error(str("unable to allocate memory!"), str("mem_calloc_2d"));
         return NULL;
     }
     
     // allocate cols and do error checking
     void* temp = mem_calloc(rows*cols, size);
-    if(temp == NULL) {
+    if(is_null(temp)) {
         logger_error(str("unable to allocate memory!"), str("mem_calloc_2d"));
         
         // free rows
@@ -137,8 +137,8 @@ bool mem_realloc_2d(void*** ptr, const size_t rows, const size_t cols, const siz
 
 void mem_free_2d(void** ptr) {
     // check if ptr is NULL to avoid double frees
-    if(ptr == NULL) {
-        logger_warn(str("ptr is NULL; skipping..."), str("memory_free"));
+    if(is_null(ptr)) {
+        logger_warn(str("ptr is NULL; skipping..."), str("mem_free_2d"));
         return;
     }
     

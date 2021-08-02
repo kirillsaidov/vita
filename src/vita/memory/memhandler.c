@@ -80,13 +80,22 @@ void memhandler_destroy(memhandler_pt mh) {
 	mem_free(mh);
 }
 
-void memhandler_internal_create(void) {
+bool memhandler_internal_create(void) {
+	memhandlerInternal = ((is_null(memhandlerInternal)) ? (memhandler_create()) : (memhandlerInternal));
 	if(is_null(memhandlerInternal)) {
-		memhandlerInternal = memhandler_create();
+		return false;
+	}
+
+	return true;
+}
+
+void memhandler_internal_destroy(void) {
+	if(!is_null(memhandlerInternal)) {
+		memhandler_destroy(memhandlerInternal);
 	}
 }
 
-memhandler_pt memhandler_internal(void) {
+const memhandler_pt memhandler_internal(void) {
 	return memhandlerInternal;
 }
 
@@ -99,7 +108,7 @@ memhandler_pt memhandler_internal(void) {
 bool memhandler_add(memhandler_pt mh, const void* ptr) {    
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_error(str("memory handler is NULL; doing nothing..."), str("memhandler_add"));
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_add"));
 		return false;
 	}
 
@@ -118,18 +127,22 @@ bool memhandler_add(memhandler_pt mh, const void* ptr) {
 bool memhandler_remove(memhandler_pt mh, const void* ptr) {
 	// check if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_error(str("memory handler is NULL; doing nothing..."), str("memhandler_remove"));
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_remove"));
 		return false;
 	}
 
-	// find the index of the ptr stored in memory handler, remove it
-	int64_t index = search_linear_ptr(ptr, (const void**)mh->ptr, mh->len);
-	if(index == -1) {
-		logger_warn(str("element does not exist in memory handler; exiting..."), str("memhandler_remove"));
-		return false;
+	if(mh->len > 1) {
+		// find the index of the ptr stored in memory handler, remove it
+		int64_t index = search_linear_ptr(ptr, (const void**)mh->ptr, mh->len);
+		if(index == -1) {
+			logger_warn(str("element does not exist in memory handler; exiting..."), str("memhandler_remove"));
+			return false;
+		} else {
+			mh->ptr[index] = mh->ptr[mh->len-1];
+			mh->ptr[mh->len--] = NULL;
+		}
 	} else {
-		mh->ptr[index] = mh->ptr[mh->len-1];
-		mh->ptr[mh->len--] = NULL;
+		mh->ptr[--(mh->len)] = NULL;
 	}
 
 	return true;
@@ -144,7 +157,7 @@ bool memhandler_remove(memhandler_pt mh, const void* ptr) {
 void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_error(str("memory handler is NULL; doing nothing..."), str("memhandler_malloc"));
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_malloc"));
 		return NULL;
 	}
 
@@ -169,7 +182,7 @@ void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t size) {
 void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_error(str("memory handler is NULL; doing nothing..."), str("memhandler_calloc"));
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_calloc"));
 		return NULL;
 	}
 
@@ -194,7 +207,7 @@ void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t size) {
 bool memhandler_realloc(memhandler_pt mh, const void** ptr, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh) || is_null(ptr)) {
-		logger_error(str("memory handler or ptr is NULL; doing nothing..."), str("memhandler_realloc"));
+		logger_warn(str("memory handler or ptr is NULL; doing nothing..."), str("memhandler_realloc"));
 		return false;
 	}
 
@@ -223,7 +236,7 @@ bool memhandler_realloc(memhandler_pt mh, const void** ptr, const size_t n, cons
 void memhandler_free(memhandler_pt mh, const void* ptr) {
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_error(str("memory handler is NULL; safely exiting..."), str("memhandler_free"));
+		logger_warn(str("memory handler is NULL; safely exiting..."), str("memhandler_free"));
 		return;
 	}
 
@@ -243,6 +256,94 @@ void memhandler_free(memhandler_pt mh, const void* ptr) {
 
 
 
+void** memhandler_malloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size) {
+	// if handler is NULL, create handler
+	if(is_null(mh)) {
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_malloc_2d"));
+		return NULL;
+	}
+
+	// create a 2d array
+	void** ptr = mem_malloc_2d(rows, cols, size);
+	if(is_null(ptr)) {
+		logger_error(str("unable to allocate new memory!"), str("memhandler_malloc_2d"));
+		return NULL;
+	}
+
+	// add ptr to memory handler
+	memhandler_add(mh, *ptr);
+	memhandler_add(mh, ptr);
+
+	return ptr;
+}
+
+void** memhandler_calloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size) {
+	// if handler is NULL, create handler
+	if(is_null(mh)) {
+		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_calloc_2d"));
+		return NULL;
+	}
+
+	// create a 2d array
+	void** ptr = mem_calloc_2d(rows, cols, size);
+	if(is_null(ptr)) {
+		logger_error(str("unable to allocate new memory!"), str("memhandler_calloc_2d"));
+		return NULL;
+	}
+
+	// add ptr to memory handler
+	memhandler_add(mh, *ptr);
+	memhandler_add(mh, ptr);
+
+	return ptr;
+}
+
+bool memhandler_realloc_2d(memhandler_pt mh, void*** ptr, const size_t rows, const size_t cols, const size_t size) {
+	// check if handler is NULL, safely exit
+	if(is_null(mh)) {
+		logger_warn(str("handler is NULL; doing nothing..."), str("memhandler_realloc_2d"));
+		return false;
+	}
+
+	// remove 2d array ptrs from memory handler
+	if(!(memhandler_remove(mh, **ptr) && memhandler_remove(mh, *ptr))) {
+		logger_error(str("unable to remove ptr from memory handler before realloc operation!"), str("memhandler_realloc_2d"));
+		return false;
+	}
+
+	// reallocate 2d array
+	if(!mem_realloc_2d(ptr, rows, cols, size)) {
+		logger_error(str("unable to reallocate memory!"), str("memhandler_realloc_2d"));
+
+		// add the old memory back to memory handler
+		memhandler_add(mh, **ptr);
+		memhandler_add(mh, *ptr);
+
+		return false;
+	}
+
+	// add the newly allocated 2d array back to handler
+	memhandler_add(mh, **ptr);
+	memhandler_add(mh, *ptr);
+
+	return true;
+}
+
+void memhandler_free_2d(memhandler_pt mh, void** ptr) {
+	// check if handler is NULL, safely exit
+	if(is_null(mh)) {
+		logger_warn(str("handler is NULL; doing nothing..."), str("memhandler_free_2d"));
+		return;
+	}
+
+	// remove 2d array ptrs from memory handler
+	if(!(memhandler_remove(mh, *ptr) && memhandler_remove(mh, ptr))) {
+		logger_error(str("unable to remove ptrs from memory handler; memory was NOT freed..."), str("memhandler_free_2d"));
+	} else {
+		// free 2d array
+		mem_free_2d(ptr);
+	}
+}
 
 
 
