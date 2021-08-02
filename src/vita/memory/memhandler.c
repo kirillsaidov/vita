@@ -157,7 +157,7 @@ bool memhandler_remove(memhandler_pt mh, const void* ptr) {
 void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_malloc"));
+		logger_warn(str("memory handler is NULL; returning NULL..."), str("memhandler_malloc"));
 		return NULL;
 	}
 
@@ -182,7 +182,7 @@ void* memhandler_malloc(memhandler_pt mh, const size_t n, const size_t size) {
 void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh)) {
-		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_calloc"));
+		logger_warn(str("memory handler is NULL; returning NULL..."), str("memhandler_calloc"));
 		return NULL;
 	}
 
@@ -204,7 +204,7 @@ void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t size) {
 	return ptr;
 }
 
-bool memhandler_realloc(memhandler_pt mh, const void** ptr, const size_t n, const size_t size) {
+bool memhandler_realloc(memhandler_pt mh, void** ptr, const size_t n, const size_t size) {
 	// if handler is NULL, safely exit
 	if(is_null(mh) || is_null(ptr)) {
 		logger_warn(str("memory handler or ptr is NULL; doing nothing..."), str("memhandler_realloc"));
@@ -259,7 +259,7 @@ void memhandler_free(memhandler_pt mh, const void* ptr) {
 void** memhandler_malloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size) {
 	// if handler is NULL, create handler
 	if(is_null(mh)) {
-		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_malloc_2d"));
+		logger_warn(str("memory handler is NULL; returning NULL..."), str("memhandler_malloc_2d"));
 		return NULL;
 	}
 
@@ -280,7 +280,7 @@ void** memhandler_malloc_2d(memhandler_pt mh, const size_t rows, const size_t co
 void** memhandler_calloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size) {
 	// if handler is NULL, create handler
 	if(is_null(mh)) {
-		logger_warn(str("memory handler is NULL; doing nothing..."), str("memhandler_calloc_2d"));
+		logger_warn(str("memory handler is NULL; returning NULL..."), str("memhandler_calloc_2d"));
 		return NULL;
 	}
 

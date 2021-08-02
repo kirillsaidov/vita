@@ -7,15 +7,19 @@
 */
 
 // vita includes
-#include "vita/core/core.h"
-#include "vita/memory/mem.h"
-#include "vita/memory/memhandler.h"
-#include "vita/string/str.h"
+#include "vita/core/core.h"				// general
 #include "vita/logger/logger.h"
+
+#include "vita/memory/mem.h"			// memory package
+#include "vita/memory/memhandler.h"
+
+#include "vita/string/str.h"			// string package
+#include "vita/string/strbuf.h"
 
 // Vita init enum
 enum EVitaInit {
 	EVitaInit_MEMHANDLER_ID,
+	EVitaInit_STRBUF_ID,
 	EVitaInit_SUCCESS
 };
 

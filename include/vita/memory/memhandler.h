@@ -147,7 +147,7 @@ extern void* memhandler_calloc(memhandler_pt mh, const size_t n, const size_t si
 		true 	upon success
 		false	upon failure
 */
-extern bool memhandler_realloc(memhandler_pt mh, const void** ptr, const size_t n, const size_t size);
+extern bool memhandler_realloc(memhandler_pt mh, void** ptr, const size_t n, const size_t size);
 
 /** memhandler_free ==> frees the ptr and removes it from memory handler automatically
 	params:
