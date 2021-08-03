@@ -266,7 +266,7 @@ bool strbuf_remove(strbuf_pt sb, const size_t fromIndex, const size_t n) {
 	}
 
 	// shift the characters in string from index `fromIndex + n` to `fromIndex` in strbuf
-	memcpy((sb->buf + fromIndex * sizeof(char)), (sb->buf + (fromIndex + n) * sizeof(char)), ((sb->len - fromIndex + n) * sizeof(char)));
+	memcpy((sb->buf + fromIndex * sizeof(char)), (sb->buf + (fromIndex + n) * sizeof(char)), ((sb->len - (fromIndex + n)) * sizeof(char)));
 
 	// set new length
 	sb->len -= n;
@@ -317,7 +317,28 @@ bool strbuf_remove_str_all(strbuf_pt sb, const str_t s) {
 	return true;
 }
 
+size_t strbuf_contains(const strbuf_pt sb, const str_t s) {
+	if(is_null(sb)) {
+		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_contains"));
+		return false;
+	}
+		
+	// count the number of substring instances in strbuf
+	size_t count = 0;
+	char* p = strstr(strbuf_cstr(sb), as_cstr(s));
+	while(p != NULL) {
+		count++;
+		p = strstr((p + s.len*sizeof(char)), as_cstr(s));
+	}
+	
+	return count;
+}
 
+size_t strbuf_split(const strbuf_pt sb, const str_t s) {
+	//...
+	
+	return 0;
+}
 
 
 

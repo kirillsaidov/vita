@@ -58,12 +58,33 @@ int main(void) {
     strbuf_remove_str_all(sb, str("dyn"));
     printf("%s\n", strbuf_cstr(sb));
     printf("free memory: %zu\n", strbuf_has_space(sb));
-
+    
+    // check if strbuf contains substring
+    printf("\nstrbuf contains \'amic\'? ");
+    printf("answer: %s\n", ((strbuf_contains(sb, str("amic"))) ? ("true") : ("false")));
+	printf("strbuf contains \'bannana\'? ");
+    printf("answer: %s\n", ((strbuf_contains(sb, str("banana"))) ? ("true") : ("false")));
+    
+    printf("\n");
+    strbuf_pt sb2 = strbuf(str("this is a test, hello world. This is a test, a test."));
+    
+    size_t count = strbuf_contains(sb2, str("test"));
+    printf("Number of \'test\' instances in a string: %zu\n", count);
+    
     // frees strbuf
     strbuf_free(sb); 
+	strbuf_free(sb2); 
 
     return 0;
 }
+
+
+
+
+
+
+
+
 
 
 

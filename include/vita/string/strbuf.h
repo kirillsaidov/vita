@@ -21,10 +21,10 @@
     - strbuf_reserve
     - strbuf_append
     - strbuf_insert
-    - strbuf_remove *))
-    - strbuf_remove_str *))
-    - strbuf_remove_str_all *
-    - strbuf_contains *
+    - strbuf_remove
+    - strbuf_remove_str
+    - strbuf_remove_str_all
+    - strbuf_contains
     - strbuf_split *
     - strbuf_pop_first *
     - strbuf_pop_last *
@@ -222,7 +222,26 @@ extern bool strbuf_remove_str(strbuf_pt sb, const str_t s);
 */
 extern bool strbuf_remove_str_all(strbuf_pt sb, const str_t s);
 
+/** strbuf_contains ==> check is substring is contained in strbuf
+    params:
+        const strbuf_pt sb
+        const str_t s
+    returns:
+        size_t (number of substring instances in strbuf)
+*/
+extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
 
+/** strbuf_split ==> check is substring is contained in strbuf
+    params:
+        const strbuf_pt sb
+        const str_t s
+    returns:
+        strbuf_pt* strbufList
+    notes:
+        valid ptr	if substrings were found in strbuf
+        NULL		upon failure
+*/
+extern size_t strbuf_split(const strbuf_pt sb, const str_t s);
 
 #endif // VITA_STRBUF_H
 
