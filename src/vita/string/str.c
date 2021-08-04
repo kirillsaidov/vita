@@ -4,6 +4,7 @@ str_t str(const char* s) {
     return (str_t) {
         .buf = (char*)s,
         .len = strlen(s),
+		.capacity = 0
     };
 }
 

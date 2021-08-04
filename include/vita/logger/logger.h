@@ -8,11 +8,9 @@
     - logger_fatal
 */
 
-// std includes
 #include <stdio.h>
 #include <stdlib.h>
 
-// vita imports
 #include "../string/str.h"
 
 /** logger_info ==> prints info msg to stdout

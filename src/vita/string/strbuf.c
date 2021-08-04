@@ -1,13 +1,5 @@
 #include "vita/string/strbuf.h"
 
-// strbuf struct
-struct StrBuf {
-    char* buf;
-
-    size_t len;
-    size_t capacity;
-};
-
 // strbuf internal memory handler
 static memhandler_pt strbufMemhandlerInternal = NULL;
 
@@ -52,8 +44,8 @@ const memhandler_pt strbuf_memhandler_internal(void) {
 strbuf_pt strbuf(const str_t s) {
 	// create a strbuf struct
 	strbuf_pt sb = ((strbufManualCollect) ? 
-		(mem_malloc(1, sizeof(struct StrBuf))) : 
-		(memhandler_malloc(strbufMemhandlerInternal, 1, sizeof(struct StrBuf)))
+		(mem_malloc(1, sizeof(str_t))) : 
+		(memhandler_malloc(strbufMemhandlerInternal, 1, sizeof(str_t)))
 	);
 
 	// checking if sb was allocated
@@ -63,7 +55,7 @@ strbuf_pt strbuf(const str_t s) {
 	}
 
 	// create strbuf string
-	*sb = (struct StrBuf) {
+	*sb = (str_t) {
 		.buf = ((strbufManualCollect) ? 
 			(mem_malloc((s.len + s.len/3 + 1), sizeof(char))) : 
 			(memhandler_calloc(strbufMemhandlerInternal, (s.len + s.len/3 + 1), sizeof(char)))),
@@ -233,6 +225,12 @@ bool strbuf_insert(strbuf_pt sb, const str_t s, const size_t fromIndex) {
 		return false;
 	}
 
+	// check index for out-of-bounds access
+	if(fromIndex >= sb->len) {
+		logger_error(str("out-of-bounds index access; safely exiting..."), str("strbuf_insert"));
+		return false;
+	}
+
 	// check if new memory needs to be allocated
 	bool success = true;
 	if(strbuf_has_space(sb) <= s.len) {
@@ -262,6 +260,12 @@ bool strbuf_insert(strbuf_pt sb, const str_t s, const size_t fromIndex) {
 bool strbuf_remove(strbuf_pt sb, const size_t fromIndex, const size_t n) {
 	if(is_null(sb)) {
 		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_remove"));
+		return false;
+	}
+
+	// check index for out-of-bounds access
+	if(fromIndex >= sb->len) {
+		logger_error(str("out-of-bounds index access; safely exiting..."), str("strbuf_remove"));
 		return false;
 	}
 
@@ -317,9 +321,9 @@ bool strbuf_remove_str_all(strbuf_pt sb, const str_t s) {
 	return true;
 }
 
-size_t strbuf_contains(const strbuf_pt sb, const str_t s) {
+size_t strbuf_find(const strbuf_pt sb, const str_t s) {
 	if(is_null(sb)) {
-		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_contains"));
+		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_find"));
 		return false;
 	}
 		
@@ -334,11 +338,27 @@ size_t strbuf_contains(const strbuf_pt sb, const str_t s) {
 	return count;
 }
 
-size_t strbuf_split(const strbuf_pt sb, const str_t s) {
-	//...
+/*size_t strbuf_split(const strbuf_pt sb, const str_t s, strbuf_pt* sblist) {
+	// calculate number of instances of substring in strbuf
+	const size_t count = strbuf_find(sb, s);
+
+	// allocate memory for sblist
+	sblist = ((strbufManualCollect) ? 
+		(mem_malloc(count, sizeof(strbuf_pt))) : 
+		(memhandler_calloc(strbufMemhandlerInternal, count, sizeof(strbuf_pt)))
+	);
+
+	size_t i = 0;
+	char* token = strtok((char*)strbuf_cstr(sb), as_cstr(s));
+	while(!is_null(token)) {
+		printf("%s\n", token);
+
+		sblist[i++] = strbuf(str(token));
+		token = strtok(NULL, as_cstr(s));
+	}
 	
-	return 0;
-}
+	return i;
+}*/
 
 
 

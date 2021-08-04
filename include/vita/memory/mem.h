@@ -13,12 +13,10 @@
     - mem_free_2d
 */
 
-// std includes
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 
-// vita includes
 #include "../core/core.h"
 #include "../logger/logger.h"
 

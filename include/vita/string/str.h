@@ -6,13 +6,14 @@
     - as_cstr
 */
 
-// std includes
 #include <string.h>
 
 // str struct
 typedef struct Str {
     char* buf;
+    
     size_t len;
+	size_t capacity;
 } str_t;
 
 /** str ==> creates a new string with fixed length

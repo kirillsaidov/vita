@@ -10,6 +10,7 @@
 
     - strbuf 
     - strbuf_new (calls strbuf)
+    - strbuf_dup *
     - strbuf_free
 
     - strbuf_cstr
@@ -24,19 +25,18 @@
     - strbuf_remove
     - strbuf_remove_str
     - strbuf_remove_str_all
-    - strbuf_contains
+    - strbuf_find
     - strbuf_split *
     - strbuf_pop_first *
     - strbuf_pop_last *
     - strbuf_equals *
 */
 
-// vita includes
 #include "str.h"
 #include "../memory/memhandler.h"
 
 // strbuf struct
-typedef struct StrBuf* strbuf_pt;
+typedef str_t* strbuf_pt;
 
 /** strbuf_manual_collect ==> memory management type: manual or through the strbuf internal memory handler
 */
@@ -222,14 +222,14 @@ extern bool strbuf_remove_str(strbuf_pt sb, const str_t s);
 */
 extern bool strbuf_remove_str_all(strbuf_pt sb, const str_t s);
 
-/** strbuf_contains ==> check is substring is contained in strbuf
+/** strbuf_find ==> check is substring is contained in strbuf
     params:
         const strbuf_pt sb
         const str_t s
     returns:
         size_t (number of substring instances in strbuf)
 */
-extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
+extern size_t strbuf_find(const strbuf_pt sb, const str_t s);
 
 /** strbuf_split ==> check is substring is contained in strbuf
     params:
@@ -241,7 +241,7 @@ extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
         valid ptr	if substrings were found in strbuf
         NULL		upon failure
 */
-extern size_t strbuf_split(const strbuf_pt sb, const str_t s);
+// extern size_t strbuf_split(const strbuf_pt sb, const str_t s, strbuf_pt* sblist);
 
 #endif // VITA_STRBUF_H
 

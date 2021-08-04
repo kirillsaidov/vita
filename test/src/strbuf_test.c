@@ -14,7 +14,7 @@ int main(void) {
     // creates a strbuf (allocates)
     strbuf_pt sb = strbuf(str("This is a dynamic string!")); 
     
-    printf("%s\n", strbuf_cstr(sb));
+    printf("%s\n", as_cstr(*sb));
     printf("free memory: %zu\n", strbuf_has_space(sb));
 
     // shrinks size
@@ -65,15 +65,19 @@ int main(void) {
 	printf("strbuf contains \'bannana\'? ");
     printf("answer: %s\n", ((strbuf_contains(sb, str("banana"))) ? ("true") : ("false")));
     
-    printf("\n");
-    strbuf_pt sb2 = strbuf(str("this is a test, hello world. This is a test, a test."));
-    
-    size_t count = strbuf_contains(sb2, str("test"));
-    printf("Number of \'test\' instances in a string: %zu\n", count);
+    // split string by separator
+    strbuf_pt* sblist;
+    size_t count = strbuf_split(sb, str(" "), sblist);
+    printf("%zu\n", count);
     
     // frees strbuf
-    strbuf_free(sb); 
-	strbuf_free(sb2); 
+    strbuf_free(sb);
+
+    for(size_t i = 0; i < count; i++) {
+        printf("%s\n", strbuf_cstr(sblist[i]));
+        //strbuf_free(sblist[i]);
+    }
+    // mem_free(sblist);
 
     return 0;
 }

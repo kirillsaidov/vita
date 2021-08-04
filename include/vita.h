@@ -6,15 +6,23 @@
 	- vita_flush
 */
 
-// vita includes
-#include "vita/core/core.h"				// general
-#include "vita/logger/logger.h"
+#include "vita/core/core.h"
+#include "vita/core/as.h"
 
-#include "vita/memory/mem.h"			// memory package
+#include "vita/path/path.h"
+
+#include "vita/logger/logger.h"
+#include "vita/logger/flogger.h"
+
+#include "vita/memory/mem.h"
 #include "vita/memory/memhandler.h"
 
-#include "vita/string/str.h"			// string package
+#include "vita/string/str.h"
 #include "vita/string/strbuf.h"
+
+#include "vita/algorithm/search.h"
+
+#include "vita/container/array.h"
 
 // Vita init enum
 enum EVitaInit {
