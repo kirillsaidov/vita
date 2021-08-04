@@ -150,6 +150,11 @@ bool strbuf_shrink(strbuf_pt sb) {
 		return false;
 	}
 
+	// if length and capacity are the same, exit the function
+	if(sb->len == sb->capacity) {
+		return false;
+	}
+
 	// shrink the array capacity to length
 	bool success = ((strbufManualCollect) ? 
 		(mem_realloc((void**)&sb->buf, (sb->len + 1), sizeof(char))) : 
@@ -173,7 +178,7 @@ bool strbuf_reserve(strbuf_pt sb, const size_t n) {
 		return false;
 	}
 
-	// shrink the array capacity to length
+	// reserve memory for additional n elements
 	bool success = ((strbufManualCollect) ? 
 		(mem_realloc((void**)&sb->buf, (sb->capacity + n + 1), sizeof(char))) : 
 		(memhandler_realloc(strbufMemhandlerInternal, (void**)&sb->buf, (sb->capacity + n + 1), sizeof(char)))
@@ -182,7 +187,7 @@ bool strbuf_reserve(strbuf_pt sb, const size_t n) {
 
 	// check if the operation was successfull
 	if(!success) {
-		logger_error(str("cannot reserve more memory for the string!"), str("strbuf_reserve"));
+		logger_error(str("cannot reserve memory for strbuf!"), str("strbuf_reserve"));
 	} else {
 		sb->capacity += n;
 	}
@@ -321,9 +326,9 @@ bool strbuf_remove_str_all(strbuf_pt sb, const str_t s) {
 	return true;
 }
 
-size_t strbuf_find(const strbuf_pt sb, const str_t s) {
+size_t strbuf_contains(const strbuf_pt sb, const str_t s) {
 	if(is_null(sb)) {
-		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_find"));
+		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_contains"));
 		return false;
 	}
 		
@@ -340,7 +345,7 @@ size_t strbuf_find(const strbuf_pt sb, const str_t s) {
 
 /*size_t strbuf_split(const strbuf_pt sb, const str_t s, strbuf_pt* sblist) {
 	// calculate number of instances of substring in strbuf
-	const size_t count = strbuf_find(sb, s);
+	const size_t count = strbuf_contains(sb, s);
 
 	// allocate memory for sblist
 	sblist = ((strbufManualCollect) ? 

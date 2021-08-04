@@ -11,6 +11,11 @@ enum EVitaInit vita_init(void) {
 		return EVitaInit_STRBUF_ID;
 	}
 
+	// create the internal memory handler for array
+	if(!array_memhandler_internal_create()) {
+		return EVitaInit_ARRAY_ID;
+	}
+
 	return EVitaInit_SUCCESS;
 }
 
@@ -20,6 +25,9 @@ void vita_flush(void) {
 
 	// free the internal memory handler data for strbuf
 	strbuf_memhandler_internal_destroy();
+
+	// free the internal memory handler data for array
+	array_memhandler_internal_destroy();
 }
 
 

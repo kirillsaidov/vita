@@ -28,6 +28,7 @@
 enum EVitaInit {
 	EVitaInit_MEMHANDLER_ID,
 	EVitaInit_STRBUF_ID,
+	EVitaInit_ARRAY_ID,
 	EVitaInit_SUCCESS
 };
 

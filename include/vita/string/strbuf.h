@@ -20,12 +20,13 @@
 
     - strbuf_shrink
     - strbuf_reserve
+    - strbuf_set *
     - strbuf_append
     - strbuf_insert
     - strbuf_remove
     - strbuf_remove_str
     - strbuf_remove_str_all
-    - strbuf_find
+    - strbuf_contains
     - strbuf_split *
     - strbuf_pop_first *
     - strbuf_pop_last *
@@ -222,14 +223,14 @@ extern bool strbuf_remove_str(strbuf_pt sb, const str_t s);
 */
 extern bool strbuf_remove_str_all(strbuf_pt sb, const str_t s);
 
-/** strbuf_find ==> check is substring is contained in strbuf
+/** strbuf_contains ==> check is substring is contained in strbuf
     params:
         const strbuf_pt sb
         const str_t s
     returns:
         size_t (number of substring instances in strbuf)
 */
-extern size_t strbuf_find(const strbuf_pt sb, const str_t s);
+extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
 
 /** strbuf_split ==> check is substring is contained in strbuf
     params:
