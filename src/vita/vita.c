@@ -30,6 +30,11 @@ void vita_flush(void) {
 	array_memhandler_internal_destroy();
 }
 
+void vita_manual_collect(const bool status) {
+	strbuf_manual_collect(status);
+	array_manual_collect(status);
+}
+
 
 
 

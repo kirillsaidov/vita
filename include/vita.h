@@ -40,6 +40,15 @@ extern enum EVitaInit vita_init(void);
 */
 extern void vita_flush(void);
 
+/** vita_manual_collect ==> tell to vita that you want to manually manage memory
+	params:
+		const bool status
+	notes:
+		true 	: manual memory management
+		false 	: semi-auto memory management
+*/
+extern void vita_manual_collect(const bool status);
+
 #endif // VITA_H
 
 

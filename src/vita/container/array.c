@@ -247,7 +247,7 @@ int64_t array_find(const array_pt arr, const void* valptr, bool (*compare)(const
 		return index;
 	}
 
-
+	// important variables
 	index = 0;
 	const size_t step = arr->elsize;
 	const void* end = arr->ptr + arr->len * step;
@@ -259,7 +259,7 @@ int64_t array_find(const array_pt arr, const void* valptr, bool (*compare)(const
 		}
 	}
 
-	return index;
+	return ((index >= arr->len) ? (-1) : (index));
 }
 
 bool array_push(array_pt arr, const void* valptr) {
@@ -273,8 +273,8 @@ bool array_push(array_pt arr, const void* valptr) {
 		return false;
 	}
 
-	// check if we have enough memory 
-	if(!((arr->len >= arr->capacity) && array_reserve(arr, arr->len))) {
+	// check if we have enough memory
+	if((arr->len >= arr->capacity) && array_reserve(arr, arr->len)) {
 		logger_warn(str("unable to reserve memory to push a value; exiting..."), str("array_push"));
 		return false;
 	}
@@ -293,24 +293,26 @@ void array_pop(array_pt arr) {
 	}
 }
 
-void array_set(array_pt arr, const size_t index, const void* valptr) {
+bool array_set(array_pt arr, const size_t index, const void* valptr) {
 	if(is_null(arr)) {
 		logger_warn(str("array is NULL; exiting..."), str("array_set"));
-		return;
-	}
-
-	if(index >= arr->len) {
-		logger_warn(str("out-of-bounds array access; exiting..."), str("array_set"));
-		return;
+		return false;
 	}
 
 	if(is_null(valptr)) {
 		logger_warn(str("value that should be assigned is NULL; exiting..."), str("array_set"));
-		return;
+		return false;
+	}
+
+	if(index >= arr->len) {
+		logger_warn(str("out-of-bounds array access; exiting..."), str("array_set"));
+		return false;
 	}
 
 	// set the value
 	memcpy(arr->ptr + arr->elsize * index, valptr, arr->elsize);
+
+	return true;
 }
 
 void* array_get(array_pt arr, const size_t index) {
@@ -327,52 +329,56 @@ void* array_get(array_pt arr, const size_t index) {
 	return (arr->ptr + arr->elsize * index);
 }
 
-void array_insert(array_pt arr, const size_t index, const void* valptr) {
+bool array_insert(array_pt arr, const size_t index, const void* valptr) {
 	if(is_null(arr)) {
 		logger_warn(str("array is NULL; exiting..."), str("array_insert"));
-		return;
+		return false;
 	}
 
 	if(is_null(valptr)) {
 		logger_warn(str("value that should be assigned is NULL; exiting..."), str("array_insert"));
-		return;
+		return false;
 	}
 
-	// check if we need to allocate additional memory
-	if(index >= arr->capacity) {
-		array_resize(arr, (index + 1));
-
-		// insert the value at the end
-		memcpy((arr->ptr + arr->elsize * index), valptr, arr->elsize);
-	} else if(arr->len < arr->capacity && index >= arr->len) {
-		arr->len += index - arr->len + 1;
-
-		// insert the value at the end
-		memcpy((arr->ptr + arr->elsize * index), valptr, arr->elsize);
-	} else { // if(arr->len < arr->capacity && index < arr->len)
-		arr->len += 1;
+	// check if we need to allocate additional memory and insert the element
+	if((index >= arr->capacity - 1) && !array_resize(arr, (index + 1))) {
+		logger_warn(str("cannot insert element, failed to resize the array; exiting..."), str("array_insert"));
+		return false;
+	} else if(index < arr->capacity - 1) {
+		if(arr->len == arr->capacity && !array_reserve(arr, arr->len)) {
+			logger_warn(str("cannot insert element, failed to reserve memory; exiting..."), str("array_insert"));
+			return false;
+		} else if(index >= arr->len) {
+			arr->len += index - arr->len + 1;
+		} else {
+			arr->len += 1;
+		}
 
 		// copy values to the end of the array
 		memcpy((arr->ptr + arr->elsize * (index + 1)), (arr->ptr + arr->elsize * index), (arr->len - index - 1) * arr->elsize);
-		
-		// insert the value at index position
-		memcpy((arr->ptr + arr->elsize * index), valptr, arr->elsize);
 	}
+
+	// insert the value at the end
+	memcpy((arr->ptr + arr->elsize * index), valptr, arr->elsize);
+
+	return true;
 }
 
-void array_remove(array_pt arr, const size_t index) {
+bool array_remove(array_pt arr, const size_t index) {
 	if(is_null(arr)) {
 		logger_warn(str("array is NULL; exiting..."), str("array_remove"));
-		return;
+		return false;
 	}
 	
 	if(index >= arr->len) {
 		logger_warn(str("out-of-bounds array access; exiting..."), str("array_remove"));
-		return;
+		return false;
 	}
 
 	gswap((arr->ptr + index * arr->elsize), (arr->ptr + (arr->len - 1) * arr->elsize), arr->elsize);
 	arr->len -= 1;
+
+	return true;
 }
 
 void array_clear(array_pt arr) {

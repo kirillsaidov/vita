@@ -27,7 +27,7 @@
 	- array_get
 	- array_insert
 	- array_remove
-	- array_clear *
+	- array_clear
 */
 
 #include <stdio.h>
@@ -35,6 +35,12 @@
 
 #include "../core/core.h"
 #include "../memory/memhandler.h"
+
+// fancy macros for some functions to simplify work
+#define marray_push(arr, val, type); { type x = val; array_push(arr, (void*)(&x)); }
+#define marray_insert(arr, index, val, type); { type x = val; array_insert(arr, index, (void*)(&x)); }
+#define marray_set(arr, index, val, type); { type x = val; array_set(arr, index, (void*)(&x)); }
+#define marray_get(arr, index, type) (*(type*)(array_get(arr, index))) 
 
 // new array type
 typedef struct Array* array_pt;
@@ -96,7 +102,7 @@ extern array_pt array(const size_t elsize);
 */
 extern array_pt array_new(const size_t n, const size_t elsize);
 
-/** array_dup ==> duplicates an array
+/** array_dup ==> duplicates an array (upto array length)
 	params:
 		const array_ptr arr
 	returns:
@@ -211,8 +217,13 @@ extern void array_pop(array_pt arr);
 		array_ptr arr
 		const size_t index
 		const void* valptr
+	returns:
+		bool
+	notes:
+		true 	: upon success
+		false	: upon failure
 */
-extern void array_set(array_pt arr, const size_t index, const void* valptr);
+extern bool array_set(array_pt arr, const size_t index, const void* valptr);
 
 /** array_get ==> returns the pointer to array value
 	params:
@@ -231,15 +242,25 @@ extern void* array_get(array_pt arr, const size_t index);
 		array_ptr arr
 		const size_t index
 		const void* valptr
+	returns:
+		bool
+	notes:
+		true 	: upon success
+		false	: upon failure
 */
-extern void array_insert(array_pt arr, const size_t index, const void* valptr);
+extern bool array_insert(array_pt arr, const size_t index, const void* valptr);
 
 /** array_remove ==> removes value from an array
 	params:
 		array_ptr arr
 		const size_t index
+	returns:
+		bool
+	notes:
+		true 	: upon success
+		false	: upon failure
 */
-extern void array_remove(array_pt arr, const size_t index);
+extern bool array_remove(array_pt arr, const size_t index);
 
 /** array_clear ==> memset everthing to zero
 	params:
