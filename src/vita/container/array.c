@@ -235,31 +235,17 @@ bool array_resize(array_pt arr, const size_t n) {
 }
 
 int64_t array_find(const array_pt arr, const void* valptr, bool (*compare)(const void* ptr, const void* valptr)) {
-	int64_t index = -1;
-
 	if(is_null(arr)) {
 		logger_warn(str("array is NULL; exiting..."), str("array_find"));
-		return index;
+		return -1;
 	}
 
 	if(is_null(valptr)) {
 		logger_warn(str("value that is sought after is NULL; exiting..."), str("array_find"));
-		return index;
+		return -1;
 	}
 
-	// important variables
-	index = 0;
-	const size_t step = arr->elsize;
-	const void* end = arr->ptr + arr->len * step;
-
-	// if the element that is sought for is found, break from the loop
-	for(void* ptr = arr->ptr; ptr != end; ptr += step, index++) {
-		if(is_null(compare) ? (memcmp(ptr, valptr, step) == 0) : (compare(ptr, valptr))) {
-			break;
-		}
-	}
-
-	return ((index >= arr->len) ? (-1) : (index));
+	return search_linear(arr->ptr, arr->len, arr->elsize, valptr, NULL);
 }
 
 bool array_push(array_pt arr, const void* valptr) {

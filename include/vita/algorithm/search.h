@@ -12,17 +12,22 @@
 #include <stdio.h>
 #include <stdint.h>
 
-/** search_linear_type ==> linear search
+#include "../core/core.h"
+
+/** search_linear ==> generic linear search
 	params:
-		const int value
-		const int* array
-		const size_t length
+		const void* arr
+		const size_t len
+		const size_t elsize
+		const void* val
+		bool (*compare)(const void* a, const void* b)
 	returns:
 		uint64_t index 	: if value was found
 		-1 				: if value was not found
+	notes:
+		use NULL instead of compare function to use the direct a == b comparison.
 */
-int64_t search_linear(const int value, const int* array, const size_t length);
-int64_t search_linear_ptr(const void* ptr, const void** list, const size_t length);
+int64_t search_linear(void* arr, const size_t len, const size_t elsize, const void* val, bool (*compare)(const void* a, const void* b));
 
 
 

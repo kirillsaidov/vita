@@ -133,7 +133,7 @@ bool memhandler_remove(memhandler_pt mh, const void* ptr) {
 
 	if(mh->len > 1) {
 		// find the index of the ptr stored in memory handler, remove it
-		int64_t index = search_linear_ptr(ptr, (const void**)mh->ptr, mh->len);
+		int64_t index = search_linear((void**)mh->ptr, mh->len, sizeof(mh->ptr), ptr, NULL);
 		if(index == -1) {
 			logger_warn(str("element does not exist in memory handler; exiting..."), str("memhandler_remove"));
 			return false;

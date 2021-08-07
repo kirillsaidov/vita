@@ -1,24 +1,21 @@
 #include "vita/algorithm/search.h"
 
-int64_t search_linear(const int value, const int* array, const size_t length) {
-	// search for an element iteratively
-	for(size_t i = 0; i < length; i++) {
-		if(array[i] == value) {
-			return i;
-		}
+int64_t search_linear(void* arr, const size_t len, const size_t elsize, const void* val, bool (*compare)(const void* a, const void* b)) {
+	if(is_null(arr) || is_null(val)) {
+		return -1;
 	}
-	
-	return -1;
-}
 
-int64_t search_linear_ptr(const void* ptr, const void** list, const size_t length) {
-	// search for an element iteratively
-	for(size_t i = 0; i < length; i++) {
-		if(list[i] == ptr) {
-			return i;
+	// preparation
+	size_t index = 0;
+	const void* end = arr + len * elsize;
+
+	// if the element that is sought for is found, break from the loop
+	for(void* current = arr; current != end; current += elsize, index++) {
+		if(is_null(compare) ? (memcmp(current, val, elsize) == 0) : (compare(current, val))) {
+			return index;
 		}
 	}
-	
+
 	return -1;
 }
 
@@ -73,8 +70,6 @@ int64_t search_binary_ptr(const void* ptr, const void** list, const size_t lengt
 	
 	return -1;
 }
-
-
 
 
 
