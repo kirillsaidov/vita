@@ -20,32 +20,33 @@
 		const size_t len
 		const size_t elsize
 		const void* val
-		bool (*compare)(const void* a, const void* b)
+		int (*compare)(const void* a, const void* b)
 	returns:
 		uint64_t index 	: if value was found
 		-1 				: if value was not found
 	notes:
 		use NULL instead of compare function to use the direct a == b comparison.
+		compare function must return 0 as false, otherwise it's considered to be true
 */
-int64_t search_linear(void* arr, const size_t len, const size_t elsize, const void* val, bool (*compare)(const void* a, const void* b));
+int64_t search_linear(void* arr, const size_t len, const size_t elsize, const void* val, int (*compare)(const void* a, const void* b));
 
-
-
-
-
-
-
-/** search_binary_type ==> binary search (for sorted arrays)
+/** search_binary ==> generic binary search
 	params:
-		const int value
-		const int* array
-		const size_t length
+		const void* arr
+		const size_t len
+		const size_t elsize
+		const void* val
+		int (*compare)(const void* a, const void* b)
 	returns:
 		uint64_t index 	: if value was found
 		-1 				: if value was not found
+	notes:
+		use NULL instead of compare function to use built-in memcmp comparison.
+		compare function must return: 
+			if a == b: 0
+			if a < b: -1
 */
-int64_t search_binary(const int value, const int* array, const size_t length);
-int64_t search_binary_ptr(const void* ptr, const void** list, const size_t length);
+int64_t search_binary(void* arr, const size_t len, const size_t elsize, const void* val, int (*compare)(const void* a, const void* b));
 
 #endif // VITA_SEARCH_H
 
