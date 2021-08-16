@@ -4,11 +4,11 @@
 /** VITA MODULE
 	- vita_init
 	- vita_flush
+	- vita_manual_collect
 */
 
 #include "vita/core/core.h"
 #include "vita/core/as.h"
-#include "vita/core/to.h"
 
 #include "vita/system/path.h"
 
@@ -24,6 +24,7 @@
 #include "vita/algorithm/search.h"
 
 #include "vita/container/array.h"
+#include "vita/container/array2d.h"
 
 // Vita init enum
 enum EVitaInit {

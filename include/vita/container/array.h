@@ -3,12 +3,13 @@
 
 /** VITA_ARRAY MODULE
 	- array_manual_collect
+	- array_manual_collect_status
 
-    - array_memhandler_internal_create
-    - array_memhandler_internal_destroy
-    - array_memhandler_internal
+	- array_memhandler_internal_create
+	- array_memhandler_internal_destroy
+	- array_memhandler_internal
 
-    - array
+	- array
 	- array_new
 	- array_dup
 	- array_free
@@ -28,6 +29,7 @@
 	- array_insert
 	- array_remove
 	- array_clear
+	- array_foreach
 */
 
 #include <stdio.h>
@@ -42,12 +44,22 @@
 #define marray_set(arr, index, val, type); { type x = val; array_set(arr, index, (void*)(&x)); }
 #define marray_get(arr, index, type) (*(type*)(array_get(arr, index))) 
 
+// array struct
+struct Array {
+	void* ptr;
+
+	size_t len;
+	size_t capacity;
+	size_t elsize;
+};
+
 // new array type
 typedef struct Array* array_pt;
 
 /** array_manual_collect ==> memory management type: manual or through the array internal memory handler
 */
 extern void array_manual_collect(const bool status);
+extern bool array_manual_collect_status();
 
 
 
@@ -102,7 +114,7 @@ extern array_pt array(const size_t elsize);
 */
 extern array_pt array_new(const size_t n, const size_t elsize);
 
-/** array_dup ==> duplicates an array (upto array length)
+/** array_dup ==> duplicates an array
 	params:
 		const array_ptr arr
 	returns:
@@ -227,7 +239,7 @@ extern bool array_set(array_pt arr, const size_t index, const void* valptr);
 
 /** array_get ==> returns the pointer to array value
 	params:
-		array_ptr arr
+		const array_ptr arr
 		const size_t index
 	returns:
 		void* ptr
@@ -235,7 +247,7 @@ extern bool array_set(array_pt arr, const size_t index, const void* valptr);
 		valid ptr 	: upon success
 		NULL		: upon failure
 */
-extern void* array_get(array_pt arr, const size_t index);
+extern void* array_get(const array_pt arr, const size_t index);
 
 /** array_insert ==> inserts value at an index
 	params:
@@ -269,6 +281,13 @@ extern bool array_remove(array_pt arr, const size_t index);
 		all elements up to array capacity are set to zero
 */
 extern void array_clear(array_pt arr);
+
+/** array_foreach ==> iterates through each element and calls func on that element
+	params:
+		const array_ptr arr
+		void (*func)(void* ptr)
+*/
+extern void array_foreach(const array_pt arr, void (*func)(void* ptr));
 
 #endif // VITA_ARRAY_H
 

@@ -1,14 +1,5 @@
 #include "vita/container/array.h"
 
-// array struct
-struct Array {
-	void* ptr;
-
-	size_t len;
-	size_t capacity;
-	size_t elsize;
-};
-
 // array internal memory handler
 static memhandler_pt arrayMemhandlerInternal = NULL;
 
@@ -17,6 +8,10 @@ static bool arrayManualCollect = false;
 
 void array_manual_collect(const bool status) {
 	arrayManualCollect = status;
+}
+
+bool array_manual_collect_status() {
+	return arrayManualCollect;
 }
 
 
@@ -64,6 +59,11 @@ array_pt array_new(const size_t n, const size_t elsize) {
 	// checking if array was allocated
 	if(is_null(arr)) {
 		logger_error(str("unable to create an array!"), str("array_new"));
+
+		if(!arrayManualCollect) {
+			logger_info(str("ManualCollect is false? Then don't forget to initialize the module\'s internal memhandler."));
+		}
+
 		return NULL;
 	}
 
@@ -101,7 +101,6 @@ array_pt array_dup(const array_pt arr) {
 
 	// copy array elements
 	memcpy(arrdup->ptr, arr->ptr, (arr->len * arr->elsize));
-	arrdup->len = arr->len;
 
 	return arrdup;
 }
@@ -129,15 +128,27 @@ void array_free(array_pt arr) {
 
 
 size_t array_len(const array_pt arr) {
-	return arr->len;
+	if(is_null(arr)) {
+		return 0;
+	} else {
+		return arr->len;
+	}
 }
 
 size_t array_capacity(const array_pt arr) {
-	return arr->capacity;
+	if(is_null(arr)) {
+		return 0;
+	} else {
+		return arr->capacity;
+	}
 }
 
 size_t array_has_space(const array_pt arr) {
-	return (arr->capacity - arr->len);
+	if(is_null(arr)) {
+		return 0;
+	} else {
+		return (arr->capacity - arr->len);
+	}
 }
 
 
@@ -220,7 +231,7 @@ bool array_resize(array_pt arr, const size_t n) {
 
 	// check if the operation was successfull
 	if(!success) {
-		logger_error(str("unable to shrink the array!"), str("array_resize"));
+		logger_error(str("unable to resize the array!"), str("array_resize"));
 	} else {
 		if(arr->capacity < n) {
 			// set byte values to zero
@@ -301,7 +312,7 @@ bool array_set(array_pt arr, const size_t index, const void* valptr) {
 	return true;
 }
 
-void* array_get(array_pt arr, const size_t index) {
+void* array_get(const array_pt arr, const size_t index) {
 	if(is_null(arr)) {
 		logger_warn(str("array is NULL; returning NULL..."), str("array_get"));
 		return NULL;
@@ -376,7 +387,19 @@ void array_clear(array_pt arr) {
 	}
 }
 
+void array_foreach(const array_pt arr, void (*func)(void* ptr)) {
+	if(is_null(arr)) {
+		logger_warn(str("array is NULL; exiting..."), str("array_foreach"));
+	}
 
+	if(is_null(func)) {
+		logger_warn(str("func is NULL; exiting..."), str("array_foreach"));
+	}
+
+	for(size_t i = 0; i < arr->len; i++) {
+		func(arr->ptr + i * arr->elsize);
+	}
+}
 
 
 

@@ -12,7 +12,7 @@ int main(void) {
     };
     
     int val = 45;
-    printf("find value 55, index = %lld\n", search_binary(arr, sizeof(arr)/sizeof(int), sizeof(int), &val, NULL));
+    printf("find value 45, index = %lld\n", search_binary(arr, sizeof(arr)/sizeof(int), sizeof(int), &val, NULL));
 
     return 0;
 }

@@ -3,6 +3,7 @@
 
 /** VITA_STRBUF MODULE (dynamic string)
     - strbuf_manual_collect
+    - strbuf_manual_collect_status
 
     - strbuf_memhandler_internal_create
     - strbuf_memhandler_internal_destroy
@@ -31,10 +32,16 @@
     - strbuf_pop_first *
     - strbuf_pop_last *
     - strbuf_equals *
+
+    NOTES:
+    1.  Depepends on the 'array' module; therefore, if memory is not managed manually,
+        that is if strbufManulCollect is false, do not forget to initialize
+        array_memhandler_internal - otherwise array-related functionality won't work.
 */
 
 #include "str.h"
 #include "../memory/memhandler.h"
+#include "../container/array.h"
 
 // strbuf struct
 typedef str_t* strbuf_pt;
@@ -42,7 +49,7 @@ typedef str_t* strbuf_pt;
 /** strbuf_manual_collect ==> memory management type: manual or through the strbuf internal memory handler
 */
 extern void strbuf_manual_collect(const bool status);
-
+extern bool strbuf_manual_collect_status();
 
 
 
@@ -232,18 +239,18 @@ extern bool strbuf_remove_str_all(strbuf_pt sb, const str_t s);
 */
 extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
 
-/** strbuf_split ==> check is substring is contained in strbuf
+/** strbuf_split ==> splits a string given a separator
     params:
         const strbuf_pt sb
-        const str_t s
+        const str_t sep
     returns:
-        strbuf_pt* strbufList
+        array_pt
     notes:
-        valid ptr	if substrings were found in strbuf
-        NULL		upon failure
+        valid array_pt		if substrings were successfully split
+        NULL				upon failure
 */
-// extern size_t strbuf_split(const strbuf_pt sb, const str_t s, strbuf_pt* sblist);
-
+extern array_pt strbuf_split(const strbuf_pt sb, const str_t sep);
+// extern void strbuf_split(const strbuf_pt sb, const str_t s);
 #endif // VITA_STRBUF_H
 
 

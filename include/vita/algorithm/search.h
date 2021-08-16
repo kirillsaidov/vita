@@ -25,8 +25,8 @@
 		uint64_t index 	: if value was found
 		-1 				: if value was not found
 	notes:
-		use NULL instead of compare function to use the direct a == b comparison.
-		compare function must return 0 as false, otherwise it's considered to be true
+		use NULL instead of compare function to use the memcmp comparison.
+		compare function must return a boolean
 */
 int64_t search_linear(void* arr, const size_t len, const size_t elsize, const void* val, int (*compare)(const void* a, const void* b));
 

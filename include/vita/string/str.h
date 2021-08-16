@@ -10,7 +10,7 @@
 
 // str struct
 typedef struct Str {
-    char* buf;
+    char* ptr;
     
     size_t len;
 	size_t capacity;

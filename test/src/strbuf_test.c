@@ -10,6 +10,7 @@ int main(void) {
     // we want to manually manage memory (false by default)
     // (at this point the programmer is responsible for freeing the allocate memory)
     strbuf_manual_collect(true); 
+    array_manual_collect(true);
 
     // creates a strbuf (allocates)
     strbuf_pt sb = strbuf(str("This is a dynamic string!")); 
@@ -66,18 +67,22 @@ int main(void) {
     printf("answer: %s\n", ((strbuf_contains(sb, str("banana"))) ? ("true") : ("false")));
     
     // split string by separator
-    strbuf_pt* sblist;
-    size_t count = strbuf_split(sb, str(" "), sblist);
-    printf("%zu\n", count);
+    array_pt sblist = strbuf_split(sb, str(" "));
+    printf("sblist len: %zu\n", array_len(sblist));
+    printf("%s\n", strbuf_cstr(array_get(sblist, 0)));
+    /*for(size_t i = 0; i < array_len(sblist); i++) {
+        printf("%s\n", strbuf_cstr(array_get(sblist, i)));
+    }*/
     
     // frees strbuf
     strbuf_free(sb);
 
-    for(size_t i = 0; i < count; i++) {
-        printf("%s\n", strbuf_cstr(sblist[i]));
-        //strbuf_free(sblist[i]);
-    }
-    // mem_free(sblist);
+	// for(size_t i = 0; i < array_len(sblist); i++) {
+	//     strbuf_free(array_get(sblist, 0));
+	// }
+	// mem_free((void*)(array_get(sblist, 0)));
+	// mem_free((void*)(array_get(sblist, 0)));
+    array_free(sblist);
 
     return 0;
 }

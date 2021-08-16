@@ -15,11 +15,6 @@
 	- memhandler_calloc
 	- memhandler_realloc
 	- memhandler_free
-	
-	- memhandler_malloc_2d
-	- memhandler_calloc_2d
-	- memhandler_realloc_2d
-	- memhandler_free_2d
 */
 
 #include <stdlib.h>
@@ -155,72 +150,6 @@ extern bool memhandler_realloc(memhandler_pt mh, void** ptr, const size_t n, con
 		if it failes to remove a pointer from memory handler, then it DOES NOT free that pointer
 */
 extern void memhandler_free(memhandler_pt mh, const void* ptr);
-
-
-
-
-
-
-
-/** memhandler_malloc_2d ==> allocates a 2d array and adds the ptr to memory handler automatically
-	params:
-		memhandler_pt mh
-		const size_t rows
-		const size_t cols
-		const size_t size
-	retuns:
-		void** ptr 	to a valid memory address
-		NULL 		upon failure
-	notes:
-		if failes to add new memory to memory handler, frees the memory and returns NULL
-*/
-void** memhandler_malloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size);
-
-/** memhandler_calloc_2d ==> allocates a 2d array and adds the ptr to memory handler automatically (initializes with zeros)
-	params:
-		memhandler_pt mh
-		const size_t rows
-		const size_t cols
-		const size_t size
-	retuns:
-		void** ptr 	to a valid memory address
-		NULL 		upon failure
-	notes:
-		if failes to add new memory to memory handler, frees the memory and returns NULL
-*/
-void** memhandler_calloc_2d(memhandler_pt mh, const size_t rows, const size_t cols, const size_t size);
-
-/** memhandler_realloc_2d ==> reallocates a 2d array in sync with memory handler
-	params:
-		memhandler_pt mh
-		const void*** ptr
-		const size_t rows
-		const size_t cols
-		const size_t size
-	retuns:
-		bool
-	notes:
-		true 	upon success
-		false	upon failure
-
-		the function removes ptrs from memory handler, reallocs, add them back to memory handler;
-		in case of failure, it adds ptrs back to memory handler
-*/
-bool memhandler_realloc_2d(memhandler_pt mh, void*** ptr, const size_t rows, const size_t cols, const size_t size);
-
-/** memhandler_free_2d ==> frees the 2d array ptrs and removes them from memory handler automatically
-	params:
-		memhandler_pt mh
-		const void** ptr
-	notes:
-		if it failes to remove a pointer from memory handler, then it DOES NOT free that pointer
-*/
-void memhandler_free_2d(memhandler_pt mh, void** ptr);
-
-
-
-
-
 
 #endif // VITA_MEMHANDLER_H
 
