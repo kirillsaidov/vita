@@ -12,6 +12,8 @@ int main(void) {
 	memhandler_internal_create();
 
     // test(&arr, arr);
+    void* str = "hello";
+    printf("%s\n", str);
 
     memhandler_internal_destroy();
 }

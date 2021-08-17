@@ -31,7 +31,7 @@
 
 // new array2d type
 // NOTE: here len and capacity are used as rows and cols
-typedef struct Array* array2d_pt; 
+typedef array_pt array2d_pt; 
 
 /** array2d ==> creates a 7x7 array matrix
 	params:

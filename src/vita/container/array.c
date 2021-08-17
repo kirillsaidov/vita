@@ -52,8 +52,8 @@ array_pt array(const size_t elsize) {
 array_pt array_new(const size_t n, const size_t elsize) {
 	// create an array instance
 	array_pt arr = ((arrayManualCollect) ? 
-		(mem_malloc(1, sizeof(struct Array))) : 
-		(memhandler_malloc(arrayMemhandlerInternal, 1, sizeof(struct Array)))
+		(mem_malloc(1, sizeof(struct BaseArrayType))) : 
+		(memhandler_malloc(arrayMemhandlerInternal, 1, sizeof(struct BaseArrayType)))
 	);
 
 	// checking if array was allocated
@@ -68,7 +68,7 @@ array_pt array_new(const size_t n, const size_t elsize) {
 	}
 
 	// allocate memory for array elements
-	*arr = (struct Array) {
+	*arr = (struct BaseArrayType) {
 		.ptr = ((arrayManualCollect) ? 
 			(mem_calloc((n + n/3), elsize)) : 
 			(memhandler_calloc(arrayMemhandlerInternal, (n + n/3), elsize))),

@@ -7,8 +7,8 @@ array2d_pt array2d(const size_t elsize) {
 array2d_pt array2d_new(const size_t rows, const size_t cols, const size_t elsize) {
 	// create an array instance
 	array2d_pt arr = ((array_manual_collect_status()) ? 
-		(mem_malloc(1, sizeof(struct Array))) : 
-		(memhandler_malloc(array_memhandler_internal(), 1, sizeof(struct Array)))
+		(mem_malloc(1, sizeof(struct BaseArrayType))) : 
+		(memhandler_malloc(array_memhandler_internal(), 1, sizeof(struct BaseArrayType)))
 	);
 
 	// checking if array was allocated
@@ -23,7 +23,7 @@ array2d_pt array2d_new(const size_t rows, const size_t cols, const size_t elsize
 	}
 
 	// allocate memory for array elements
-	*arr = (struct Array) {
+	*arr = (struct BaseArrayType) {
 		.ptr = ((array_manual_collect_status()) ? 
 			(mem_calloc(rows*cols, elsize)) : 
 			(memhandler_calloc(array_memhandler_internal(), rows*cols, elsize))),

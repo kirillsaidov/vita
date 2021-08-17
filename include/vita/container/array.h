@@ -44,17 +44,8 @@
 #define marray_set(arr, index, val, type); { type x = val; array_set(arr, index, (void*)(&x)); }
 #define marray_get(arr, index, type) (*(type*)(array_get(arr, index))) 
 
-// array struct
-struct Array {
-	void* ptr;
-
-	size_t len;
-	size_t capacity;
-	size_t elsize;
-};
-
 // new array type
-typedef struct Array* array_pt;
+typedef struct BaseArrayType* array_pt;
 
 /** array_manual_collect ==> memory management type: manual or through the array internal memory handler
 */

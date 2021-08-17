@@ -10,6 +10,15 @@
 	- is_null
 */
 
+// array struct wrapper
+struct BaseArrayType {
+	void* ptr;
+
+	size_t len;
+	size_t capacity;
+	size_t elsize;
+};
+
 /** is_null ==> checks if a pointer is NULL
 	params:
 		const void* ptr
