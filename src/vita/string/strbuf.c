@@ -70,7 +70,7 @@ strbuf_pt strbuf_new(const str_t s) {
 	// create strbuf string
 	*sb = (str_t) {
 		.ptr = ((strbufManualCollect) ? 
-			(mem_malloc((s.len + s.len/3 + 1), sizeof(char))) : 
+			(mem_calloc((s.len + s.len/3 + 1), sizeof(char))) : 
 			(memhandler_calloc(strbufMemhandlerInternal, (s.len + s.len/3 + 1), sizeof(char)))),
 		.len = s.len,
 		.capacity = s.len + s.len/3
@@ -84,7 +84,7 @@ strbuf_pt strbuf_new(const str_t s) {
 
 	// copy str data to strbuf
 	memcpy(sb->ptr, as_cstr(s), (s.len * sizeof(char)));
-	sb->ptr[s.len] = '\0';
+	((char*)sb->ptr)[s.len] = '\0';
 
 	return sb;
 }
@@ -111,12 +111,7 @@ void strbuf_free(strbuf_pt sb) {
 
 
 
-const char* strbuf_cstr(const strbuf_pt sb) {
-	if(is_null(sb)) {
-		logger_warn(str("strbuf is NULL; returning NULL..."), str("strbuf_cstr"));
-		return NULL;
-	}
-
+const char* const strbuf_cstr(const strbuf_pt sb) {
 	return sb->ptr;
 }
 
@@ -227,7 +222,7 @@ bool strbuf_append(strbuf_pt sb, const str_t s) {
 		sb->len += s.len;
 
 		// add the '\0' terminator
-		sb->ptr[sb->len] = '\0';
+		((char*)sb->ptr)[sb->len] = '\0';
 	}
 
 	return success;
@@ -265,7 +260,7 @@ bool strbuf_insert(strbuf_pt sb, const str_t s, const size_t fromIndex) {
 		sb->len += s.len;
 
 		// add the '\0' terminator
-		sb->ptr[sb->len] = '\0';
+		((char*)sb->ptr)[sb->len] = '\0';
 	}
 
 	return success;
@@ -290,7 +285,7 @@ bool strbuf_remove(strbuf_pt sb, const size_t fromIndex, const size_t n) {
 	sb->len -= n;
 
 	// add the '\0' terminator
-	sb->ptr[sb->len] = '\0';
+	((char*)sb->ptr)[sb->len] = '\0';
 
 	return true;
 }
@@ -318,7 +313,7 @@ bool strbuf_remove_str(strbuf_pt sb, const str_t s) {
 	sb->len -= s.len;
 
 	// add the '\0' terminator
-	sb->ptr[sb->len] = '\0';
+	((char*)sb->ptr)[sb->len] = '\0';
 
 	return true;
 }
@@ -352,16 +347,14 @@ size_t strbuf_contains(const strbuf_pt sb, const str_t s) {
 	return count;
 }
 
-array_pt strbuf_split(const strbuf_pt sb, const str_t sep) {
+/*array_pt strbuf_split(const strbuf_pt sb, const str_t sep) {
 	if(is_null(sb)) {
 		logger_warn(str("strbuf is NULL; exiting..."), str("strbuf_split"));
 		return NULL;
 	}
 
 	// check if strbuf dependency 'array' is initialized
-	if(is_null(array_memhandler_internal()) && array_manual_collect_status()) {
-		array_manual_collect(true);
-	} else {
+	if(is_null(array_memhandler_internal()) && !array_manual_collect_status()) {
 		logger_error(str("strbuf_split depends on array_memhandler_internal. Either initialize it or do array_manual_collect(true)!"), str("strbuf_split"));
 		return NULL;
 	}
@@ -378,17 +371,17 @@ array_pt strbuf_split(const strbuf_pt sb, const str_t sep) {
 	strbuf_pt sbToken = strbuf(str(strtok((char*)strbuf_cstr(sb), as_cstr(sep))));
 	while(!is_null(strbuf_cstr(sbToken))) {
 		array_push(sbList, sbToken);
-		printf("%s\n", strbuf_cstr(sbToken));
-		break;
-		//sbToken = strbuf(str(strtok(NULL, as_cstr(sep))));
+		// printf("%s\n", strbuf_cstr(sbToken));
+		// break;
+		sbToken = strbuf(str(strtok(NULL, as_cstr(sep))));
 	}
 
-	/* the problem here is that i need a 2d array, because I'm creating 
-	an array of strbuf pointers to arrays of chars
-	*/
+	// the problem here is that i need a 2d array, because I'm creating 
+	// an array of strbuf pointers to char pointers
+	
 
 	return sbList;
-}
+}*/
 
 /*void strbuf_split(const strbuf_pt sb, const str_t s) {
 	size_t i = 0;

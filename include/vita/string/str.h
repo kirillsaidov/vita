@@ -8,13 +8,9 @@
 
 #include <string.h>
 
-// str struct
-typedef struct Str {
-    char* ptr;
-    
-    size_t len;
-	size_t capacity;
-} str_t;
+#include "../core/core.h"
+
+typedef struct BaseArrayType str_t;
 
 /** str ==> creates a new string with fixed length
     params:
@@ -28,9 +24,9 @@ extern str_t str(const char* s);
     params:
         const strt_t s
     returns:
-    const char* (buffer to the begining of str_t)
+    const char* const (buffer to the begining of str_t)
 */
-extern const char* as_cstr(const str_t s);
+extern const char* const as_cstr(const str_t s);
 
 #endif // VITA_STR_H
 

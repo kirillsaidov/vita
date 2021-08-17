@@ -2,41 +2,41 @@
 #define VITA_STRBUF_H
 
 /** VITA_STRBUF MODULE (dynamic string)
-    - strbuf_manual_collect
-    - strbuf_manual_collect_status
+	- strbuf_manual_collect
+	- strbuf_manual_collect_status
 
-    - strbuf_memhandler_internal_create
-    - strbuf_memhandler_internal_destroy
-    - strbuf_memhandler_internal
+	- strbuf_memhandler_internal_create
+	- strbuf_memhandler_internal_destroy
+	- strbuf_memhandler_internal
 
-    - strbuf 
-    - strbuf_new (calls strbuf)
-    - strbuf_dup *
-    - strbuf_free
+	- strbuf 
+	- strbuf_new (calls strbuf)
+	- strbuf_dup *
+	- strbuf_free
 
-    - strbuf_cstr
-    - strbuf_len
-    - strbuf_capacity
-    - strbuf_has_space
+	- strbuf_cstr
+	- strbuf_len
+	- strbuf_capacity
+	- strbuf_has_space
 
-    - strbuf_shrink
-    - strbuf_reserve
-    - strbuf_set *
-    - strbuf_append
-    - strbuf_insert
-    - strbuf_remove
-    - strbuf_remove_str
-    - strbuf_remove_str_all
-    - strbuf_contains
-    - strbuf_split *
-    - strbuf_pop_first *
-    - strbuf_pop_last *
-    - strbuf_equals *
+	- strbuf_shrink
+	- strbuf_reserve
+	- strbuf_set *
+	- strbuf_append
+	- strbuf_insert
+	- strbuf_remove
+	- strbuf_remove_str
+	- strbuf_remove_str_all
+	- strbuf_contains
+	- strbuf_split *
+	- strbuf_pop_first *
+	- strbuf_pop_last *
+	- strbuf_equals *
 
-    NOTES:
-    1.  Depepends on the 'array' module; therefore, if memory is not managed manually,
-        that is if strbufManulCollect is false, do not forget to initialize
-        array_memhandler_internal - otherwise array-related functionality won't work.
+	NOTES:
+	1.  Depepends on the 'array' module; therefore, if memory is not managed manually,
+		that is if strbufManulCollect is false, do not forget to initialize
+		array_memhandler_internal - otherwise array-related functionality won't work.
 */
 
 #include "str.h"
@@ -75,27 +75,27 @@ extern const memhandler_pt strbuf_memhandler_internal(void);
 
 
 /** strbuf ==> creates a new dynamic string
-    params:
-        const str_t s
-    returns:
-        strbuf_pt
-    notes:
-        allocates additional memory for the '\0' terminator automatically
-        allocates additional 1/3 of the original memory size for appending (use `strbuf_shrink` to remove additional free memory)
+	params:
+		const str_t s
+	returns:
+		strbuf_pt
+	notes:
+		allocates additional memory for the '\0' terminator automatically
+		allocates additional 1/3 of the original memory size for appending (use `strbuf_shrink` to remove additional free memory)
 */
 extern strbuf_pt strbuf(const str_t s);
 
 /** strbuf ==> creates a new dynamic string (calls strbuf)
-    params:
-        const str_t s
-    returns:
-        strbuf_pt
+	params:
+		const str_t s
+	returns:
+		strbuf_pt
 */
 extern strbuf_pt strbuf_new(const str_t s);
 
 /** strbuf ==> frees a dynamic string
-    params:
-        strbuf_pt sb
+	params:
+		strbuf_pt sb
 */
 extern void strbuf_free(strbuf_pt sb);
 
@@ -106,36 +106,36 @@ extern void strbuf_free(strbuf_pt sb);
 
 
 /** strbuf_cstr ==> returns the char* pointer to string buffer
-    params:
-        const strbuf_pt sb
-    returns:
-        const char*
+	params:
+		const strbuf_pt sb
+	returns:
+		const char* const
 */
-extern const char* strbuf_cstr(const strbuf_pt sb);
+extern const char* const strbuf_cstr(const strbuf_pt sb);
 
 /** strbuf_len ==> returns string length
-    params:
-        const strbuf_pt sb
-    returns:
-        size_t (str length)
-    notes:
-        the '\0' terminator is excluded
+	params:
+		const strbuf_pt sb
+	returns:
+		size_t (str length)
+	notes:
+		the '\0' terminator is excluded
 */
 extern size_t strbuf_len(const strbuf_pt sb);
 
 /** strbuf_capacity ==> returns string capacity
-    params:
-        const strbuf_pt sb
-    returns:
-        size_t (str capacity)
+	params:
+		const strbuf_pt sb
+	returns:
+		size_t (str capacity)
 */
 extern size_t strbuf_capacity(const strbuf_pt sb);
 
 /** strbuf_has_space ==> returns available space before a new allocation will be required
-    params:
-        const strbuf_pt sb
-    returns:
-        size_t (capacity - length)
+	params:
+		const strbuf_pt sb
+	returns:
+		size_t (capacity - length)
 */
 extern size_t strbuf_has_space(const strbuf_pt sb);
 
@@ -146,111 +146,111 @@ extern size_t strbuf_has_space(const strbuf_pt sb);
 
 
 /** strbuf_shrink ==> shrinks string's capacity to its length
-    params:
-        strbuf_pt sb
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_shrink(strbuf_pt sb);
 
 /** strbuf_reserve ==> reserves memory for string
-    params:
-        strbuf_pt sb
-        const size_t n
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const size_t n
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_reserve(strbuf_pt sb, const size_t n);
 
 /** strbuf_append ==> appends at the end of the string
-    params:
-        strbuf_pt sb
-        const str_t s
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const str_t s
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_append(strbuf_pt sb, const str_t s);
 
 /** strbuf_insert ==> inserts a string into strbuf starting the specified index
-    params:
-        strbuf_pt sb
-        const str_t s
-        const size_t from
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const str_t s
+		const size_t from
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_insert(strbuf_pt sb, const str_t s, const size_t fromIndex);
 
 /** strbuf_remove ==> removes a n chars from strbuf starting from the specified index
-    params:
-        strbuf_pt sb
-        const size_t from
-        const size_t n
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const size_t from
+		const size_t n
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_remove(strbuf_pt sb, const size_t fromIndex, const size_t n);
 
 /** strbuf_remove_str ==> removes the first encountered substring from strbuf, if not found, returns from function
-    params:
-        strbuf_pt sb
-        const str_t s
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const str_t s
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_remove_str(strbuf_pt sb, const str_t s);
 
 /** strbuf_remove_str ==> removes all instances of a substring from strbuf (calls strbuf_remove_str)
-    params:
-        strbuf_pt sb
-        const str_t s
-    returns:
-        bool
-    notes:
-        true    upon sucess
-        false   upon failure
+	params:
+		strbuf_pt sb
+		const str_t s
+	returns:
+		bool
+	notes:
+		true    upon sucess
+		false   upon failure
 */
 extern bool strbuf_remove_str_all(strbuf_pt sb, const str_t s);
 
 /** strbuf_contains ==> check is substring is contained in strbuf
-    params:
-        const strbuf_pt sb
-        const str_t s
-    returns:
-        size_t (number of substring instances in strbuf)
+	params:
+		const strbuf_pt sb
+		const str_t s
+	returns:
+		size_t (number of substring instances in strbuf)
 */
 extern size_t strbuf_contains(const strbuf_pt sb, const str_t s);
 
 /** strbuf_split ==> splits a string given a separator
-    params:
-        const strbuf_pt sb
-        const str_t sep
-    returns:
-        array_pt
-    notes:
-        valid array_pt		if substrings were successfully split
-        NULL				upon failure
+	params:
+		const strbuf_pt sb
+		const str_t sep
+	returns:
+		array_pt
+	notes:
+		valid array_pt		if substrings were successfully split
+		NULL				upon failure
 */
-extern array_pt strbuf_split(const strbuf_pt sb, const str_t sep);
-// extern void strbuf_split(const strbuf_pt sb, const str_t s);
+// extern array_pt strbuf_split(const strbuf_pt sb, const str_t sep);
+
 #endif // VITA_STRBUF_H
 
 

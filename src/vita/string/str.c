@@ -1,6 +1,10 @@
 #include "vita/string/str.h"
 
 str_t str(const char* s) {
+    if(is_null(s)) {
+        s = " ";
+    }
+
     return (str_t) {
         .ptr = (char*)s,
         .len = strlen(s),
@@ -8,7 +12,7 @@ str_t str(const char* s) {
     };
 }
 
-const char* as_cstr(str_t s) {
+const char* const as_cstr(str_t s) {
     return s.ptr;
 }
 
