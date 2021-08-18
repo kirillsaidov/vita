@@ -67,22 +67,26 @@ int main(void) {
     printf("answer: %s\n", ((strbuf_contains(sb, str("banana"))) ? ("true") : ("false")));
     
     // split string by separator
-    array_pt sblist = strbuf_split(sb, str(" "));
-    printf("sblist len: %zu\n", array_len(sblist));
-    printf("%s\n", strbuf_cstr(array_get(sblist, 0)));
+    // strbuf_pt strSep = strbuf(str("hello world test game string C birds animals"));
+    // array_pt sblist = strbuf_split(strSep, str(" "));
+    
+    // printf("sblist len: %zu\n", array_len(sblist));
+    // printf("%s\n", strbuf_cstr(array_get(sblist, 0)));
     /*for(size_t i = 0; i < array_len(sblist); i++) {
         printf("%s\n", strbuf_cstr(array_get(sblist, i)));
     }*/
     
     // frees strbuf
     strbuf_free(sb);
+    // strbuf_free(strSep);
 
 	// for(size_t i = 0; i < array_len(sblist); i++) {
-	//     strbuf_free(array_get(sblist, 0));
+ //        strbuf_pt s = (strbuf_pt)array_get(sblist, i);
+	//     strbuf_free(s);
 	// }
 	// mem_free((void*)(array_get(sblist, 0)));
 	// mem_free((void*)(array_get(sblist, 0)));
-    array_free(sblist);
+    // array_free(sblist);
 
     return 0;
 }

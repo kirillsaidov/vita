@@ -16,6 +16,9 @@ enum EVitaInit vita_init(void) {
 		return EVitaInit_ARRAY_ID;
 	}
 
+	// activate memhandlers
+	vita_manual_collect(false);
+
 	return EVitaInit_SUCCESS;
 }
 
