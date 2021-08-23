@@ -1,13 +1,5 @@
 #include "vita/memory/memhandler.h"
 
-// memory handler structure
-struct Memhandler {
-	void** ptr;
-
-    size_t len;
-    size_t capacity;
-};
-
 // internal memory handler
 static memhandler_pt memhandlerInternal = NULL;
 
@@ -27,7 +19,7 @@ static bool memhandler_check(memhandler_pt mh) {
         mh->capacity += mh->capacity;
         
         // allocate
-        if(!mem_realloc(mh->ptr, mh->capacity, sizeof(void*))) {
+        if(!mem_realloc(mh->p2p, mh->capacity, sizeof(void*))) {
         	return false;
         }
     }
@@ -48,20 +40,20 @@ static int64_t memhandler_find(const void** arr, const void* ptr, const size_t l
 
 memhandler_pt memhandler_create(void) {
 	// create a memory handler
-	memhandler_pt mh = mem_malloc(1, sizeof(struct Memhandler));
+	memhandler_pt mh = mem_malloc(1, sizeof(struct BaseArrayType));
 	if(is_null(mh)) {
 		logger_error(str("unable to create memory handler!"), str("memhandler_create"));
 	} else {
 		// initialize the memory handler
-		*mh = (struct Memhandler) {
+		*mh = (struct BaseArrayType) {
 			.ptr = NULL,
 			.len = 0,
 			.capacity = 6
 		};
 
 		// allocate handler storage ptr memory
-		mh->ptr = mem_malloc(mh->capacity, sizeof(void*));
-		if(is_null(mh->ptr)) {
+		mh->p2p = mem_malloc(mh->capacity, sizeof(void*));
+		if(is_null(mh->p2p)) {
 			logger_error(str("unable to create a memory handler storage pointer!"), str("memhandler_create"));
 
 			// free handler
@@ -81,11 +73,11 @@ void memhandler_destroy(memhandler_pt mh) {
 
 	// free all memory pointers
 	for(size_t i = 0; i < mh->len; i++) {
-		mem_free(mh->ptr[i]);
+		mem_free(mh->p2p[i]);
 	}
 
 	// free the memory handler and the storage ptr itself
-	mem_free(mh->ptr);
+	mem_free(mh->p2p);
 	mem_free(mh);
 }
 
@@ -128,7 +120,7 @@ bool memhandler_add(memhandler_pt mh, const void* ptr) {
 	}
 
 	// add ptr to memory handler
-	mh->ptr[mh->len++] = (void*)ptr;
+	mh->p2p[mh->len++] = (void*)ptr;
 
 	return true;
 }
@@ -142,16 +134,16 @@ bool memhandler_remove(memhandler_pt mh, const void* ptr) {
 
 	if(mh->len > 1) {
 		// find the index of the ptr stored in memory handler, remove it
-		int64_t index = memhandler_find((const void**)mh->ptr, ptr, mh->len);
+		int64_t index = memhandler_find((const void**)mh->p2p, ptr, mh->len);
 		if(index == -1) {
 			logger_warn(str("element does not exist in memory handler; exiting..."), str("memhandler_remove"));
 			return false;
 		} else {
-			mh->ptr[index] = mh->ptr[mh->len-1];
-			mh->ptr[mh->len--] = NULL;
+			mh->p2p[index] = mh->p2p[mh->len-1];
+			mh->p2p[mh->len--] = NULL;
 		}
 	} else {
-		mh->ptr[--(mh->len)] = NULL;
+		mh->p2p[--(mh->len)] = NULL;
 	}
 
 	return true;

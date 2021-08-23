@@ -18,9 +18,6 @@
 	- array2d_foreach
 */
 
-#include <stdio.h>
-#include <stdint.h>
-
 #include "../core/core.h"
 #include "../memory/memhandler.h"
 #include "array.h"
@@ -31,9 +28,9 @@
 
 // new array2d type
 // NOTE: here len and capacity are used as rows and cols
-typedef array_pt array2d_pt; 
+typedef struct BaseArrayType* array2d_pt; 
 
-/** array2d ==> creates a 7x7 array matrix
+/** array2d ==> creates a 9x9 array matrix
 	params:
 		const size_t elsize (element size)
 	returns:
@@ -42,7 +39,7 @@ typedef array_pt array2d_pt;
 		valid pointer 	: upon success
 		NULL 			: upon failure
 
-		allocates 7x7 matrix by default (calls array2d_new)
+		allocates 9x9 matrix by default (calls array2d_new)
 		initializes array2d elements to zero
 */
 extern array2d_pt array2d(const size_t elsize);

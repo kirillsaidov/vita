@@ -46,7 +46,7 @@ const memhandler_pt array_memhandler_internal(void) {
 
 
 array_pt array(const size_t elsize) {
-	return array_new(9, elsize);
+	return array_new(7, elsize);
 }
 
 array_pt array_new(const size_t n, const size_t elsize) {
@@ -73,7 +73,7 @@ array_pt array_new(const size_t n, const size_t elsize) {
 			(mem_calloc((n + n/3), elsize)) : 
 			(memhandler_calloc(arrayMemhandlerInternal, (n + n/3), elsize))),
 		.len = 0,
-		.capacity = n + n/3,
+		.capacity = (n + n/3),
 		.elsize = elsize
 	};
 

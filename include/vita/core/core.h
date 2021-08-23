@@ -12,7 +12,10 @@
 
 // array struct wrapper
 struct BaseArrayType {
-	void* ptr;
+	union {
+		void* ptr;
+		void** p2p;
+	};
 
 	size_t len;
 	size_t capacity;

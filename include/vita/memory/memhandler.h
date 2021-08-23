@@ -30,7 +30,7 @@
     notes:
         it is a custom container of pointers, may be used to free all added memory at once
  */
-typedef struct Memhandler* memhandler_pt;
+typedef struct BaseArrayType* memhandler_pt;
 
 /** memhandler_create ==> creates a memory handler
 	returns:
