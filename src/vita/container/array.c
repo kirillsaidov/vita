@@ -46,7 +46,7 @@ const memhandler_pt array_memhandler_internal(void) {
 
 
 array_pt array(const size_t elsize) {
-	return array_new(7, elsize);
+	return array_new(DEFAULT_ALLOCATION_SIZE, elsize);
 }
 
 array_pt array_new(const size_t n, const size_t elsize) {

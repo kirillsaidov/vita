@@ -76,7 +76,7 @@ extern const memhandler_pt array_memhandler_internal(void);
 
 
 
-/** array ==> creates an empty array and allocates 9 elements by default
+/** array ==> creates an empty array and allocates n+n/3 elements by default with n=DEFAULT_ALLOCATION_SIZE
 	params:
 		const size_t elsize (element size)
 	returns:
@@ -85,7 +85,7 @@ extern const memhandler_pt array_memhandler_internal(void);
 		valid pointer 	: upon success
 		NULL 			: upon failure
 
-		allocates 9 elements by default (calls array_new)
+		allocates n+n/3 elements by default (calls array_new)
 		initializes array elements to zero
 */
 extern array_pt array(const size_t elsize);
@@ -212,8 +212,6 @@ extern bool array_push(array_pt arr, const void* valptr);
 		array_ptr arr
 */
 extern void array_pop(array_pt arr);
-
-
 
 /** array_set ==> assigns a new array value
 	params:

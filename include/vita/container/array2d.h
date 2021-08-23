@@ -30,7 +30,7 @@
 // NOTE: here len and capacity are used as rows and cols
 typedef struct BaseArrayType* array2d_pt; 
 
-/** array2d ==> creates a 9x9 array matrix
+/** array2d ==> creates a nxn array matrix with n=DEFAULT_ALLOCATION_SIZE
 	params:
 		const size_t elsize (element size)
 	returns:
@@ -39,7 +39,7 @@ typedef struct BaseArrayType* array2d_pt;
 		valid pointer 	: upon success
 		NULL 			: upon failure
 
-		allocates 9x9 matrix by default (calls array2d_new)
+		allocates nxn matrix by default (calls array2d_new)
 		initializes array2d elements to zero
 */
 extern array2d_pt array2d(const size_t elsize);

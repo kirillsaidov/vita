@@ -1,7 +1,7 @@
 #include "vita/container/array2d.h"
 
 array2d_pt array2d(const size_t elsize) {
-	return array2d_new(9, 9, elsize);
+	return array2d_new(DEFAULT_ALLOCATION_SIZE, DEFAULT_ALLOCATION_SIZE, elsize);
 }
 
 array2d_pt array2d_new(const size_t rows, const size_t cols, const size_t elsize) {

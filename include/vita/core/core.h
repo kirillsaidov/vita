@@ -8,7 +8,10 @@
 
 /** VITA_CORE MODULE
 	- is_null
+	- gswap
 */
+
+#define DEFAULT_ALLOCATION_SIZE 7
 
 // array struct wrapper
 struct BaseArrayType {

@@ -1,7 +1,7 @@
 #include "vita/container/plist.h"
 
-plist_pt plist() {
-	return plist_new(7);
+plist_pt plist(void) {
+	return plist_new(DEFAULT_ALLOCATION_SIZE);
 }
 
 plist_pt plist_new(const size_t n) {
@@ -56,6 +56,12 @@ void plist_free(plist_pt plist) {
 	}
 }
 
+
+
+
+
+
+
 size_t array_len(const plist_pt plist) {
 	if(is_null(plist)) {
 		return 0;
@@ -81,6 +87,18 @@ size_t array_has_space(const plist_pt plist) {
 }
 
 
+
+
+
+
+
+bool plist_reserve(plist_pt plist, const size_t n);
+bool plist_set(plist_pt plist, const size_t index, const void* ptr);
+void* plist_get(const plist_pt plist, const size_t index);
+bool plist_push(plist_pt plist, const void* ptr);
+void plist_pop(plist_pt plist);
+void plist_remove(plist_pt plist, const size_t index);
+void plist_foreach(const plist_pt plist, void (*func)(void* ptr));
 
 
 
