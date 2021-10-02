@@ -1,5 +1,7 @@
 #include "vita/core/core.h"
 
+bool vitaWarnings = true;
+
 bool is_null(const void* ptr) {
 	return (ptr == NULL);
 }
@@ -9,6 +11,7 @@ bool gswap(void* a, void* b, const size_t elsize) {
 		return false;
 	}
 
+	// allocate a temporary variable
 	void* temp = malloc(elsize);
 	if(is_null(temp)) {
 		return false;
@@ -19,9 +22,18 @@ bool gswap(void* a, void* b, const size_t elsize) {
 	memcpy(a, b, elsize);		// copy b to a
 	memcpy(b, temp, elsize);	// copy temp(a) to b
 	
+	// free temporary variable
 	free(temp);
 
 	return true;
+}
+
+void vita_warn(const char *const msg, const char *const topic) {
+	if(is_null(msg) || !vitaWarnings) {
+		return;
+	}
+
+	fprintf(stderr, "# vita_warn: [%s] => %s\n", (is_null(topic) ? "" : topic), msg);
 }
 
 
