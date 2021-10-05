@@ -1,6 +1,6 @@
 #include "vita/core/core.h"
 
-bool vitaWarnings = true;
+bool g_vitaWarnings = true;
 
 bool is_null(const void* ptr) {
 	return (ptr == NULL);
@@ -29,11 +29,15 @@ bool gswap(void* a, void* b, const size_t elsize) {
 }
 
 void vita_warn(const char *const msg, const char *const topic) {
-	if(is_null(msg) || !vitaWarnings) {
+	if(is_null(msg) || !g_vitaWarnings) {
 		return;
 	}
 
+	// print the msg
 	fprintf(stderr, "# vita_warn: [%s] => %s\n", (is_null(topic) ? "" : topic), msg);
+
+	// terminate
+	abort();
 }
 
 

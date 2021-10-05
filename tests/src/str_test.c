@@ -41,9 +41,9 @@ int main(void) {
 		assert(str_has_space(mystr) == 0);
 
 		str_t* copy = str_dup(mystr); {
-			assert(str_len(mystr) == 23);
-			assert(str_capacity(mystr) == 23);
-			assert(str_has_space(mystr) == 0);
+			assert(str_len(copy) == 23);
+			assert(str_capacity(copy) == 23);
+			assert(str_has_space(copy) == 0);
 		} str_free(copy);
 
 		str_clear(mystr);
@@ -51,8 +51,14 @@ int main(void) {
 		assert(str_capacity(mystr) == 23);
 		assert(str_has_space(mystr) == 23);
 		assert(str_equals(cstr(mystr), ""));
-	} str_free(mystr);
 
+		str_t *copy2 = strn(10); {
+			assert(str_len(copy2) == 10);
+			assert(str_capacity(copy2) == 10);
+			assert(str_has_space(copy2) == 0);
+		} str_free(copy2);
+	} str_free(mystr);
+	
 	return 0;
 }
 

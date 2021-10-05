@@ -12,7 +12,7 @@ vec_t *vec(const size_t n, const size_t elsize) {
 	// vec_t init
 	*v = (vec_t) {
 		.ptr = calloc(n, elsize),
-		.len = n,
+		.len = 0,
 		.capacity = n,
 		.elsize = elsize,
 	};
@@ -31,9 +31,15 @@ vec_t *vec_dup(const vec_t *const v) {
 		return NULL;
 	}
 
-	// create a new vec_t
+	// create a new vec_t instance
 	vec_t *vdup = vec(v->len, v->elsize);
 	if(is_null(vdup)) {
+		return NULL;
+	}
+
+	// resize its length to v->len
+	if(!vec_resize(vdup, v->len)) {
+		vec_free(vdup);
 		return NULL;
 	}
 
@@ -98,6 +104,7 @@ bool vec_shrink(vec_t *const v) {
 	// shrink the array capacity to length
 	void *newptr = realloc(v->ptr, v->len * v->elsize);
 	if(is_null(newptr)) {
+		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}
 
@@ -127,6 +134,7 @@ bool vec_reserve(vec_t *const v, const size_t n) {
 	// reserve memory for additional n elements
 	void *newptr = realloc(v->ptr, (v->capacity + n) * v->elsize);
 	if(is_null(newptr)) {
+		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}
 
@@ -138,8 +146,13 @@ bool vec_reserve(vec_t *const v, const size_t n) {
 }
 
 bool vec_resize(vec_t *const v, const size_t n) {
-	if(is_null(v) || !n) {
+	if(is_null(v)) { // think about resizing to 0
 		return false;
+	}
+
+	if(n == v->capacity) {
+		v->len = v->capacity;
+		return true;
 	}
 
 	// resize vec_t
@@ -161,7 +174,7 @@ bool vec_push(vec_t *const v, const void *val) {
 	}
 
 	// check if new memory needs to be allocated
-	if(!vec_has_space(v) && !vec_reserve(v, (size_t)(v->capacity * VEC_GROWTH_RATE))) {
+	if(!vec_has_space(v) && !vec_reserve(v, (size_t)(v->capacity * VEC_GROWTH_RATE + 1))) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}
@@ -236,7 +249,7 @@ bool vec_pop(vec_t *const v) {
 }
 
 bool vec_set(vec_t *const v, const void *val, const size_t at) {
-	if(is_null(v) || is_null(val) || !(at < v->len)) {
+	if(is_null(v) || is_null(val) || !(at < v->len)) { // expand out-of-bounds access
 		return false;
 	}
 
@@ -328,7 +341,7 @@ bool vec_insert(vec_t *const v, const void *val, const size_t at) {
 	}
 
 	// check if new memory needs to be allocated
-	if(!vec_has_space(v) && !vec_reserve(v, v->capacity * VEC_GROWTH_RATE)) {
+	if(!vec_has_space(v) && !vec_reserve(v, v->capacity * VEC_GROWTH_RATE + 1)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}

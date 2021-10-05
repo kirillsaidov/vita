@@ -3,6 +3,7 @@
 
 /** VITA_STR MODULE (dynamic string)
 	- str  	
+	- strn
 	- str_dup				
 	- str_free  			
 
@@ -14,7 +15,7 @@
 
 	- str_shrink 			
 	- str_clear 			
-	- str_reserve 			
+	- str_reserve
 	- str_set  				
 	- str_append	
 	- str_insert 			
@@ -32,7 +33,7 @@
 typedef struct BaseArrayType str_t;
 
 /**
-Creates a new dynamic string
+Creates a new dynamic string from a raw C string
 
 Params:
 	cs = raw C string
@@ -43,6 +44,19 @@ Notes:
 	- allocates additional memory for the '\0' terminator automatically
 */
 extern str_t *str(const char *cs);
+
+/**
+Creates an empty dynamic string of specified size
+
+Params:
+	n = number of elements
+
+Returns: `str_t*` upon success, `NULL` otherwise
+
+Notes:
+	- allocates additional memory for the '\0' terminator automatically
+*/
+extern str_t *strn(const size_t n);
 
 /** 
 Duplicates and returns a new dynamic string

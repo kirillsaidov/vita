@@ -1,6 +1,10 @@
 #include "vita/string/str.h"
 
 str_t *str(const char *cs) {
+	if(is_null(cs)) {
+		cs = "";
+	}
+
 	// allocate memory for a str_t struct
 	str_t *s = malloc(sizeof(str_t));
 
@@ -29,6 +33,42 @@ str_t *str(const char *cs) {
 
 	// add the '\0' terminator
 	((char*)s->ptr)[csLen] = '\0';
+
+	return s;
+}
+
+str_t *strn(const size_t n) {
+	if(!n) {
+		return NULL;
+	}
+
+	// allocate memory for a str_t struct
+	str_t *s = malloc(sizeof(str_t));
+
+	// check if s was allocated
+	if(is_null(s)) {
+		return NULL;
+	}
+
+	// str_t init
+	*s = (str_t) {
+		.ptr = calloc(n + 1, sizeof(char)),
+		.len = n,
+		.capacity = n,
+		.elsize = sizeof(char),
+	};
+
+	// checking if s->ptr was allocated
+	if(is_null(s->ptr)) {
+		free(s);
+		return NULL;
+	}
+
+	// copy str data to str_t
+	memset(s->ptr, '\0', n * s->elsize);
+
+	// add the '\0' terminator
+	((char*)s->ptr)[n] = '\0';
 
 	return s;
 }
@@ -288,17 +328,28 @@ size_t str_contains(const str_t *const s, const char *cs) {
 
 	// seperate strings
 	const size_t sepLen = strlen(sep);
-	const char *start = s->ptr;
-	const char *sfind = strstr(s->ptr, sep);
-	while(sfind != NULL) {
-		if(sfind != s->ptr) {
-			const char *save_str = 
-		}
+	const char *previous = s->ptr;
+	const char *current = strstr(s->ptr, sep);
+	while(current != NULL) {
+		// save current position
+		previous = current;
 
-		sfind = strstr(sfind + csLen * s->elsize, s->ptr);
+		// update new position
+		current = strstr(current + sepLen * s->elsize, sep);
+
+		// count copy length
+		size_t tempLen = strlen(previous) - (is_null(current) ? 0 : strlen(current));
+
+		// create a str_t instance and copy the values
+		str_t *tempStr = strn(tempLen + 1);
+		strncpy(tempStr->ptr, previous + sepLen, tempLen);
+
+		// push str_t to vec_t
+		vec_push(v, tempStr);
 	}
 
-}*/
+	return v;
+}*/ // i believe i need mat_t here
 
 bool str_equals(const char *cs1, const char *cs2) {
 	return (!strncmp(cs1, cs2, strlen(cs1)));

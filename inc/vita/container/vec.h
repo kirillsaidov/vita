@@ -33,12 +33,13 @@
 typedef struct BaseArrayType vec_t;
 
 enum RemoveStrategy {
-	rs_stable,
-	rs_fast,
+	rs_stable,	// keep ordering
+	rs_fast,	// ordering doesn't matter
+	rs_count	// number of elements
 };
 
 /**
-Creates a new dynamic zero-initialized array
+Creates a new dynamic zero-initialized array of length of 0 and capacity of n
 
 Params:
 	n = number of elements
@@ -186,7 +187,7 @@ Returns: `true` upon success
 extern bool vec_pop(vec_t *const v);
 
 /** 
-Assigns a new value to at index
+Assigns a new value at an index
 
 Params:
 	v = vec_t instance

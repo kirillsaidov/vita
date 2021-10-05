@@ -19,12 +19,22 @@ struct BaseArrayType {
 		void** ptr2;
 	};
 
-	size_t len;
-	size_t capacity;
+	union {
+		struct {
+			size_t len;
+			size_t capacity;
+		};
+
+		struct {
+			size_t rows;
+			size_t cols;
+		};
+	};
+
 	size_t elsize;
 };
 
-extern bool vitaWarnings;
+extern bool g_vitaWarnings;
 
 /** 
 Checks if a pointer is NULL
