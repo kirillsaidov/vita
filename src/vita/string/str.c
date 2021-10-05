@@ -38,10 +38,6 @@ str_t *str(const char *cs) {
 }
 
 str_t *strn(const size_t n) {
-	if(!n) {
-		return NULL;
-	}
-
 	// allocate memory for a str_t struct
 	str_t *s = malloc(sizeof(str_t));
 
@@ -65,10 +61,7 @@ str_t *strn(const size_t n) {
 	}
 
 	// copy str data to str_t
-	memset(s->ptr, '\0', n * s->elsize);
-
-	// add the '\0' terminator
-	((char*)s->ptr)[n] = '\0';
+	memset(s->ptr, '\0', (n + 1) * s->elsize);
 
 	return s;
 }

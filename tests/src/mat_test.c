@@ -34,7 +34,8 @@ int main(void) {
 		// mat_resize(m, 0, 0); // false: cannot do it
 		mat_resize(m, 3, 3);
 		mat_foreach(m, func);
-		mat_foreach(m, print);
+		assert(mat_getd(m, 2, 2) == 4);
+		// mat_foreach(m, print);
 	} mat_free(m);
 
 	return 0;

@@ -2,6 +2,11 @@
 
 
 mat_t *mat(const size_t rows, const size_t cols, const size_t elsize) {
+	if(!rows || !cols) {
+		vita_warn("row/col must be > 0!", __FUNCTION__);
+		return NULL;
+	}
+
 	// allocate memory for mat_t
 	mat_t *m = malloc(sizeof(mat_t));
 	if(is_null(m)) {

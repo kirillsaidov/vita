@@ -8,6 +8,7 @@ int main(void) {
 		assert(str_capacity(mystr) == 13);
 		assert(str_has_space(mystr) == 0);
 		assert(!str_is_empty(mystr));
+		assert(str_equals(cstr(mystr), "hello, world!"));
 
 		str_reserve(mystr, 65);
 		assert(str_len(mystr) == 13);
@@ -58,6 +59,16 @@ int main(void) {
 			assert(str_has_space(copy2) == 0);
 		} str_free(copy2);
 	} str_free(mystr);
+
+	str_t *ns = strn(0); {
+		assert(str_len(ns) == 0);
+		assert(str_capacity(ns) == 0);
+		assert(str_has_space(ns) == 0);
+
+		assert(str_append(ns, "hello"));
+		assert(str_equals(cstr(ns), "hello"));
+		// assert(str_set(ns, "hello, world")); // fails, str_len(ns) < strlen("hello, world")
+	} str_free(ns);
 	
 	return 0;
 }

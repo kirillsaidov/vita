@@ -4,7 +4,8 @@
 /** VITA_STR MODULE (dynamic string)
 	- str  	
 	- strn
-	- str_dup				
+	- str_dup
+	- str_take_ownership	*			
 	- str_free  			
 
 	- cstr 					
@@ -67,6 +68,16 @@ Params:
 Returns: str_t* instance upon success, `NULL` otherwise
 */
 extern str_t *str_dup(const str_t *const s);
+
+/** 
+Takes ownership of an allocated string instead of allocating memory itself
+
+Params:
+	cs = a raw C string allocated on heap
+
+Returns: str_t* instance upon success, `NULL` otherwise
+*/
+extern str_t *str_take_ownership(const char *const cs);
 
 /** 
 Frees the str instance
