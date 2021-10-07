@@ -5,7 +5,7 @@
 	- str  	
 	- strn
 	- str_dup
-	- str_take_ownership	*			
+	- str_take_ownership			
 	- str_free  			
 
 	- cstr 					

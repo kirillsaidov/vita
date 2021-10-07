@@ -27,7 +27,7 @@ mat_t *mat(const size_t rows, const size_t cols, const size_t elsize) {
 	}
 
 	// allocate memory for rows*cols number of elements
-	void* els = calloc(rows*cols, elsize);
+	void *els = calloc(rows*cols, elsize);
 	if(is_null(els)) {
 		free(m->ptr2);
 		free(m);
@@ -119,7 +119,7 @@ bool mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
 	}
 
 	// allocate memory for rows*cols number of elements
-	void* els = realloc(*(m->ptr2), rows * cols * m->elsize);
+	void *els = realloc(*(m->ptr2), rows * cols * m->elsize);
 	if(is_null(els)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
@@ -225,7 +225,7 @@ bool mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t
 	return mat_set(m, &val, atRow, atCol);
 }
 
-void* mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
+void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
 	if(is_null(m)) {
 		return NULL;
 	}

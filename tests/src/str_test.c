@@ -69,6 +69,17 @@ int main(void) {
 		assert(str_equals(cstr(ns), "hello"));
 		// assert(str_set(ns, "hello, world")); // fails, str_len(ns) < strlen("hello, world")
 	} str_free(ns);
+
+	str_t *sto = str_take_ownership(strdup("hello, world")); {
+		assert(str_len(sto) == 12);
+		assert(str_capacity(sto) == 12);
+		assert(str_has_space(sto) == 0);
+
+		assert(str_append(sto, "! How are you?"));
+		assert(str_len(sto) == strlen("hello, world! How are you?"));
+		assert(str_equals(cstr(sto), "hello, world! How are you?"));
+		assert(str_set(sto, "hello, world"));
+	} str_free(sto);
 	
 	return 0;
 }

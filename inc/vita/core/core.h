@@ -12,6 +12,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define CONTAINER_GROWTH_RATE 1/3
+
+enum RemoveStrategy {
+	rs_stable,	// keep ordering
+	rs_fast,	// ordering doesn't matter
+	rs_count	// number of elements
+};
+
 // array struct wrapper
 struct BaseArrayType {
 	union {

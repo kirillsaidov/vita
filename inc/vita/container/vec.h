@@ -27,16 +27,8 @@
 
 #include "../core/core.h"
 
-#define VEC_GROWTH_RATE 1/3
-
 // see core/core.h for definition
 typedef struct BaseArrayType vec_t;
-
-enum RemoveStrategy {
-	rs_stable,	// keep ordering
-	rs_fast,	// ordering doesn't matter
-	rs_count	// number of elements
-};
 
 /**
 Creates a new dynamic zero-initialized array of length of 0 and capacity of n
@@ -63,7 +55,7 @@ extern vec_t *vec_dup(const vec_t *const v);
 Frees the vec_t instance
 
 Params:
-	v = vec_t instance
+	v = vec_t pointer
 */
 extern void vec_free(vec_t *v);
 

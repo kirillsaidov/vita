@@ -174,7 +174,7 @@ bool vec_push(vec_t *const v, const void *val) {
 	}
 
 	// check if new memory needs to be allocated
-	if(!vec_has_space(v) && !vec_reserve(v, (size_t)(v->capacity * VEC_GROWTH_RATE + 1))) {
+	if(!vec_has_space(v) && !vec_reserve(v, (size_t)(v->capacity * CONTAINER_GROWTH_RATE + 1))) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}
@@ -311,7 +311,7 @@ bool vec_setd(vec_t *const v, const double val, const size_t at) {
 	return vec_set(v, &val, at);
 }
 
-void* vec_get(const vec_t *const v, const size_t at) {
+void *vec_get(const vec_t *const v, const size_t at) {
 	if(is_null(v) || !(at < v->len)) {
 		return NULL;
 	}
@@ -341,7 +341,7 @@ bool vec_insert(vec_t *const v, const void *val, const size_t at) {
 	}
 
 	// check if new memory needs to be allocated
-	if(!vec_has_space(v) && !vec_reserve(v, v->capacity * VEC_GROWTH_RATE + 1)) {
+	if(!vec_has_space(v) && !vec_reserve(v, v->capacity * CONTAINER_GROWTH_RATE + 1)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
 		return false;
 	}

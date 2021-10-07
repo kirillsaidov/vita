@@ -48,7 +48,7 @@ extern mat_t *mat_dup(const mat_t *const m);
 Frees the mat_t instance
 
 Params:
-	m = mat_t instance
+	m = mat_t pointer
 */
 extern void mat_free(mat_t *m);
 

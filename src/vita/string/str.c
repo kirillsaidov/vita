@@ -70,6 +70,31 @@ str_t *str_dup(const str_t *const s) {
 	return str(s->ptr);
 }
 
+str_t *str_take_ownership(const char *const cs) {
+	if(is_null(cs)) {
+		return NULL;
+	}
+
+	// allocate memory for a str_t struct
+	str_t *s = malloc(sizeof(str_t));
+
+	// check if s was allocated
+	if(is_null(s)) {		
+		return NULL;
+	}
+
+	// str_t init
+	const size_t csLen = strlen(cs);
+	*s = (str_t) {
+		.ptr = (void*)(cs),
+		.len = csLen,
+		.capacity = csLen,
+		.elsize = sizeof(char),
+	};
+
+	return s;
+}
+
 void str_free(str_t *s) {
 	// if NULL, exit
 	if(is_null(s)) {
