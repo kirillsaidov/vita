@@ -20,6 +20,16 @@ enum RemoveStrategy {
 	rs_count	// number of elements
 };
 
+enum ContainerError {
+	ce_error_allocation,			// failed to allocate or reallocate memory
+	ce_error_wrong_datatype,		// trying to add different datatypes 
+	ce_error_out_of_bounds_access,	// accessing an memory beyond container size
+	ce_error_unknown, 				// other errors
+	ce_container_is_null,			// attempting to work with non-initialized container
+	ce_operation_success,			// all good
+	ce_count
+};
+
 // array struct wrapper
 struct BaseArrayType {
 	union {
@@ -42,6 +52,7 @@ struct BaseArrayType {
 	size_t elsize;
 };
 
+// set to false to silence warnings and stop aborting the program
 extern bool g_vitaWarnings;
 
 /** 

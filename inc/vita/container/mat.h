@@ -2,9 +2,14 @@
 #define VITA_MAT_H
 
 /** VITA_MAT MODULE (dynamic 2D array or a pointer list)
-	- mat  
+	- mat_new
+	- mat_ctor
 	- mat_dup
-	- mat_free 
+	- mat_dtor
+	- mat_free
+
+	- mat_create
+	- mat_destroy 
 
 	- mat_rows
 	- mat_cols
@@ -23,16 +28,24 @@
 typedef struct BaseArrayType mat_t;
 
 /**
+Allocates memory for mat_t
+
+Returns: `mat_t*` upon success, `NULL` otherwise
+*/
+extern mat_t *mat_new(void);
+
+/**
 Creates a new dynamic zero-initialized array of length of 0 and capacity of n
 
 Params:
+	m = mat_t instance
 	rows = number of rows
 	cols = number of cols
 	elsize = element size
 
 Returns: `mat_t*` upon success, `NULL` otherwise
 */
-extern mat_t *mat(const size_t rows, const size_t cols, const size_t elsize);
+extern enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
 
 /** 
 Duplicates and returns a new dynamic 2D array
@@ -45,12 +58,45 @@ Returns: mat_t* instance upon success, `NULL` otherwise
 extern mat_t *mat_dup(const mat_t *const m);
 
 /** 
+Destroys contents of mat_t
+
+Params:
+	m = mat_t pointer
+*/
+extern void mat_dtor(mat_t *const m);
+
+/** 
 Frees the mat_t instance
 
 Params:
 	m = mat_t pointer
 */
 extern void mat_free(mat_t *m);
+
+
+
+
+
+
+
+/** 
+Allocates and constructs mat_t
+
+Params:
+	n = number of elements
+	elsize = element size
+
+Returns: `mat_t*` upon success, `NULL` otherwise
+*/
+extern mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize);
+
+/** 
+Deallocates and destroys mat_t contents
+
+Params:
+	m = mat_t pointer
+*/
+extern void mat_destroy(mat_t *m);
 
 
 
@@ -84,7 +130,7 @@ Params:
 
 Returns: `true` upon success
 */
-extern bool mat_clear(mat_t *const m);
+extern enum ContainerError mat_clear(mat_t *const m);
 
 /** 
 Resizes mat_t rows and cols
@@ -96,7 +142,7 @@ Params:
 
 Returns: `true` upon success
 */
-extern bool mat_resize(mat_t *const m, const size_t rows, const size_t cols);
+extern enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t cols);
 
 /** 
 Assigns a new value at an index
@@ -109,11 +155,11 @@ Params:
 
 Returns: `true` upon success
 */
-extern bool mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
-extern bool mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol);
-extern bool mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol);
-extern bool mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
-extern bool mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
+extern enum ContainerError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
+extern enum ContainerError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol);
+extern enum ContainerError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol);
+extern enum ContainerError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
+extern enum ContainerError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
 
 /** 
 Returns value at index

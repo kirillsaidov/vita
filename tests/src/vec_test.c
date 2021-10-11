@@ -7,7 +7,7 @@ void func(void *ptr, size_t i) {
 }
 
 int main(void) { 
-	vec_t *v = vec(10, sizeof(double)); {
+	vec_t *v = vec_create(10, sizeof(double)); {
 		assert(vec_len(v) == 0);
 		assert(vec_capacity(v) == 10);
 		assert(vec_has_space(v) == 10);
@@ -49,7 +49,7 @@ int main(void) {
 
 			vec_remove(vcopy, vec_contains(v, &dt), rs_fast);
 			assert(vec_getd(vcopy, 5) == 3.125);
-		} vec_free(vcopy);
+		} vec_destroy(vcopy);
 
 		vec_remove(v, vec_contains(v, &dt), rs_stable);
 		assert(vec_getd(v, 5) == 24.5);
@@ -85,7 +85,7 @@ int main(void) {
 		assert(vec_len(v) == 2);
 		assert(vec_capacity(v) == 2);
 		assert(vec_has_space(v) == 0);
-	} vec_free(v);
+	} vec_destroy(v);
 
 	return 0;
 }

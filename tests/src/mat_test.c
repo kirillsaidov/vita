@@ -11,7 +11,7 @@ void print(void *ptr, size_t i, size_t j) {
 }
 
 int main(void) { 
-	mat_t *m = mat(15, 15, sizeof(double)); {
+	mat_t *m = mat_create(15, 15, sizeof(double)); {
 		assert(mat_rows(m) == 15 && mat_cols(m) == 15);
 
 		mat_resize(m, 10, 10);
@@ -25,7 +25,7 @@ int main(void) {
 
 		mat_t *mcopy = mat_dup(m); {
 			assert(mat_getd(mcopy, 5, 5) == 24.5);
-		} mat_free(mcopy);
+		} mat_destroy(mcopy);
 
 		mat_clear(m);
 		assert(mat_rows(m) == 10 && mat_cols(m) == 10);
@@ -36,7 +36,7 @@ int main(void) {
 		mat_foreach(m, func);
 		assert(mat_getd(m, 2, 2) == 4);
 		// mat_foreach(m, print);
-	} mat_free(m);
+	} mat_destroy(m);
 
 	return 0;
 }

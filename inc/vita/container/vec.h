@@ -2,9 +2,14 @@
 #define VITA_VEC_H
 
 /** VITA_VEC MODULE (dynamic array)
-	- vec  
-	- vec_dup					
-	- vec_free 
+	- vec_new
+	- vec_ctor
+	- vec_dup	
+	- vec_dtor				
+	- vec_free
+
+	- vec_create
+	- vec_destroy
 
 	- vec_len 				
 	- vec_capacity 			
@@ -31,15 +36,23 @@
 typedef struct BaseArrayType vec_t;
 
 /**
-Creates a new dynamic zero-initialized array of length of 0 and capacity of n
-
-Params:
-	n = number of elements
-	elsize = element size
+Allocates memory for vec_t
 
 Returns: `vec_t*` upon success, `NULL` otherwise
 */
-extern vec_t *vec(const size_t n, const size_t elsize);
+extern vec_t *vec_new(void);
+
+/**
+Constructs vec_t
+
+Params:
+	v = vec_t instance
+	n = number of elements
+	elsize = element size
+
+Returns: enum ContainerError
+*/
+extern enum ContainerError vec_ctor(vec_t *const v, const size_t n, const size_t elsize);
 
 /** 
 Duplicates and returns a new dynamic array
@@ -52,12 +65,44 @@ Returns: vec_t* instance upon success, `NULL` otherwise
 extern vec_t *vec_dup(const vec_t *const v);
 
 /** 
+Destroys contents of vec_t
+
+Params:
+	v = vec_t pointer
+*/
+extern void vec_dtor(vec_t *const v);
+
+/** 
 Frees the vec_t instance
 
 Params:
 	v = vec_t pointer
 */
 extern void vec_free(vec_t *v);
+
+
+
+
+
+
+/** 
+Allocates and constructs vec_t
+
+Params:
+	n = number of elements
+	elsize = element size
+
+Returns: `vec_t*` upon success, `NULL` otherwise
+*/
+extern vec_t *vec_create(const size_t n, const size_t elsize);
+
+/** 
+Deallocates and destroys vec_t contents
+
+Params:
+	v = vec_t pointer
+*/
+extern void vec_destroy(vec_t *v);
 
 
 
@@ -96,7 +141,7 @@ Returns: free space (capacity - length)
 extern size_t vec_has_space(const vec_t *const v);
 
 /** 
-Checks if string is emtpy ("")
+Checks if string is emty ("")
 
 Params:
 	v = vec_t instance
@@ -117,9 +162,9 @@ Shrinks vec_t capacity to its length
 Params:
 	v = vec_t instance
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_shrink(vec_t *const v);
+extern enum ContainerError vec_shrink(vec_t *const v);
 
 /**
 Clears the vec_t (sets length to 0)
@@ -127,9 +172,9 @@ Clears the vec_t (sets length to 0)
 Params:
 	v = vec_t instance
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_clear(vec_t *const v);
+extern enum ContainerError vec_clear(vec_t *const v);
 
 /** 
 Reserves memory for vec_t
@@ -138,9 +183,9 @@ Params:
 	v = vec_t instance
 	n = how many elements to reserve
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_reserve(vec_t *const v, const size_t n);
+extern enum ContainerError vec_reserve(vec_t *const v, const size_t n);
 
 /** 
 Resizes vec_t length
@@ -149,9 +194,9 @@ Params:
 	v = vec_t instance
 	n = new size
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_resize(vec_t *const v, const size_t n);
+extern enum ContainerError vec_resize(vec_t *const v, const size_t n);
 
 /** 
 Push an element at the end of vec_t
@@ -160,13 +205,13 @@ Params:
 	v = vec_t instance
 	val = value to push
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_push(vec_t *const v, const void *val);
-extern bool vec_pushi32(vec_t *const v, const int val);
-extern bool vec_pushi64(vec_t *const v, const long val);
-extern bool vec_pushf(vec_t *const v, const float val);
-extern bool vec_pushd(vec_t *const v, const double val);
+extern enum ContainerError vec_push(vec_t *const v, const void *val);
+extern enum ContainerError vec_pushi32(vec_t *const v, const int val);
+extern enum ContainerError vec_pushi64(vec_t *const v, const long val);
+extern enum ContainerError vec_pushf(vec_t *const v, const float val);
+extern enum ContainerError vec_pushd(vec_t *const v, const double val);
 
 /** 
 Pops off the last element
@@ -174,9 +219,9 @@ Pops off the last element
 Params:
 	v = vec_t instance
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_pop(vec_t *const v);
+extern enum ContainerError vec_pop(vec_t *const v);
 
 /** 
 Assigns a new value at an index
@@ -186,13 +231,13 @@ Params:
 	val = value
 	at = index to set the value
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_set(vec_t *const v, const void *val, const size_t at);
-extern bool vec_seti32(vec_t *const v, const int val, const size_t at);
-extern bool vec_seti64(vec_t *const v, const long val, const size_t at);
-extern bool vec_setf(vec_t *const v, const float val, const size_t at);
-extern bool vec_setd(vec_t *const v, const double val, const size_t at);
+extern enum ContainerError vec_set(vec_t *const v, const void *val, const size_t at);
+extern enum ContainerError vec_seti32(vec_t *const v, const int val, const size_t at);
+extern enum ContainerError vec_seti64(vec_t *const v, const long val, const size_t at);
+extern enum ContainerError vec_setf(vec_t *const v, const float val, const size_t at);
+extern enum ContainerError vec_setd(vec_t *const v, const double val, const size_t at);
 
 /** 
 Returns value at index
@@ -217,9 +262,9 @@ Params:
 	val = value to insert
 	at = index to set the value
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool vec_insert(vec_t *const v, const void *val, const size_t at);
+extern enum ContainerError vec_insert(vec_t *const v, const void *val, const size_t at);
 
 /**
 Removes an element from vec_t
@@ -236,7 +281,7 @@ Notes:
 	rs_stable:	shifts all values by element size
 	rs_fast:	swaps the last value with the value of `at`
 */
-extern bool vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs);
+extern enum ContainerError vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs);
 
 /** 
 Checks if vec_t contains the specified element

@@ -8,6 +8,7 @@ lib/
 bin/
 build/
 __internal/
+.vscode/
 
 # Node artifact files
 node_modules/

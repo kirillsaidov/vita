@@ -1,12 +1,21 @@
 #include "vita/container/vec.h"
 
-vec_t *vec(const size_t n, const size_t elsize) {
-	// allocate memory for a vec_t struct
+vec_t *vec_new(void) {
 	vec_t *v = malloc(sizeof(vec_t));
+	if(is_null(v)) {
+		return NULL;
+	}
 
+	// default-init
+	*v = (vec_t) {};
+
+	return v;
+}
+
+enum ContainerError vec_ctor(vec_t *const v, const size_t n, const size_t elsize) {
 	// check if v was allocated
 	if(is_null(v)) {		
-		return NULL;
+		return ce_container_is_null;
 	}
 
 	// vec_t init
@@ -19,11 +28,10 @@ vec_t *vec(const size_t n, const size_t elsize) {
 
 	// checking if v->ptr was allocated
 	if(is_null(v->ptr)) {
-		free(v);
-		return NULL;
+		return ce_error_allocation;
 	}
 
-	return v;
+	return ce_operation_success;
 }
 
 vec_t *vec_dup(const vec_t *const v) {
@@ -31,14 +39,14 @@ vec_t *vec_dup(const vec_t *const v) {
 		return NULL;
 	}
 
-	// create a new vec_t instance
-	vec_t *vdup = vec(v->len, v->elsize);
+	// allocate a new vec_t instance
+	vec_t *vdup = vec_new();
 	if(is_null(vdup)) {
 		return NULL;
 	}
 
-	// resize its length to v->len
-	if(!vec_resize(vdup, v->len)) {
+	// construct vdup and resize it
+	if(vec_ctor(vdup, v->capacity, v->elsize) != ce_operation_success || vec_resize(vdup, v->len) != ce_operation_success) {
 		vec_free(vdup);
 		return NULL;
 	}
@@ -49,18 +57,55 @@ vec_t *vec_dup(const vec_t *const v) {
 	return vdup;
 }
 
+void vec_dtor(vec_t *const v) {
+	// if NULL, exit
+	if(is_null(v)) {
+		return;
+	}
+
+	// free vec_t contents
+	free(v->ptr);
+
+	// default-init
+	*v = (vec_t) {};
+}
+
 void vec_free(vec_t *v) {
 	// if NULL, exit
 	if(is_null(v)) {
 		return;
 	}
 
-	// free the vec_t string and vec_t struct
-	free(v->ptr);
+	// free the vec_t
 	free(v);
 
 	// reset to NULL
 	v = NULL;
+}
+
+
+
+
+
+
+
+vec_t *vec_create(const size_t n, const size_t elsize) {
+	vec_t *v = vec_new();
+	if(is_null(v)) {
+		return NULL;
+	}
+
+	if(vec_ctor(v, n, elsize) != ce_operation_success) {
+		vec_free(v);
+		return NULL;
+	}
+
+	return v;
+}
+
+void vec_destroy(vec_t *v) {
+	vec_dtor(v);
+	vec_free(v);
 }
 
 
@@ -91,221 +136,241 @@ bool vec_is_empty(const vec_t *const v) {
 
 
 
-bool vec_shrink(vec_t *const v) {
+enum ContainerError vec_shrink(vec_t *const v) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// if length and capacity are the same, exit the function
 	if(v->len == v->capacity) {
-		return true;
+		return ce_operation_success;
 	}
 
 	// shrink the array capacity to length
 	void *newptr = realloc(v->ptr, v->len * v->elsize);
 	if(is_null(newptr)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// update values
 	v->ptr = newptr;
 	v->capacity = v->len;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_clear(vec_t *const v) {
+enum ContainerError vec_clear(vec_t *const v) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// update length
 	v->len = 0;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_reserve(vec_t *const v, const size_t n) {
+enum ContainerError vec_reserve(vec_t *const v, const size_t n) {
 	if(is_null(v) || !n) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// reserve memory for additional n elements
 	void *newptr = realloc(v->ptr, (v->capacity + n) * v->elsize);
 	if(is_null(newptr)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// update values
 	v->ptr = newptr;
 	v->capacity += n;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_resize(vec_t *const v, const size_t n) {
+enum ContainerError vec_resize(vec_t *const v, const size_t n) {
 	if(is_null(v)) { // think about resizing to 0
-		return false;
+		return ce_container_is_null;
 	}
 
 	if(n == v->capacity) {
 		v->len = v->capacity;
-		return true;
+		return ce_operation_success;
 	}
 
 	// resize vec_t
 	void *newptr = realloc(v->ptr, n * v->elsize);
 	if(is_null(newptr)) {
-		return false;
+		return ce_error_allocation;
 	}
 
 	// update values
 	v->ptr = newptr;
 	v->len = v->capacity = n;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_push(vec_t *const v, const void *val) {
+enum ContainerError vec_push(vec_t *const v, const void *val) {
 	if(is_null(v) || is_null(val)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// check if new memory needs to be allocated
-	if(!vec_has_space(v) && !vec_reserve(v, (size_t)(v->capacity * CONTAINER_GROWTH_RATE + 1))) {
+	if(!vec_has_space(v) && vec_reserve(v, (size_t)(v->capacity * CONTAINER_GROWTH_RATE + 1)) != ce_operation_success) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// copy val to vec_t
 	memcpy((v->ptr + v->len++ * v->elsize), val, v->elsize);
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_pushi32(vec_t *const v, const int val) {
+enum ContainerError vec_pushi32(vec_t *const v, const int val) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <int32_t>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_push(v, &val);
 }
 
-bool vec_pushi64(vec_t *const v, const long val) {
+enum ContainerError vec_pushi64(vec_t *const v, const long val) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <int64_t>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_push(v, &val);
 }
 
-bool vec_pushf(vec_t *const v, const float val) {
+enum ContainerError vec_pushf(vec_t *const v, const float val) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <float>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_push(v, &val);
 }
 
-bool vec_pushd(vec_t *const v, const double val) {
+enum ContainerError vec_pushd(vec_t *const v, const double val) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <double>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_push(v, &val);
 }
 
-bool vec_pop(vec_t *const v) {
+enum ContainerError vec_pop(vec_t *const v) {
 	if(is_null(v)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// update length
 	v->len--;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_set(vec_t *const v, const void *val, const size_t at) {
-	if(is_null(v) || is_null(val) || !(at < v->len)) { // expand out-of-bounds access
-		return false;
+enum ContainerError vec_set(vec_t *const v, const void *val, const size_t at) {
+	if(is_null(v) || is_null(val)) {
+		return ce_container_is_null;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	// copy val data to str_t
 	memcpy((v->ptr + at * v->elsize), val, v->elsize);
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_seti32(vec_t *const v, const int val, const size_t at) {
-	if(is_null(v) || !(at < v->len)) {
+enum ContainerError vec_seti32(vec_t *const v, const int val, const size_t at) {
+	if(is_null(v)) {
 		return false;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <int32_t>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_set(v, &val, at);
 }
 
-bool vec_seti64(vec_t *const v, const long val, const size_t at) {
-	if(is_null(v) || !(at < v->len)) {
+enum ContainerError vec_seti64(vec_t *const v, const long val, const size_t at) {
+	if(is_null(v)) {
 		return false;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <int64_t>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_set(v, &val, at);
 }
 
-bool vec_setf(vec_t *const v, const float val, const size_t at) {
-	if(is_null(v) || !(at < v->len)) {
+enum ContainerError vec_setf(vec_t *const v, const float val, const size_t at) {
+	if(is_null(v)) {
 		return false;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <float>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_set(v, &val, at);
 }
 
-bool vec_setd(vec_t *const v, const double val, const size_t at) {
-	if(is_null(v) || !(at < v->len)) {
+enum ContainerError vec_setd(vec_t *const v, const double val, const size_t at) {
+	if(is_null(v)) {
 		return false;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	if(v->elsize != sizeof(val)) {
 		vita_warn("expects <double>! Aborting operation.", __FUNCTION__);
-		return false;
+		return ce_error_wrong_datatype;
 	}
 
 	return vec_set(v, &val, at);
@@ -335,15 +400,19 @@ double vec_getd(const vec_t *const v, const size_t at) {
 	return *(double*)(vec_get(v, at));
 }
 
-bool vec_insert(vec_t *const v, const void *val, const size_t at) {
-	if(is_null(v) || is_null(val) || !(at < v->len)) {
-		return false;
+enum ContainerError vec_insert(vec_t *const v, const void *val, const size_t at) {
+	if(is_null(v) || is_null(val)) {
+		return ce_container_is_null;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	// check if new memory needs to be allocated
 	if(!vec_has_space(v) && !vec_reserve(v, v->capacity * CONTAINER_GROWTH_RATE + 1)) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// shift values by one value to the end of the vec_t
@@ -355,12 +424,16 @@ bool vec_insert(vec_t *const v, const void *val, const size_t at) {
 	// set new length
 	v->len++;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
-	if(is_null(v) || !(at < v->len)) {
-		return false;
+enum ContainerError vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
+	if(is_null(v)) {
+		return ce_container_is_null;
+	}
+
+	if(!(at < v->len)) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	// check remove strategy
@@ -373,7 +446,7 @@ bool vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
 	// set new length
 	v->len--;
 
-	return true;
+	return ce_operation_success;
 }
 
 int64_t vec_contains(const vec_t *const v, const void *val) {
