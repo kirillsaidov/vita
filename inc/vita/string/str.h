@@ -1,7 +1,7 @@
 #ifndef VITA_STR_H
 #define VITA_STR_H
 
-/** VITA_STR MODULE (dynamic string)
+/** VITA_STR MODULE (dynamic string) // add: str_new, str_ctor, str_dtor, str_create, str_destroy
 	- str  	
 	- strn
 	- str_dup
