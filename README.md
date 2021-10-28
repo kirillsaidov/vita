@@ -1,6 +1,6 @@
 # Vita
 
-A custom C library for memory management, string manipulation and more. 
+A custom C library for quick prototyping with simple data structures, string manipulation, file and path handling and more!
 
 ### Motivation
 coming soon...
