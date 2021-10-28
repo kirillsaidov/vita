@@ -27,14 +27,14 @@ enum ContainerError {
 	ce_error_unknown, 				// other errors
 	ce_container_is_null,			// attempting to work with non-initialized container
 	ce_operation_success,			// all good
-	ce_count
+	ce_count						// number of elements
 };
 
 // array struct wrapper
 struct BaseArrayType {
 	union {
-		void* ptr;
-		void** ptr2;
+		void *ptr;
+		void **ptr2;
 	};
 
 	union {

@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../inc/vita/container/vec.h"
+#include "../../include/vita/container/vec.h"
 
 void func(void *ptr, size_t i) {
 	*(double*)ptr = i/2.0;

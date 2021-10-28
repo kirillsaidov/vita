@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../inc/vita/container/mat.h"
+#include "../../include/vita/container/mat.h"
 
 void func(void *ptr, size_t i, size_t j) {
 	*(double*)ptr = i + j;

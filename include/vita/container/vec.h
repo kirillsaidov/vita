@@ -23,7 +23,7 @@
 	- vec_push			
 	- vec_pop
 	- vec_set
-	- vec_get		
+	- vec_get
 	- vec_insert
 	- vec_remove			
 	- vec_contains 	
@@ -97,7 +97,7 @@ Returns: `vec_t*` upon success, `NULL` otherwise
 extern vec_t *vec_create(const size_t n, const size_t elsize);
 
 /** 
-Deallocates and destroys vec_t contents
+Deallocates and destroys vec_t 
 
 Params:
 	v = vec_t pointer
@@ -274,7 +274,7 @@ Params:
 	at = index of the value
 	rs = choose a RemoveStrategy (see Notes)
 
-Returns: `true` upon success
+Returns: enum ContainerError
 
 Notes:
 	enum RemoveStrategy { rs_stable = ordered removal, rs_fast = unordered removal }

@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../inc/vita/string/str.h"
+#include "../../include/vita/string/str.h"
 
 int main(void) {
 	str_t* mystr = str("hello, world!"); {
@@ -41,7 +41,7 @@ int main(void) {
 		assert(str_capacity(mystr) == 23);
 		assert(str_has_space(mystr) == 0);
 
-		str_t* copy = str_dup(mystr); {
+		str_t *copy = str_dup(mystr); {
 			assert(str_len(copy) == 23);
 			assert(str_capacity(copy) == 23);
 			assert(str_has_space(copy) == 0);

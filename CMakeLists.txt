@@ -12,10 +12,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # finding all headers and sources 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
-file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/inc/*.h)
+file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # include directories
-include_directories(${PROJECT_SOURCE_DIR}/inc/)
+include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 # building library
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
