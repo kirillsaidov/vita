@@ -20,6 +20,7 @@
 	- plist_get *
 	- plist_push *
 	- plist_pop *
+	- plist_pop_get *
 	- plist_remove *
 	- plist_foreach *
 */
@@ -55,7 +56,7 @@ Params:
 
 Returns: enum ContainerError
 */
-extern enum ContainerError plist_dtor(plist_t *p);
+extern void plist_dtor(plist_t *p);
 
 /** 
 Frees the plist_t instance
@@ -177,6 +178,15 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_pop(plist_t *const p);
 
+/** 
+Get and pop the last value from the end
+Params:
+	p = plist_t pointer
+
+Returns: void*
+*/
+extern void *plist_pop_get(plist_t *const p);
+
 /**
 Removes a pointer from a plist
 
@@ -191,7 +201,7 @@ Notes:
 	rs_stable:	shifts all values by element size
 	rs_fast:	swaps the last value with the value of `at`
 */
-extern enum ContainerError plist_remove(plist_t *const p, const size_t at);
+extern enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs);
 
 /** 
 Calls the specified function on each element
@@ -200,7 +210,7 @@ Params:
 	p = plist_t instance
 	func = function to execute upon each element: func(pointer, for loop index row, for loop index col)
 */
-extern void plist_foreach(const plist_t *const p, void (*func)(void*, size_t, size_t));
+extern void plist_foreach(const plist_t *const p, void (*func)(void*, size_t));
 
 
 #endif // VITA_PLIST_H
