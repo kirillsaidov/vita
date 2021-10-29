@@ -4,7 +4,7 @@
 plist_t *plist_new(void) {
     plist_t *p = malloc(sizeof(plist_t));
     if(is_null(p)) {
-        return NULL;
+        return NULL; 
     }
 
     // default-init
@@ -23,8 +23,8 @@ enum ContainerError plist_ctor(plist_t *p, const size_t n) {
     *p = (plist_t) {
         .ptr2 = calloc(n, sizeof(void*)),
         .len = 0,
-        .capacity = 0,
-        .elsize = sizeof(void*)
+        .capacity = n,
+        .elsize = sizeof(void*),
     };
 
     // checking if p->ptr2 was allocated
@@ -163,7 +163,7 @@ enum ContainerError plist_set(plist_t *const p, const void *ptr, const size_t at
     }
 
     // add ptr to plist_t
-    p->ptr2[at] = ptr;
+    p->ptr2[at] = (void*)ptr;
 
     return ce_operation_success;
 }
@@ -182,7 +182,7 @@ enum ContainerError plist_push(plist_t *const p, const void *ptr) {
     }
 
     // add ptr to plist_t
-    p->ptr2[p->len++] = ptr;
+    p->ptr2[p->len++] = (void*)ptr;
 
     return ce_operation_success;
 }
@@ -200,11 +200,11 @@ enum ContainerError plist_pop(plist_t *const p) {
 
 void *plist_pop_get(plist_t *const p) {
     if(is_null(p)) {
-        return ce_container_is_null;
+        return NULL;
     }
 
     // pop the last element
-    return p->ptr2[p->len--];
+    return p->ptr2[p->len-- - 1];
 }
 
 enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
@@ -218,7 +218,7 @@ enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum R
 
     // check remove strategy
     if(rs == rs_stable) {
-        memove(p->ptr2 + at * p->elsize, p->ptr2 + (at + 1) * p->elsize, (p->len - at) * p->elsize);
+        memmove(p->ptr2 + at * p->elsize, p->ptr2 + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         gswap(p->ptr2 + at * p->elsize, p->ptr2 + (p->len - 1) * p->elsize, p->elsize);
     }

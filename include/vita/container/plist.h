@@ -2,27 +2,27 @@
 #define VITA_PLIST_H
 
 /** VITA_PLIST MODULE (dynamic array(list) of pointers)
-	- plist_new *
-	- plist_ctor *
-	- plist_dtor *
-	- plist_free *
+	- plist_new
+	- plist_ctor
+	- plist_dtor
+	- plist_free
 
-	- plist_create *
-	- plist_destroy *
+	- plist_create
+	- plist_destroy
 
-	- plist_len *
-	- plist_capacity *
-	- plist_has_space *
+	- plist_len
+	- plist_capacity
+	- plist_has_space
 
-	- plist_reserve *
-	- plist_shrink *
-	- plist_set *
-	- plist_get *
-	- plist_push *
-	- plist_pop *
-	- plist_pop_get *
-	- plist_remove *
-	- plist_foreach *
+	- plist_reserve
+	- plist_shrink
+	- plist_set
+	- plist_get
+	- plist_push
+	- plist_pop
+	- plist_pop_get
+	- plist_remove
+	- plist_foreach
 */
 
 #include "../core/core.h"

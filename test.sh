@@ -3,7 +3,7 @@
 cd tests;
 
 # declare an array variable
-declare -a tests=("str_test" "vec_test" "mat_test")
+declare -a tests=("str_test" "vec_test" "mat_test" "plist_test")
 
 # colored output
 RED='\033[0;31m'
