@@ -470,7 +470,7 @@ void vec_foreach(const vec_t *const v, void (*func)(void*, size_t)) {
 	}
 
 	size_t i = 0;
-	for (void *iter = v->ptr; iter != v->ptr + v->len * v->elsize; iter += v->elsize, i++) {
+	for(void *iter = v->ptr; iter != v->ptr + v->len * v->elsize; iter += v->elsize, i++) {
 		func(iter, i);
 	}
 }
