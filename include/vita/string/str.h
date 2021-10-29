@@ -28,7 +28,7 @@
 */
 
 #include "../core/core.h"
-#include "../container/vec.h"
+#include "../container/plist.h"
 
 // see core/core.h for definition
 typedef struct BaseArrayType str_t;
@@ -255,9 +255,9 @@ Params:
 	s = str_t instance
 	sep = seperator string
 
-Returns: vec_t of str_t, `NULL` upon failure
+Returns: plist_t of str_t, `NULL` upon failure
 */
-// extern vec_t *str_split(const str_t *const s, const char *sep);
+extern plist_t *str_split(const str_t *const s, const char *sep);
 
 /**
 Checks if two raw C strings are the same

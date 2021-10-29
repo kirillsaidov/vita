@@ -330,7 +330,7 @@ size_t str_contains(const str_t *const s, const char *cs) {
 	return count;
 }
 
-/*vec_t *str_split(const str_t *const s, const char *sep) {
+/*plist_t *str_split(const str_t *const s, const char *sep) {
 	if(is_null(s) || is_null(sep)) {
 		return NULL;
 	}
@@ -342,7 +342,7 @@ size_t str_contains(const str_t *const s, const char *cs) {
 	}
 
 	// create a vec_t instance
-	vec_t *v = vec(strInstances + 1, sizeof(str_t));
+	plist_t *p = plist_create(strInstances + 1);
 
 	// seperate strings
 	const size_t sepLen = strlen(sep);
@@ -363,11 +363,11 @@ size_t str_contains(const str_t *const s, const char *cs) {
 		strncpy(tempStr->ptr, previous + sepLen, tempLen);
 
 		// push str_t to vec_t
-		vec_push(v, tempStr);
+		plist_push(p, tempStr);
 	}
 
-	return v;
-}*/ // i believe i need mat_t here
+	return p;
+}*/
 
 bool str_equals(const char *cs1, const char *cs2) {
 	return (!strncmp(cs1, cs2, strlen(cs1)));
