@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 cd tests;
 
@@ -19,11 +19,11 @@ do
 	# error checking
 	ret_code=$?
 	if [ $ret_code != 0 ]; then
-		echo "${RED}# FAILED <$i>\n${NC}"
+		printf "${RED}# FAILED <$i>\n\n${NC}"
 		exit $?
 	fi
 
-	echo "${GREEN}# PASSED <$i>\n${NC}"
+	printf "${GREEN}# PASSED <$i>\n\n${NC}"
 done
 
 
