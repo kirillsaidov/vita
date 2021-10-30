@@ -26,6 +26,7 @@ enum ContainerError {
 	ce_error_out_of_bounds_access,	// accessing an memory beyond container size
 	ce_error_unknown, 				// other errors
 	ce_container_is_null,			// attempting to work with non-initialized container
+	ce_operation_failure,			// failed to perform an action (find an element)
 	ce_operation_success,			// all good
 	ce_count						// number of elements
 };

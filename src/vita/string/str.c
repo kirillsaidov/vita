@@ -5,7 +5,7 @@ str_t *str(const char *cs) {
 		cs = "";
 	}
 
-	// allocate memory for a str_t struct
+	/*// allocate memory for a str_t struct
 	str_t *s = malloc(sizeof(str_t));
 
 	// check if s was allocated
@@ -33,6 +33,17 @@ str_t *str(const char *cs) {
 
 	// add the '\0' terminator
 	((char*)s->ptr)[csLen] = '\0';
+
+	return s;*/
+	
+	str_t *s = strn(strlen(cs));
+	if(is_null(s)) {
+		return NULL;
+	}
+
+	if(str_set(s, cs) != ce_operation_success) {
+		vita_warn("unable to set the string", __FUNCTION__);
+	}
 
 	return s;
 }
@@ -141,32 +152,32 @@ bool str_is_empty(const str_t *const s) {
 
 
 
-bool str_shrink(str_t *const s) {
+enum ContainerError str_shrink(str_t *const s) {
 	if(is_null(s)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// if length and capacity are the same, exit the function
 	if(s->len == s->capacity) {
-		return true;
+		return ce_operation_success;
 	}
 
 	// shrink the array capacity to length
 	void *newptr = realloc(s->ptr, (s->len + 1) * s->elsize);
 	if(is_null(newptr)) {
-		return false;
+		return ce_error_allocation;
 	}
 
 	// update values
 	s->ptr = newptr;
 	s->capacity = s->len;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_clear(str_t *const s) {
+enum ContainerError str_clear(str_t *const s) {
 	if(is_null(s)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// set C string to ""
@@ -175,18 +186,18 @@ bool str_clear(str_t *const s) {
 	// update length
 	s->len = 0;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_reserve(str_t *const s, const size_t n) {
+enum ContainerError str_reserve(str_t *const s, const size_t n) {
 	if(is_null(s) || !n) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// reserve memory for additional n elements
 	void *newptr = realloc(s->ptr, (s->capacity + n + 1) * s->elsize);
 	if(is_null(newptr)) {
-		return false;
+		return ce_error_allocation;
 	}
 
 	// update values
@@ -196,62 +207,78 @@ bool str_reserve(str_t *const s, const size_t n) {
 	// add '\0' terminator at the very end of str_t
 	((char*)s->ptr)[s->capacity] = '\0';
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_set(str_t *const s, const char *cs) {
+enum ContainerError str_set(str_t *const s, const char *cs) {
+	return str_set_n(s, cs, strlen(cs));
+}
+
+enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n) {
 	// error checking
-	const size_t csLen = strlen(cs);
-	if(is_null(s) || is_null(cs) || (s->capacity < csLen)) {
-		return false;
+	if(is_null(s) || is_null(cs)) {
+		return ce_container_is_null;
+	}
+
+	// check if it has enough space
+	if(s->capacity < n) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	// copy cs data to str_t
-	memcpy(s->ptr, cs, (csLen * s->elsize));
+	memcpy(s->ptr, cs, (n * s->elsize));
 
 	// add the '\0' terminator
-	((char*)s->ptr)[csLen] = '\0';
+	((char*)s->ptr)[n] = '\0';
 
 	// update values
-	s->len = csLen;
+	s->len = n;
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_append(str_t *const s, const char *cs) {
+enum ContainerError str_append(str_t *const s, const char *cs) {
+	return str_append_n(s, cs, strlen(cs));
+}
+
+enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n) {
 	if(is_null(s) || is_null(cs)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// check if new memory needs to be allocated
-	const size_t csLen = strlen(cs);
-	if(str_has_space(s) <= csLen && !str_reserve(s, (csLen - str_has_space(s)))) {
+	if(str_has_space(s) <= n && !str_reserve(s, (n - str_has_space(s)))) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// copy cs to str_t
-	memcpy((s->ptr + s->len * s->elsize), cs, (csLen * s->elsize));
+	memcpy((s->ptr + s->len * s->elsize), cs, (n * s->elsize));
 
 	// set new length
-	s->len += csLen;
+	s->len += n;
 
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_insert(str_t *const s, const char *cs, const size_t at) {
-	if(is_null(s) || is_null(cs) || (s->len <= at)) {
-		return false;
+enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at) {
+	if(is_null(s) || is_null(cs)) {
+		return ce_container_is_null;
+	}
+
+	// check if we have out of bounds access
+	if(s->len <= at) {
+		return ce_error_out_of_bounds_access;
 	}
 
 	// check if new memory needs to be allocated
 	const size_t csLen = strlen(cs);
 	if(str_has_space(s) <= csLen && !str_reserve(s, (csLen - str_has_space(s)))) {
 		vita_warn("memory allocation failed!", __FUNCTION__);
-		return false;
+		return ce_error_allocation;
 	}
 
 	// shift the end of string from the specified index `at` to `at + csLen` in str
@@ -266,12 +293,22 @@ bool str_insert(str_t *const s, const char *cs, const size_t at) {
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_remove(str_t *const s, const size_t from, const size_t n) {
-	if(is_null(s) || (s->len <= from) || (n > s->len - from)) {
-		return false;
+enum ContainerError str_remove(str_t *const s, const size_t from, size_t n) {
+	if(is_null(s)) {
+		return ce_container_is_null;
+	}
+
+	// check if we have out of bounds access
+	if(s->len <= from) {
+		return ce_error_out_of_bounds_access;
+	}
+
+	// check if we need to remove all chars until the end
+	if(n > s->len - from) {
+		n = s->len - from;
 	}
 
 	// shift the characters in string from index `from + n` to `from` in strbuf
@@ -283,19 +320,19 @@ bool str_remove(str_t *const s, const size_t from, const size_t n) {
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return true;
+	return ce_operation_success;
 }
 
-bool str_remove_str(str_t *const s, const char *cs) {
+enum ContainerError str_remove_str(str_t *const s, const char *cs) {
 	if(is_null(s) || is_null(cs)) {
-		return false;
+		return ce_container_is_null;
 	}
 
 	// find a substring in strbuf
 	const size_t csLen = strlen(cs);
 	void* sub = strstr(s->ptr, cs);
 	if(is_null(sub)) {
-		return false;
+		return ce_operation_failure;
 	}
 
 	// find how many characters to copy from the end
@@ -310,7 +347,7 @@ bool str_remove_str(str_t *const s, const char *cs) {
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return true;
+	return ce_operation_success;
 }
 
 size_t str_contains(const str_t *const s, const char *cs) {
@@ -330,7 +367,7 @@ size_t str_contains(const str_t *const s, const char *cs) {
 	return count;
 }
 
-/*plist_t *str_split(const str_t *const s, const char *sep) {
+plist_t *str_split(const str_t *const s, const char *sep) {
 	if(is_null(s) || is_null(sep)) {
 		return NULL;
 	}
@@ -367,7 +404,7 @@ size_t str_contains(const str_t *const s, const char *cs) {
 	}
 
 	return p;
-}*/
+}
 
 bool str_equals(const char *cs1, const char *cs2) {
 	return (!strncmp(cs1, cs2, strlen(cs1)));

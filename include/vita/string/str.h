@@ -2,11 +2,11 @@
 #define VITA_STR_H
 
 /** VITA_STR MODULE (dynamic string) // add: str_new, str_ctor, str_dtor, str_create, str_destroy
-	- str  	
+	- str
 	- strn
 	- str_dup
-	- str_take_ownership			
-	- str_free  			
+	- str_take_ownership
+	- str_free
 
 	- cstr 					
 	- str_len 				
@@ -17,8 +17,10 @@
 	- str_shrink 			
 	- str_clear 			
 	- str_reserve
-	- str_set  				
-	- str_append	
+	- str_set
+	- str_set_n
+	- str_append
+	- str_append_n	
 	- str_insert 			
 	- str_remove 			
 	- str_remove_str 		
@@ -155,9 +157,9 @@ Shrinks str_t capacity to its length
 Params:
 	s = str_t instance
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_shrink(str_t *const s);
+extern enum ContainerError str_shrink(str_t *const s);
 
 /**
 Clears the str_t (sets length to 0)
@@ -165,9 +167,9 @@ Clears the str_t (sets length to 0)
 Params:
 	s = str_t instance
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_clear(str_t *const s);
+extern enum ContainerError str_clear(str_t *const s);
 
 /** 
 Reserves memory for str_t
@@ -176,9 +178,9 @@ Params:
 	s = str_t instance
 	n = how many elements to reserve
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_reserve(str_t *const s, const size_t n);
+extern enum ContainerError str_reserve(str_t *const s, const size_t n);
 
 /** 
 Assigns a new raw C string to str_t
@@ -187,9 +189,21 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_set(str_t *const s, const char *cs);
+extern enum ContainerError str_set(str_t *const s, const char *cs);
+
+/** 
+Assigns n characters of raw C string to str_t
+
+Params:
+	s = str_t instance
+	cs = raw C string
+	n = number of characters
+
+Returns: enum ContainerError
+*/
+extern enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n);
 
 /** 
 Appends a raw C string at the end of str_t
@@ -198,9 +212,21 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_append(str_t *const s, const char *cs);
+extern enum ContainerError str_append(str_t *const s, const char *cs);
+
+/** 
+Appends n characters of raw C string at the end of str_t
+
+Params:
+	s = str_t instance
+	cs = raw C string
+	n = number of characters
+
+Returns: enum ContainerError
+*/
+extern enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n);
 
 /** 
 Inserts a raw C string into str_t starting at the specified index
@@ -210,9 +236,9 @@ Params:
 	cs = raw C string
 	at = start at index (including `at`)
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_insert(str_t *const s, const char *cs, const size_t at);
+extern enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at);
 
 /**
 Removes n chars from str_t, starting from the specified index
@@ -222,9 +248,9 @@ Params:
 	from = start from index (excluding `from`)
 	n = number of elements to remove after `from`
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_remove(str_t *const s, const size_t from, const size_t n);
+extern enum ContainerError str_remove(str_t *const s, const size_t from, size_t n);
 
 /**
 Removes the first encountered substring from str_t
@@ -233,9 +259,9 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: `true` upon success
+Returns: enum ContainerError
 */
-extern bool str_remove_str(str_t *const s, const char *cs);
+extern enum ContainerError str_remove_str(str_t *const s, const char *cs);
 
 /** 
 Checks if str_t contains a substring
