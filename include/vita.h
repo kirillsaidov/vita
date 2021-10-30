@@ -5,8 +5,10 @@
 	- 
 */
 
-#include "vita/string/str.h"
 #include "vita/container/vec.h"
+#include "vita/container/mat.h"
+#include "vita/container/str.h"
+#include "vita/container/plist.h"
 
 #endif // VITA_H
 
