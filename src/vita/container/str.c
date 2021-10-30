@@ -1,4 +1,4 @@
-#include "vita/string/str.h"
+#include "vita/container/str.h"
 
 str_t *str(const char *cs) {
 	if(is_null(cs)) {
@@ -350,26 +350,33 @@ plist_t *str_split(const str_t *const s, const char *sep) {
 	// create a vec_t instance
 	plist_t *p = plist_create(strInstances + 1);
 
-	// seperate strings
+	// splitting the raw C string
 	const size_t sepLen = strlen(sep);
-	const char *previous = s->ptr;
-	const char *current = strstr(s->ptr, sep);
-	while(current != NULL) {
-		// save current position
-		previous = current;
-
-		// update new position
-		current = strstr(current + sepLen * s->elsize, sep);
+	const char *head = s->ptr;
+	const char *current = head;
+	while(1) {
+		// find sep
+		const char *current = strstr(head, sep);
 
 		// count copy length
-		size_t tempLen = strlen(previous) - (is_null(current) ? 0 : strlen(current));
-
-		// create a str_t instance and copy the values
-		str_t *tempStr = strn(tempLen + 1);
-		strncpy(tempStr->ptr, previous + sepLen, tempLen);
-
-		// push str_t to vec_t
-		plist_push(p, tempStr);
+		size_t copyLen = strlen(head) - (is_null(current) ? 0 : strlen(current));
+		if(copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
+			head += sepLen * s->elsize;
+			continue;
+		} else {
+			// create a str_t instance and copy the values
+			str_t *tempStr = strn(copyLen);
+			str_set_n(tempStr, head, copyLen);
+			plist_push(p, tempStr);
+			
+			// update head
+			head = current + sepLen * s->elsize;
+		}
+		
+		// break from loop when no more sep is found or we are at the end of string
+		if(current == NULL || current[sepLen] == '\0') { 
+			break;
+		}
 	}
 
 	return p;

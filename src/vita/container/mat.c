@@ -15,7 +15,7 @@ mat_t *mat_new(void) {
 enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
 	if(!rows || !cols) {
 		vita_warn("row/col must be > 0!", __FUNCTION__);
-		return ce_error_unknown;
+		return ce_operation_failure;
 	}
 
 	// mat_t init
@@ -157,7 +157,7 @@ enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t c
 
 	if(!rows || !cols) {
 		vita_warn("cannot resize to 0!", __FUNCTION__);
-		return ce_error_unknown;
+		return ce_operation_failure;
 	}
 
 	if(m->rows == rows && m->cols == cols) {

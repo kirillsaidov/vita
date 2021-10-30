@@ -1,7 +1,7 @@
 #ifndef VITA_STR_H
 #define VITA_STR_H
 
-/** VITA_STR MODULE (dynamic string) // add: str_new, str_ctor, str_dtor, str_create, str_destroy
+/** VITA_STR MODULE (dynamic string)
 	- str
 	- strn
 	- str_dup
@@ -30,7 +30,7 @@
 */
 
 #include "../core/core.h"
-#include "../container/plist.h"
+#include "plist.h"
 
 // see core/core.h for definition
 typedef struct BaseArrayType str_t;

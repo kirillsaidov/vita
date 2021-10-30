@@ -1,12 +1,8 @@
 #include <assert.h>
 
-#include "../../include/vita/string/str.h"
+#include "../../include/vita/container/str.h"
 
-void plist_str_free(void *ptr, size_t i) {
-	str_t *str_temp = ptr;
-	printf("freed[%zu]: %s\n", i, cstr(str_temp));
-	str_free(str_temp);
-}
+void print_str(void *ptr, size_t i);
 
 int main(void) {
 	str_t* mystr = str("hello, world!"); {
@@ -78,35 +74,31 @@ int main(void) {
 		// assert(str_set(ns, "hello, world")); 
 	} str_free(ns);
 
-	str_t *sto = str_take_ownership(strdup("hello, world")); {
+	str_t *sto = str_take_ownership(strdup("12345, world")); {
 		assert(str_len(sto) == 12);
 		assert(str_capacity(sto) == 12);
 		assert(str_has_space(sto) == 0);
 
 		assert(str_append(sto, "! How are you?"));
-		assert(str_len(sto) == strlen("hello, world! How are you?"));
-		assert(str_equals(cstr(sto), "hello, world! How are you?"));
+		assert(str_len(sto) == strlen("12345, world! How are you?"));
+		assert(str_equals(cstr(sto), "12345, world! How are you?"));
 		assert(str_append(sto, " hello, world; hello again. This is hello!"));
-
-		char *ttt = "world of wonders......";
-		assert(str_append_n(sto, ttt, 17));
-		printf("str: %s\n", cstr(sto));
 		
-		plist_t *p = str_split(sto, "hello"); {
-			assert(plist_len(p) == 4);
+		str_clear(sto);
+		str_append(sto, ";My name is Kirillos;How are you?;let's play;");
+		plist_t *p = str_split(sto, ";"); {
+			assert(plist_len(p) == 3);
 			
-			// for(size_t i = 0; i < plist_len(p); i++) {
-			// 	// str_t *str_temp = plist_pop_get(p);
-			// 	str_t *str_temp = plist_get(p, i);
-			// 	printf("freed[%zu]: %s\n", i, cstr(str_temp));
-			// 	// str_free(str_temp);
-			// }
-
-			// plist_foreach(p, plist_str_free);
+			// free each str_t in plist_t
+			plist_foreach(p, print_str);
 		} plist_destroy(p);
 	} str_free(sto);
 	
 	return 0;
+}
+
+void print_str(void *ptr, size_t i) {
+	str_free(ptr);
 }
 
 

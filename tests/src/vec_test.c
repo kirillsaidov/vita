@@ -69,21 +69,21 @@ int main(void) {
 		assert(vec_capacity(v) == 5);
 		assert(vec_has_space(v) == 0);
 
-		vec_resize(v, 0);
-		assert(vec_len(v) == 0);
-		assert(vec_capacity(v) == 0);
-		assert(vec_has_space(v) == 0);
-
-		vec_pushd(v, 3.125);
-		assert(vec_getd(v, vec_len(v)-1) == 3.125);
+		vec_resize(v, 1);
 		assert(vec_len(v) == 1);
 		assert(vec_capacity(v) == 1);
 		assert(vec_has_space(v) == 0);
 
-		vec_pushd(v, 4);
-		assert(vec_getd(v, vec_len(v)-1) == 4);
+		vec_pushd(v, 3.125);
+		assert(vec_getd(v, vec_len(v)-1) == 3.125);
 		assert(vec_len(v) == 2);
 		assert(vec_capacity(v) == 2);
+		assert(vec_has_space(v) == 0);
+
+		vec_pushd(v, 4);
+		assert(vec_getd(v, vec_len(v)-1) == 4);
+		assert(vec_len(v) == 3);
+		assert(vec_capacity(v) == 3);
 		assert(vec_has_space(v) == 0);
 	} vec_destroy(v);
 

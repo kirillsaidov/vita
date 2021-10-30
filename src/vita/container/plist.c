@@ -176,10 +176,16 @@ void *plist_get(const plist_t *const p, const size_t at) {
     return p->ptr2[at];
 }
 
-enum ContainerError plist_push(plist_t *const p, const void *ptr) { // CHECK IF MORE MEMORY IS NEEDED
+enum ContainerError plist_push(plist_t *const p, const void *ptr) {
     if(is_null(p) || is_null(ptr)) {
         return ce_container_is_null;
     }
+
+    // check if new memory needs to be allocated
+	if(!plist_has_space(p) && plist_reserve(p, (size_t)(p->capacity * CONTAINER_GROWTH_RATE + 1)) != ce_operation_success) {
+		vita_warn("memory allocation failed!", __FUNCTION__);
+		return ce_error_allocation;
+	}
 
     // add ptr to plist_t
     p->ptr2[p->len++] = (void*)ptr;
@@ -205,12 +211,8 @@ void *plist_pop_get(plist_t *const p) {
         return NULL;
     }
 
-    if(p->len == 0) {
-        return NULL;
-    }
-
     // pop the last element
-    return p->ptr2[p->len-- - 1];
+    return p->ptr2[--p->len];
 }
 
 enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {

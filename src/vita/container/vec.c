@@ -191,8 +191,13 @@ enum ContainerError vec_reserve(vec_t *const v, const size_t n) {
 }
 
 enum ContainerError vec_resize(vec_t *const v, const size_t n) {
-	if(is_null(v)) { // think about resizing to 0
+	if(is_null(v)) {
 		return ce_container_is_null;
+	}
+
+	// cannot resize to 0
+	if(n == 0) {
+		return ce_operation_failure;
 	}
 
 	if(n == v->capacity) {
