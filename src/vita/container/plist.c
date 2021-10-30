@@ -176,7 +176,7 @@ void *plist_get(const plist_t *const p, const size_t at) {
     return p->ptr2[at];
 }
 
-enum ContainerError plist_push(plist_t *const p, const void *ptr) {
+enum ContainerError plist_push(plist_t *const p, const void *ptr) { // CHECK IF MORE MEMORY IS NEEDED
     if(is_null(p) || is_null(ptr)) {
         return ce_container_is_null;
     }
@@ -193,13 +193,19 @@ enum ContainerError plist_pop(plist_t *const p) {
     }
 
     // pop the last element
-    p->len--;
+    if(p->len > 0) {
+        p->len--;
+    }
 
     return ce_operation_success;
 }
 
 void *plist_pop_get(plist_t *const p) {
     if(is_null(p)) {
+        return NULL;
+    }
+
+    if(p->len == 0) {
         return NULL;
     }
 
@@ -234,9 +240,8 @@ void plist_foreach(const plist_t *const p, void (*func)(void*, size_t)) {
         return;
     }
 
-    size_t i = 0;
-    for(void **iter = p->ptr2; iter != p->ptr2 + p->len * p->elsize; iter += p->elsize, i++) {
-        func(*iter, i);
+    for(size_t i = 0; i < plist_len(p); i++) {
+        func(p->ptr2[i], i);
     }
 }
 

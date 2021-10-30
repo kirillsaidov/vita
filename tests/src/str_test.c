@@ -2,10 +2,11 @@
 
 #include "../../include/vita/string/str.h"
 
-// void plist_str_free(void *ptr, size_t i) {
-// 	printf("freed[%zu]: %s\n", i, cstr((str_t*)ptr));
-// 	str_free(ptr);
-// }
+void plist_str_free(void *ptr, size_t i) {
+	str_t *str_temp = ptr;
+	printf("freed[%zu]: %s\n", i, cstr(str_temp));
+	str_free(str_temp);
+}
 
 int main(void) {
 	str_t* mystr = str("hello, world!"); {
@@ -85,17 +86,24 @@ int main(void) {
 		assert(str_append(sto, "! How are you?"));
 		assert(str_len(sto) == strlen("hello, world! How are you?"));
 		assert(str_equals(cstr(sto), "hello, world! How are you?"));
-		assert(str_append(sto, "hello, world; hello again. This is hello!"));
+		assert(str_append(sto, " hello, world; hello again. This is hello!"));
+
+		char *ttt = "world of wonders......";
+		assert(str_append_n(sto, ttt, 17));
+		printf("str: %s\n", cstr(sto));
 		
-		/*plist_t *p = str_split(sto, "hello"); {
-			assert(plist_len(p) == 3);
+		plist_t *p = str_split(sto, "hello"); {
+			assert(plist_len(p) == 4);
 			
-			for(size_t i = 0; i < plist_len(p); i++) {
-				str_t *str_temp = plist_pop_get(p);
-				printf("freed[%zu]: %s\n", i, cstr(str_temp));
-				str_free(str_temp);
-			}
-		} plist_destroy(p);*/
+			// for(size_t i = 0; i < plist_len(p); i++) {
+			// 	// str_t *str_temp = plist_pop_get(p);
+			// 	str_t *str_temp = plist_get(p, i);
+			// 	printf("freed[%zu]: %s\n", i, cstr(str_temp));
+			// 	// str_free(str_temp);
+			// }
+
+			// plist_foreach(p, plist_str_free);
+		} plist_destroy(p);
 	} str_free(sto);
 	
 	return 0;

@@ -4,37 +4,6 @@ str_t *str(const char *cs) {
 	if(is_null(cs)) {
 		cs = "";
 	}
-
-	/*// allocate memory for a str_t struct
-	str_t *s = malloc(sizeof(str_t));
-
-	// check if s was allocated
-	if(is_null(s)) {		
-		return NULL;
-	}
-
-	// str_t init
-	const size_t csLen = strlen(cs);
-	*s = (str_t) {
-		.ptr = calloc(csLen + 1, sizeof(char)),
-		.len = csLen,
-		.capacity = csLen,
-		.elsize = sizeof(char),
-	};
-
-	// checking if s->ptr was allocated
-	if(is_null(s->ptr)) {
-		free(s);
-		return NULL;
-	}
-
-	// copy str data to str_t
-	memcpy(s->ptr, cs, (csLen * s->elsize));
-
-	// add the '\0' terminator
-	((char*)s->ptr)[csLen] = '\0';
-
-	return s;*/
 	
 	str_t *s = strn(strlen(cs));
 	if(is_null(s)) {
