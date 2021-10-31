@@ -208,7 +208,7 @@ Calls the specified function on each element
 
 Params:
 	p = plist_t instance
-	func = function to execute upon each element: func(pointer, for loop index row, for loop index col)
+	func = function to execute upon each element: func(pointer, for loop index)
 */
 extern void plist_foreach(const plist_t *const p, void (*func)(void*, size_t));
 
