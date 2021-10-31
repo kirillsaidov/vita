@@ -1,6 +1,5 @@
 #include "vita/container/plist.h"
 
-
 plist_t *plist_new(void) {
     plist_t *p = malloc(sizeof(plist_t));
     if(is_null(p)) {

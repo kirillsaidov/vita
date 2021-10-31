@@ -8,7 +8,7 @@ int helloWorld;         // local
 int g_helloWorld        // global
 int gi_helloWorld;      // global private (static)
 int time_secs;          // append units of measurement at the end
-const WIDTH = 320;      // const
+const int WIDTH = 320;      // const
 #define HEIGHT = 160;   // defines
 ```
 2. structs: PascalCase

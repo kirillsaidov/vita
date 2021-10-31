@@ -36,28 +36,22 @@
 typedef struct BaseArrayType str_t;
 
 /**
-Creates a new dynamic string from a raw C string
+Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
 
 Params:
 	cs = raw C string
 
 Returns: `str_t*` upon success, `NULL` otherwise
-
-Notes:
-	- allocates additional memory for the '\0' terminator automatically
 */
 extern str_t *str(const char *cs);
 
 /**
-Creates an empty dynamic string of specified size
+Creates an empty dynamic string of specified size (allocates additional memory for '\0')
 
 Params:
 	n = number of elements
 
 Returns: `str_t*` upon success, `NULL` otherwise
-
-Notes:
-	- allocates additional memory for the '\0' terminator automatically
 */
 extern str_t *strn(const size_t n);
 
