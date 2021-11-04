@@ -22,7 +22,7 @@ str_t *path_build(const char *const cs1, const char *const cs2) {
 	return s;
 }
 
-str_t *path_build_n(const plist_t *p) {
+str_t *path_build_n(const plist_t *const p) {
 	if(is_null(p)) {
 		return NULL;
 	}
@@ -47,6 +47,58 @@ str_t *path_build_n(const plist_t *p) {
 	}
 
 	return s;
+}
+
+str_t *path_getcwd() {
+	return str_take_ownership(getcwd(0, 0));
+}
+
+bool path_exists(const char *const cs) {
+	if(is_null(cs)) {
+		return false;
+	}
+
+	// if given element exists and is a directory
+	struct stat info;
+	if(stat(cs, &info) == 0 && info.st_mode & S_IFDIR) {
+		return true;
+	}
+
+	return false;
+}
+
+bool path_fexists(const char *const cs) {
+	if(is_null(cs)) {
+		return false;
+	}
+
+	struct stat info;
+	return (stat(cs, &info) == 0);
+}
+
+plist_t *path_listdir(const char *const cs) {
+	if(!path_exists(cs)) {
+		return NULL;
+	}
+
+	// open directory
+	DIR *dir = opendir(cs);
+	if(is_null(dir)) {
+		return NULL;
+	}
+	
+	// get directory contents
+	plist_t *p = plist_create(10);
+	struct dirent *dirtree = readdir(dir);
+	while(dirtree != NULL) {
+		// push directory name to plist_t
+		plist_push(p, str(dirtree->d_name));
+
+		// update directory name
+		dirtree = readdir(dir);
+	}
+
+	return p;
 }
 
 

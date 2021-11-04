@@ -2,6 +2,8 @@
 
 #include "../../include/vita/system/path.h"
 
+void free_str(void *ptr, size_t i);
+
 int main(void) { 
 	str_t *s = path_build("hello", "world"); {
 		assert(str_equals(cstr(s), "hello/world"));
@@ -17,7 +19,24 @@ int main(void) {
 		} str_free(sp);
 	} plist_free(p);
 
+	str_t *cwd = path_getcwd(); {
+		assert(str_equals(cstr(cwd), "/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests"));
+	} str_free(cwd);
+
+	// assert(path_exists("/home/lala")); // must fail
+	assert(path_exists("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests"));
+	assert(path_fexists("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests/src/path_test.c"));
+
+	plist_t *pdir = path_listdir("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests/src/"); {
+		assert(plist_len(pdir) == 7);
+		plist_foreach(pdir, free_str);
+	} plist_free(pdir);
+
 	return 0;
+}
+
+void free_str(void *ptr, size_t i) {
+	str_free(ptr);
 }
 
 
