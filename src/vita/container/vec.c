@@ -298,6 +298,15 @@ enum ContainerError vec_pop(vec_t *const v) {
 	return ce_operation_success;
 }
 
+void *vec_pop_get(vec_t *const v) {
+	if(is_null(v)) {
+        return NULL;
+    }
+
+    // pop the last element
+	return (v->ptr + --v->len * v->elsize);
+}
+
 enum ContainerError vec_set(vec_t *const v, const void *val, const size_t at) {
 	if(is_null(v) || is_null(val)) {
 		return ce_container_is_null;

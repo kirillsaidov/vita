@@ -22,6 +22,7 @@
 	- vec_resize
 	- vec_push			
 	- vec_pop
+	- vec_pop_get
 	- vec_set
 	- vec_get
 	- vec_insert
@@ -222,6 +223,16 @@ Params:
 Returns: enum ContainerError
 */
 extern enum ContainerError vec_pop(vec_t *const v);
+
+/** 
+Pops off and returns the last element
+
+Params:
+	v = vec_t instance
+
+Returns: void (n)
+*/
+extern void *vec_pop_get(vec_t *const v);
 
 /** 
 Assigns a new value at an index

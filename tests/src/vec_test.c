@@ -85,6 +85,12 @@ int main(void) {
 		assert(vec_len(v) == 3);
 		assert(vec_capacity(v) == 3);
 		assert(vec_has_space(v) == 0);
+
+		double value = *(double*)vec_pop_get(v);
+		assert(value == 4);
+		assert(vec_len(v) == 2);
+		assert(vec_capacity(v) == 3);
+		assert(vec_has_space(v) == 1);
 	} vec_destroy(v);
 
 	return 0;
