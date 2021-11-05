@@ -36,6 +36,9 @@ str_t *path_build_n(const plist_t *const p) {
 	// append the first part
 	if(str_append(s, plist_get(p, 0)) != ce_operation_success) {
 		vita_warn("unable to build path!", __FUNCTION__);
+		str_free(s);
+
+		return NULL;
 	}
 
 	// continue appending
@@ -43,6 +46,9 @@ str_t *path_build_n(const plist_t *const p) {
 	for(size_t i = 1; i < pLen; i++) {
 		if(str_append(s, PATH_SEPARATOR) != ce_operation_success && str_append(s, plist_get(p, i)) != ce_operation_success) {
 			vita_warn("unable to build path!", __FUNCTION__);
+			str_free(s);
+
+			return NULL;
 		}
 	}
 
