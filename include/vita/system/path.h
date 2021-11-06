@@ -25,27 +25,30 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdarg.h>
 
 /**
 Builds path from raw C strings
 
 Params:
+	s = str_t instance (if `NULL` is passed, str_t is allocated)
 	cs1 = raw c string
 	cs2 = raw c string
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_build(const char *const cs1, const char *const cs2);
+extern str_t *path_build(str_t *const s, const char *const cs1, const char *const cs2);
 
 /**
 Builds path from raw C strings
 
 Params:
+	s = str_t instance (if `NULL` is passed, str_t is allocated)
 	p = array of raw C strings
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_build_n(const plist_t *const p);
+extern str_t *path_build_n(str_t *const s, const plist_t *const p);
 
 /**
 Get current working directory
