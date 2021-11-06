@@ -120,6 +120,23 @@ plist_t *path_listdir(const char *const cs) {
 	return p;
 }
 
+str_t *path_basename(str_t *const s, const char *const cs) {
+	if(is_null(cs)) {
+		return NULL;
+	}
+
+	// create a new str_t instance
+	str_t *st = ((is_null(s)) ? (strn(strlen(cs))) : (s));
+	if(is_null(st)) {
+		vita_warn("str_t allocation faled!", __FUNCTION__);
+		return NULL;
+	}
+
+	// ...
+	
+	return st;
+}
+
 
 
 

@@ -8,6 +8,7 @@
 	- path_exists
 	- path_fexists
 	- path_listdir
+	- path_basename
 */
 
 #include "../core/core.h"
@@ -25,7 +26,6 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <stdarg.h>
 
 /**
 Builds path from raw C strings
@@ -86,5 +86,16 @@ Params:
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
 extern plist_t *path_listdir(const char *const cs);
+
+/**
+Get path basename
+
+Params:
+	s = str_t instance (if `NULL` is passed, str_t is allocated)
+	cs = path
+
+Returns: `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *path_basename(str_t *const s, const char *const cs);
 
 #endif // VITA_PATH_H
