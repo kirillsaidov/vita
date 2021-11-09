@@ -49,6 +49,10 @@ int main(void) {
 	    } plist_free(pdir);
     #endif
 
+	str_t *sbasename = str("my/test/folder/text.txt"); {
+		assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
+	} str_free(sbasename);
+
 	return 0;
 }
 
