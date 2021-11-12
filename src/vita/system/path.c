@@ -134,7 +134,20 @@ str_t *path_basename(str_t *const s, const char *const cs) {
 		return NULL;
 	}
 
-	// ...
+	// find the basename
+	const char *ptr;
+	for(size_t i = str_len(st) - 1; i >= 0; i--) {
+		if(cstr(st)[i] == PATH_SEPARATOR[0] && i != str_len(st) - 1) {
+			ptr = &cstr(st)[i+1];
+			break;
+		}
+	}
+
+	// save the basename
+	if(str_has_space(st) < strlen(ptr)) {
+		str_reserve(st, strlen(ptr) - str_has_space(st));
+		str_set(st, ptr);
+	}
 	
 	return st;
 }
