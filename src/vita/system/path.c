@@ -116,6 +116,8 @@ plist_t *path_listdir(const char *const cs) {
 		// update directory name
 		dirtree = readdir(dir);
 	}
+	
+	closedir(dir);
 
 	return p;
 }
