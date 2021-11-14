@@ -1,7 +1,7 @@
 #ifndef VITA_ARGS_H
 #define VITA_ARGS_H
 
-/** VITA_GETOPT MODULE
+/** VITA_ARGS MODULE
 	- getopt
 */
 
