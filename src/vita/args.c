@@ -4,6 +4,38 @@ static argopt_t * argopt_new(const size_t numOptions);
 static void argopt_str_free(void *ptr, const size_t index);
 static void argopt_free(argopt_t *a);
 
+argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...) {
+	// allocate memory for argopt_t container
+    argopt_t *a = argopt_new(numOptions);
+    if(is_null(a)) {
+        vita_warn("unable to allocate memory!", __FUNCTION__);
+        return NULL;
+    }
+    
+    // find all arguments
+    va_list v;
+    va_start(v, numOptions);
+    for(int i = 0; i < numOptions; i++) {
+        // save arguments
+        // str_split by '|', then save long and short, desc
+        
+        str_t *csCmd = va_arg(v, str_t*);
+        str_t *csDesc = va_arg(v, str_t*);
+        str_t *csVal = va_arg(v, str_t*);
+
+        str_set(csVal, "hello");
+        break;
+    }
+    va_end(v);
+
+    return a;
+}
+
+void args_free(argopt_t *a) {
+    //...
+    argopt_free(a);
+}
+
 static argopt_t * argopt_new(const size_t numOptions) {
     argopt_t *a = malloc(sizeof(argopt_t));
     if(is_null(a)) {
@@ -52,35 +84,4 @@ static void argopt_free(argopt_t *a) {
     // free argopt_t
     free(a);
     a = NULL;
-}
-
-argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...) {
-	// allocate memory for argopt_t container
-    argopt_t *a = argopt_new(numOptions);
-    if(is_null(a)) {
-        vita_warn("unable to allocate memory!", __FUNCTION__);
-        return NULL;
-    }
-    
-    // find all arguments
-    va_list v;
-    va_start(v, numOptions);
-    for(int i = 0; i < numOptions; i++) {
-        // save arguments
-        // str_split by '|', then save long and short
-        
-        const char* csCmd = va_arg(v, char*);
-        const char* csDesc = va_arg(v, char*);
-        const char* csVal = va_arg(v, char*);
-
-        printf("%s --- %s --- %s\n", csCmd, csDesc, csVal);
-    }
-    va_end(v);
-
-    return a;
-}
-
-void args_free(argopt_t *a) {
-    //...
-    argopt_free(a);
 }

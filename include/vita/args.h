@@ -23,8 +23,12 @@ typedef struct ArgOpt {
 Parses command line arguments
 
 Params:
+	argc = number of arguments
+	argv = arguments
+	numOptions = number of command line options
+	... = option, description, variable where to save value
 
-Returns: 
+Returns: `argopt_t*` upon sucess, `NULL` otherwise
 */
 extern argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...);
 extern void args_free(argopt_t *a);

@@ -86,7 +86,7 @@ int main(void) {
 		
 		str_clear(sto);
 		str_append(sto, ";My name is Kirillos;How are you?;let's play;");
-		plist_t *p = str_split(sto, ";"); {
+		plist_t *p = str_split(NULL, sto, ";"); {
 			assert(plist_len(p) == 3);
 			
 			// free each str_t in plist_t
