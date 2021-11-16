@@ -10,6 +10,7 @@ declare -a tests=(
 	"plist_test" \
 	"path_test" \
 	"args_test" \
+	"math_test" \
 )
 
 # colored output

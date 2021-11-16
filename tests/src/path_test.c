@@ -29,7 +29,7 @@ int main(void) {
     	assert(path_fexists("/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src/path_test.c"));
 
 	    plist_t *pdir = path_listdir("/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src/"); {
-		    assert(plist_len(pdir) == 8);
+		    assert(plist_len(pdir) == 9);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
 
@@ -44,7 +44,7 @@ int main(void) {
     	assert(path_fexists("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests/src/path_test.c"));
 
 	    plist_t *pdir = path_listdir("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests/src/"); {
-		    assert(plist_len(pdir) == 8);
+		    assert(plist_len(pdir) == 9);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #endif

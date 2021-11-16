@@ -5,6 +5,6 @@
 	- getopt
 */
 
-extern float isqrt(const float num);
+extern float isqrt(const float x);
 
 #endif // VITA_MATH_H
