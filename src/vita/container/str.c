@@ -336,7 +336,7 @@ size_t str_contains(const str_t *const s, const char *cs) {
 	return count;
 }
 
-plist_t *str_split(const str_t *const s, const char *sep) {
+plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 	if(is_null(s) || is_null(sep)) {
 		return NULL;
 	}
@@ -348,7 +348,20 @@ plist_t *str_split(const str_t *const s, const char *sep) {
 	}
 
 	// create a vec_t instance
-	plist_t *p = plist_create(strInstances + 1);
+	plist_t *p = NULL;
+	if(is_null(ps)) {
+		p = plist_create(strInstances + 1);
+		if(is_null(p)) {
+			vita_warn("unable to allocate plist_t!", __FUNCTION__);
+			return p;
+		}
+	} else {
+		p = ps;
+		if(plist_has_space(p) < strInstances + 1 && plist_reserve(p, (strInstances + 1) - plist_has_space(p)) != ce_operation_success) {
+			vita_warn("unable to reserve memory for plist_t!", __FUNCTION__);
+			return p;
+		}
+	}
 
 	// splitting the raw C string
 	const size_t sepLen = strlen(sep);

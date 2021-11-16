@@ -272,12 +272,13 @@ extern size_t str_contains(const str_t *const s, const char *cs);
 Splits a string given a separator into substrings
 
 Params:
+	p = plist_t instance, if `NULL` allocates
 	s = str_t instance
 	sep = seperator string
 
 Returns: plist_t of str_t, `NULL` upon failure
 */
-extern plist_t *str_split(const str_t *const s, const char *sep);
+extern plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep);
 
 /**
 Checks if two raw C strings are the same
