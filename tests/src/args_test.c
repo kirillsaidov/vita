@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../include/vita/args.h"
+#include "../../include/vita/util/args.h"
 
 int main(void) {
 	str_t *path = str("my/folder");
