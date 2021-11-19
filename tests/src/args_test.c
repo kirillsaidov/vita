@@ -9,7 +9,7 @@ int main(void) {
 	str_t *verbose = str("1");
 
 	argopt_t *a = args_parse(
-		0, 
+		0,
 		NULL,
 		4, 
 		"path|p", "path to files", path,
@@ -17,9 +17,18 @@ int main(void) {
 		"val|l", "validation ratio", val,
 		"verbose|v", "verbose output", verbose
 	);
-	args_free(a);
 
-	printf("%s --- %s --- %s\n", cstr(path), cstr(test), cstr(val));
+	assert(plist_len(a->optionLong) == 4);
+	assert(plist_len(a->optionShort) == 4);
+	assert(plist_len(a->optionDesc) == 4);
+
+	printf("%s\n%s\n", cstr(plist_get(a->optionLong, 1)), cstr(plist_get(a->optionDesc, 1)));
+	
+	args_free(a);
+	str_free(path);
+	str_free(test);
+	str_free(val);
+	str_free(verbose);
 
 	return 0;
 }

@@ -11,11 +11,11 @@
 #include "../container/plist.h"
 
 typedef struct ArgOpt {
-	plist_t *cmdLong;
-	plist_t *cmdShort;
-	plist_t *cmdDesc;
+	plist_t *optionLong;
+	plist_t *optionShort;
+	plist_t *optionDesc;
 
-	str_t *helpManual;
+	str_t *helpInfo;
 	bool helpWanted;
 } argopt_t;
 

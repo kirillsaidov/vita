@@ -15,7 +15,7 @@
     return y;
 }*/
 
-extern bool is_palindrome(const uint64_t num) {
+bool is_palindrome(const uint64_t num) {
     uint64_t tempNum = num;
     uint64_t reversed = 0;
 
