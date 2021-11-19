@@ -16,6 +16,7 @@
 
 	- plist_reserve
 	- plist_shrink
+	- plist_clear
 	- plist_set
 	- plist_get
 	- plist_push
@@ -134,6 +135,16 @@ Params:
 Returns: enum ContainerError
 */
 extern enum ContainerError plist_shrink(plist_t *const p);
+
+/** 
+Sets plist_t length to 0
+
+Params:
+	p = plist_t pointer
+
+Returns: enum ContainerError
+*/
+extern enum ContainerError plist_clear(plist_t *const p);
 
 /** 
 Assigns a new pointer at an index

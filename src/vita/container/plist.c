@@ -152,6 +152,17 @@ enum ContainerError plist_shrink(plist_t *const p) {
     return ce_operation_success;
 }
 
+enum ContainerError plist_clear(plist_t *const p) {
+    if(is_null(p)) {
+        return ce_container_is_null;
+    }
+
+    // update length
+    p->len = 0;
+
+    return ce_operation_success;
+}
+
 enum ContainerError plist_set(plist_t *const p, const void *ptr, const size_t at) {
     if(is_null(p) || is_null(ptr)) {
         return ce_container_is_null;
