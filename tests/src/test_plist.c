@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../include/vita/container/plist.h"
+#include "../../inc/vita/container/plist.h"
 
 int main(void) { 
 	plist_t *p = plist_create(5); {

@@ -6,6 +6,11 @@ static inline void argopt_str_free(void *ptr, const size_t index);
 static inline void argopt_parse_command_line_args(const char *const cmdArg, str_t *s);
 
 argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...) {
+	// no options provided
+	if(argc < 1 || numOptions < 1) {
+		return NULL;
+	}
+
 	// allocate memory for argopt_t container
 	argopt_t *a = argopt_new(numOptions);
 	if(is_null(a)) {

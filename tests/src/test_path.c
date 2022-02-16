@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../include/vita/system/path.h"
+#include "../../inc/vita/system/path.h"
 
 void free_str(void *ptr, size_t i);
 

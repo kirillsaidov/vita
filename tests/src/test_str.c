@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../include/vita/container/str.h"
+#include "../../inc/vita/container/str.h"
 
 void print_str(void *ptr, size_t i);
 

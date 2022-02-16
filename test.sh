@@ -4,13 +4,13 @@ cd tests;
 
 # declare an array variable
 declare -a tests=(
-	"str_test" \
-	"vec_test" \
-	"mat_test" \
-	"plist_test" \
-	"path_test" \
-	"args_test" \
-	"math_test" \
+	"test_str" \
+	"test_vec" \
+	"test_mat" \
+	"test_plist" \
+	"test_path" \
+	"test_args" \
+	"test_math" \
 )
 
 # colored output
