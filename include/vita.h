@@ -6,7 +6,7 @@
 */
 
 #include "vita/system/path.h"
-#inlcude "vita/util/args.h"
+#include "vita/util/args.h"
 
 #include "vita/container/vec.h"
 #include "vita/container/mat.h"
