@@ -12,14 +12,17 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define DEBUG
 #define CONTAINER_GROWTH_RATE 1/3
 
+// removing elements from array
 enum RemoveStrategy {
 	rs_stable,	// keep ordering
 	rs_fast,	// ordering doesn't matter
 	rs_count	// number of elements
 };
 
+// container operations errors
 enum ContainerError {
 	ce_error_allocation,			// failed to allocate or reallocate memory
 	ce_error_wrong_datatype,		// trying to add different datatypes 
@@ -51,9 +54,6 @@ struct BaseArrayType {
 
 	size_t elsize;
 };
-
-// set to false to silence warnings and stop aborting the program
-extern bool g_vitaWarnings;
 
 /** 
 Checks if a pointer is NULL
