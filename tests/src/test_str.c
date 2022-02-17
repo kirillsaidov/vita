@@ -35,7 +35,7 @@ int main(void) {
 
 		str_remove(mystr, 4, 3);
 		str_remove_str(mystr, "Watermellon is red");
-		assert(str_contains(mystr, "sweet") == 1);
+		assert(str_can_find(mystr, "sweet") == 1);
 		assert(str_equals(cstr(mystr), "Oran.Apples are sweet!?"));
 
 		str_shrink(mystr);

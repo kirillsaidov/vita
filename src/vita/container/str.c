@@ -319,7 +319,7 @@ enum ContainerError str_remove_str(str_t *const s, const char *cs) {
 	return ce_operation_success;
 }
 
-size_t str_contains(const str_t *const s, const char *cs) {
+size_t str_can_find(const str_t *const s, const char *cs) {
 	if(is_null(s) || is_null(cs)) {
 		return 0;
 	}
@@ -342,7 +342,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 	}
 
 	// check if s contains sep substring
-	const size_t strInstances = str_contains(s, sep);
+	const size_t strInstances = str_can_find(s, sep);
 	if(!strInstances) {
 		return NULL;
 	}

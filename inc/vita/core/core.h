@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DEBUG
+#define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 1/3
 
 // removing elements from array

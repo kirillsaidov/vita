@@ -32,7 +32,7 @@ str_t *path_build_n(str_t *const s, const plist_t *const p) {
 		return NULL;
 	}
 
-	str_t *st = ((is_null(s)) ? (strn(10)) : (s));
+	str_t *st = ((is_null(s)) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
 	if(is_null(st)) {
 		vita_warn("str_t allocation faled!", __FUNCTION__);
 		return NULL;
@@ -112,8 +112,13 @@ plist_t *path_listdir(const char *const cs) {
 		return NULL;
 	}
 	
+	// create a container of str_t
+	plist_t *p = plist_create(DEFAULT_INIT_ELEMENTS);
+	if(is_null(p)) {
+		return NULL;
+	}
+
 	// get directory contents
-	plist_t *p = plist_create(10);
 	struct dirent *dirtree = readdir(dir);
 	while(dirtree != NULL) {
 		// push directory name to plist_t
@@ -122,10 +127,55 @@ plist_t *path_listdir(const char *const cs) {
 		// update directory name
 		dirtree = readdir(dir);
 	}
-	
+
 	closedir(dir);
 
 	return p;
+}
+
+plist_t *path_listdir_deep(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
+	if(!path_exists(cs)) {
+		return NULL;
+	}
+
+	plist_t *pl = (is_null(p) ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+	if(is_null(pl)) {
+		vita_warn("plist_t allocation faled!", __FUNCTION__);
+		return NULL;
+	}
+
+	// open directory
+	DIR *dir = opendir(cs);
+	if(is_null(dir)) {
+		return pl;
+	}
+
+	// get directory contents
+	struct dirent *dirtree = NULL;
+	while((dirtree = readdir(dir)) != NULL) {
+		// ignore "." and ".." directories
+		if((ignoreDotFiles && dirtree->d_name[0] == '.') || 
+			(str_equals(dirtree->d_name, ".") && str_equals(dirtree->d_name, ".."))) {
+			continue;
+		}
+
+		// save full path
+		str_t *s = str(cs);
+		str_append(s, PATH_SEPARATOR);
+		str_append(s, dirtree->d_name);
+
+		// push directory name to plist_t
+		plist_push(pl, s);
+
+		// check if current path is a directory
+		if(path_is_dir(cstr(s))) {
+			path_listdir_deep(pl, cstr(s), ignoreDotFiles);
+		}
+	}
+
+	closedir(dir);
+
+	return pl;
 }
 
 str_t *path_basename(str_t *const s, const char *const cs) {

@@ -24,7 +24,7 @@
 	- str_insert 			
 	- str_remove 			
 	- str_remove_str 		
-	- str_contains 			
+	- str_can_find 			
 	- str_split 			
 	- str_equals			
 */
@@ -266,7 +266,7 @@ Params:
 
 Returns: number of substring instances in str_t
 */
-extern size_t str_contains(const str_t *const s, const char *cs);
+extern size_t str_can_find(const str_t *const s, const char *cs);
 
 /**
 Splits a string given a separator into substrings

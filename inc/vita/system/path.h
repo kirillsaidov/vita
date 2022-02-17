@@ -16,7 +16,7 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 	#include <direct.h>
-	#define PATH_SEPARATOR "\\\\"
+	#define PATH_SEPARATOR "\\"
 	#define getcwd _getcwd
 #else
 	#include <unistd.h>
@@ -96,6 +96,18 @@ Params:
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
 extern plist_t *path_listdir(const char *const cs);
+
+/**
+Get all files and sub-directories recursively
+
+Params:
+	p = container where to save the data
+	cs = path
+	ignoreDotFiles = skip hidden .files
+
+Returns: `plist_t*` of str_t upon success, `NULL` otherwise
+*/
+extern plist_t *path_listdir_deep(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
 
 /**
 Get path basename
