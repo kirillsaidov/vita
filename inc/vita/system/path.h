@@ -58,7 +58,7 @@ Returns: `str_t*` upon success, `NULL` otherwise
 extern str_t *path_getcwd();
 
 /**
-Checks if directory exists
+Checks if path exists
 
 Params:
 	cs = path
@@ -68,14 +68,24 @@ Returns: `true` if directory exists
 extern bool path_exists(const char *const cs);
 
 /**
-Checks if file exists
+Checks if path is a directory
+
+Params:
+	cs = path
+
+Returns: `true` if directory exists
+*/
+extern bool path_is_dir(const char *const cs);
+
+/**
+Checks if path is a file
 
 Params:
 	cs = path
 
 Returns: `true` if file exists
 */
-extern bool path_fexists(const char *const cs);
+extern bool path_is_file(const char *const cs);
 
 /**
 Get all directory contents

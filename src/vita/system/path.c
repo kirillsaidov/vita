@@ -77,22 +77,28 @@ bool path_exists(const char *const cs) {
 		return false;
 	}
 
-	// if given element exists and is a directory
 	struct stat info;
-	if(stat(cs, &info) == 0 && info.st_mode & S_IFDIR) {
-		return true;
-	}
-
-	return false;
+	return (stat(cs, &info) == 0);
 }
 
-bool path_fexists(const char *const cs) {
+bool path_is_dir(const char *const cs) {
 	if(is_null(cs)) {
 		return false;
 	}
 
+	// if given element exists and is a directory
 	struct stat info;
-	return (stat(cs, &info) == 0);
+	return (stat(cs, &info) == 0 && S_ISDIR(info.st_mode));
+}
+
+bool path_is_file(const char *const cs) {
+	if(is_null(cs)) {
+		return false;
+	}
+
+	// if given element exists and is a regular file
+	struct stat info;
+	return (stat(cs, &info) == 0 && S_ISREG(info.st_mode));
 }
 
 plist_t *path_listdir(const char *const cs) {
