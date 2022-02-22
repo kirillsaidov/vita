@@ -11,7 +11,7 @@ int main(void) {
 	argopt_t *a = args_parse(
 		0,
 		NULL,
-		4, 
+		4,
 		"path|p", "path to files", path,
 		"test|t", "test ratio", test,
 		"val|l", "validation ratio", val,
@@ -23,7 +23,7 @@ int main(void) {
 	assert(plist_len(a->optionDesc) == 4);
 
 	printf("%s\n%s\n", cstr(plist_get(a->optionLong, 1)), cstr(plist_get(a->optionDesc, 1)));
-	
+
 	args_free(a);
 	str_free(path);
 	str_free(test);
@@ -32,35 +32,3 @@ int main(void) {
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

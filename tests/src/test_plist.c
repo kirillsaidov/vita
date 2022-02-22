@@ -2,7 +2,7 @@
 
 #include "../../inc/vita/container/plist.h"
 
-int main(void) { 
+int main(void) {
 	plist_t *p = plist_create(5); {
 		assert(plist_len(p) == 0);
 		assert(plist_capacity(p) == 5);
@@ -29,38 +29,6 @@ int main(void) {
 		assert(plist_len(p) == 0);
 		assert(plist_capacity(p) == 7);
 	} plist_destroy(p);
-	
+
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

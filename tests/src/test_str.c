@@ -22,7 +22,7 @@ int main(void) {
 		assert(str_capacity(mystr) == 65 + 13);
 		assert(str_has_space(mystr) == 65 + 13 - 17);
 		assert(str_equals(cstr(mystr), "Apples are sweet!"));
-		
+
 		str_append(mystr, "Watermellon is red?");
 		assert(str_len(mystr) == 17 + 19);
 		assert(str_capacity(mystr) == 65 + 13);
@@ -71,7 +71,7 @@ int main(void) {
 		assert(str_equals(cstr(ns), "hello"));
 
 		// fails, because str_len(ns) < strlen("hello, world") => append instead
-		// assert(str_set(ns, "hello, world")); 
+		// assert(str_set(ns, "hello, world"));
 	} str_free(ns);
 
 	str_t *sto = str_take_ownership(strdup("12345, world")); {
@@ -83,33 +83,20 @@ int main(void) {
 		assert(str_len(sto) == strlen("12345, world! How are you?"));
 		assert(str_equals(cstr(sto), "12345, world! How are you?"));
 		assert(str_append(sto, " hello, world; hello again. This is hello!"));
-		
+
 		str_clear(sto);
 		str_append(sto, ";My name is Kirillos;How are you?;let's play;");
 		plist_t *p = str_split(NULL, sto, ";"); {
 			assert(plist_len(p) == 3);
-			
+
 			// free each str_t in plist_t
 			plist_foreach(p, print_str);
 		} plist_destroy(p);
 	} str_free(sto);
-	
+
 	return 0;
 }
 
 void print_str(void *ptr, size_t i) {
 	str_free(ptr);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

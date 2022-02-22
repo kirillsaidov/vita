@@ -10,7 +10,7 @@ void print(void *ptr, size_t i, size_t j) {
 	printf("%.2f\n", *(double*)ptr);
 }
 
-int main(void) { 
+int main(void) {
 	mat_t *m = mat_create(15, 15, sizeof(double)); {
 		assert(mat_rows(m) == 15 && mat_cols(m) == 15);
 
@@ -40,35 +40,3 @@ int main(void) {
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

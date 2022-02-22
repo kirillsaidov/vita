@@ -4,7 +4,7 @@
 
 void free_str(void *ptr, size_t i);
 
-int main(void) { 
+int main(void) {
 	str_t *s = path_build(NULL, "hello", "world"); {
 		assert(str_equals(cstr(s), "hello/world"));
 	} str_free(s);
@@ -25,7 +25,7 @@ int main(void) {
         str_t *cwd = path_getcwd(); {
             assert(str_equals(cstr(cwd), "/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src"));
         } str_free(cwd);
-    
+
         assert(path_exists("/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src"));
         assert(path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src"));
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/bitbucket/vita/tests/src/test_path.c"));
@@ -40,7 +40,7 @@ int main(void) {
         str_t *cwd = path_getcwd(); {
             assert(str_equals(cstr(cwd), "/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests"));
         } str_free(cwd);
-    
+
         assert(path_exists("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests"));
         assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests"));
     	assert(path_is_file("/home/kirill/myfiles/media/dev/repos/bitbucket/vita/tests/src/test_path.c"));
@@ -61,35 +61,3 @@ int main(void) {
 void free_str(void *ptr, size_t i) {
 	str_free(ptr);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
