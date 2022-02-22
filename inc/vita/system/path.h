@@ -9,25 +9,35 @@
 	- path_is_dir
 	- path_is_file
 	- path_listdir
-	- path_listdir_deep
+	- path_listdir_recurse
 	- path_basename
+	- path_mkdir
+	- path_mkdir_recurse
+	- path_rmdir
 */
 
 #include "../core/core.h"
 #include "../container/str.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #if defined(_WIN32) || defined(_WIN64)
+	#include <io.h>
 	#include <direct.h>
+	#include <windows.h>
 	#define PATH_SEPARATOR "\\"
 	#define getcwd _getcwd
+	#define mkdir CreateDirectory
+	#define rmdir RemoveDirectory
+	#define DIR_PERMISSIONS NULL
 #else
 	#include <unistd.h>
 	#include <dirent.h>
+	#include <libgen.h>
 	#define PATH_SEPARATOR "/"
+	#define DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif
-
-#include <sys/types.h>
-#include <sys/stat.h>
 
 /**
 Builds path from raw C strings
@@ -109,7 +119,7 @@ Params:
 
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
-extern plist_t *path_listdir_deep(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
+extern plist_t *path_listdir_recurse(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
 
 /**
 Get path basename
@@ -121,5 +131,35 @@ Params:
 Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *path_basename(str_t *const s, const char *const cs);
+
+/**
+Creates a directory
+
+Params:
+	s = str_t instance
+
+Returns: `true` upon success, `false` otherwise
+*/
+extern bool path_mkdir(const str_t *const s);
+
+/**
+Creates a directory and its parent directories
+
+Params:
+	s = str_t instance
+
+Returns: `true` upon success, `false` otherwise
+*/
+// extern bool path_mkdir_recurse(const str_t *const s);
+
+/**
+Deletes a directory
+
+Params:
+	s = str_t instance
+
+Returns: `true` upon success, `false` otherwise
+*/
+extern bool path_rmdir(const str_t *const s);
 
 #endif // VITA_PATH_H

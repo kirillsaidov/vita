@@ -125,7 +125,7 @@ plist_t *path_listdir(const char *const cs) {
 	return p;
 }
 
-plist_t *path_listdir_deep(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
+plist_t *path_listdir_recurse(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
 	if(!path_exists(cs)) {
 		return NULL;
 	}
@@ -160,7 +160,7 @@ plist_t *path_listdir_deep(plist_t *const p, const char *const cs, const bool ig
 
 		// check if current path is a directory
 		if(path_is_dir(cstr(s))) {
-			path_listdir_deep(pl, cstr(s), ignoreDotFiles);
+			path_listdir_recurse(pl, cstr(s), ignoreDotFiles);
 		}
 	}
 
@@ -196,4 +196,50 @@ str_t *path_basename(str_t *const s, const char *const cs) {
 	}
 
 	return st;
+}
+
+bool path_mkdir(const str_t *const s) {
+	if(s == NULL || path_exists(s)) {
+		return false;
+	}
+
+	int status = mkdir(cstr(s), DIR_PERMISSIONS);
+	/* Permissions (on unix):
+		S_IRWXU - 00700 user (file owner) has read, write and execute permission
+		S_IRWXG - 00070 group has read, write and execute permission
+		S_IROTH - 00004 others have read permission
+		S_IXOTH - 00001 others have execute permission
+	*/
+
+	#if defined(_WIN32) || defined(_WIN64)
+		return (status != 0);
+	#else
+		return (status == 0);
+	#endif
+}
+
+/*bool path_mkdir_recurse(const str_t *const s) {
+	if(s == NULL) {
+		return false;
+	}
+
+	if(path_exists(s)) {
+		return true;
+	}
+
+	path_mkdir_recurse(dirname())
+}*/
+
+bool path_rmdir(const str_t *const s) {
+	if(s == NULL || !path_exists(s)) {
+		return false;
+	}
+
+	int status = rmdir(cstr(s));
+
+	#if defined(_WIN32) || defined(_WIN64)
+		return (status != 0);
+	#else
+		return (status == 0);
+	#endif
 }
