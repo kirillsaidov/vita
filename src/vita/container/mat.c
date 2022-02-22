@@ -2,7 +2,7 @@
 
 mat_t *mat_new(void) {
 	mat_t *m = malloc(sizeof(mat_t));
-	if(is_null(m)) {
+	if(m == NULL) {
 		return NULL;
 	}
 
@@ -14,8 +14,7 @@ mat_t *mat_new(void) {
 
 enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
 	if(!rows || !cols) {
-		vita_warn("row/col must be > 0!", __FUNCTION__);
-		return ce_operation_failure;
+		return ve_operation_failure;
 	}
 
 	// mat_t init
@@ -26,15 +25,15 @@ enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t col
 		.elsize = elsize,
 	};
 
-	if(is_null(m->ptr2)) {
-		return ce_error_allocation;
+	if(m->ptr2 == NULL) {
+		return ve_error_allocation;
 	}
 
 	// allocate memory for rows*cols number of elements
 	void *els = calloc(rows*cols, elsize);
-	if(is_null(els)) {
+	if(els == NULL) {
 		free(m->ptr2);
-		return ce_error_allocation;
+		return ve_error_allocation;
 	}
 
 	// distribute the elements row-col-wise
@@ -42,22 +41,22 @@ enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t col
 		m->ptr2[i] = els + i * cols * elsize;
 	}
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 mat_t *mat_dup(const mat_t *const m) {
-	if(is_null(m)) {
+	if(m == NULL) {
 		return NULL;
 	}
 
 	// allocate a new mat_t instance
 	mat_t *mdup = mat_new();
-	if(is_null(mdup)) {
+	if(mdup == NULL) {
 		return NULL;
 	}
 
 	// construct mat_t instance
-	if(mat_ctor(mdup, m->rows, m->cols, m->elsize) != ce_operation_success) {
+	if(mat_ctor(mdup, m->rows, m->cols, m->elsize) != ve_operation_success) {
 		mat_free(mdup);
 		return NULL;
 	}
@@ -70,7 +69,7 @@ mat_t *mat_dup(const mat_t *const m) {
 
 void mat_dtor(mat_t *const m) {
 	// if NULL, exit
-	if(is_null(m)) {
+	if(m == NULL) {
 		return;
 	}
 
@@ -83,26 +82,20 @@ void mat_dtor(mat_t *const m) {
 }
 
 void mat_free(mat_t *m) {
-	if(is_null(m)) {
+	if(m == NULL) {
 		return;
 	}
 
 	free(m);
 }
 
-
-
-
-
-
-
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
 	mat_t *m = mat_new();
-	if(is_null(m)) {
+	if(m == NULL) {
 		return NULL;
 	}
 
-	if(mat_ctor(m, rows, cols, elsize) != ce_operation_success) {
+	if(mat_ctor(m, rows, cols, elsize) != ve_operation_success) {
 		mat_free(m);
 		return NULL;
 	}
@@ -114,12 +107,6 @@ void mat_destroy(mat_t *m) {
 	mat_dtor(m);
 	mat_free(m);
 }
-
-
-
-
-
-
 
 size_t mat_rows(const mat_t *const m) {
 	return m->rows;
@@ -133,42 +120,34 @@ size_t mat_size(const mat_t *const m) {
 	return (m->rows * m->cols);
 }
 
-
-
-
-
-
-
 enum ContainerError mat_clear(mat_t *const m) {
-	if(is_null(m)) {
-		return ce_container_is_null;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	// set values to 0
 	memset(*m->ptr2, 0, m->rows * m->cols * m->elsize);
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
-	if(is_null(m)) {
-		return ce_operation_success;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!rows || !cols) {
-		vita_warn("cannot resize to 0!", __FUNCTION__);
-		return ce_operation_failure;
+		return ve_operation_failure;
 	}
 
 	if(m->rows == rows && m->cols == cols) {
-		return ce_operation_success;
+		return ve_operation_success;
 	}
 
 	// allocate memory for rows*cols number of elements
 	void *els = realloc(*(m->ptr2), rows * cols * m->elsize);
-	if(is_null(els)) {
-		vita_warn("memory allocation failed!", __FUNCTION__);
-		return ce_error_allocation;
+	if(els == NULL) {
+		return ve_error_allocation;
 	}
 
 	// distribute the elements row-col-wise
@@ -180,104 +159,94 @@ enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t c
 	m->rows = rows;
 	m->cols = cols;
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
-	if(is_null(m) || is_null(val)) {
-		return ce_container_is_null;
+	if(m == NULL || val == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	// set the value
 	memcpy(*m->ptr2 + (atRow * m->rows + atCol) * m->elsize, val, m->elsize);
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol) {
-	if(is_null(m)) {
-		return ce_container_is_null;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	if(m->elsize != sizeof(val)) {
-		vita_warn("expects <int32_t>! Aborting operation.", __FUNCTION__);
-		return ce_error_wrong_datatype;
+		return ve_error_incompatible_datatype;
 	}
 
 	return mat_set(m, &val, atRow, atCol);
 }
 
 enum ContainerError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol) {
-	if(is_null(m)) {
-		return ce_container_is_null;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	if(m->elsize != sizeof(val)) {
-		vita_warn("expects <int64_t>! Aborting operation.", __FUNCTION__);
-		return ce_error_wrong_datatype;
+		return ve_error_incompatible_datatype;
 	}
 
 	return mat_set(m, &val, atRow, atCol);
 }
 
 enum ContainerError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
-	if(is_null(m)) {
-		return ce_container_is_null;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	if(m->elsize != sizeof(val)) {
-		vita_warn("expects <float>! Aborting operation.", __FUNCTION__);
-		return ce_error_wrong_datatype;
+		return ve_error_incompatible_datatype;
 	}
 
 	return mat_set(m, &val, atRow, atCol);
 }
 
 enum ContainerError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
-	if(is_null(m)) {
-		return ce_container_is_null;
+	if(m == NULL) {
+		return ve_error_is_null;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	if(m->elsize != sizeof(val)) {
-		vita_warn("expects <double>! Aborting operation.", __FUNCTION__);
-		return ce_error_wrong_datatype;
+		return ve_error_incompatible_datatype;
 	}
 
 	return mat_set(m, &val, atRow, atCol);
 }
 
 void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
-	if(is_null(m)) {
+	if(m == NULL) {
 		return NULL;
 	}
 
 	if(!(atRow < m->rows) || !(atCol < m->cols)) {
-		vita_warn("out-of-bounds access!", __FUNCTION__);
 		return NULL;
 	}
 
@@ -301,7 +270,7 @@ double mat_getd(const mat_t *const m, const size_t atRow, const size_t atCol) {
 }
 
 void mat_foreach(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
-	if(is_null(m) || is_null(func)) {
+	if(m == NULL || func == NULL) {
 		return;
 	}
 
@@ -311,19 +280,3 @@ void mat_foreach(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

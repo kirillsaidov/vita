@@ -1,17 +1,20 @@
 #include "vita/container/str.h"
 
 str_t *str(const char *cs) {
-	if(is_null(cs)) {
+	if(cs == NULL) {
 		cs = "";
 	}
-	
+
+	// create str
 	str_t *s = strn(strlen(cs));
-	if(is_null(s)) {
+	if(s == NULL) {
 		return NULL;
 	}
 
-	if(str_set(s, cs) != ce_operation_success) {
-		vita_warn("unable to set the string", __FUNCTION__);
+	// set cs to str
+	if(str_set(s, cs) != ve_operation_success) {
+		str_free(s);
+		return NULL;
 	}
 
 	return s;
@@ -22,7 +25,7 @@ str_t *strn(const size_t n) {
 	str_t *s = malloc(sizeof(str_t));
 
 	// check if s was allocated
-	if(is_null(s)) {
+	if(s == NULL) {
 		return NULL;
 	}
 
@@ -35,7 +38,7 @@ str_t *strn(const size_t n) {
 	};
 
 	// checking if s->ptr was allocated
-	if(is_null(s->ptr)) {
+	if(s->ptr == NULL) {
 		free(s);
 		return NULL;
 	}
@@ -51,7 +54,7 @@ str_t *str_dup(const str_t *const s) {
 }
 
 str_t *str_take_ownership(const char *const cs) {
-	if(is_null(cs)) {
+	if(cs == NULL) {
 		return NULL;
 	}
 
@@ -59,7 +62,7 @@ str_t *str_take_ownership(const char *const cs) {
 	str_t *s = malloc(sizeof(str_t));
 
 	// check if s was allocated
-	if(is_null(s)) {		
+	if(s == NULL) {
 		return NULL;
 	}
 
@@ -77,7 +80,7 @@ str_t *str_take_ownership(const char *const cs) {
 
 void str_free(str_t *s) {
 	// if NULL, exit
-	if(is_null(s)) {
+	if(s == NULL) {
 		return;
 	}
 
@@ -88,12 +91,6 @@ void str_free(str_t *s) {
 	// reset to NULL
 	s = NULL;
 }
-
-
-
-
-
-
 
 const char *cstr(const str_t *const s) {
 	return (const char*)(s->ptr);
@@ -115,38 +112,35 @@ bool str_is_empty(const str_t *const s) {
 	return !(s->len);
 }
 
-
-
-
-
-
-
 enum ContainerError str_shrink(str_t *const s) {
-	if(is_null(s)) {
-		return ce_container_is_null;
+	if(s == NULL) {
+		return ve_error_is_null;
 	}
 
 	// if length and capacity are the same, exit the function
 	if(s->len == s->capacity) {
-		return ce_operation_success;
+		return ve_operation_success;
 	}
 
 	// shrink the array capacity to length
 	void *newptr = realloc(s->ptr, (s->len + 1) * s->elsize);
-	if(is_null(newptr)) {
-		return ce_error_allocation;
+	if(newptr == NULL) {
+		return ve_error_allocation;
 	}
 
 	// update values
 	s->ptr = newptr;
 	s->capacity = s->len;
 
-	return ce_operation_success;
+	// add '\0' terminator at the very end of str_t
+	((char*)s->ptr)[s->capacity] = '\0';
+
+	return ve_operation_success;
 }
 
 enum ContainerError str_clear(str_t *const s) {
-	if(is_null(s)) {
-		return ce_container_is_null;
+	if(s == NULL) {
+		return ve_error_is_null;
 	}
 
 	// set C string to ""
@@ -155,18 +149,18 @@ enum ContainerError str_clear(str_t *const s) {
 	// update length
 	s->len = 0;
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_reserve(str_t *const s, const size_t n) {
-	if(is_null(s) || !n) {
-		return ce_container_is_null;
+	if(s == NULL || !n) {
+		return ve_error_is_null;
 	}
 
 	// reserve memory for additional n elements
 	void *newptr = realloc(s->ptr, (s->capacity + n + 1) * s->elsize);
-	if(is_null(newptr)) {
-		return ce_error_allocation;
+	if(newptr == NULL) {
+		return ve_error_allocation;
 	}
 
 	// update values
@@ -176,7 +170,7 @@ enum ContainerError str_reserve(str_t *const s, const size_t n) {
 	// add '\0' terminator at the very end of str_t
 	((char*)s->ptr)[s->capacity] = '\0';
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_set(str_t *const s, const char *cs) {
@@ -185,13 +179,13 @@ enum ContainerError str_set(str_t *const s, const char *cs) {
 
 enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n) {
 	// error checking
-	if(is_null(s) || is_null(cs)) {
-		return ce_container_is_null;
+	if(s == NULL || cs == NULL) {
+		return ve_error_is_null;
 	}
 
 	// check if it has enough space
 	if(s->capacity < n) {
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	// copy cs data to str_t
@@ -203,7 +197,7 @@ enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n) {
 	// update values
 	s->len = n;
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_append(str_t *const s, const char *cs) {
@@ -211,14 +205,13 @@ enum ContainerError str_append(str_t *const s, const char *cs) {
 }
 
 enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n) {
-	if(is_null(s) || is_null(cs)) {
-		return ce_container_is_null;
+	if(s == NULL || cs == NULL) {
+		return ve_error_is_null;
 	}
 
 	// check if new memory needs to be allocated
-	if(str_has_space(s) <= n && !str_reserve(s, (n - str_has_space(s)))) {
-		vita_warn("memory allocation failed!", __FUNCTION__);
-		return ce_error_allocation;
+	if(str_has_space(s) <= n && str_reserve(s, (n - str_has_space(s))) != ve_operation_success) {
+		return ve_error_allocation;
 	}
 
 	// copy cs to str_t
@@ -230,24 +223,23 @@ enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n)
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at) {
-	if(is_null(s) || is_null(cs)) {
-		return ce_container_is_null;
+	if(s == NULL || cs == NULL) {
+		return ve_error_is_null;
 	}
 
 	// check if we have out of bounds access
 	if(s->len <= at) {
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	// check if new memory needs to be allocated
 	const size_t csLen = strlen(cs);
-	if(str_has_space(s) <= csLen && !str_reserve(s, (csLen - str_has_space(s)))) {
-		vita_warn("memory allocation failed!", __FUNCTION__);
-		return ce_error_allocation;
+	if(str_has_space(s) <= csLen && str_reserve(s, (csLen - str_has_space(s))) != ve_operation_success) {
+		return ve_error_allocation;
 	}
 
 	// shift the end of string from the specified index `at` to `at + csLen` in str
@@ -262,17 +254,17 @@ enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at) 
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_remove(str_t *const s, const size_t from, size_t n) {
-	if(is_null(s)) {
-		return ce_container_is_null;
+	if(s == NULL) {
+		return ve_error_is_null;
 	}
 
 	// check if we have out of bounds access
 	if(s->len <= from) {
-		return ce_error_out_of_bounds_access;
+		return ve_error_out_of_bounds_access;
 	}
 
 	// check if we need to remove all chars until the end
@@ -289,19 +281,19 @@ enum ContainerError str_remove(str_t *const s, const size_t from, size_t n) {
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 enum ContainerError str_remove_str(str_t *const s, const char *cs) {
-	if(is_null(s) || is_null(cs)) {
-		return ce_container_is_null;
+	if(s == NULL || cs == NULL) {
+		return ve_error_is_null;
 	}
 
 	// find a substring in strbuf
 	const size_t csLen = strlen(cs);
 	void* sub = strstr(s->ptr, cs);
-	if(is_null(sub)) {
-		return ce_operation_failure;
+	if(sub == NULL) {
+		return ve_operation_failure;
 	}
 
 	// find how many characters to copy from the end
@@ -316,14 +308,14 @@ enum ContainerError str_remove_str(str_t *const s, const char *cs) {
 	// add the '\0' terminator
 	((char*)s->ptr)[s->len] = '\0';
 
-	return ce_operation_success;
+	return ve_operation_success;
 }
 
 size_t str_can_find(const str_t *const s, const char *cs) {
-	if(is_null(s) || is_null(cs)) {
+	if(s == NULL || cs == NULL) {
 		return 0;
 	}
-		
+
 	// count the number of substring instances in strbuf
 	size_t count = 0;
 	const size_t csLen = strlen(cs);
@@ -332,12 +324,12 @@ size_t str_can_find(const str_t *const s, const char *cs) {
 		count++;
 		p = strstr(p + csLen * s->elsize, s->ptr);
 	}
-	
+
 	return count;
 }
 
 plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
-	if(is_null(s) || is_null(sep)) {
+	if(s == NULL || sep == NULL) {
 		return NULL;
 	}
 
@@ -349,16 +341,14 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 
 	// create a vec_t instance
 	plist_t *p = NULL;
-	if(is_null(ps)) {
+	if(ps == NULL) {
 		p = plist_create(strInstances + 1);
-		if(is_null(p)) {
-			vita_warn("unable to allocate plist_t!", __FUNCTION__);
-			return p;
+		if(p == NULL) {
+			return NULL;
 		}
 	} else {
 		p = ps;
-		if(plist_has_space(p) < strInstances + 1 && plist_reserve(p, (strInstances + 1) - plist_has_space(p)) != ce_operation_success) {
-			vita_warn("unable to reserve memory for plist_t!", __FUNCTION__);
+		if(plist_has_space(p) < strInstances + 1 && plist_reserve(p, (strInstances + 1) - plist_has_space(p)) != ve_operation_success) {
 			return p;
 		}
 	}
@@ -372,7 +362,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 		const char *current = strstr(head, sep);
 
 		// count copy length
-		size_t copyLen = strlen(head) - (is_null(current) ? 0 : strlen(current));
+		size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
 		if(copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
 			head += sepLen * s->elsize;
 			continue;
@@ -381,13 +371,13 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 			str_t *tempStr = strn(copyLen);
 			str_set_n(tempStr, head, copyLen);
 			plist_push(p, tempStr);
-			
+
 			// update head
 			head = current + sepLen * s->elsize;
 		}
-		
+
 		// break from loop when no more sep is found or we are at the end of string
-		if(current == NULL || current[sepLen] == '\0') { 
+		if(current == NULL || current[sepLen] == '\0') {
 			break;
 		}
 	}
@@ -398,33 +388,3 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
 bool str_equals(const char *cs1, const char *cs2) {
 	return (!strncmp(cs1, cs2, strlen(cs1)));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

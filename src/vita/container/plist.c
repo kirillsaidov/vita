@@ -2,8 +2,8 @@
 
 plist_t *plist_new(void) {
     plist_t *p = malloc(sizeof(plist_t));
-    if(is_null(p)) {
-        return NULL; 
+    if(p == NULL) {
+        return NULL;
     }
 
     // default-init
@@ -14,8 +14,8 @@ plist_t *plist_new(void) {
 
 enum ContainerError plist_ctor(plist_t *p, const size_t n) {
     // check if p was allocated
-    if(is_null(p)) {
-        return ce_container_is_null;
+    if(p == NULL) {
+        return ve_error_is_null;
     }
 
     // plist_t init
@@ -27,16 +27,16 @@ enum ContainerError plist_ctor(plist_t *p, const size_t n) {
     };
 
     // checking if p->ptr2 was allocated
-    if(is_null(p->ptr2)) {
-        return ce_error_allocation;
+    if(p->ptr2 == NULL) {
+        return ve_error_allocation;
     }
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 void plist_dtor(plist_t *p) {
     // if NULL, exit
-    if(is_null(p)) {
+    if(p == NULL) {
         return;
     }
 
@@ -47,10 +47,9 @@ void plist_dtor(plist_t *p) {
     *p = (plist_t) {};
 }
 
-
 void plist_free(plist_t *p) {
     // if NULL, exit
-    if(is_null(p)) {
+    if(p == NULL) {
         return;
     }
 
@@ -61,19 +60,13 @@ void plist_free(plist_t *p) {
     p = NULL;
 }
 
-
-
-
-
-
-
 plist_t *plist_create(const size_t n) {
     plist_t *p = plist_new();
-    if(is_null(p)) {
+    if(p == NULL) {
         return NULL;
     }
 
-    if(plist_ctor(p, n) != ce_operation_success) {
+    if(plist_ctor(p, n) != ve_operation_success) {
         plist_free(p);
         return NULL;
     }
@@ -85,12 +78,6 @@ void plist_destroy(plist_t *p) {
     plist_dtor(p);
     plist_free(p);
 }
-
-
-
-
-
-
 
 size_t plist_len(const plist_t *const p) {
     return p->len;
@@ -104,82 +91,74 @@ size_t plist_has_space(const plist_t *const p) {
     return (p->capacity - p->len);
 }
 
-
-
-
-
-
-
 enum ContainerError plist_reserve(plist_t *const p, const size_t n) {
-    if(is_null(p) || !n) {
-        return ce_container_is_null;
+    if(p == NULL || !n) {
+        return ve_error_is_null;
     }
 
     // reserve memory for additional n elements
     void **newptr = realloc(p->ptr2, (p->capacity + n) * p->elsize);
-    if(is_null(newptr)) {
-        vita_warn("memory allocation failed!", __FUNCTION__);
-        return ce_error_allocation;
+    if(newptr == NULL) {
+        return ve_error_allocation;
     }
 
     // update values
     p->ptr2 = newptr;
     p->capacity += n;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 enum ContainerError plist_shrink(plist_t *const p) {
-    if(is_null(p)) {
-        return ce_container_is_null;
+    if(p == NULL) {
+        return ve_error_is_null;
     }
 
     // if length and capacity are the same, exit the function
     if(p->len == p->capacity) {
-        return ce_operation_success;
+        return ve_operation_success;
     }
 
     void **newptr = realloc(p->ptr2, p->len * p->elsize);
-    if(is_null(newptr)) {
-        vita_warn("memory allocation failed!", __FUNCTION__);
-		return ce_error_allocation;
+    if(newptr == NULL) {
+		return ve_error_allocation;
     }
 
     // update values
     p->ptr2 = newptr;
     p->capacity = p->len;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 enum ContainerError plist_clear(plist_t *const p) {
-    if(is_null(p)) {
-        return ce_container_is_null;
+    if(p == NULL) {
+        return ve_error_is_null;
     }
 
     // update length
     p->len = 0;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 enum ContainerError plist_set(plist_t *const p, const void *ptr, const size_t at) {
-    if(is_null(p) || is_null(ptr)) {
-        return ce_container_is_null;
+    if(p == NULL || ptr == NULL) {
+        return ve_error_is_null;
     }
 
     if(!(at < p->len)) {
-        return ce_error_out_of_bounds_access;
+        return ve_error_out_of_bounds_access;
     }
 
     // add ptr to plist_t
     p->ptr2[at] = (void*)ptr;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 void *plist_get(const plist_t *const p, const size_t at) {
-    if(is_null(p) || !(at < p->len)) {
+    if(p == NULL || !(at < p->len)) {
         return NULL;
     }
 
@@ -187,25 +166,24 @@ void *plist_get(const plist_t *const p, const size_t at) {
 }
 
 enum ContainerError plist_push(plist_t *const p, const void *ptr) {
-    if(is_null(p) || is_null(ptr)) {
-        return ce_container_is_null;
+    if(p == NULL || ptr == NULL) {
+        return ve_error_is_null;
     }
 
     // check if new memory needs to be allocated
-	if(!plist_has_space(p) && plist_reserve(p, (size_t)(p->capacity * CONTAINER_GROWTH_RATE + 1)) != ce_operation_success) {
-		vita_warn("memory allocation failed!", __FUNCTION__);
-		return ce_error_allocation;
+	if(!plist_has_space(p) && plist_reserve(p, p->capacity * CONTAINER_GROWTH_RATE) != ve_operation_success) {
+		return ve_error_allocation;
 	}
 
     // add ptr to plist_t
     p->ptr2[p->len++] = (void*)ptr;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 enum ContainerError plist_pop(plist_t *const p) {
-    if(is_null(p)) {
-        return ce_container_is_null;
+    if(p == NULL) {
+        return ve_error_is_null;
     }
 
     // pop the last element
@@ -213,11 +191,11 @@ enum ContainerError plist_pop(plist_t *const p) {
         p->len--;
     }
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 void *plist_pop_get(plist_t *const p) {
-    if(is_null(p)) {
+    if(p == NULL) {
         return NULL;
     }
 
@@ -226,12 +204,12 @@ void *plist_pop_get(plist_t *const p) {
 }
 
 enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
-    if(is_null(p)) {
-        return ce_container_is_null;
+    if(p == NULL) {
+        return ve_error_is_null;
     }
 
     if(!(at < p->len)) {
-        return ce_error_out_of_bounds_access;
+        return ve_error_out_of_bounds_access;
     }
 
     // check remove strategy
@@ -244,11 +222,11 @@ enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum R
     // update length
     p->len--;
 
-    return ce_operation_success;
+    return ve_operation_success;
 }
 
 void plist_foreach(const plist_t *const p, void (*func)(void*, size_t)) {
-    if(is_null(p) || is_null(func)) {
+    if(p == NULL || func == NULL) {
         return;
     }
 
@@ -256,18 +234,3 @@ void plist_foreach(const plist_t *const p, void (*func)(void*, size_t)) {
         func(p->ptr2[i], i);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

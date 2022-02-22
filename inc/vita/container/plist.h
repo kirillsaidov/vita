@@ -6,14 +6,11 @@
 	- plist_ctor
 	- plist_dtor
 	- plist_free
-
 	- plist_create
 	- plist_destroy
-
 	- plist_len
 	- plist_capacity
 	- plist_has_space
-
 	- plist_reserve
 	- plist_shrink
 	- plist_clear
@@ -29,16 +26,16 @@
 #include "../core/core.h"
 
 // new pointer list type
-typedef struct BaseArrayType plist_t; 
+typedef struct BaseArrayType plist_t;
 
-/** 
+/**
 Allocates memory for plist_t
 
 Returns: `plist_t*` upon success, `NULL` upon failure
 */
 extern plist_t *plist_new(void);
 
-/** 
+/**
 Constructs plist_t
 
 Params:
@@ -49,7 +46,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_ctor(plist_t *p, const size_t n);
 
-/** 
+/**
 Destroys contents of plist_t
 
 Params:
@@ -59,7 +56,7 @@ Returns: enum ContainerError
 */
 extern void plist_dtor(plist_t *p);
 
-/** 
+/**
 Frees the plist_t instance
 
 Params:
@@ -67,13 +64,7 @@ Params:
 */
 extern void plist_free(plist_t *p);
 
-
-
-
-
-
-
-/** 
+/**
 Allocates and constructs plist_t
 
 Params:
@@ -83,19 +74,13 @@ Returns: `plist_t*` upon success, `NULL` otherwise
 */
 extern plist_t *plist_create(const size_t n);
 
-/** 
+/**
 Deallocates and destroys plist_t
 
 Params:
 	p = plist_t pointer
 */
 extern void plist_destroy(plist_t *p);
-
-
-
-
-
-
 
 /**
 Returns length, capacity, available space (capacity - length)
@@ -109,13 +94,7 @@ extern size_t plist_len(const plist_t *const p);
 extern size_t plist_capacity(const plist_t *const p);
 extern size_t plist_has_space(const plist_t *const p);
 
-
-
-
-
-
-
-/** 
+/**
 Reserves additional memory of n elements
 
 Params:
@@ -126,7 +105,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_reserve(plist_t *const p, const size_t n);
 
-/** 
+/**
 Shrinks plist_t capacity to its length
 
 Params:
@@ -136,7 +115,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_shrink(plist_t *const p);
 
-/** 
+/**
 Sets plist_t length to 0
 
 Params:
@@ -146,7 +125,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_clear(plist_t *const p);
 
-/** 
+/**
 Assigns a new pointer at an index
 
 Params:
@@ -169,8 +148,8 @@ Returns: void* pointer
 */
 extern void *plist_get(const plist_t *const p, const size_t at);
 
-/** 
-Push value at the end 
+/**
+Push value at the end
 
 Params:
 	p = plist_t pointer
@@ -180,7 +159,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_push(plist_t *const p, const void *ptr);
 
-/** 
+/**
 Pop the last value from the end
 Params:
 	p = plist_t pointer
@@ -189,7 +168,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError plist_pop(plist_t *const p);
 
-/** 
+/**
 Get and pop the last value from the end
 Params:
 	p = plist_t pointer
@@ -214,7 +193,7 @@ Notes:
 */
 extern enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs);
 
-/** 
+/**
 Calls the specified function on each element
 
 Params:
@@ -225,47 +204,3 @@ extern void plist_foreach(const plist_t *const p, void (*func)(void*, size_t));
 
 
 #endif // VITA_PLIST_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

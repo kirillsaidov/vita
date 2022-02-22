@@ -7,26 +7,24 @@
 	- str_dup
 	- str_take_ownership
 	- str_free
-
-	- cstr 					
-	- str_len 				
-	- str_capacity 			
-	- str_has_space  			
-	- str_is_empty 			
-
-	- str_shrink 			
-	- str_clear 			
+	- cstr
+	- str_len
+	- str_capacity
+	- str_has_space
+	- str_is_empty
+	- str_shrink
+	- str_clear
 	- str_reserve
 	- str_set
 	- str_set_n
 	- str_append
-	- str_append_n	
-	- str_insert 			
-	- str_remove 			
-	- str_remove_str 		
-	- str_can_find 			
-	- str_split 			
-	- str_equals			
+	- str_append_n
+	- str_insert
+	- str_remove
+	- str_remove_str
+	- str_can_find
+	- str_split
+	- str_equals
 */
 
 #include "../core/core.h"
@@ -55,7 +53,7 @@ Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *strn(const size_t n);
 
-/** 
+/**
 Duplicates and returns a new dynamic string
 
 Params:
@@ -65,7 +63,7 @@ Returns: str_t* instance upon success, `NULL` otherwise
 */
 extern str_t *str_dup(const str_t *const s);
 
-/** 
+/**
 Takes ownership of an allocated string instead of allocating memory itself
 
 Params:
@@ -75,19 +73,13 @@ Returns: str_t* instance upon success, `NULL` otherwise
 */
 extern str_t *str_take_ownership(const char *const cs);
 
-/** 
+/**
 Frees the str instance
 
 Params:
 	s = str_t instance
 */
 extern void str_free(str_t *s);
-
-
-
-
-
-
 
 /**
 Returns a raw immutable C string
@@ -109,7 +101,7 @@ Returns: str_t length
 */
 extern size_t str_len(const str_t *const s);
 
-/** 
+/**
 Returns str_t capacity
 
 Params:
@@ -119,17 +111,17 @@ Returns: str_t capacity
 */
 extern size_t str_capacity(const str_t *const s);
 
-/** 
+/**
 Returns available space before new allocation is required
 
 Params:
 	s = str_t instance
 
-Returns: free space (capacity - length) 
+Returns: free space (capacity - length)
 */
 extern size_t str_has_space(const str_t *const s);
 
-/** 
+/**
 Checks if string is emtpy ("")
 
 Params:
@@ -138,12 +130,6 @@ Params:
 Returns: `true` if length == 0
 */
 extern bool str_is_empty(const str_t *const s);
-
-
-
-
-
-
 
 /**
 Shrinks str_t capacity to its length
@@ -165,7 +151,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_clear(str_t *const s);
 
-/** 
+/**
 Reserves memory for str_t
 
 Params:
@@ -176,7 +162,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_reserve(str_t *const s, const size_t n);
 
-/** 
+/**
 Assigns a new raw C string to str_t
 
 Params:
@@ -187,7 +173,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_set(str_t *const s, const char *cs);
 
-/** 
+/**
 Assigns n characters of raw C string to str_t
 
 Params:
@@ -199,7 +185,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n);
 
-/** 
+/**
 Appends a raw C string at the end of str_t
 
 Params:
@@ -210,7 +196,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_append(str_t *const s, const char *cs);
 
-/** 
+/**
 Appends n characters of raw C string at the end of str_t
 
 Params:
@@ -222,7 +208,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n);
 
-/** 
+/**
 Inserts a raw C string into str_t starting at the specified index
 
 Params:
@@ -257,7 +243,7 @@ Returns: enum ContainerError
 */
 extern enum ContainerError str_remove_str(str_t *const s, const char *cs);
 
-/** 
+/**
 Checks if str_t contains a substring
 
 Params:
@@ -292,19 +278,3 @@ Returns: `true` if s1 == s2
 extern bool str_equals(const char *cs1, const char *cs2);
 
 #endif // VITA_STR_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
