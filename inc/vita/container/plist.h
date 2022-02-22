@@ -42,9 +42,9 @@ Params:
 	p = plist_t instance
 	n = number of elements
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_ctor(plist_t *p, const size_t n);
+extern enum VitaError plist_ctor(plist_t *p, const size_t n);
 
 /**
 Destroys contents of plist_t
@@ -52,7 +52,7 @@ Destroys contents of plist_t
 Params:
 	p = plist_t instance
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
 extern void plist_dtor(plist_t *p);
 
@@ -101,9 +101,9 @@ Params:
 	p = plist_t pointer
 	n = number of elements
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_reserve(plist_t *const p, const size_t n);
+extern enum VitaError plist_reserve(plist_t *const p, const size_t n);
 
 /**
 Shrinks plist_t capacity to its length
@@ -111,9 +111,9 @@ Shrinks plist_t capacity to its length
 Params:
 	p = plist_t pointer
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_shrink(plist_t *const p);
+extern enum VitaError plist_shrink(plist_t *const p);
 
 /**
 Sets plist_t length to 0
@@ -121,9 +121,9 @@ Sets plist_t length to 0
 Params:
 	p = plist_t pointer
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_clear(plist_t *const p);
+extern enum VitaError plist_clear(plist_t *const p);
 
 /**
 Assigns a new pointer at an index
@@ -133,9 +133,9 @@ Params:
 	ptr = pointer value
 	at = index
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_set(plist_t *const p, const void *ptr, const size_t at);
+extern enum VitaError plist_set(plist_t *const p, const void *ptr, const size_t at);
 
 /**
 Returns a pointer at an index
@@ -155,18 +155,18 @@ Params:
 	p = plist_t pointer
 	ptr = pointer value
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_push(plist_t *const p, const void *ptr);
+extern enum VitaError plist_push(plist_t *const p, const void *ptr);
 
 /**
 Pop the last value from the end
 Params:
 	p = plist_t pointer
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError plist_pop(plist_t *const p);
+extern enum VitaError plist_pop(plist_t *const p);
 
 /**
 Get and pop the last value from the end
@@ -184,14 +184,14 @@ Params:
 	p = plist_t pointer
 	at = index
 
-Returns: enum ContainerError
+Returns: enum VitaError
 
 Notes:
 	enum RemoveStrategy { rs_stable = ordered removal, rs_fast = unordered removal }
 	rs_stable:	shifts all values by element size
 	rs_fast:	swaps the last value with the value of `at`
 */
-extern enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs);
+extern enum VitaError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs);
 
 /**
 Calls the specified function on each element

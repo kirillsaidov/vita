@@ -42,7 +42,7 @@ Params:
 
 Returns: `mat_t*` upon success, `NULL` otherwise
 */
-extern enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
+extern enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
 
 /**
 Duplicates and returns a new dynamic 2D array
@@ -109,7 +109,7 @@ Params:
 
 Returns: `true` upon success
 */
-extern enum ContainerError mat_clear(mat_t *const m);
+extern enum VitaError mat_clear(mat_t *const m);
 
 /**
 Resizes mat_t rows and cols
@@ -121,7 +121,7 @@ Params:
 
 Returns: `true` upon success
 */
-extern enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t cols);
+extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols);
 
 /**
 Assigns a new value at an index
@@ -134,11 +134,11 @@ Params:
 
 Returns: `true` upon success
 */
-extern enum ContainerError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
-extern enum ContainerError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol);
-extern enum ContainerError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol);
-extern enum ContainerError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
-extern enum ContainerError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
 
 /**
 Returns value at index

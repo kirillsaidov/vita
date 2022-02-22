@@ -6,8 +6,10 @@
 	- path_build_n
 	- path_getcwd
 	- path_exists
-	- path_fexists
+	- path_is_dir
+	- path_is_file
 	- path_listdir
+	- path_listdir_deep
 	- path_basename
 */
 

@@ -12,7 +12,7 @@ plist_t *plist_new(void) {
     return p;
 }
 
-enum ContainerError plist_ctor(plist_t *p, const size_t n) {
+enum VitaError plist_ctor(plist_t *p, const size_t n) {
     // check if p was allocated
     if(p == NULL) {
         return ve_error_is_null;
@@ -91,7 +91,7 @@ size_t plist_has_space(const plist_t *const p) {
     return (p->capacity - p->len);
 }
 
-enum ContainerError plist_reserve(plist_t *const p, const size_t n) {
+enum VitaError plist_reserve(plist_t *const p, const size_t n) {
     if(p == NULL || !n) {
         return ve_error_is_null;
     }
@@ -109,7 +109,7 @@ enum ContainerError plist_reserve(plist_t *const p, const size_t n) {
     return ve_operation_success;
 }
 
-enum ContainerError plist_shrink(plist_t *const p) {
+enum VitaError plist_shrink(plist_t *const p) {
     if(p == NULL) {
         return ve_error_is_null;
     }
@@ -131,7 +131,7 @@ enum ContainerError plist_shrink(plist_t *const p) {
     return ve_operation_success;
 }
 
-enum ContainerError plist_clear(plist_t *const p) {
+enum VitaError plist_clear(plist_t *const p) {
     if(p == NULL) {
         return ve_error_is_null;
     }
@@ -142,7 +142,7 @@ enum ContainerError plist_clear(plist_t *const p) {
     return ve_operation_success;
 }
 
-enum ContainerError plist_set(plist_t *const p, const void *ptr, const size_t at) {
+enum VitaError plist_set(plist_t *const p, const void *ptr, const size_t at) {
     if(p == NULL || ptr == NULL) {
         return ve_error_is_null;
     }
@@ -165,7 +165,7 @@ void *plist_get(const plist_t *const p, const size_t at) {
     return p->ptr2[at];
 }
 
-enum ContainerError plist_push(plist_t *const p, const void *ptr) {
+enum VitaError plist_push(plist_t *const p, const void *ptr) {
     if(p == NULL || ptr == NULL) {
         return ve_error_is_null;
     }
@@ -181,7 +181,7 @@ enum ContainerError plist_push(plist_t *const p, const void *ptr) {
     return ve_operation_success;
 }
 
-enum ContainerError plist_pop(plist_t *const p) {
+enum VitaError plist_pop(plist_t *const p) {
     if(p == NULL) {
         return ve_error_is_null;
     }
@@ -203,7 +203,7 @@ void *plist_pop_get(plist_t *const p) {
     return p->ptr2[--p->len];
 }
 
-enum ContainerError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
+enum VitaError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
     if(p == NULL) {
         return ve_error_is_null;
     }

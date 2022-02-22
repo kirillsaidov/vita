@@ -112,7 +112,7 @@ bool str_is_empty(const str_t *const s) {
 	return !(s->len);
 }
 
-enum ContainerError str_shrink(str_t *const s) {
+enum VitaError str_shrink(str_t *const s) {
 	if(s == NULL) {
 		return ve_error_is_null;
 	}
@@ -138,7 +138,7 @@ enum ContainerError str_shrink(str_t *const s) {
 	return ve_operation_success;
 }
 
-enum ContainerError str_clear(str_t *const s) {
+enum VitaError str_clear(str_t *const s) {
 	if(s == NULL) {
 		return ve_error_is_null;
 	}
@@ -152,7 +152,7 @@ enum ContainerError str_clear(str_t *const s) {
 	return ve_operation_success;
 }
 
-enum ContainerError str_reserve(str_t *const s, const size_t n) {
+enum VitaError str_reserve(str_t *const s, const size_t n) {
 	if(s == NULL || !n) {
 		return ve_error_is_null;
 	}
@@ -173,11 +173,11 @@ enum ContainerError str_reserve(str_t *const s, const size_t n) {
 	return ve_operation_success;
 }
 
-enum ContainerError str_set(str_t *const s, const char *cs) {
+enum VitaError str_set(str_t *const s, const char *cs) {
 	return str_set_n(s, cs, strlen(cs));
 }
 
-enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n) {
+enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n) {
 	// error checking
 	if(s == NULL || cs == NULL) {
 		return ve_error_is_null;
@@ -200,11 +200,11 @@ enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n) {
 	return ve_operation_success;
 }
 
-enum ContainerError str_append(str_t *const s, const char *cs) {
+enum VitaError str_append(str_t *const s, const char *cs) {
 	return str_append_n(s, cs, strlen(cs));
 }
 
-enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n) {
+enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n) {
 	if(s == NULL || cs == NULL) {
 		return ve_error_is_null;
 	}
@@ -226,7 +226,7 @@ enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n)
 	return ve_operation_success;
 }
 
-enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at) {
+enum VitaError str_insert(str_t *const s, const char *cs, const size_t at) {
 	if(s == NULL || cs == NULL) {
 		return ve_error_is_null;
 	}
@@ -257,7 +257,7 @@ enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at) 
 	return ve_operation_success;
 }
 
-enum ContainerError str_remove(str_t *const s, const size_t from, size_t n) {
+enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
 	if(s == NULL) {
 		return ve_error_is_null;
 	}
@@ -284,7 +284,7 @@ enum ContainerError str_remove(str_t *const s, const size_t from, size_t n) {
 	return ve_operation_success;
 }
 
-enum ContainerError str_remove_str(str_t *const s, const char *cs) {
+enum VitaError str_remove_str(str_t *const s, const char *cs) {
 	if(s == NULL || cs == NULL) {
 		return ve_error_is_null;
 	}

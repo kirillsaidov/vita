@@ -12,7 +12,7 @@ mat_t *mat_new(void) {
 	return m;
 }
 
-enum ContainerError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
+enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
 	if(!rows || !cols) {
 		return ve_operation_failure;
 	}
@@ -120,7 +120,7 @@ size_t mat_size(const mat_t *const m) {
 	return (m->rows * m->cols);
 }
 
-enum ContainerError mat_clear(mat_t *const m) {
+enum VitaError mat_clear(mat_t *const m) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}
@@ -131,7 +131,7 @@ enum ContainerError mat_clear(mat_t *const m) {
 	return ve_operation_success;
 }
 
-enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
+enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}
@@ -162,7 +162,7 @@ enum ContainerError mat_resize(mat_t *const m, const size_t rows, const size_t c
 	return ve_operation_success;
 }
 
-enum ContainerError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
 	if(m == NULL || val == NULL) {
 		return ve_error_is_null;
 	}
@@ -177,7 +177,7 @@ enum ContainerError mat_set(mat_t *const m, const void *val, const size_t atRow,
 	return ve_operation_success;
 }
 
-enum ContainerError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}
@@ -193,7 +193,7 @@ enum ContainerError mat_seti32(mat_t *const m, const int val, const size_t atRow
 	return mat_set(m, &val, atRow, atCol);
 }
 
-enum ContainerError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}
@@ -209,7 +209,7 @@ enum ContainerError mat_seti64(mat_t *const m, const long val, const size_t atRo
 	return mat_set(m, &val, atRow, atCol);
 }
 
-enum ContainerError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}
@@ -225,7 +225,7 @@ enum ContainerError mat_setf(mat_t *const m, const float val, const size_t atRow
 	return mat_set(m, &val, atRow, atCol);
 }
 
-enum ContainerError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
 	if(m == NULL) {
 		return ve_error_is_null;
 	}

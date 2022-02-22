@@ -12,7 +12,7 @@ vec_t *vec_new(void) {
 	return v;
 }
 
-enum ContainerError vec_ctor(vec_t *const v, const size_t n, const size_t elsize) {
+enum VitaError vec_ctor(vec_t *const v, const size_t n, const size_t elsize) {
 	// check if v was allocated
 	if(v == NULL) {
 		return ve_error_is_null;
@@ -118,7 +118,7 @@ bool vec_is_empty(const vec_t *const v) {
 	return !(v->len);
 }
 
-enum ContainerError vec_shrink(vec_t *const v) {
+enum VitaError vec_shrink(vec_t *const v) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -141,7 +141,7 @@ enum ContainerError vec_shrink(vec_t *const v) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_clear(vec_t *const v) {
+enum VitaError vec_clear(vec_t *const v) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -152,7 +152,7 @@ enum ContainerError vec_clear(vec_t *const v) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_reserve(vec_t *const v, const size_t n) {
+enum VitaError vec_reserve(vec_t *const v, const size_t n) {
 	if(v == NULL || !n) {
 		return ve_error_is_null;
 	}
@@ -170,7 +170,7 @@ enum ContainerError vec_reserve(vec_t *const v, const size_t n) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_resize(vec_t *const v, const size_t n) {
+enum VitaError vec_resize(vec_t *const v, const size_t n) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -198,7 +198,7 @@ enum ContainerError vec_resize(vec_t *const v, const size_t n) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_push(vec_t *const v, const void *val) {
+enum VitaError vec_push(vec_t *const v, const void *const val) {
 	if(v == NULL || val == NULL) {
 		return ve_error_is_null;
 	}
@@ -214,7 +214,7 @@ enum ContainerError vec_push(vec_t *const v, const void *val) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_pushi32(vec_t *const v, const int val) {
+enum VitaError vec_pushi32(vec_t *const v, const int val) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -226,7 +226,7 @@ enum ContainerError vec_pushi32(vec_t *const v, const int val) {
 	return vec_push(v, &val);
 }
 
-enum ContainerError vec_pushi64(vec_t *const v, const long val) {
+enum VitaError vec_pushi64(vec_t *const v, const long val) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -238,7 +238,7 @@ enum ContainerError vec_pushi64(vec_t *const v, const long val) {
 	return vec_push(v, &val);
 }
 
-enum ContainerError vec_pushf(vec_t *const v, const float val) {
+enum VitaError vec_pushf(vec_t *const v, const float val) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -250,7 +250,7 @@ enum ContainerError vec_pushf(vec_t *const v, const float val) {
 	return vec_push(v, &val);
 }
 
-enum ContainerError vec_pushd(vec_t *const v, const double val) {
+enum VitaError vec_pushd(vec_t *const v, const double val) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -262,7 +262,7 @@ enum ContainerError vec_pushd(vec_t *const v, const double val) {
 	return vec_push(v, &val);
 }
 
-enum ContainerError vec_pop(vec_t *const v) {
+enum VitaError vec_pop(vec_t *const v) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -282,7 +282,7 @@ void *vec_pop_get(vec_t *const v) {
 	return (v->ptr + --v->len * v->elsize);
 }
 
-enum ContainerError vec_set(vec_t *const v, const void *val, const size_t at) {
+enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at) {
 	if(v == NULL || val == NULL) {
 		return ve_error_is_null;
 	}
@@ -297,7 +297,7 @@ enum ContainerError vec_set(vec_t *const v, const void *val, const size_t at) {
 	return ve_operation_success;
 }
 
-enum ContainerError vec_seti32(vec_t *const v, const int val, const size_t at) {
+enum VitaError vec_seti32(vec_t *const v, const int val, const size_t at) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -313,7 +313,7 @@ enum ContainerError vec_seti32(vec_t *const v, const int val, const size_t at) {
 	return vec_set(v, &val, at);
 }
 
-enum ContainerError vec_seti64(vec_t *const v, const long val, const size_t at) {
+enum VitaError vec_seti64(vec_t *const v, const long val, const size_t at) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -329,7 +329,7 @@ enum ContainerError vec_seti64(vec_t *const v, const long val, const size_t at) 
 	return vec_set(v, &val, at);
 }
 
-enum ContainerError vec_setf(vec_t *const v, const float val, const size_t at) {
+enum VitaError vec_setf(vec_t *const v, const float val, const size_t at) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -345,7 +345,7 @@ enum ContainerError vec_setf(vec_t *const v, const float val, const size_t at) {
 	return vec_set(v, &val, at);
 }
 
-enum ContainerError vec_setd(vec_t *const v, const double val, const size_t at) {
+enum VitaError vec_setd(vec_t *const v, const double val, const size_t at) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -385,7 +385,7 @@ double vec_getd(const vec_t *const v, const size_t at) {
 	return *(double*)(vec_get(v, at));
 }
 
-enum ContainerError vec_insert(vec_t *const v, const void *val, const size_t at) {
+enum VitaError vec_insert(vec_t *const v, const void *const val, const size_t at) {
 	if(v == NULL || val == NULL) {
 		return ve_error_is_null;
 	}
@@ -411,7 +411,7 @@ enum ContainerError vec_insert(vec_t *const v, const void *val, const size_t at)
 	return ve_operation_success;
 }
 
-enum ContainerError vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
+enum VitaError vec_remove(vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
 	if(v == NULL) {
 		return ve_error_is_null;
 	}
@@ -433,7 +433,7 @@ enum ContainerError vec_remove(vec_t *const v, const size_t at, const enum Remov
 	return ve_operation_success;
 }
 
-int64_t vec_contains(const vec_t *const v, const void *val) {
+int64_t vec_contains(const vec_t *const v, const void *const val) {
 	if(v == NULL || val == NULL) {
 		return -1;
 	}

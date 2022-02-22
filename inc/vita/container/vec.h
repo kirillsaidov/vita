@@ -76,7 +76,7 @@ Frees the vec_t instance
 Params:
 	v = vec_t pointer
 */
-extern vec_free(vec_t *v);
+extern void vec_free(vec_t *v);
 
 /**
 Allocates and constructs vec_t
@@ -188,7 +188,7 @@ Params:
 
 Returns: enum VitaError code
 */
-extern enum VitaError vec_push(vec_t *const v, const enum VitaError *val);
+extern enum VitaError vec_push(vec_t *const v, const void *const val);
 extern enum VitaError vec_pushi32(vec_t *const v, const int val);
 extern enum VitaError vec_pushi64(vec_t *const v, const long val);
 extern enum VitaError vec_pushf(vec_t *const v, const float val);
@@ -224,7 +224,7 @@ Params:
 
 Returns: enum VitaError code
 */
-extern enum VitaError vec_set(vec_t *const v, const enum VitaError *val, const size_t at);
+extern enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at);
 extern enum VitaError vec_seti32(vec_t *const v, const int val, const size_t at);
 extern enum VitaError vec_seti64(vec_t *const v, const long val, const size_t at);
 extern enum VitaError vec_setf(vec_t *const v, const float val, const size_t at);
@@ -255,7 +255,7 @@ Params:
 
 Returns: enum VitaError code
 */
-extern enum VitaError vec_insert(vec_t *const v, const enum VitaError *val, const size_t at);
+extern enum VitaError vec_insert(vec_t *const v, const void *const val, const size_t at);
 
 /**
 Removes an element from vec_t
@@ -283,7 +283,7 @@ Params:
 
 Returns: index to first val instance, `-1` upon failure
 */
-extern int64_t vec_contains(const vec_t *const v, const enum VitaError *val);
+extern int64_t vec_contains(const vec_t *const v, const void *const val);
 
 /**
 Calls the specified function on each element
@@ -292,7 +292,7 @@ Params:
 	v = vec_t instance
 	func = function to execute action on each element: func(pointer, for loop index)
 */
-extern void vec_foreach(const vec_t *const v, enum VitaError (*func)(void*, size_t));
+extern void vec_foreach(const vec_t *const v, void (*func)(void*, size_t));
 
 
 #endif // VITA_VEC_H

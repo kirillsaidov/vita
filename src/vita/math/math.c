@@ -26,12 +26,3 @@ bool is_palindrome(const uint64_t num) {
 
     return (reversed == num);
 }
-
-
-
-
-
-
-
-
-

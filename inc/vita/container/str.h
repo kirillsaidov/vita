@@ -137,9 +137,9 @@ Shrinks str_t capacity to its length
 Params:
 	s = str_t instance
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_shrink(str_t *const s);
+extern enum VitaError str_shrink(str_t *const s);
 
 /**
 Clears the str_t (sets length to 0)
@@ -147,9 +147,9 @@ Clears the str_t (sets length to 0)
 Params:
 	s = str_t instance
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_clear(str_t *const s);
+extern enum VitaError str_clear(str_t *const s);
 
 /**
 Reserves memory for str_t
@@ -158,9 +158,9 @@ Params:
 	s = str_t instance
 	n = how many elements to reserve
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_reserve(str_t *const s, const size_t n);
+extern enum VitaError str_reserve(str_t *const s, const size_t n);
 
 /**
 Assigns a new raw C string to str_t
@@ -169,9 +169,9 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_set(str_t *const s, const char *cs);
+extern enum VitaError str_set(str_t *const s, const char *cs);
 
 /**
 Assigns n characters of raw C string to str_t
@@ -181,9 +181,9 @@ Params:
 	cs = raw C string
 	n = number of characters
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_set_n(str_t *const s, const char *cs, const size_t n);
+extern enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n);
 
 /**
 Appends a raw C string at the end of str_t
@@ -192,9 +192,9 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_append(str_t *const s, const char *cs);
+extern enum VitaError str_append(str_t *const s, const char *cs);
 
 /**
 Appends n characters of raw C string at the end of str_t
@@ -204,9 +204,9 @@ Params:
 	cs = raw C string
 	n = number of characters
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_append_n(str_t *const s, const char *cs, const size_t n);
+extern enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n);
 
 /**
 Inserts a raw C string into str_t starting at the specified index
@@ -216,9 +216,9 @@ Params:
 	cs = raw C string
 	at = start at index (including `at`)
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_insert(str_t *const s, const char *cs, const size_t at);
+extern enum VitaError str_insert(str_t *const s, const char *cs, const size_t at);
 
 /**
 Removes n chars from str_t, starting from the specified index
@@ -228,9 +228,9 @@ Params:
 	from = start from index (excluding `from`)
 	n = number of elements to remove after `from`
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_remove(str_t *const s, const size_t from, size_t n);
+extern enum VitaError str_remove(str_t *const s, const size_t from, size_t n);
 
 /**
 Removes the first encountered substring from str_t
@@ -239,9 +239,9 @@ Params:
 	s = str_t instance
 	cs = raw C string
 
-Returns: enum ContainerError
+Returns: enum VitaError
 */
-extern enum ContainerError str_remove_str(str_t *const s, const char *cs);
+extern enum VitaError str_remove_str(str_t *const s, const char *cs);
 
 /**
 Checks if str_t contains a substring

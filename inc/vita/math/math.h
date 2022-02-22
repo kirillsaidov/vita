@@ -9,7 +9,7 @@
 
 // extern float isqrt(const float x);
 
-/** 
+/**
 Checks if a natural number is a palindrome
 
 Params:
