@@ -273,7 +273,7 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     }
 
     // shift the characters in string from index `from + n` to `from` in strbuf
-    memcpy((s->ptr + from * s->elsize), (s->ptr + (from + n) * s->elsize), ((s->len - (from + n)) * s->elsize));
+    memmove((s->ptr + from * s->elsize), (s->ptr + (from + n) * s->elsize), ((s->len - (from + n)) * s->elsize));
 
     // set new length
     s->len -= n;
@@ -300,7 +300,7 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
     const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - (sub + csLen * s->elsize));
 
     // shift the characters to the left of the string by the substring length
-    memcpy(sub, (sub + csLen * s->elsize), diff);
+    memmove(sub, (sub + csLen * s->elsize), diff);
 
     // set new length
     s->len -= csLen;
@@ -328,7 +328,7 @@ size_t str_can_find(const str_t *const s, const char *cs) {
     return count;
 }
 
-plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
+plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
     if(s == NULL || sep == NULL) {
         return NULL;
     }
@@ -385,6 +385,82 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep) {
     return p;
 }
 
+str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
+    if(s == NULL || sep == NULL) {
+        return NULL;
+    }
+
+    // check if s contains sep substring
+    const char *const tempStr = strstr(s->ptr, sep);
+    if(tempStr == NULL) {
+        return NULL;
+    }
+    
+    // if the copy length of the substring is zero, there is nothing to copy
+    const size_t copyLen = str_len(s) - strlen(tempStr);
+    if(!copyLen) {
+        return NULL;
+    }
+
+    // copy the string before the separator
+    str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
+    if(str_capacity(spop) < copyLen) {
+        str_reserve(spop, copyLen - str_capacity(spop));
+    }
+    str_set_n(spop, s->ptr, copyLen);
+
+    // pop the part of the string with the separator
+    str_remove(s, 0, copyLen + strlen(sep)); 
+
+    return spop;
+}
+
+str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
+    if(s == NULL || sep == NULL) {
+        return NULL;;
+    }
+
+    // check if s contains sep substring
+    const char *const tempStr = strstr(s->ptr, sep);
+    if(tempStr == NULL) {
+        return NULL;
+    }
+
+    // if the copy length of the substring is zero, there is nothing to copy
+    const size_t sepLen = strlen(sep);
+    const size_t copyLen = str_len(s) - strlen(tempStr) + sepLen;
+    if(!copyLen) {
+        return NULL;
+    }
+   
+    // copy the string before the separator
+    str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
+    if(str_capacity(spop) < copyLen) {
+        str_reserve(spop, copyLen - str_capacity(spop));
+    }
+    str_set_n(spop, tempStr + sepLen, copyLen);
+
+    // pop the part of the string with the separator
+    str_remove(s, str_len(s) - copyLen - sepLen, copyLen + sepLen); 
+
+    return spop;
+}
 bool str_equals(const char *cs1, const char *cs2) {
     return (!strncmp(cs1, cs2, strlen(cs1)));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

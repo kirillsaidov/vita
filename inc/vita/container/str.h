@@ -24,6 +24,8 @@
     - str_remove_str
     - str_can_find
     - str_split
+    - str_pop_get_first
+    - str_pop_get_last
     - str_equals
 */
 
@@ -225,7 +227,7 @@ Removes n chars from str_t, starting from the specified index
 
 Params:
     s = str_t instance
-    from = start from index (excluding `from`)
+    from = start from index
     n = number of elements to remove after `from`
 
 Returns: enum VitaError
@@ -264,7 +266,31 @@ Params:
 
 Returns: plist_t of str_t, `NULL` upon failure
 */
-extern plist_t *str_split(plist_t *ps, const str_t *const s, const char *sep);
+extern plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep);
+
+/**
+Pops off the first part of the string before the separator
+
+Params:
+    sr = str_t instance where the result will be saved, if NULL is passed, it's allocated
+    s = str_t instance
+    sep = seperator string
+
+Returns: str_t, `NULL` upon failure
+*/
+extern str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep);
+
+/**
+Pops off the last part of the string after the separator
+
+Params:
+    sr = str_t instance where the result will be saved, if NULL is passed, it's allocated
+    s = str_t instance
+    sep = seperator string
+
+Returns: str_t, `NULL` upon failure
+*/
+extern str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep);
 
 /**
 Checks if two raw C strings are the same
