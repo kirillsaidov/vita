@@ -198,12 +198,17 @@ str_t *path_basename(str_t *const s, const char *const cs) {
     return st;
 }
 
-bool path_mkdir(const str_t *const s) {
-    if(s == NULL || path_exists(s)) {
+bool path_mkdir(const char *const cs) {
+    if(cs == NULL) {
         return false;
     }
 
-    int status = mkdir(cstr(s), DIR_PERMISSIONS);
+    // if directory exists, don't do anything
+    if(path_exists(cs)) {
+        return true;
+    }
+
+    int status = mkdir(cs, DIR_PERMISSIONS);
     /* Permissions (on unix):
         S_IRWXU - 00700 user (file owner) has read, write and execute permission
         S_IRWXG - 00070 group has read, write and execute permission
@@ -218,24 +223,53 @@ bool path_mkdir(const str_t *const s) {
     #endif
 }
 
-/*bool path_mkdir_recurse(const str_t *const s) {
-    if(s == NULL) {
+bool path_mkdir_parents(const char *const cs) {
+    if(cs == NULL) {
         return false;
     }
 
-    if(path_exists(s)) {
+    // if directory exists, don't do anything
+    if(path_exists(cs)) {
         return true;
     }
+    
+    // mkdir and its parents
+    //str_t *s = str(cs);
+    //str_t *fullpath = strn(str_len(s));
+    
+    /*
+        I need to check if s-ptr[0] == PATH_SEPARATOR
 
-    path_mkdir_recurse(dirname())
-}*/
+        Then later on inside the loop, i need to check if the element 
+        returned to parent != '.' or '..'.
+    */
+    //str_t *parent = str_pop_get_first(NULL, s, PATH_SEPARATOR);
+    //while(parent != NULL) {
+        /*if(str_equals(cstr(parent), PATH_SEPARATOR)) {
+            break;
+        }*/
 
-bool path_rmdir(const str_t *const s) {
-    if(s == NULL || !path_exists(s)) {
+        /*if(!path_mkdir(cstr(parent))) {
+            return false;
+        }*/
+        
+        //printf("%s\n", cstr(parent));
+        //parent = str_pop_get_first(parent, s, PATH_SEPARATOR);
+    //}
+
+    // free up the resources
+    //str_free(s);
+    //str_free(parent);
+
+    return true;
+}
+
+bool path_rmdir(const char *const cs) {
+    if(cs == NULL || !path_exists(cs)) {
         return false;
     }
 
-    int status = rmdir(cstr(s));
+    int status = rmdir(cs);
 
     #if defined(_WIN32) || defined(_WIN64)
         return (status != 0);
@@ -243,3 +277,13 @@ bool path_rmdir(const str_t *const s) {
         return (status == 0);
     #endif
 }
+
+
+
+
+
+
+
+
+
+

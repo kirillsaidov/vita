@@ -140,7 +140,7 @@ Params:
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_mkdir(const str_t *const s);
+extern bool path_mkdir(const char *const s);
 
 /**
 Creates a directory and its parent directories
@@ -150,7 +150,7 @@ Params:
 
 Returns: `true` upon success, `false` otherwise
 */
-// extern bool path_mkdir_recurse(const str_t *const s);
+extern bool path_mkdir_parents(const char *const s);
 
 /**
 Deletes a directory
@@ -160,6 +160,6 @@ Params:
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_rmdir(const str_t *const s);
+extern bool path_rmdir(const char *const s);
 
 #endif // VITA_PATH_H
