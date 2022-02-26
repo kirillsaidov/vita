@@ -2,7 +2,7 @@
 #define VITA_ARGS_H
 
 /** VITA_ARGS MODULE
-	- getopt
+    - getopt
 */
 
 #include <stdarg.h>
@@ -11,22 +11,22 @@
 #include "../container/plist.h"
 
 typedef struct ArgOpt {
-	plist_t *optionLong;
-	plist_t *optionShort;
-	plist_t *optionDesc;
+    plist_t *optionLong;
+    plist_t *optionShort;
+    plist_t *optionDesc;
 
-	str_t *helpInfo;
-	bool helpWanted;
+    str_t *helpInfo;
+    bool helpWanted;
 } argopt_t;
 
 /**
 Parses command line arguments
 
 Params:
-	argc = number of arguments
-	argv = arguments
-	numOptions = number of command line options
-	... = option, description, variable where to save value
+    argc = number of arguments
+    argv = arguments
+    numOptions = number of command line options
+    ... = option, description, variable where to save value
 
 Returns: `argopt_t*` upon sucess, `NULL` otherwise
 */

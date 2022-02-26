@@ -2,7 +2,7 @@
 #define VITA_MATH_H
 
 /** VITA_MATH MODULE
-	- 
+    - 
 */
 
 #include "../core/core.h"
@@ -13,7 +13,7 @@
 Checks if a natural number is a palindrome
 
 Params:
-	num = input number
+    num = input number
 
 Returns: `true` if num is palindrome
 */

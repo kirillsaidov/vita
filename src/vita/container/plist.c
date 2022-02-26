@@ -121,7 +121,7 @@ enum VitaError plist_shrink(plist_t *const p) {
 
     void **newptr = realloc(p->ptr2, p->len * p->elsize);
     if(newptr == NULL) {
-		return ve_error_allocation;
+        return ve_error_allocation;
     }
 
     // update values
@@ -171,9 +171,9 @@ enum VitaError plist_push(plist_t *const p, const void *ptr) {
     }
 
     // check if new memory needs to be allocated
-	if(!plist_has_space(p) && plist_reserve(p, p->capacity * CONTAINER_GROWTH_RATE) != ve_operation_success) {
-		return ve_error_allocation;
-	}
+    if(!plist_has_space(p) && plist_reserve(p, p->capacity * CONTAINER_GROWTH_RATE) != ve_operation_success) {
+        return ve_error_allocation;
+    }
 
     // add ptr to plist_t
     p->ptr2[p->len++] = (void*)ptr;

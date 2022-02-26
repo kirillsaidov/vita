@@ -2,7 +2,7 @@
 #define VITA_H
 
 /** VITA MODULE
-	- 
+    - 
 */
 
 #include "system/path.h"
