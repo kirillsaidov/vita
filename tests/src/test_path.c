@@ -55,9 +55,28 @@ int main(void) {
 		assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
 	} str_free(sbasename);
 
-	return 0;
+    // make directories
+    // path_mkdir("hello"); // works
+    int result = path_mkdir_parents("/hello/world/of/my/");
+    printf("mkdir -p: %d\n", result);
+    return 0;
 }
 
 void free_str(void *ptr, size_t i) {
 	str_free(ptr);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

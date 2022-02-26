@@ -92,7 +92,18 @@ int main(void) {
 			// free each str_t in plist_t
 			plist_foreach(p, print_str);
 		} plist_destroy(p);
-	} str_free(sto);
+
+        str_t *spf = str_pop_get_first(NULL, sto, "Kirillos"); {
+            assert(str_equals(cstr(spf), ";My name is "));
+        } str_free(spf);
+
+        str_t *spl = str_pop_get_last(NULL, sto, "you?;"); {
+            assert(str_equals(cstr(spl), "let's play;"));
+        } str_free(spl);
+
+        assert(str_equals(cstr(sto), ";How are "));
+        //printf("%s\n", cstr(sto));
+    } str_free(sto);
 
 	return 0;
 }
