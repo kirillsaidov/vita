@@ -312,7 +312,7 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
 }
 
 size_t str_can_find(const str_t *const s, const char *cs) {
-    if(s == NULL || cs == NULL) {
+    if(s == NULL || cs == NULL || !str_len(s)) {
         return 0;
     }
 

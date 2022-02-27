@@ -56,9 +56,12 @@ int main(void) {
 	} str_free(sbasename);
 
     // make directories
-    // path_mkdir("hello"); // works
-    int result = path_mkdir_parents("/hello/world/of/my/");
-    printf("mkdir -p: %d\n", result);
+    //path_mkdir("hello_test_dir"); // works
+    //path_mkdir_parents("/hello/world/of/my/"); // works
+    
+    // rename file/dirs
+    //path_rename("hello", "hello_renamed"); // works
+
     return 0;
 }
 
