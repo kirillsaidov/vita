@@ -12,12 +12,14 @@
     - path_listdir_recurse
     - path_basename
     - path_mkdir
-    - path_mkdir_recurse
+    - path_mkdir_parents
     - path_rmdir
+    - path_rename
 */
 
 #include "../core/core.h"
 #include "../container/str.h"
+#include "../container/plist.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -136,30 +138,41 @@ extern str_t *path_basename(str_t *const s, const char *const cs);
 Creates a directory
 
 Params:
-    s = str_t instance
+    cs = str_t instance
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_mkdir(const char *const s);
+extern bool path_mkdir(const char *const cs);
 
 /**
 Creates a directory and its parent directories
 
 Params:
-    s = str_t instance
+    cs = str_t instance
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_mkdir_parents(const char *const s);
+extern bool path_mkdir_parents(const char *const cs);
 
 /**
-Deletes a directory
+Deletes an empty directory
 
 Params:
-    s = str_t instance
+    cs = str_t instance
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_rmdir(const char *const s);
+extern bool path_rmdir(const char *const cs);
+
+/**
+Rename/move a directory/file
+
+Params:
+    cs1 = file/directory
+    cs2 = new file/directory
+
+Returns: `true` upon success, `false` otherwise
+*/
+extern bool path_rename(const char *const cs1, const char *const cs2);
 
 #endif // VITA_PATH_H

@@ -232,36 +232,66 @@ bool path_mkdir_parents(const char *const cs) {
     if(path_exists(cs)) {
         return true;
     }
-    
-    // mkdir and its parents
-    //str_t *s = str(cs);
-    //str_t *fullpath = strn(str_len(s));
-    
-    /*
-        I need to check if s-ptr[0] == PATH_SEPARATOR
 
-        Then later on inside the loop, i need to check if the element 
-        returned to parent != '.' or '..'.
-    */
-    //str_t *parent = str_pop_get_first(NULL, s, PATH_SEPARATOR);
-    //while(parent != NULL) {
-        /*if(str_equals(cstr(parent), PATH_SEPARATOR)) {
-            break;
-        }*/
+    // create variables
+    bool status = true;
+    str_t *s = NULL;
+    str_t *sfull = NULL;
+    plist_t *dirs_list = NULL;
+    
+    // copy the raw C string into str_t for ease of use
+    s = str(cs);
+    if(s == NULL) {
+        status = false;
+        goto cleanup;
+    }
 
-        /*if(!path_mkdir(cstr(parent))) {
-            return false;
-        }*/
+    // create a fullpath variable
+    sfull = strn(str_len(s) + 1);
+    if(sfull == NULL) {
+        status = false;
+        goto cleanup;
+    }
+
+    // set len to 0
+    str_clear(sfull);
+
+    // split string into directories
+    dirs_list = str_split(NULL, s, PATH_SEPARATOR);
+    if(dirs_list == NULL) {
+        status = false;
+        goto cleanup;
+    }
+
+    // make directories with parents
+    for(size_t i = 0; i < plist_len(dirs_list); i++) {
+        // get the first directory in the directory tree that we need to make
+        str_t *sdir = (str_t*)(plist_get(dirs_list, i));
         
-        //printf("%s\n", cstr(parent));
-        //parent = str_pop_get_first(parent, s, PATH_SEPARATOR);
-    //}
+        // append it to the full path
+        str_append(sfull, cstr(sdir));
+        str_append(sfull, PATH_SEPARATOR);
+        
+        // make that directory
+        path_mkdir(cstr(sfull));
+    }
 
-    // free up the resources
-    //str_free(s);
-    //str_free(parent);
+cleanup:
+    // free the strings
+    str_free(s);
+    str_free(sfull);
+    
+    // free all strings in dirs_list
+    if(dirs_list == NULL) {
+        for(size_t i = 0; i < plist_len(dirs_list); i++) {
+            str_free((str_t*)(dirs_list->ptr2[i]));
+        }
+    }
 
-    return true;
+    // free dirs_list itself
+    plist_free(dirs_list);
+    
+    return status;
 }
 
 bool path_rmdir(const char *const cs) {
@@ -278,7 +308,13 @@ bool path_rmdir(const char *const cs) {
     #endif
 }
 
+bool path_rename(const char *const cs1, const char *const cs2) {
+    if(cs1 == NULL || cs2 == NULL) {
+        return false;
+    }
 
+    return (rename(cs1, cs2) == 0);
+}
 
 
 
