@@ -308,12 +308,45 @@ bool path_rmdir(const char *const cs) {
     #endif
 }
 
-bool path_rename(const char *const cs1, const char *const cs2) {
-    if(cs1 == NULL || cs2 == NULL) {
+/*
+bool path_rmdir_recurse(const char *const cs) {
+    if(cs == NULL || !path_exists(cs)) {
         return false;
     }
 
-    return (rename(cs1, cs2) == 0);
+    // get all files in a directory
+    // if none are found, delete the directory and return
+    plist_t *dir_list = path_listdir_recurse(NULL, cs, false);
+    if(!plist_len(dir_list)) {
+        path_rmdir(cs);
+        return true;
+    }
+    
+    // iterate starting from the end and remove each element
+    // checking its type
+    for(size_t i = 0; i < plist_len(dir_list); i++) {
+        
+    }
+}
+*/
+bool path_remove(const char *const cs) {
+    if(cs == NULL || !path_exists(cs)) {
+        return false;
+    }
+
+    return (remove(cs) == 0);
+}
+
+bool path_rename(const char *const cs1, const char *const cs2) {
+    if(cs1 == NULL || cs2 == NULL || !path_exists(cs1)) {
+        return false;
+    }
+
+    #if defined(_WIN32) || defined(_WIN64)
+        return (rename(cs1, cs2) != 0);
+    #else
+        return (rename(cs1, cs2) == 0);
+    #endif
 }
 
 

@@ -14,6 +14,8 @@
     - path_mkdir
     - path_mkdir_parents
     - path_rmdir
+    - path_rmdir_recurse *
+    - path_remove *
     - path_rename
 */
 
@@ -32,6 +34,7 @@
     #define getcwd _getcwd
     #define mkdir CreateDirectory
     #define rmdir RemoveDirectory
+    #define rename MoveFile
     #define DIR_PERMISSIONS NULL
 #else
     #include <unistd.h>
@@ -138,7 +141,7 @@ extern str_t *path_basename(str_t *const s, const char *const cs);
 Creates a directory
 
 Params:
-    cs = str_t instance
+    cs = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
@@ -148,7 +151,7 @@ extern bool path_mkdir(const char *const cs);
 Creates a directory and its parent directories
 
 Params:
-    cs = str_t instance
+    cs = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
@@ -158,11 +161,31 @@ extern bool path_mkdir_parents(const char *const cs);
 Deletes an empty directory
 
 Params:
-    cs = str_t instance
+    cs = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
 extern bool path_rmdir(const char *const cs);
+
+/**
+Deletes an directory and its contents
+
+Params:
+    cs = a raw C string
+
+Returns: `true` upon success, `false` otherwise
+*/
+extern bool path_rmdir_recurse(const char *const cs);
+
+/**
+Deletes a file
+
+Params:
+    cs = a raw C string
+
+Returns: `true` upon success, `false` otherwise
+*/
+extern bool path_remove(const char *const cs);
 
 /**
 Rename/move a directory/file
