@@ -30,8 +30,8 @@ int main(void) {
         assert(path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src"));
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
 
-	    plist_t *pdir = path_listdir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/"); {
-		    assert(plist_len(pdir) == 9);
+	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
+		    assert(plist_len(pdir) == 7);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #elif defined(_WIN32) || defined(_WIN64)
@@ -45,8 +45,8 @@ int main(void) {
         assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests"));
     	assert(path_is_file("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
 
-	    plist_t *pdir = path_listdir("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests/src/"); {
-		    assert(plist_len(pdir) == 9); 
+	    plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
+		    assert(plist_len(pdir) == 7); 
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #endif

@@ -108,17 +108,19 @@ extern bool path_is_file(const char *const cs);
 Get all directory contents
 
 Params:
+    p = container where to save the data; if NULL is passed, it is allocated
     cs = path
+    ignoreDotFiles = skip hidden .files
 
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
-extern plist_t *path_listdir(const char *const cs);
+extern plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
 
 /**
 Get all files and sub-directories recursively
 
 Params:
-    p = container where to save the data
+    p = container where to save the data; if NULL is passed, it is allocated
     cs = path
     ignoreDotFiles = skip hidden .files
 

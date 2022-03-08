@@ -93,43 +93,50 @@ bool path_is_file(const char *const cs) {
     return (stat(cs, &info) == 0 && S_ISREG(info.st_mode));
 }
 
-plist_t *path_listdir(const char *const cs) {
+plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
     if(!path_exists(cs)) {
+        return NULL;
+    }
+
+    // create plist instance
+    plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+    if(pl == NULL) {
         return NULL;
     }
 
     // open directory
     DIR *dir = opendir(cs);
     if(dir == NULL) {
-        return NULL;
-    }
-
-    // create a container of str_t
-    plist_t *p = plist_create(DEFAULT_INIT_ELEMENTS);
-    if(p == NULL) {
-        return NULL;
+        return pl;
     }
 
     // get directory contents
     struct dirent *dirtree = readdir(dir);
-    while(dirtree != NULL) {
-        // push directory name to plist_t
-        plist_push(p, str(dirtree->d_name));
+    while((dirtree = readdir(dir)) != NULL) {
+        // ignore "." and ".." directories
+        if(
+            (ignoreDotFiles && dirtree->d_name[0] == '.') ||
+            str_equals(dirtree->d_name, ".") || 
+            str_equals(dirtree->d_name, "..")
+        ) {
+            continue;
+        }
 
-        // update directory name
-        dirtree = readdir(dir);
+        // push directory name to plist_t
+        plist_push(pl, str(dirtree->d_name));
     }
 
     closedir(dir);
 
-    return p;
+    return pl;
 }
 
 plist_t *path_listdir_recurse(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
     if(!path_exists(cs)) {
         return NULL;
     }
-
+    
+    // create plist instance
     plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
         return NULL;
@@ -337,7 +344,7 @@ bool path_rmdir_recurse(const char *const cs) {
         // remove file/directory
         status = path_is_dir(cstr(s)) ? path_rmdir(cstr(s)) : path_remove(cstr(s));
         if(!status) {
-            break;
+            goto path_rmdir_recurse_cleanup;
         }
     }
 
