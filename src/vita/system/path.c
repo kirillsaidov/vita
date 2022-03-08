@@ -145,8 +145,11 @@ plist_t *path_listdir_recurse(plist_t *const p, const char *const cs, const bool
     struct dirent *dirtree = NULL;
     while((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
-        if((ignoreDotFiles && dirtree->d_name[0] == '.') ||
-            (str_equals(dirtree->d_name, ".") && str_equals(dirtree->d_name, ".."))) {
+        if(
+            (ignoreDotFiles && dirtree->d_name[0] == '.') ||
+            str_equals(dirtree->d_name, ".") || 
+            str_equals(dirtree->d_name, "..")
+        ) {
             continue;
         }
 
@@ -237,36 +240,36 @@ bool path_mkdir_parents(const char *const cs) {
     bool status = true;
     str_t *s = NULL;
     str_t *sfull = NULL;
-    plist_t *dirs_list = NULL;
+    plist_t *dir_list = NULL;
     
     // copy the raw C string into str_t for ease of use
     s = str(cs);
     if(s == NULL) {
         status = false;
-        goto cleanup;
+        goto path_mkdir_parents_cleanup;
     }
 
     // create a fullpath variable
     sfull = strn(str_len(s) + 1);
     if(sfull == NULL) {
         status = false;
-        goto cleanup;
+        goto path_mkdir_parents_cleanup;
     }
 
     // set len to 0
     str_clear(sfull);
 
     // split string into directories
-    dirs_list = str_split(NULL, s, PATH_SEPARATOR);
-    if(dirs_list == NULL) {
+    dir_list = str_split(NULL, s, PATH_SEPARATOR);
+    if(dir_list == NULL) {
         status = false;
-        goto cleanup;
+        goto path_mkdir_parents_cleanup;
     }
 
     // make directories with parents
-    for(size_t i = 0; i < plist_len(dirs_list); i++) {
+    for(size_t i = 0; i < plist_len(dir_list); i++) {
         // get the first directory in the directory tree that we need to make
-        str_t *sdir = (str_t*)(plist_get(dirs_list, i));
+        str_t *sdir = (str_t*)(plist_get(dir_list, i));
         
         // append it to the full path
         str_append(sfull, cstr(sdir));
@@ -276,20 +279,21 @@ bool path_mkdir_parents(const char *const cs) {
         path_mkdir(cstr(sfull));
     }
 
-cleanup:
+path_mkdir_parents_cleanup:
     // free the strings
     str_free(s);
     str_free(sfull);
     
-    // free all strings in dirs_list
-    if(dirs_list == NULL) {
-        for(size_t i = 0; i < plist_len(dirs_list); i++) {
-            str_free((str_t*)(dirs_list->ptr2[i]));
+    // free all strings in dir_list
+    if(dir_list != NULL) {
+        for(size_t i = 0; i < plist_len(dir_list); i++) {
+            str_t *s = (str_t*)(plist_get(dir_list, i));
+            str_free(s);
         }
     }
 
-    // free dirs_list itself
-    plist_free(dirs_list);
+    // free dir_list itself
+    plist_free(dir_list);
     
     return status;
 }
@@ -308,27 +312,50 @@ bool path_rmdir(const char *const cs) {
     #endif
 }
 
-/*
 bool path_rmdir_recurse(const char *const cs) {
     if(cs == NULL || !path_exists(cs)) {
         return false;
     }
 
+    // return value
+    bool status = true;
+
     // get all files in a directory
     // if none are found, delete the directory and return
     plist_t *dir_list = path_listdir_recurse(NULL, cs, false);
-    if(!plist_len(dir_list)) {
-        path_rmdir(cs);
-        return true;
+    if(dir_list == NULL || !plist_len(dir_list)) {
+        status = path_rmdir(cs);
+        goto path_rmdir_recurse_cleanup;
     }
     
     // iterate starting from the end and remove each element
     // checking its type
-    for(size_t i = 0; i < plist_len(dir_list); i++) {
+    for(size_t i = plist_len(dir_list) - 1; i >= 0; i--) {
+        // retrieve element
+        str_t *s = (str_t*)(plist_get(dir_list, i));
         
+        // remove file/directory
+        status = path_is_dir(cstr(s)) ? path_rmdir(cstr(s)) : path_remove(cstr(s));
+        if(!status) {
+            break;
+        }
     }
+
+path_rmdir_recurse_cleanup:
+    // free all strings in dir_list
+    if(dir_list != NULL) {
+        for(size_t i = 0; i < plist_len(dir_list); i++) {
+            str_t *s = (str_t*)(plist_get(dir_list, i));
+            str_free(s);
+        }
+    }
+
+    // free dir_list itself
+    plist_free(dir_list);
+ 
+    return status;
 }
-*/
+
 bool path_remove(const char *const cs) {
     if(cs == NULL || !path_exists(cs)) {
         return false;

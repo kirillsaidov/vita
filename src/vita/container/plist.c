@@ -195,7 +195,7 @@ enum VitaError plist_pop(plist_t *const p) {
 }
 
 void *plist_pop_get(plist_t *const p) {
-    if(p == NULL) {
+    if(p == NULL || !p->len) {
         return NULL;
     }
 
