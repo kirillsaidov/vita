@@ -14,7 +14,7 @@
     - path_mkdir
     - path_mkdir_parents
     - path_rmdir
-    - path_rmdir_recurse *
+    - path_rmdir_recurse
     - path_remove
     - path_rename
 */
