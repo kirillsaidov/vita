@@ -337,15 +337,13 @@ bool path_rmdir_recurse(const char *const cs) {
     
     // iterate starting from the end and remove each element
     // checking its type
-    for(size_t i = plist_len(dir_list) - 1; i >= 0; i--) {
-        // retrieve element
-        str_t *s = (str_t*)(plist_get(dir_list, i));
-        
+    str_t *s = NULL;
+    while((s = (str_t*)(plist_pop_get(dir_list))) != NULL) {
         // remove file/directory
         status = path_is_dir(cstr(s)) ? path_rmdir(cstr(s)) : path_remove(cstr(s));
         if(!status) {
             goto path_rmdir_recurse_cleanup;
-        }
+        }  
     }
 
 path_rmdir_recurse_cleanup:
