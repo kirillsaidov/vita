@@ -27,6 +27,8 @@
     - str_pop_get_first
     - str_pop_get_last
     - str_equals
+    - str_starts_with *
+    - str_ends_with *
 */
 
 #include "../core/core.h"
@@ -34,6 +36,16 @@
 
 // see core/core.h for definition
 typedef struct BaseArrayType str_t;
+
+/**
+Creates a static string with length
+
+Params:
+    cs = raw C string
+
+Returns: const str_t
+*/
+const str_t str_make_static(const char *const cs);
 
 /**
 Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
@@ -299,8 +311,30 @@ Params:
     cs1 = raw C string
     cs2 = raw C string
 
-Returns: `true` if s1 == s2
+Returns: `true` if cs1 == cs2
 */
-extern bool str_equals(const char *cs1, const char *cs2);
+extern bool str_equals(const char *const cs1, const char *const cs2);
+
+/**
+Checks if a raw C string starts with a substring
+
+Params:
+    cs = raw C string
+    cs_sub = raw C substring 
+
+Returns: `true` if cs starts with cs_sub
+*/
+extern bool str_starts_with(const char *const cs, const char *const cs_sub);
+
+/**
+Checks if a raw C string ends with a substring
+
+Params:
+    cs = raw C string
+    cs_sub = raw C substring 
+
+Returns: `true` if cs ends with cs_sub
+*/
+extern bool str_ends_with(const char *const cs, const char *const cs_sub);
 
 #endif // VITA_STR_H

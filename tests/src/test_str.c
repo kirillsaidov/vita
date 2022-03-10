@@ -5,7 +5,9 @@
 void print_str(void *ptr, size_t i);
 
 int main(void) {
-	str_t* mystr = str("hello, world!"); {
+    //const str_t static_s = str_make_static("hello, world");
+
+    str_t* mystr = str("hello, world!"); {
 		assert(str_len(mystr) == 13);
 		assert(str_capacity(mystr) == 13);
 		assert(str_has_space(mystr) == 0);

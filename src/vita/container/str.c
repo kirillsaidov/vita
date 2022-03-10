@@ -1,5 +1,14 @@
 #include "vita/container/str.h"
 
+const str_t str_make_static(const char *const cs) {
+    str_t s = {
+        .ptr = (void*)cs,
+        .len = strlen(cs),
+    };
+
+    return s;
+}
+
 str_t *str(const char *cs) {
     if(cs == NULL) {
         cs = "";
@@ -445,12 +454,29 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
 
     return spop;
 }
-bool str_equals(const char *cs1, const char *cs2) {
-    return (!strncmp(cs1, cs2, strlen(cs1)));
+
+bool str_equals(const char *const cs1, const char *const cs2) {
+    const size_t cs1Len = strlen(cs1);
+        if(cs1Len > strlen(cs2)) {
+        return false;
+    }
+
+    return (!strncmp(cs1, cs2, cs1Len));
 }
 
 
+bool str_starts_with(const char *const cs, const char *const cs_sub) {
+    const size_t subLen = strlen(cs_sub);
+    if(subLen < strlen(cs)) {
+        return false;
+    }
 
+    return (!strncmp(cs, cs_sub, subLen));
+}
+
+/*bool str_ends_with(const char *const cs, const char *const cs_sub) {
+    return true;
+}*/
 
 
 
