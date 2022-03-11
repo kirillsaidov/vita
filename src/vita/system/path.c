@@ -341,6 +341,10 @@ bool path_rmdir_recurse(const char *const cs) {
     while((s = (str_t*)(plist_pop_get(dir_list))) != NULL) {
         // remove file/directory
         status = path_is_dir(cstr(s)) ? path_rmdir(cstr(s)) : path_remove(cstr(s));
+        
+        // free str_t instance
+        str_free(s);
+
         if(!status) {
             goto path_rmdir_recurse_cleanup;
         }  
