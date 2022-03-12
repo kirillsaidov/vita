@@ -1,11 +1,17 @@
 #include <assert.h>
+#include <stdint.h>
 
 #include "../../inc/vita/container/str.h"
 
 void print_str(void *ptr, size_t i);
 
 int main(void) {
-    //const str_t static_s = str_make_static("hello, world");
+    const str_t static_s = str_make_on_stack("hello, world");
+    assert(str_equals(cstr(&static_s), "hello, world"));
+
+    str_t *ccws = str_custom_char_width(16, sizeof(uint16_t));
+    str_set(ccws, "Мир вам!");
+    assert(str_equals(cstr(ccws), "Мир вам!"));
 
     str_t* mystr = str("hello, world!"); {
 		assert(str_len(mystr) == 13);

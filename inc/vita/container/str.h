@@ -2,8 +2,10 @@
 #define VITA_STR_H
 
 /** VITA_STR MODULE (dynamic string)
+    - str_make_on_stack
     - str
     - strn
+    - str_custom_char_width
     - str_dup
     - str_take_ownership
     - str_free
@@ -45,7 +47,7 @@ Params:
 
 Returns: const str_t
 */
-const str_t str_make_static(const char *const cs);
+const str_t str_make_on_stack(const char *const cs);
 
 /**
 Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
@@ -66,6 +68,17 @@ Params:
 Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *strn(const size_t n);
+
+/**
+Creates an empty dynamic string of specified size (allocates additional memory for '\0')
+
+Params:
+    n = number of elements
+    elsize = element size (char, wchar, etc...)
+
+Returns: `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *str_custom_char_width(const size_t n, const size_t elsize);
 
 /**
 Duplicates and returns a new dynamic string

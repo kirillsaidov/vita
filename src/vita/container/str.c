@@ -1,6 +1,6 @@
 #include "vita/container/str.h"
 
-const str_t str_make_static(const char *const cs) {
+const str_t str_make_on_stack(const char *const cs) {
     str_t s = {
         .ptr = (void*)cs,
         .len = strlen(cs),
@@ -44,6 +44,35 @@ str_t *strn(const size_t n) {
         .len = n,
         .capacity = n,
         .elsize = sizeof(char),
+    };
+
+    // checking if s->ptr was allocated
+    if(s->ptr == NULL) {
+        free(s);
+        return NULL;
+    }
+
+    // copy str data to str_t
+    memset(s->ptr, '\0', (n + 1) * s->elsize);
+
+    return s;
+}
+
+str_t *str_custom_char_width(const size_t n, const size_t elsize) {
+    // allocate memory for a str_t struct
+    str_t *s = malloc(sizeof(str_t));
+
+    // check if s was allocated
+    if(s == NULL) {
+        return NULL;
+    }
+
+    // str_t init
+    *s = (str_t) {
+        .ptr = calloc(n + 1, sizeof(char)),
+        .len = n,
+        .capacity = n,
+        .elsize = elsize,
     };
 
     // checking if s->ptr was allocated
