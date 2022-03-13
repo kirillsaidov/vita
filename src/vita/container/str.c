@@ -486,7 +486,7 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
 
 bool str_equals(const char *const cs1, const char *const cs2) {
     const size_t cs1Len = strlen(cs1);
-        if(cs1Len > strlen(cs2)) {
+    if(cs1Len > strlen(cs2)) {
         return false;
     }
 
@@ -496,16 +496,22 @@ bool str_equals(const char *const cs1, const char *const cs2) {
 
 bool str_starts_with(const char *const cs, const char *const cs_sub) {
     const size_t subLen = strlen(cs_sub);
-    if(subLen < strlen(cs)) {
+    if(subLen > strlen(cs)) {
         return false;
     }
 
     return (!strncmp(cs, cs_sub, subLen));
 }
 
-/*bool str_ends_with(const char *const cs, const char *const cs_sub) {
-    return true;
-}*/
+bool str_ends_with(const char *const cs, const char *const cs_sub) {
+    const size_t csLen = strlen(cs);
+    const size_t subLen = strlen(cs_sub);
+    if(subLen > csLen) {
+        return false;
+    }
+
+    return (!strncmp(cs + csLen - subLen, cs_sub, subLen));
+}
 
 
 

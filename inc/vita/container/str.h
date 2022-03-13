@@ -29,8 +29,8 @@
     - str_pop_get_first
     - str_pop_get_last
     - str_equals
-    - str_starts_with *
-    - str_ends_with *
+    - str_starts_with
+    - str_ends_with
 */
 
 #include "../core/core.h"
