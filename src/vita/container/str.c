@@ -396,7 +396,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
 
 str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
     if(s == NULL || sep == NULL || !str_len(s) || !strlen(sep)) {
-        return NULL;;
+        return NULL;
     }
 
     // check if s contains sep substring
