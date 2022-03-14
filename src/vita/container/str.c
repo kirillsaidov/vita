@@ -4,6 +4,7 @@ const str_t str_make_on_stack(const char *const cs) {
     str_t s = {
         .ptr = (void*)cs,
         .len = strlen(cs),
+        .elsize = sizeof(char)
     };
 
     return s;
@@ -44,35 +45,6 @@ str_t *strn(const size_t n) {
         .len = n,
         .capacity = n,
         .elsize = sizeof(char),
-    };
-
-    // checking if s->ptr was allocated
-    if(s->ptr == NULL) {
-        free(s);
-        return NULL;
-    }
-
-    // copy str data to str_t
-    memset(s->ptr, '\0', (n + 1) * s->elsize);
-
-    return s;
-}
-
-str_t *str_custom_char_width(const size_t n, const size_t elsize) {
-    // allocate memory for a str_t struct
-    str_t *s = malloc(sizeof(str_t));
-
-    // check if s was allocated
-    if(s == NULL) {
-        return NULL;
-    }
-
-    // str_t init
-    *s = (str_t) {
-        .ptr = calloc(n + 1, sizeof(char)),
-        .len = n,
-        .capacity = n,
-        .elsize = elsize,
     };
 
     // checking if s->ptr was allocated
@@ -433,7 +405,7 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
     if(tempStr == NULL) {
         return NULL;
     }
-    
+
     // if the copy length of the substring is zero, there is nothing to copy
     const size_t copyLen = str_len(s) - strlen(tempStr);
     if(!copyLen) {
@@ -448,7 +420,7 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
     str_set_n(spop, s->ptr, copyLen);
 
     // pop the part of the string with the separator
-    str_remove(s, 0, copyLen + strlen(sep)); 
+    str_remove(s, 0, copyLen + strlen(sep));
 
     return spop;
 }
@@ -470,7 +442,7 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     if(!copyLen) {
         return NULL;
     }
-   
+
     // copy the string before the separator
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
     if(str_capacity(spop) < copyLen) {
@@ -479,7 +451,7 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     str_set_n(spop, tempStr + sepLen, copyLen);
 
     // pop the part of the string with the separator
-    str_remove(s, str_len(s) - copyLen - sepLen, copyLen + sepLen); 
+    str_remove(s, str_len(s) - copyLen - sepLen, copyLen + sepLen);
 
     return spop;
 }
@@ -512,16 +484,3 @@ bool str_ends_with(const char *const cs, const char *const cs_sub) {
 
     return (!strncmp(cs + csLen - subLen, cs_sub, subLen));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

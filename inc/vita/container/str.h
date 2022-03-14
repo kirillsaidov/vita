@@ -5,7 +5,6 @@
     - str_make_on_stack
     - str
     - strn
-    - str_custom_char_width
     - str_dup
     - str_take_ownership
     - str_free
@@ -68,17 +67,6 @@ Params:
 Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *strn(const size_t n);
-
-/**
-Creates an empty dynamic string of specified size (allocates additional memory for '\0')
-
-Params:
-    n = number of elements
-    elsize = element size (char, wchar, etc...)
-
-Returns: `str_t*` upon success, `NULL` otherwise
-*/
-extern str_t *str_custom_char_width(const size_t n, const size_t elsize);
 
 /**
 Duplicates and returns a new dynamic string
@@ -333,7 +321,7 @@ Checks if a raw C string starts with a substring
 
 Params:
     cs = raw C string
-    cs_sub = raw C substring 
+    cs_sub = raw C substring
 
 Returns: `true` if cs starts with cs_sub
 */
@@ -344,7 +332,7 @@ Checks if a raw C string ends with a substring
 
 Params:
     cs = raw C string
-    cs_sub = raw C substring 
+    cs_sub = raw C substring
 
 Returns: `true` if cs ends with cs_sub
 */
