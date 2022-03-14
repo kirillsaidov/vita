@@ -42,7 +42,10 @@ int main(void) {
 		str_remove(mystr, 4, 3);
 		str_remove_str(mystr, "Watermellon is red");
 		assert(str_can_find(mystr, "sweet") == 1);
-		assert(str_equals(cstr(mystr), "Oran.Apples are sweet!?"));
+        assert(str_equals(cstr(mystr), "Oran.Apples are sweet!?"));
+
+        const str_t sstack = str_make_on_stack("hi this is a test hi, world hi");
+        assert(str_can_find(&sstack, "hi") == 3);
 
 		str_shrink(mystr);
 		assert(str_len(mystr) == 23);

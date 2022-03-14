@@ -321,7 +321,6 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
-// FIXME
 size_t str_can_find(const str_t *const s, const char *cs) {
     if(s == NULL || cs == NULL || !str_len(s)) {
         return 0;
@@ -330,10 +329,9 @@ size_t str_can_find(const str_t *const s, const char *cs) {
     // count the number of substring instances in strbuf
     size_t count = 0;
     const size_t csLen = strlen(cs);
-    const char *p = strstr(s->ptr, cs);
-    while(p != NULL) {
+    const char *p = s->ptr;
+    while((p = strstr(p + csLen * sizeof(char), cs)) != NULL) {
         count++;
-        p = strstr(p + csLen * sizeof(char), s->ptr); // FIXME: STRSTR(HAYSTAKC, NEEDLE), NOT S->PTR BUT CS (SEP)
     }
 
     return count;
