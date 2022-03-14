@@ -108,7 +108,15 @@ int main(void) {
         } str_free(spl);
 
         assert(str_equals(cstr(sto), ";How are "));
-        //printf("%s\n", cstr(sto));
+
+        str_t *_s__ = str("hello world of world of wonders!"); {
+            str_t *_s_ = str_pop_get_last(NULL, _s__, "world"); {
+                assert(str_equals(cstr(_s_), " of wonders!"));
+            } str_free(_s_);
+
+            assert(str_equals(cstr(_s_), "hello world of "));
+        } str_free(_s__);
+
     } str_free(sto);
 
 	return 0;

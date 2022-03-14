@@ -321,6 +321,7 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
+// FIXME
 size_t str_can_find(const str_t *const s, const char *cs) {
     if(s == NULL || cs == NULL || !str_len(s)) {
         return 0;
@@ -332,7 +333,7 @@ size_t str_can_find(const str_t *const s, const char *cs) {
     const char *p = strstr(s->ptr, cs);
     while(p != NULL) {
         count++;
-        p = strstr(p + csLen * s->elsize, s->ptr);
+        p = strstr(p + csLen * sizeof(char), s->ptr); // FIXME: STRSTR(HAYSTAKC, NEEDLE), NOT S->PTR BUT CS (SEP)
     }
 
     return count;
@@ -396,8 +397,8 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
 }
 
 str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
-    if(s == NULL || sep == NULL) {
-        return NULL;
+    if(s == NULL || sep == NULL || !str_len(s) || !strlen(sep)) {
+        return NULL;;
     }
 
     // check if s contains sep substring
@@ -414,8 +415,8 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
 
     // copy the string before the separator
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
-    if(str_capacity(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_capacity(spop));
+    if(spop == NULL) {
+        return NULL;
     }
     str_set_n(spop, s->ptr, copyLen);
 
@@ -426,29 +427,37 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
 }
 
 str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
-    if(s == NULL || sep == NULL) {
-        return NULL;;
+    const size_t sepLen = strlen(sep);
+    if(s == NULL || sep == NULL || !str_len(s) || !sepLen) {
+        return NULL;
     }
 
-    // check if s contains sep substring
-    const char *const tempStr = strstr(s->ptr, sep);
-    if(tempStr == NULL) {
+    // find the last instance of sep
+    const char *p = strstr(s->ptr, sep);
+    const char *lastInstance = p;
+    while((p = strstr(p + sepLen * s->elsize, sep)) != NULL) {
+        lastInstance = p;
+    }
+
+    // if not found, return
+    if(lastInstance == NULL) {
         return NULL;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
-    const size_t sepLen = strlen(sep);
-    const size_t copyLen = str_len(s) - strlen(tempStr) + sepLen;
+    const size_t copyLen = strlen(lastInstance) - sepLen;
     if(!copyLen) {
         return NULL;
     }
 
-    // copy the string before the separator
+    // create str_t instance
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
-    if(str_capacity(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_capacity(spop));
+    if(spop == NULL) {
+        return NULL;
     }
-    str_set_n(spop, tempStr + sepLen, copyLen);
+
+    // copy the string before the separator
+    str_set_n(spop, lastInstance + sepLen, copyLen);
 
     // pop the part of the string with the separator
     str_remove(s, str_len(s) - copyLen - sepLen, copyLen + sepLen);
@@ -464,7 +473,6 @@ bool str_equals(const char *const cs1, const char *const cs2) {
 
     return (!strncmp(cs1, cs2, cs1Len));
 }
-
 
 bool str_starts_with(const char *const cs, const char *const cs_sub) {
     const size_t subLen = strlen(cs_sub);
