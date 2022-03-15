@@ -8,6 +8,7 @@
     - path_exists
     - path_is_dir
     - path_is_file
+    - path_get_file_size
     - path_listdir
     - path_listdir_recurse
     - path_basename
@@ -88,7 +89,7 @@ extern bool path_exists(const char *const cs);
 Checks if path is a directory
 
 Params:
-    cs = path
+    cs = path directory
 
 Returns: `true` if directory exists
 */
@@ -98,11 +99,21 @@ extern bool path_is_dir(const char *const cs);
 Checks if path is a file
 
 Params:
-    cs = path
+    cs = path to file
 
 Returns: `true` if file exists
 */
 extern bool path_is_file(const char *const cs);
+
+/**
+Returns file size
+
+Params:
+    cs = path to file
+
+Returns: size_t filesize >= 0 upon success, -1 upon failure
+*/
+extern int64_t path_get_file_size(const char *const cs);
 
 /**
 Get all directory contents

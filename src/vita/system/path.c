@@ -93,6 +93,35 @@ bool path_is_file(const char *const cs) {
     return (stat(cs, &info) == 0 && S_ISREG(info.st_mode));
 }
 
+int64_t path_get_file_size(const char *const cs) {
+    if(cs == NULL || !path_exists(cs)) {
+        return -1;
+    }
+    
+    size_t file_size = 0;
+
+    #if defined(_WIN32) || defined(_WIN64)
+        LARGE_INTEGER fsize = {0};
+        WIN32_FILE_ATTRIBUTE_DATA fad;
+		if(GetFileAttributesEx(path, GetFileExInfoStandard, &fad)){
+			fsize.LowPart = fad.nFileSizeLow;
+			fsize.HighPart = fad.nFileSizeHigh;
+		}
+
+        file_size = (size_t)(fsize.QuadPart);
+    #else
+        // get file stats
+        struct stat info;
+        if(stat(cs, &info) != 0) {
+            return -1;
+        }
+
+        file_size = (size_t)(info.st_size);
+    #endif
+    
+    return file_size;
+}
+
 plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreDotFiles) {
     if(!path_exists(cs)) {
         return NULL;

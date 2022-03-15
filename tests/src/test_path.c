@@ -31,7 +31,7 @@ int main(void) {
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
 
 	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
-		    assert(plist_len(pdir) == 7);
+		    assert(plist_len(pdir) == 9);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #elif defined(_WIN32) || defined(_WIN64)
@@ -61,6 +61,8 @@ int main(void) {
     
     // rename file/dirs
     //path_rename("hello", "hello_renamed"); // works
+    
+    assert(path_get_file_size("src/test_str.c") == 4009);
 
     return 0;
 }
