@@ -31,7 +31,7 @@ int main(void) {
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
 
 	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
-		    assert(plist_len(pdir) == 9);
+		    assert(plist_len(pdir) == 11);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #elif defined(_WIN32) || defined(_WIN64)
