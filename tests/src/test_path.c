@@ -2,6 +2,8 @@
 
 #include "../../inc/vita/system/path.h"
 
+#define FILES_IN_DIR 12
+
 void free_str(void *ptr, size_t i);
 
 int main(void) {
@@ -31,7 +33,7 @@ int main(void) {
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
 
 	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
-		    assert(plist_len(pdir) == 11);
+		    assert(plist_len(pdir) == FILES_IN_DIR);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #elif defined(_WIN32) || defined(_WIN64)

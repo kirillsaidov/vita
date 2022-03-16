@@ -10,7 +10,8 @@ declare -a tests=(
 	"test_plist" \
 	"test_path" \
     "test_fileio" \
-	"test_args" \
+    "test_log" \
+    "test_args" \
 	"test_math" \
 )
 
