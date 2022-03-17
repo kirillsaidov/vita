@@ -36,8 +36,43 @@ void log_log(enum LogLevel log_level, const char *const cs_file, const int line,
         log_level = ll_info;
     }
 
-    //...
-    printf("%s log_log test...\n", log_get_level_string(log_level));
+    // get time
+    char tbuf[21];
+    const time_t t = time(NULL);
+    const struct tm *stm = localtime(&t);
+    tbuf[strftime(tbuf, sizeof(tbuf), "%Y-%m-%d %H:%M:%S", stm)] = '\0';
+    
+    // getting arguments
+    va_list args;
+    va_start(args, cs_fmt);
+    
+    // logging to stderr, else to file
+    if(log_filenames[log_level] == NULL) {
+        fprintf(stderr, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), cs_file, line);
+        vfprintf(stderr, cs_fmt, args);
+        fprintf(stderr, "\n");
+    } else {
+        // open file
+        FILE *fp = fopen(log_filenames[log_level], "a");
+        if(fp == NULL) {
+            return;
+        }
+        
+        // write to file
+        fprintf(fp, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), cs_file, line);
+        vfprintf(fp, cs_fmt, args);
+        fprintf(fp, "\n");
+        
+        // close file
+        fclose(fp);
+    }
+
+    va_end(args);
+
+    // if log level = fatal, exit 
+    if(log_level == ll_fatal) {
+        exit(1);
+    }
 }
 
 

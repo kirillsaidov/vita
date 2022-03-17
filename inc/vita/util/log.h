@@ -16,7 +16,7 @@ enum LogLevel {
     ll_warn,    // write to file/stderr, move on
     ll_debug,   // write to file/stderr, move on
     ll_error,   // write to file/stderr, move on
-    ll_fatal,   // write to file/stderr, abort program
+    ll_fatal,   // write to file/stderr, exit program
     ll_count    // number of elements
 };
 
@@ -61,7 +61,7 @@ Custom logger
 Params:
     log_level = enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
     cs_file = source file name (__FILE__) from where the logger has been called
-    cs_line = source file line (__LINE__)
+    line = source file line (__LINE__)
     fmt = string format
     ... = format variables
 */
