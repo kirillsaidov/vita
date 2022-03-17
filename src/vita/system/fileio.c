@@ -28,7 +28,7 @@ str_t *file_read(const char *const cs_filename) {
 }
 
 bool file_writec(const char *const cs_filename, const char *const cs_mode, const str_t *const sbuffer, const bool add_ln) {
-    if(cs_filename == NULL || cs_mode == NULL || !strlen(cs_mode) || sbuffer == NULL) {
+    if(cs_filename == NULL || cs_mode == NULL || !strlen(cs_mode) || cs_mode[0] == 'r' || sbuffer == NULL) {
         return false;
     }
     
@@ -56,6 +56,32 @@ bool file_writec(const char *const cs_filename, const char *const cs_mode, const
     return status;
 }
 
+bool file_writef(const char *const cs_filename, const char *const cs_mode, const char *const cs_fmt, ...) {
+    if(cs_fmt == NULL || (cs_mode != NULL && cs_mode[0] == 'r')) {
+        return false;
+    }
+
+    // open file
+    FILE *fp = cs_filename == NULL ? stderr : fopen(cs_filename, cs_mode);
+    if(fp == NULL) {
+        return false;
+    }
+    
+    // write to file
+    bool status = true;
+    va_list args;
+    va_start(args, cs_fmt);
+    vfprintf(fp, cs_fmt, args);
+    va_end(args);
+    
+    // close file
+    if(fp != stderr) {
+        fclose(fp); 
+    }
+
+    return status;
+}
+
 bool file_write(const char *const cs_filename, const str_t *const sbuffer) {
     return file_writec(cs_filename, "w", sbuffer, false);
 }
@@ -71,10 +97,6 @@ bool file_append(const char *const cs_filename, const str_t *const sbuffer) {
 bool file_appendln(const char* const cs_filename, const str_t *const sbuffer) {
     return file_writec(cs_filename, "a", sbuffer, true);
 }
-
-
-
-
 
 
 

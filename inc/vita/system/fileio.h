@@ -8,9 +8,11 @@
     - file_writeln
     - file_append
     - file_appendln
+    - file_writef *
 */
 
 #include "path.h"
+#include <stdarg.h>
 
 /**
 Reads contents of a file
@@ -34,6 +36,19 @@ Params:
 Returns: `true` upon success
 */
 extern bool file_writec(const char *const cs_filename, const char *const cs_mode, const str_t *const sbuffer, const bool add_ln);
+
+/**
+Writes to a file in custom mode
+
+Params:
+    cs_filename = file name
+    cs_mode = file open mode
+    cs_fmt = formatted string
+    ... = other variable arguments
+
+Returns: `true` upon success
+*/
+extern bool file_writef(const char *const cs_filename, const char *const cs_mode, const char *const cs_fmt, ...);
 
 /**
 Writes to a file

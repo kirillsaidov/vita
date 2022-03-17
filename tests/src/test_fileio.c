@@ -17,7 +17,12 @@ int main(void) {
     str_t *ss = file_read("src/test_file3.txt"); {
         assert(str_equals(cstr(ss), cstr(&sbuf_check)));
     } str_free(ss);
-
+    
+    file_writef(NULL, NULL, "%s, %s\n", "hello", "world");
+    file_writef("src/test_file4.txt", "w", "%s, %s\n", "hello", "world");
+    assert(!file_writef(NULL, "r", "%s", "hi"));
+    assert(!file_writec("src/test_file2.txt", "r", &sbuf, false));
+    
     return 0;
 }
 
