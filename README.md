@@ -8,7 +8,7 @@ A custom C library for quick prototyping with simple data structures, string man
 * string manipulation
 * path and file handling
 * logging facility
-* working with directories
+* working with path and directories
 
 Check out the [TODO](https://trello.com/b/MFeDGO8u/vita-c-library) list.
 
