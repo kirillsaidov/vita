@@ -38,5 +38,40 @@ int main(void) {
 		// mat_foreach(m, print);
 	} mat_destroy(m);
 
+    m = mat_create(3, 6, sizeof(double)); {
+		assert(mat_rows(m) == 3 && mat_cols(m) == 6);
+
+		mat_foreach(m, func);
+		assert(mat_getd(m, 1, 1) == 2);
+
+		mat_setd(m, 24.5, 2, 5);
+		assert(mat_getd(m, 2, 5) == 24.5);
+
+		mat_t *mcopy = mat_dup(m); {
+			assert(mat_getd(mcopy, 2, 5) == 24.5);
+		} mat_destroy(mcopy);
+
+		mat_clear(m);
+		assert(mat_rows(m) == 3 && mat_cols(m) == 6);
+		assert(mat_getd(m, 2, 5) == 0);
+
+		// mat_resize(m, 0, 0); // false: cannot do it
+		// mat_foreach(m, print);
+	} mat_destroy(m);
+
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

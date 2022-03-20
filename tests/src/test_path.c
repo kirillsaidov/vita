@@ -23,32 +23,19 @@ int main(void) {
 
 	assert(path_exists("/home/lala") == false); // must fail
 
-    #ifdef __APPLE__
-        str_t *cwd = path_getcwd(); {
-            assert(str_equals(cstr(cwd), "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src"));
-        } str_free(cwd);
-
-        assert(path_exists("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src"));
-        assert(path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src"));
-    	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
-
-	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
-		    assert(plist_len(pdir) == FILES_IN_DIR);
-		    plist_foreach(pdir, free_str);
-	    } plist_free(pdir);
-    #elif defined(_WIN32) || defined(_WIN64)
+    #if defined(_WIN32) || defined(_WIN64)
         //...
     #else
         str_t *cwd = path_getcwd(); {
-            assert(str_equals(cstr(cwd), "/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests"));
+            assert(str_equals(cstr(cwd), "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
         } str_free(cwd);
 
-        assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests"));
-        assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests"));
-    	assert(path_is_file("/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests/src/test_path.c"));
+        assert(path_exists("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
+        assert(path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
+    	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_path.c"));
 
-	    plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab/vita/tests/src/", false); {
-		    assert(plist_len(pdir) == 7); 
+	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", false); {
+		    assert(plist_len(pdir) == FILES_IN_DIR);
 		    plist_foreach(pdir, free_str);
 	    } plist_free(pdir);
     #endif

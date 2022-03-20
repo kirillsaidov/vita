@@ -2,3 +2,9 @@
 2022-03-17 15:21:23  INFO src/test_log.c:23: Logging to file
 2022-03-17 15:21:56  INFO src/test_log.c:21: This is an info test.
 2022-03-17 15:21:56  INFO src/test_log.c:23: Logging to file
+2022-03-20 09:26:43  INFO src/test_log.c:21: This is an info test.
+2022-03-20 09:26:43  INFO src/test_log.c:23: Logging to file
+2022-03-20 09:27:16  INFO src/test_log.c:21: This is an info test.
+2022-03-20 09:27:16  INFO src/test_log.c:23: Logging to file
+2022-03-20 09:30:22  INFO src/test_log.c:21: This is an info test.
+2022-03-20 09:30:22  INFO src/test_log.c:23: Logging to file

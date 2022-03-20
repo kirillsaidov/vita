@@ -172,7 +172,7 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     }
 
     // set the value
-    memcpy(*m->ptr2 + (atRow * m->rows + atCol) * m->elsize, val, m->elsize);
+    memcpy(*m->ptr2 + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
     return ve_operation_success;
 }
@@ -250,7 +250,7 @@ void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
         return NULL;
     }
 
-    return (*m->ptr2 + (atRow * m->rows + atCol) * m->elsize);
+    return (*m->ptr2 + (atRow * m->cols + atCol) * m->elsize);
 }
 
 int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol) {
