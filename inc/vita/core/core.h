@@ -15,6 +15,15 @@
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 
+// types for argopt
+enum DataType {
+    dt_int,     // integer
+    dt_float,   // floating point numbers
+    dt_char,    // chars
+    dt_str,     // str_t type (its not a raw C string!)
+    dt_count    // number of elements
+};
+
 // removing elements from array
 enum RemoveStrategy {
     rs_stable,  // keep ordering
@@ -67,5 +76,15 @@ Params:
 Returns: `true` upon success
 */
 extern bool gswap(void* a, void* b, const size_t elsize);
+
+/**
+Returns a string for enum DataType value
+
+Params:
+    dt = enum DataType
+
+Returns: a raw C string
+*/
+extern const char *const dt_to_str(const enum DataType dt);
 
 #endif // VITA_CORE_H

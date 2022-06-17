@@ -11,7 +11,7 @@ declare -a tests=(
 	"test_path" \
     "test_fileio" \
     "test_log" \
-    "test_args" \
+    "test_argopt" \
 	"test_math" \
 )
 

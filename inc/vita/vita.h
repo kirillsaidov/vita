@@ -15,7 +15,7 @@
 #include "system/path.h"
 #include "system/fileio.h"
 
-#include "util/args.h"
+#include "util/argopt.h"
 #include "util/log.h"
 
 #include "math/math.h"

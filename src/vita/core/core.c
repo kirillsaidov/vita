@@ -1,5 +1,13 @@
 #include "vita/core/core.h"
 
+// dt strings
+const char *const dtstr[] = {
+    "dt_int",
+    "dt_float",
+    "dt_char",
+    "dt_str"
+};
+
 bool gswap(void* a, void* b, const size_t elsize) {
     if(a == NULL || b == NULL || elsize == 0) {
         return false;
@@ -21,3 +29,12 @@ bool gswap(void* a, void* b, const size_t elsize) {
 
     return true;
 }
+
+const char *const dt_to_str(const enum DataType dt) {
+    if(dt < dt_count) {
+        return dtstr[dt];
+    }
+
+    return "";
+}
+
