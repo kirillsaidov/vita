@@ -19,8 +19,9 @@
 enum DataType {
     dt_int,     // integer
     dt_float,   // floating point numbers
+    dt_bool,    // boolean values
     dt_char,    // chars
-    dt_str,     // str_t type (its not a raw C string!)
+    dt_cstr,     // str_t type (its not a raw C string!)
     dt_count    // number of elements
 };
 

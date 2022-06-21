@@ -23,6 +23,7 @@
     - str_insert
     - str_remove
     - str_remove_str
+    - str_find
     - str_can_find
     - str_split
     - str_pop_get_first
@@ -257,6 +258,17 @@ Params:
 Returns: enum VitaError
 */
 extern enum VitaError str_remove_str(str_t *const s, const char *cs);
+
+/**
+Find a substring
+
+Params:
+    s = str_t instance
+    cs = raw C string
+
+Returns: pointer to the begining of a substring in a string
+*/
+extern const char *str_find(const char *const cs, const char *csub);
 
 /**
 Checks if str_t contains a substring

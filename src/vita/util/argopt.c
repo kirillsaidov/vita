@@ -1,155 +1,162 @@
 #include "vita/util/argopt.h"
 
-// static argopt_t * argopt_new(const size_t numOptions);
-// static inline void argopt_free(argopt_t *a);
-// static inline void argopt_str_free(void *ptr, const size_t index);
-// static inline void argopt_parse_command_line_args(const char *const cmdArg, str_t *s);
+static void argopt_parse_eq(size_t *argv_counter, const size_t argc, const char **const argv, const size_t optc, const argopt_t *optv);
+// static void argopt_parse_without_eq(const argopt_t *opt, const char **const argv);
+static void argopt_assing_value(argopt_t *const opt, const char *const value);
 
-// argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...) {
-//     // no options provided
-//     if(argc < 1 || numOptions < 1) {
-//         return NULL;
-//     }
+bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, const argopt_t *const optv) {
+    if(argc < 2 && optc < 1 && argv == NULL && optv == NULL) {
+        return false;
+    }
 
-//     // allocate memory for argopt_t container
-//     argopt_t *a = argopt_new(numOptions);
-//     if(a == NULL) {
-//         return NULL;
-//     }
+    // parse argument options (starting from 1 and skipping the binary name)
+    for (size_t i = 0; i < argc; i++) {
+        const char *const arg = argv[i];
 
-//     // find all arguments
-//     plist_t *ptemp = plist_create(2); {
-//         str_t *stemp = str(""); {
-//             va_list v;
-//             va_start(v, numOptions);
-//             for(int i = 0; i < numOptions; i++) {
-//                 // get options
-//                 char *csOption = va_arg(v, char*);
-//                 char *csDesc = va_arg(v, char*);
-//                 str_t *sval = va_arg(v, str_t*);
+        // if we can find "="
+        if(strstr(arg, "=") != NULL) {
+            argopt_parse_eq(&i, argc, argv, optc, optv);
+        } else {
 
-//                 // PARSE OPTION SHORT AND LONG
-//                 str_append(stemp, csOption); {
-//                     ptemp = str_split(ptemp, stemp, "|");
+        }
+    }
 
-//                     // add optionShort and optionLong
-//                     plist_push(a->optionShort, plist_pop_get(ptemp));
-//                     plist_push(a->optionLong, plist_pop_get(ptemp));
-//                 } str_clear(stemp);
-
-//                 // PARSE OPTION DESCRIPTION
-//                 plist_push(a->optionDesc, str(csDesc));
-
-//                 // PARSE OPTION VALUE
-//                 // ...
-//             }
-//             va_end(v);
-//         } str_free(stemp);
-//     } plist_destroy(ptemp);
-
-//     return a;
-// }
-
-// void args_free(argopt_t *a) {
-//     argopt_free(a);
-// }
-
-// static argopt_t * argopt_new(const size_t numOptions) {
-//     argopt_t *a = malloc(sizeof(argopt_t));
-//     if(a == NULL) {
-//         return NULL;
-//     }
-
-//     // allocate memory for arguments
-//     *a = (argopt_t) {
-//         .optionLong = plist_create(numOptions),
-//         .optionShort = plist_create(numOptions),
-//         .optionDesc = plist_create(numOptions),
-//         .helpInfo = strn(numOptions),
-//     };
-//     if(
-//         a->optionLong == NULL ||
-//         a->optionShort == NULL ||
-//         a->optionDesc == NULL ||
-//         a->helpInfo == NULL
-//     ) {
-//         // free args
-//         plist_destroy(a->optionLong);
-//         plist_destroy(a->optionShort);
-//         plist_destroy(a->optionDesc);
-//         str_free(a->helpInfo);
-
-//         // free argopt_t
-//         free(a);
-//         a = NULL;
-//     }
-
-//     return a;
-// }
-
-// static inline void argopt_free(argopt_t *a) {
-//     // optionLong
-//     plist_foreach(a->optionLong, argopt_str_free);
-//     plist_destroy(a->optionLong);
-
-//     // optionShort
-//     plist_foreach(a->optionShort, argopt_str_free);
-//     plist_destroy(a->optionShort);
-
-//     // optionDesc
-//     plist_foreach(a->optionDesc, argopt_str_free);
-//     plist_destroy(a->optionDesc);
-
-//     // helpInfo
-//     str_free(a->helpInfo);
-
-//     // free argopt_t
-//     free(a);
-//     a = NULL;
-// }
-
-// static inline void argopt_str_free(void *ptr, const size_t index) {
-//     str_free(ptr);
-// }
-
-// static inline void argopt_parse_command_line_args(const char *const cmdArg, str_t *s) {
-
-// }
-
-bool argopt_parse(const int argc, const char **const argv, const argopt2_t *const options, const size_t numOptions) {
     return true;
 }
 
-void argopt_print(const argopt2_t *const options, const size_t numOptions) {
-    for(size_t i = 0; i < numOptions; i++) {
-        const argopt2_t a = options[i];
+void argopt_print(const size_t optc, const argopt_t *const optv) {
+    for(size_t i = 0; i < optc; i++) {
+        const argopt_t opt = optv[i];
 
-        printf("%s|%s|%s|", a.optionLong, a.optionShort, a.optionDesc);
+        printf("%s|%s|%s|", opt.optionLong, opt.optionShort, opt.optionDesc);
 
-        switch(a.optionType) {
+        switch(opt.optionType) {
             case dt_int:
-                printf("%d|", *(int*)(a.optionValue));
+                printf("%d|", *(int*)(opt.optionValue));
                 break;
             case dt_float:
-                printf("%f|", *(float*)(a.optionValue));
+                printf("%f|", *(float*)(opt.optionValue));
+                break;
+            case dt_bool:
+                printf("%s|", *(bool*)(opt.optionValue) ? "true" : "false");
                 break;
             case dt_char:
-                printf("%c|", *(char*)(a.optionValue));
+                printf("%c|", *(char*)(opt.optionValue));
                 break;
-            case dt_str:
-                printf("%s|", (a.optionValue == NULL ) ? ("") : cstr((str_t*)(a.optionValue)));
+            case dt_cstr:
+                printf("%s|", opt.optionValue == NULL ? ("") : opt.optionValue);
                 break;
             default:
                 break;
         }
 
-        printf("%s\n", dt_to_str(a.optionType));
+        printf("%s\n", dt_to_str(opt.optionType));
+    }
+}
+
+static void argopt_parse_eq(size_t *argv_counter, const size_t argc, const char **const argv, const size_t optc, const argopt_t *optv) {
+    str_t *sarg_value = str(argv[*argv_counter]);
+    str_t *s_eq_split = str_pop_get_first(NULL, sarg_value, "=");
+    
+    // find the corresponding option in optv
+    for(size_t i = 0; i < optc; i++) {
+        const argopt_t *opt = &optv[i];
+
+        // check long and short options
+        if(str_equals(cstr(s_eq_split), opt->optionLong) || str_equals(cstr(s_eq_split), opt->optionShort)) {
+            printf("arg: %s\n", argv[*argv_counter]);
+            printf("opt: %s|%s\n", cstr(s_eq_split), cstr(sarg_value));
+            argopt_assing_value(opt->optionValue, cstr(sarg_value));
+            break;
+        }
+    }
+
+    str_free(sarg_value);
+    str_free(s_eq_split);
+}
+
+static void argopt_assing_value(argopt_t *const opt, const char *const value) {
+    if(opt == NULL || value == NULL) {
+        return;
+    }
+
+    // temp value place holders
+    int dt_int_val = 0;
+    float dt_float_val = 0.0;
+    bool dt_bool_val = false;
+
+    // save arg value
+    switch(opt->optionType) {
+        case dt_int:
+            dt_int_val = (int)strtol(value, NULL, 10);
+            // *(int*)(opt->optionValue) = dt_int_val;
+            memcpy(opt->optionValue, &dt_int_val, sizeof(int));
+            break;
+        case dt_float:
+            dt_float_val = strtof(value, NULL);
+            // memcpy(opt->optionValue, &dt_float_val, sizeof(float));
+            // *(float*)(opt->optionValue) = dt_float_val;
+            break;
+        case dt_bool:
+            dt_bool_val = (str_equals(value, "true") || value[0] == '1' ? true : false);
+            *(bool*)(opt->optionValue) = dt_bool_val;
+            break;
+        case dt_char:
+            *(char*)(opt->optionValue) = value[0];
+            break;
+        case dt_cstr:
+            opt->optionValue = (char*)value;
+            break;
+        default:
+            break;
     }
 }
 
 
 
+/*{
+    // temporary variables
+    int dt_int_val = 0;
+    float dt_float_val = 0;
+    bool dt_bool_val = false;
+    str_t dt_str_val = {0};
 
+    // check if we have "=" case, split
+    str_t sarg = str_make_on_stack(arg);
+    if(str_can_find(&sarg, "=")) {
+        s_eq_split = str_pop_get_first(NULL, &sarg, "=");
+
+        // check long and short options, save the value
+        if(str_equals(cstr(s_eq_split), opt.optionLong) && str_equals(cstr(s_eq_split), opt.optionShort)) {
+            switch(opt.optionType) {
+                case dt_int:
+                    dt_int_val = strtol(arg + (str_len(s_eq_split) + 1) * sizeof(char), NULL, 10);
+                    *(int*)(opt.optionValue) = dt_int_val;
+                    // memcpy(opt.optionValue, &dt_int_val, sizeof(int));
+                    break;
+                case dt_float:
+                    dt_float_val = strtof(arg + (str_len(s_eq_split) + 1) * sizeof(char), NULL);
+                    *(float*)(opt.optionValue) = dt_float_val;
+                    // memcpy(opt.optionValue, &dt_float_val, sizeof(float));
+                    break;
+                case dt_bool:
+                    dt_str_val = str_make_on_stack(arg + (str_len(s_eq_split) + 1) * sizeof(char));
+                    *(bool*)(opt.optionValue) = str_can_find(&dt_str_val, "true") ? true : false;
+                    // memcpy(opt.optionValue, &dt_bool_val, sizeof(bool));
+                    break;
+                case dt_char:
+                    *(char*)(opt.optionValue) = (arg + (str_len(s_eq_split) + 1) * sizeof(char))[0];
+                    // memcpy(opt.optionValue, (arg + (str_len(s_eq_split) + 1) * sizeof(char)), sizeof(char));
+                    break;
+                case dt_str:
+                    *(str_t*)(opt.optionValue) = str_make_on_stack(arg + (str_len(s_eq_split) + 1) * sizeof(char));
+                    break;
+                default:
+                    break;
+            }
+        }
+    } 
+}*/
 
 
 

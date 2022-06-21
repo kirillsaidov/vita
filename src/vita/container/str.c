@@ -321,6 +321,14 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
+const char *str_find(const char *const cs, const char *csub) {
+    if(cs == NULL || csub == NULL) {
+        return NULL;
+    }
+
+    return strstr(cs, csub);
+}
+
 size_t str_can_find(const str_t *const s, const char *cs) {
     if(s == NULL || cs == NULL || !str_len(s)) {
         return 0;
@@ -361,6 +369,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
             return p;
         }
     }
+    plist_clear(p);
 
     // splitting the raw C string
     const size_t sepLen = strlen(sep);

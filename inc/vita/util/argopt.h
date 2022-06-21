@@ -2,7 +2,7 @@
 #define VITA_ARGS_H
 
 /** VITA_ARGS MODULE
-    - getopt
+    - //
 */
 
 #include <stdarg.h>
@@ -10,39 +10,35 @@
 #include "../container/str.h"
 #include "../container/plist.h"
 
-typedef struct ArgOpt2 {
+typedef struct ArgOpt {
     const char *const optionLong;
     const char *const optionShort;
     const char *const optionDesc;
-    const void *optionValue;
+    
+    void *optionValue;
     const enum DataType optionType;
-} argopt2_t;
-
-// typedef struct ArgOpt {
-//     plist_t *optionLong;
-//     plist_t *optionShort;
-//     plist_t *optionDesc;
-
-//     str_t *helpInfo;
-//     bool helpWanted;
-// } argopt_t;
+} argopt_t;
 
 /**
 Parses command line arguments
 
 Params:
     argc = number of arguments
-    argv = arguments
-    numOptions = number of command line options
-    ... = option, description, variable where to save value
+    argv = command line arguments
+    optc = number of options
+    optv = an array of argument options
 
-Returns: `argopt_t*` upon sucess, `NULL` otherwise
+Returns: `true` upon sucess, `false` otherwise
 */
-// extern argopt_t *args_parse(const int argc, const char **const argv, const size_t numOptions, ...);
-// extern void args_free(argopt_t *a);
+extern bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, const argopt_t *const optv);
 
-extern bool argopt_parse(const int argc, const char **const argv, const argopt2_t *const options, const size_t numOptions);
+/**
+Prints user argument options
 
-extern void argopt_print(const argopt2_t *const options, const size_t numOptions);
+Params:
+    optc = number of options
+    optv = an array of argument options
+*/
+extern void argopt_print(const size_t optc, const argopt_t *const optv);
 
 #endif // VITA_ARGS_H

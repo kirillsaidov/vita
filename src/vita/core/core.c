@@ -4,8 +4,9 @@
 const char *const dtstr[] = {
     "dt_int",
     "dt_float",
+    "dt_bool",
     "dt_char",
-    "dt_str"
+    "dt_cstr"
 };
 
 bool gswap(void* a, void* b, const size_t elsize) {
@@ -31,10 +32,10 @@ bool gswap(void* a, void* b, const size_t elsize) {
 }
 
 const char *const dt_to_str(const enum DataType dt) {
-    if(dt < dt_count) {
+    if(dt >= 0 && dt < dt_count) {
         return dtstr[dt];
     }
 
-    return "";
+    return NULL;
 }
 
