@@ -14,7 +14,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         const char *const arg = argv[i];
 
         // if we can find "="
-        if(str_find(arg, "=") != NULL) {
+        if(strstr(arg, "=") != NULL) {
             argopt_parse_eq(arg, optc, optv);
         } else {
             argopt_parse_without_eq(&i, argc, argv, optc, optv);
@@ -74,7 +74,25 @@ static void argopt_parse_eq(const char *const arg, const size_t optc, argopt_t *
 }
 
 static void argopt_parse_without_eq(size_t *counter, const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
-    //
+    str_t *sarg = str(argv[*counter]);
+
+    // find the corresponding option
+    for(size_t i = 0; i < optc; i++) {
+        argopt_t *const opt = &optv[i];
+
+        // check long and short options
+        if(str_equals(cstr(sarg), opt->optionLong) || str_equals(cstr(sarg), opt->optionShort)) {
+            if(*counter + 1 < argc) {
+                argopt_assign_value(opt, argv[1 + (*counter)++]);
+            } else {
+                argopt_assign_value(opt, "true");
+            }
+
+            break;
+        }
+    }
+
+    str_free(sarg);
 }
 
 static void argopt_assign_value(argopt_t *const opt, const char *const value) {
@@ -98,7 +116,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
             *(float*)(opt->optionValue) = dt_float_val;
             break;
         case dt_bool:
-            dt_bool_val = (str_equals(value, "true") || value[0] == '1' ? true : false);
+            dt_bool_val = (!str_equals(value, "false") || value[0] == '1' ? true : false);
             *(bool*)(opt->optionValue) = dt_bool_val;
             break;
         case dt_char:
