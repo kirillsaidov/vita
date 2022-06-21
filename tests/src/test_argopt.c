@@ -3,20 +3,20 @@
 #include "../../inc/vita/util/argopt.h"
 
 int main(void) {
-	char *path = NULL;
+	str_t *path = NULL;
 	float test = 0.2;
 	bool audio = false;
 	int volume = 50;
 	char on_off = 'y';
 
 	// ./test_argopt -p=../temp -t 10.12 --volume=97 --on_off n -a
-	const size_t argc = 2;
+	const size_t argc = 4;
 	const char *argv[] = {
 		// "./test_argopt", "-p=../temp", "-t", "10.12", "--volume=97", "--on_off", "n", "-a"
-		"./test_argopt", "--volume=97"
+		"./test_argopt", "--volume=97", "-p=../temp", "--audio=1"
 	};
 
-	const argopt_t optv[] = {
+	argopt_t optv[] = {
 		{ "--path", "-p", "path to file", path, dt_cstr },
 		{ "--test", "-t", "test value", &test, dt_float },
 		{ "--audio", "-a", "audio boolean", &audio, dt_bool },
@@ -34,6 +34,8 @@ int main(void) {
 
 	printf("\t--- AFTER ---\n");
 	argopt_print(optc, optv);
+
+	str_free(path);
 
 	return 0;
 }

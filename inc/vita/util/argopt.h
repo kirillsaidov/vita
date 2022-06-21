@@ -30,7 +30,7 @@ Params:
 
 Returns: `true` upon sucess, `false` otherwise
 */
-extern bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, const argopt_t *const optv);
+extern bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv);
 
 /**
 Prints user argument options

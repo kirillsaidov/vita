@@ -278,3 +278,41 @@
 2022-06-19 09:52:20  INFO src/test_log.c:23: Logging to file
 2022-06-19 09:52:40  INFO src/test_log.c:21: This is an info test.
 2022-06-19 09:52:40  INFO src/test_log.c:23: Logging to file
+2022-06-21 20:50:42  INFO src/test_log.c:21: This is an info test.
+2022-06-21 20:50:42  INFO src/test_log.c:23: Logging to file
+2022-06-21 20:58:23  INFO src/test_log.c:21: This is an info test.
+2022-06-21 20:58:23  INFO src/test_log.c:23: Logging to file
+2022-06-21 20:59:19  INFO src/test_log.c:21: This is an info test.
+2022-06-21 20:59:19  INFO src/test_log.c:23: Logging to file
+2022-06-21 20:59:35  INFO src/test_log.c:21: This is an info test.
+2022-06-21 20:59:35  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:08:13  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:08:13  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:08:30  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:08:30  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:09:00  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:09:00  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:10:00  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:10:00  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:11:45  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:11:45  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:11:51  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:11:51  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:12:27  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:12:27  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:14:46  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:14:46  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:15:48  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:15:48  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:16:29  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:16:29  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:16:38  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:16:38  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:17:10  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:17:10  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:17:16  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:17:16  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:29:04  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:29:04  INFO src/test_log.c:23: Logging to file
+2022-06-21 21:30:54  INFO src/test_log.c:21: This is an info test.
+2022-06-21 21:30:54  INFO src/test_log.c:23: Logging to file
