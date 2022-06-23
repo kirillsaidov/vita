@@ -10,12 +10,14 @@
 #include "../container/str.h"
 #include "../container/plist.h"
 
+#define OPT(v) ((void**)&v)
+
 typedef struct ArgOpt {
     const char *const optionLong;
     const char *const optionShort;
     const char *const optionDesc;
     
-    void *optionValue;
+    void **optionValue;
     const enum DataType optionType;
 } argopt_t;
 

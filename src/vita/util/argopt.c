@@ -1,7 +1,5 @@
 #include "vita/util/argopt.h"
 
-static void argopt_parse_eq(const char *const arg, const size_t optc, argopt_t *const optv);
-static void argopt_parse_without_eq(size_t *counter, const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv);
 static void argopt_assign_value(argopt_t *const opt, const char *const value);
 
 bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
@@ -9,17 +7,57 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         return false;
     }
 
-    // parse argument options (starting from 1 and skipping the binary name)
-    for (size_t i = 0; i < argc; i++) {
-        const char *const arg = argv[i];
+    // // parse argument options (starting from 1 and skipping the binary name)
+    // for (size_t i = 0; i < argc; i++) {
+    //     const char *const arg = argv[i];
 
-        // if we can find "="
-        if(strstr(arg, "=") != NULL) {
-            argopt_parse_eq(arg, optc, optv);
-        } else {
-            argopt_parse_without_eq(&i, argc, argv, optc, optv);
+    //     // if we can find "="
+    //     if(strstr(arg, "=") != NULL) {
+    //         argopt_parse_eq(arg, optc, optv);
+    //     } else {
+    //         argopt_parse_without_eq(&i, argc, argv, optc, optv);
+    //     }
+    // }
+
+    // parse argument options (starting from 1 and skipping the binary name)
+    str_t *s_arg_value = strn(DEFAULT_INIT_ELEMENTS);
+    str_t *s_opt_split = strn(DEFAULT_INIT_ELEMENTS);
+    for (size_t i = 0; i < argc; i++) {
+        str_append(s_arg_value, argv[i]);
+        s_opt_split = str_pop_get_first(s_opt_split, s_arg_value, "=");
+    
+        // find the corresponding option in optv
+        // FIXME: DOES NOT SPLIT STRING CORRECTLY AT "="
+        for(size_t j = 0; j < optc; j++) {
+            argopt_t *const opt = &optv[j];
+
+            // if we can find "="
+            if(s_opt_split != NULL) {
+                // parse options with "="
+                if(str_equals(cstr(s_opt_split), opt->optionLong) || str_equals(cstr(s_opt_split), opt->optionShort)) {
+                    argopt_assign_value(opt, cstr(s_arg_value));
+                    break;
+                }
+            } else {
+                // parse without "="
+                if(str_equals(cstr(s_arg_value), opt->optionLong) || str_equals(cstr(s_arg_value), opt->optionShort)) {
+                    if(i + 1 < argc) {
+                        argopt_assign_value(opt, argv[++i]);
+                    } else {
+                        argopt_assign_value(opt, "true");
+                    }
+
+                    break;
+                }
+            }
         }
+
+        str_clear(s_arg_value);
+        str_clear(s_opt_split);
     }
+
+    str_free(s_arg_value);
+    str_free(s_opt_split);
 
     return true;
 }
@@ -43,8 +81,8 @@ void argopt_print(const size_t optc, const argopt_t *const optv) {
             case dt_char:
                 printf("%c|", *(char*)(opt.optionValue));
                 break;
-            case dt_cstr:
-                printf("%s|", opt.optionValue == NULL ? "" : cstr(opt.optionValue)); 
+            case dt_str:
+                printf("%s|", *(str_t**)(opt.optionValue) == NULL ? "" : cstr(*(str_t**)(opt.optionValue))); 
                 break;
             default:
                 break;
@@ -52,47 +90,6 @@ void argopt_print(const size_t optc, const argopt_t *const optv) {
 
         printf("%s\n", dt_to_str(opt.optionType));
     }
-}
-
-static void argopt_parse_eq(const char *const arg, const size_t optc, argopt_t *const optv) {
-    str_t *sarg_value = str(arg);
-    str_t *s_eq_split = str_pop_get_first(NULL, sarg_value, "=");
-    
-    // find the corresponding option in optv
-    for(size_t i = 0; i < optc; i++) {
-        argopt_t *const opt = &optv[i];
-
-        // check long and short options
-        if(str_equals(cstr(s_eq_split), opt->optionLong) || str_equals(cstr(s_eq_split), opt->optionShort)) {
-            argopt_assign_value(opt, cstr(sarg_value));
-            break;
-        }
-    }
-
-    str_free(sarg_value);
-    str_free(s_eq_split);
-}
-
-static void argopt_parse_without_eq(size_t *counter, const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
-    str_t *sarg = str(argv[*counter]);
-
-    // find the corresponding option
-    for(size_t i = 0; i < optc; i++) {
-        argopt_t *const opt = &optv[i];
-
-        // check long and short options
-        if(str_equals(cstr(sarg), opt->optionLong) || str_equals(cstr(sarg), opt->optionShort)) {
-            if(*counter + 1 < argc) {
-                argopt_assign_value(opt, argv[1 + (*counter)++]);
-            } else {
-                argopt_assign_value(opt, "true");
-            }
-
-            break;
-        }
-    }
-
-    str_free(sarg);
 }
 
 static void argopt_assign_value(argopt_t *const opt, const char *const value) {
@@ -122,8 +119,8 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
         case dt_char:
             *(char*)(opt->optionValue) = value[0];
             break;
-        case dt_cstr:
-            opt->optionValue = str(value);
+        case dt_str:
+            *(str_t**)opt->optionValue = str(value);
             break;
         default:
             break;

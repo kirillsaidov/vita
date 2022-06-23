@@ -1,12 +1,12 @@
 #include "vita/core/core.h"
 
-// dt strings
+// enum DataType strings
 const char *const dtstr[] = {
     "dt_int",
     "dt_float",
     "dt_bool",
     "dt_char",
-    "dt_cstr"
+    "dt_str"
 };
 
 bool gswap(void* a, void* b, const size_t elsize) {

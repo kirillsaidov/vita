@@ -420,11 +420,18 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
         return NULL;
     }
 
-    // copy the string before the separator
+    // create str_t instance
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
     if(spop == NULL) {
         return NULL;
     }
+
+    // if not enough space, reserve more
+    if(str_len(spop) < copyLen) {
+        str_reserve(spop, copyLen - str_len(spop));
+    }
+
+    // copy the string before the separator
     str_set_n(spop, s->ptr, copyLen);
 
     // pop the part of the string with the separator
@@ -463,7 +470,12 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
         return NULL;
     }
 
-    // copy the string before the separator
+    // if not enough space, reserve more
+    if(str_len(spop) < copyLen) {
+        str_reserve(spop, copyLen - str_len(spop));
+    }
+
+    // copy the string after the separator
     str_set_n(spop, lastInstance + sepLen, copyLen);
 
     // pop the part of the string with the separator
