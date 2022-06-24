@@ -7,31 +7,18 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         return false;
     }
 
-    // // parse argument options (starting from 1 and skipping the binary name)
-    // for (size_t i = 0; i < argc; i++) {
-    //     const char *const arg = argv[i];
-
-    //     // if we can find "="
-    //     if(strstr(arg, "=") != NULL) {
-    //         argopt_parse_eq(arg, optc, optv);
-    //     } else {
-    //         argopt_parse_without_eq(&i, argc, argv, optc, optv);
-    //     }
-    // }
-
     // parse argument options (starting from 1 and skipping the binary name)
     str_t *s_arg_value = strn(DEFAULT_INIT_ELEMENTS);
-    str_t *s_opt_split = strn(DEFAULT_INIT_ELEMENTS);
-    for (size_t i = 0; i < argc; i++) {
+    for (size_t i = 1; i < argc; i++) {
         str_append(s_arg_value, argv[i]);
-        s_opt_split = str_pop_get_first(s_opt_split, s_arg_value, "=");
+        str_t *s_opt_split = str_pop_get_first(NULL, s_arg_value, "=");
     
         // find the corresponding option in optv
-        // FIXME: DOES NOT SPLIT STRING CORRECTLY AT "="
         for(size_t j = 0; j < optc; j++) {
             argopt_t *const opt = &optv[j];
 
             // if we can find "="
+            // printf("len: %zu, value: %s\n", str_len(s_opt_split), cstr(s_opt_split));
             if(s_opt_split != NULL) {
                 // parse options with "="
                 if(str_equals(cstr(s_opt_split), opt->optionLong) || str_equals(cstr(s_opt_split), opt->optionShort)) {
@@ -53,11 +40,10 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         }
 
         str_clear(s_arg_value);
-        str_clear(s_opt_split);
+        str_free(s_opt_split);
     }
 
     str_free(s_arg_value);
-    str_free(s_opt_split);
 
     return true;
 }
@@ -120,6 +106,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
             *(char*)(opt->optionValue) = value[0];
             break;
         case dt_str:
+            printf("been here...: value = %s\n", value);
             *(str_t**)opt->optionValue = str(value);
             break;
         default:

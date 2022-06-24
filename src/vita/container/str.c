@@ -405,30 +405,30 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
 
 str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
     if(s == NULL || sep == NULL || !str_len(s) || !strlen(sep)) {
-        return NULL;
+        return sr;
     }
 
     // check if s contains sep substring
     const char *const tempStr = strstr(s->ptr, sep);
     if(tempStr == NULL) {
-        return NULL;
+        return sr;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
     const size_t copyLen = str_len(s) - strlen(tempStr);
     if(!copyLen) {
-        return NULL;
+        return sr;
     }
 
     // create str_t instance
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
     if(spop == NULL) {
-        return NULL;
+        return sr;
     }
 
     // if not enough space, reserve more
     if(str_len(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_len(spop));
+        str_reserve(spop, copyLen - str_len(spop) + 1);
     }
 
     // copy the string before the separator
@@ -443,7 +443,7 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
 str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     const size_t sepLen = strlen(sep);
     if(s == NULL || sep == NULL || !str_len(s) || !sepLen) {
-        return NULL;
+        return sr;
     }
 
     // find the last instance of sep
@@ -455,24 +455,24 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
 
     // if not found, return
     if(lastInstance == NULL) {
-        return NULL;
+        return sr;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
     const size_t copyLen = strlen(lastInstance) - sepLen;
     if(!copyLen) {
-        return NULL;
+        return sr;
     }
 
     // create str_t instance
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
     if(spop == NULL) {
-        return NULL;
+        return sr;
     }
 
     // if not enough space, reserve more
     if(str_len(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_len(spop));
+        str_reserve(spop, copyLen - str_len(spop) + 1);
     }
 
     // copy the string after the separator

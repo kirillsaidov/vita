@@ -12,7 +12,7 @@ int main(void) {
 	// arguments
 	const size_t argc = 10;
 	const char *argv[] = {
-		"./test_argopt", "-p", "./temp", "-t", "10.5", "--volume=83", "--on_off", "n", "-a", "unknown"
+		"./test_argopt", "-p", "../temp", "-t", "10.5", "--volume=83", "--on_off", "n", "-a", "unknown"
 	};
 
 	// options
