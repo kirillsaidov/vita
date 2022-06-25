@@ -12,7 +12,7 @@ int32_t main(void) {
 	float polarity = 0.2;
 
 	// bools
-	bool verbose = true;
+	bool verbose = false;
 	bool audio = false;
 
 	// ints
@@ -24,39 +24,50 @@ int32_t main(void) {
 	char upgrade = 'n';
 
 	// arguments
-	const size_t argc = 10;
 	const char *argv[] = {
-		"./test_argopt", "-p", "../temp", "-t", "10.5", "--volume=83", "--on_off", "n", "-a", "unknown"
+		"./test_argopt", 									// 1 +
+		"-r=../temp", "--wpath", "./docs/dw/data/",			// 3 +
+		"--intensity", "0.7", "-p=0.35", "--verbose", "-a", // 5 +
+		"-vl=83", "--level", "13", "--unkownOption",		// 4 +
+		"--update", "y", "-uo", "-ug=y", "unkownValue"		// 5 = 18
 	};
+	const size_t argc = 18;
 
 	// options
-	// argopt_t optv[] = {
-	// 	{ "--path", "-p", "path to file", OPT(path), dt_str }, // FIXME
-	// 	{ "--test", "-t", "test value", OPT(test), dt_float },
-	// 	{ "--audio", "-a", "audio boolean", OPT(audio), dt_bool },
-	// 	{ "--volume", "-v", "volume value", OPT(volume), dt_int },
-	// 	{ "--on_off", "-s", "on_off switch", OPT(on_off), dt_char }
-	// };
-	// const size_t optc = sizeof(optv)/sizeof(argopt_t);
+	argopt_t optv[] = {
+		{ "--rpath", "-r", "read path", OPT(rpath), dt_str },
+		{ "--wpath", "-w", "save path", OPT(wpath), dt_str },
 
-	// // parse args and opts
-	// argopt_print(optc, optv);
-	// argopt_parse(argc, argv, optc, optv);
-	// printf("\n"); argopt_print(optc, optv);
+		{ "--intensity", "-i", "level of intensity between [0; 1]", OPT(intensity), dt_float },
+		{ "--polarity", "-p", "level of polarity between [0; 1]", OPT(polarity), dt_float },
+
+		{ "--verbose", "-v", "verbose output", OPT(verbose), dt_bool },
+		{ "--audio", "-a", "include audio", OPT(audio), dt_bool },
+
+		{ "--volume", "-vl", "volume level", OPT(volume), dt_int },
+		{ "--level", "-l", "output level", OPT(level), dt_int },
+
+		{ "--update", "-ud", "update (y, n)", OPT(update), dt_char },
+		{ "--upgrade", "-ug", "upgrade (y, n)", OPT(upgrade), dt_char }
+	};
+	const size_t optc = sizeof(optv)/sizeof(argopt_t);
+
+	// parse args and opts
+	argopt_parse(argc, argv, optc, optv);
 	
-	// // check
-	// assert(str_equals(cstr(rpath), "../temp"));
-	// assert(str_equals(cstr(rpath), "./docs/dw/data/"));
-	// assert(intensity == 0.7);
-	// assert(polarity == 0.35);
-	// assert(volume == 83);
-	// assert(level == 13);
-	// assert(update == 'y');
-	// assert(upgrade == 'y');
+	// check
+	assert(str_equals(cstr(rpath), "../temp"));
+	assert(str_equals(cstr(wpath), "./docs/dw/data/"));
+	assert(intensity == (float)0.7);
+	assert(polarity == (float)0.35);
+	assert(volume == 83);
+	assert(level == 13);
+	assert(update == 'y');
+	assert(upgrade == 'y');
 
-	// // free resources
-	// str_free(path);
-	// str_free();
+	// free resources
+	str_free(rpath);
+	str_free(wpath);
 
 	return 0;
 }
