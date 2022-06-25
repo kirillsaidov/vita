@@ -214,6 +214,11 @@ enum VitaError str_append(str_t *const s, const char *cs) {
     return str_append_n(s, cs, strlen(cs));
 }
 
+enum VitaError str_appendf(str_t *const s, const char *const cs_fmt, ...) {
+    //
+    return ve_operation_success;
+}
+
 enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n) {
     if(s == NULL || cs == NULL) {
         return ve_error_is_null;

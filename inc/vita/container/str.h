@@ -19,6 +19,7 @@
     - str_set
     - str_set_n
     - str_append
+    - str_appendf
     - str_append_n
     - str_insert
     - str_remove
@@ -211,6 +212,17 @@ Params:
 Returns: enum VitaError
 */
 extern enum VitaError str_append(str_t *const s, const char *cs);
+
+/**
+Appends a formatted raw C string at the end of str_t
+
+Params:
+    s = str_t instance
+    fmt = format
+
+Returns: enum VitaError
+*/
+extern enum VitaError str_appendf(str_t *const s, const char *const cs_fmt, ...);
 
 /**
 Appends n characters of raw C string at the end of str_t
