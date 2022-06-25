@@ -8,4 +8,10 @@ A custom C library for quick prototyping with simple data structures, string man
 * string manipulation
 * path and file handling
 * logging facility
-* working with path and directories
+* command line arguments parsing
+* facilities to work with paths and directories
+
+Check out the `tests/src` directory for usage examples.
+
+### LICENSE
+All code is licensed under the MIT license.
