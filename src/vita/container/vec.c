@@ -214,7 +214,7 @@ enum VitaError vec_push(vec_t *const v, const void *const val) {
     return ve_operation_success;
 }
 
-enum VitaError vec_pushi32(vec_t *const v, const int val) {
+enum VitaError vec_pushi32(vec_t *const v, const int32_t val) {
     if(v == NULL) {
         return ve_error_is_null;
     }
@@ -226,7 +226,7 @@ enum VitaError vec_pushi32(vec_t *const v, const int val) {
     return vec_push(v, &val);
 }
 
-enum VitaError vec_pushi64(vec_t *const v, const long val) {
+enum VitaError vec_pushi64(vec_t *const v, const int64_t val) {
     if(v == NULL) {
         return ve_error_is_null;
     }
@@ -297,7 +297,7 @@ enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at) {
     return ve_operation_success;
 }
 
-enum VitaError vec_seti32(vec_t *const v, const int val, const size_t at) {
+enum VitaError vec_seti32(vec_t *const v, const int32_t val, const size_t at) {
     if(v == NULL) {
         return ve_error_is_null;
     }
@@ -313,7 +313,7 @@ enum VitaError vec_seti32(vec_t *const v, const int val, const size_t at) {
     return vec_set(v, &val, at);
 }
 
-enum VitaError vec_seti64(vec_t *const v, const long val, const size_t at) {
+enum VitaError vec_seti64(vec_t *const v, const int64_t val, const size_t at) {
     if(v == NULL) {
         return ve_error_is_null;
     }

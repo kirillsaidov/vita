@@ -177,7 +177,7 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     return ve_operation_success;
 }
 
-enum VitaError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
     if(m == NULL) {
         return ve_error_is_null;
     }
@@ -193,7 +193,7 @@ enum VitaError mat_seti32(mat_t *const m, const int val, const size_t atRow, con
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol) {
+enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
     if(m == NULL) {
         return ve_error_is_null;
     }

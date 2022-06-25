@@ -189,8 +189,8 @@ Params:
 Returns: enum VitaError code
 */
 extern enum VitaError vec_push(vec_t *const v, const void *const val);
-extern enum VitaError vec_pushi32(vec_t *const v, const int val);
-extern enum VitaError vec_pushi64(vec_t *const v, const long val);
+extern enum VitaError vec_pushi32(vec_t *const v, const int32_t val);
+extern enum VitaError vec_pushi64(vec_t *const v, const int64_t val);
 extern enum VitaError vec_pushf(vec_t *const v, const float val);
 extern enum VitaError vec_pushd(vec_t *const v, const double val);
 
@@ -225,8 +225,8 @@ Params:
 Returns: enum VitaError code
 */
 extern enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at);
-extern enum VitaError vec_seti32(vec_t *const v, const int val, const size_t at);
-extern enum VitaError vec_seti64(vec_t *const v, const long val, const size_t at);
+extern enum VitaError vec_seti32(vec_t *const v, const int32_t val, const size_t at);
+extern enum VitaError vec_seti64(vec_t *const v, const int64_t val, const size_t at);
 extern enum VitaError vec_setf(vec_t *const v, const float val, const size_t at);
 extern enum VitaError vec_setd(vec_t *const v, const double val, const size_t at);
 

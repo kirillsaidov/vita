@@ -18,7 +18,6 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
             argopt_t *const opt = &optv[j];
 
             // if we can find "="
-            // printf("len: %zu, value: %s\n", str_len(s_opt_split), cstr(s_opt_split));
             if(s_opt_split != NULL) {
                 // parse options with "="
                 if(str_equals(cstr(s_opt_split), opt->optionLong) || str_equals(cstr(s_opt_split), opt->optionShort)) {
@@ -27,8 +26,18 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
                 }
             } else {
                 // parse without "="
+                // if(str_equals(cstr(s_arg_value), opt->optionLong) || str_equals(cstr(s_arg_value), opt->optionShort)) {
+                //     if(i + 1 < argc) {
+                //         argopt_assign_value(opt, argv[++i]);
+                //     } else {
+                //         argopt_assign_value(opt, "true");
+                //     }
+
+                //     break;
+                // }
+
                 if(str_equals(cstr(s_arg_value), opt->optionLong) || str_equals(cstr(s_arg_value), opt->optionShort)) {
-                    if(i + 1 < argc) {
+                    if(i + 1 < argc && opt->optionType != dt_bool) {
                         argopt_assign_value(opt, argv[++i]);
                     } else {
                         argopt_assign_value(opt, "true");
@@ -56,7 +65,7 @@ void argopt_print(const size_t optc, const argopt_t *const optv) {
 
         switch(opt.optionType) {
             case dt_int:
-                printf("%d|", *(int*)(opt.optionValue));
+                printf("%d|", *(int32_t*)(opt.optionValue));
                 break;
             case dt_float:
                 printf("%f|", *(float*)(opt.optionValue));
@@ -84,29 +93,28 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     }
 
     // temp value place holders
-    int dt_int_val = 0;
-    float dt_float_val = 0.0;
-    bool dt_bool_val = false;
+    int32_t ivalue = 0;
+    float fvalue = 0.0;
+    bool bvalue = false;
 
     // save arg value
     switch(opt->optionType) {
         case dt_int:
-            dt_int_val = (int)strtol(value, NULL, 10);
-            *(int*)(opt->optionValue) = dt_int_val;
+            ivalue = (int32_t)strtol(value, NULL, 10);
+            *(int32_t*)(opt->optionValue) = ivalue;
             break;
         case dt_float:
-            dt_float_val = strtof(value, NULL);
-            *(float*)(opt->optionValue) = dt_float_val;
+            fvalue = strtof(value, NULL);
+            *(float*)(opt->optionValue) = fvalue;
             break;
         case dt_bool:
-            dt_bool_val = (!str_equals(value, "false") || value[0] == '1' ? true : false);
-            *(bool*)(opt->optionValue) = dt_bool_val;
+            bvalue = (!str_equals(value, "false") || value[0] == '1' ? true : false);
+            *(bool*)(opt->optionValue) = bvalue;
             break;
         case dt_char:
             *(char*)(opt->optionValue) = value[0];
             break;
         case dt_str:
-            printf("been here...: value = %s\n", value);
             *(str_t**)opt->optionValue = str(value);
             break;
         default:

@@ -135,8 +135,8 @@ Params:
 Returns: `true` upon success
 */
 extern enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti32(mat_t *const m, const int val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti64(mat_t *const m, const long val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
 
