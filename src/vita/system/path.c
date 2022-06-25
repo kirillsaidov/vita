@@ -98,7 +98,7 @@ int64_t path_get_file_size(const char *const cs) {
         return -1;
     }
     
-    size_t file_size = 0;
+    int64_t file_size = 0;
 
     #if defined(_WIN32) || defined(_WIN64)
         LARGE_INTEGER fsize = {0};
@@ -116,7 +116,7 @@ int64_t path_get_file_size(const char *const cs) {
             return -1;
         }
 
-        file_size = (size_t)(info.st_size);
+        file_size = (int64_t)(info.st_size);
     #endif
     
     return file_size;
@@ -140,7 +140,7 @@ plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreD
     }
 
     // get directory contents
-    struct dirent *dirtree = readdir(dir);
+    struct dirent *dirtree = NULL;
     while((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
         if(
@@ -150,7 +150,7 @@ plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreD
         ) {
             continue;
         }
-
+        
         // push directory name to plist_t
         plist_push(pl, str(dirtree->d_name));
     }
@@ -221,18 +221,22 @@ str_t *path_basename(str_t *const s, const char *const cs) {
 
     // find the basename
     const char *ptr;
-    for(size_t i = str_len(st) - 1; i >= 0; i--) {
-        if(cstr(st)[i] == PATH_SEPARATOR[0] && i != str_len(st) - 1) {
+    const size_t stLen = str_len(st);
+    for(size_t i = stLen - 1; i >= 0; i--) {
+        if(cstr(st)[i] == PATH_SEPARATOR[0] && i != stLen - 1) {
             ptr = &cstr(st)[i+1];
             break;
         }
     }
 
-    // save the basename
-    if(str_has_space(st) < strlen(ptr)) {
-        str_reserve(st, strlen(ptr) - str_has_space(st));
-        str_set(st, ptr);
+    // check if we have enough memory
+    const size_t ptLen = strlen(ptr);
+    if(stLen < ptLen) {
+        str_reserve(st, ptLen - stLen);
     }
+
+    // save the basename
+    str_set(st, ptr);
 
     return st;
 }

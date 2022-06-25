@@ -13,12 +13,15 @@ str_t *file_read(const char *const cs_filename) {
 
     // create data buffer
     str_t *sbuffer = strn(path_get_file_size(cs_filename));
+    if(sbuffer == NULL) {
+        fclose(fp);
+        return NULL;
+    }
 
     // copy file contents into the buffer
     const size_t bytes_read = fread(sbuffer->ptr, sbuffer->elsize, sbuffer->len, fp);
     if(bytes_read != sbuffer->len) {
         str_free(sbuffer);
-        sbuffer = NULL;
     }
 
     // close file

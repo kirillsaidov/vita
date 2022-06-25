@@ -25,6 +25,21 @@ int main(void) {
 
     #if defined(_WIN32) || defined(_WIN64)
         //...
+    #elif defined(__linux__)
+        str_t *cwd = path_getcwd(); {
+            assert(str_equals(cstr(cwd), "/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
+        } str_free(cwd);
+
+        assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
+        assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
+    	assert(path_is_file("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_path.c"));
+        assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_log_error.log.txt"));
+
+	plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", true); {
+            assert(plist_len(pdir) == FILES_IN_DIR);
+	    plist_foreach(pdir, free_str);
+	} plist_free(pdir);
+
     #else
         str_t *cwd = path_getcwd(); {
             assert(str_equals(cstr(cwd), "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
@@ -34,15 +49,15 @@ int main(void) {
         assert(path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
     	assert(path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_path.c"));
 
-	    plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", false); {
-		    assert(plist_len(pdir) == FILES_IN_DIR);
-		    plist_foreach(pdir, free_str);
-	    } plist_free(pdir);
+	plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", true); {
+	    assert(plist_len(pdir) == FILES_IN_DIR);
+	    plist_foreach(pdir, free_str);
+	} plist_free(pdir);
     #endif
 
 	str_t *sbasename = str("my/test/folder/text.txt"); {
-		assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
-	} str_free(sbasename);
+            assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
+        } str_free(sbasename);
 
     // make directories
     //path_mkdir("hello_test_dir"); // works
@@ -51,7 +66,8 @@ int main(void) {
     // rename file/dirs
     //path_rename("hello", "hello_renamed"); // works
     
-    assert(path_get_file_size("src/test_str.c") == 4009);
+    const size_t fs = path_get_file_size("src/test_str.c");
+    assert(fs == 4022);
 
     return 0;
 }

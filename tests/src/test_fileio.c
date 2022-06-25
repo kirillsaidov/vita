@@ -4,7 +4,9 @@
 
 int main(void) {
     str_t *s = file_read("src/test_file.txt"); {
-        assert(str_len(s) == 18);
+        if(s != NULL) {
+            assert(str_len(s) == 18);
+        }
     } str_free(s);
     
     const str_t sbuf = str_make_on_stack("hello, world\nthis is a new day\n12345 test");
