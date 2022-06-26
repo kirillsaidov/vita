@@ -54,7 +54,7 @@ int32_t main(void) {
 
 	// parse args and opts
 	argopt_parse(argc, argv, optc, optv);
-	
+    
 	// check
 	assert(str_equals(cstr(rpath), "../temp"));
 	assert(str_equals(cstr(wpath), "./docs/dw/data/"));

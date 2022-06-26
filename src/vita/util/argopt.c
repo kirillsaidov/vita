@@ -49,48 +49,32 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
     return true;
 }
 
-void argopt_print_help(const char* header, const size_t optc, const argopt_t *const optv) {}
-
-void argopt_print_opts(const size_t optc, const argopt_t *const optv, int32_t padding) {
+void argopt_print_help(const char *header, const char *footer, const size_t optc, const argopt_t *const optv) {
     if(optc < 1 || optv == NULL) {
         return;
     }
-
-    // auto-set padding
-    if(padding == -1) {
-        padding = 13;
+    
+    // calculate optionLong and optionShort padding
+    int32_t olPadding = 0;
+    int32_t osPadding = 0;
+    for(size_t i = 0; i < optc; i++) {
+        olPadding = MAX(strlen(optv[i].optionLong), olPadding);
+        osPadding = MAX(strlen(optv[i].optionShort), osPadding);
     }
 
-    // header
-    printf("%*s|%*s|%*s|%*s| %s\n", padding, "optionLong", padding, "optionShort", padding, "optionValue", padding, "optionType", "optionDesc");
-    
-    // data
+    // print header
+    if(header != NULL) {
+        printf("%s\n", header);
+    }
+
+    // print help (usage) manual
     for(size_t i = 0; i < optc; i++) {
-        const argopt_t opt = optv[i];
+        printf("%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
+    }
 
-        printf("%*s|%*s|", padding, opt.optionLong, padding, opt.optionShort);
-
-        switch(opt.optionType) {
-            case dt_int:
-                printf("%*d|", padding, *(int32_t*)(opt.optionValue));
-                break;
-            case dt_float:
-                printf("%*f|", padding, *(float*)(opt.optionValue));
-                break;
-            case dt_bool:
-                printf("%*s|", padding, *(bool*)(opt.optionValue) ? "true" : "false");
-                break;
-            case dt_char:
-                printf("%*c|", padding, *(char*)(opt.optionValue));
-                break;
-            case dt_str:
-                printf("%*s|", padding, *(str_t**)(opt.optionValue) == NULL ? "" : cstr(*(str_t**)(opt.optionValue))); 
-                break;
-            default:
-                break;
-        }
-
-        printf("%*s| %s\n", padding, dt_to_str(opt.optionType), opt.optionDesc);
+    // print footer
+    if(footer != NULL) {
+        printf("%s\n", footer);
     }
 }
 

@@ -1,7 +1,7 @@
-#ifndef VITA_ARGS_H
-#define VITA_ARGS_H
+#ifndef VITA_ARGOPT_H
+#define VITA_ARGOPT_H
 
-/** VITA_ARGS MODULE
+/** VITA_ARGOPT MODULE
     - //
 */
 
@@ -9,6 +9,7 @@
 
 #include "../container/str.h"
 #include "../container/plist.h"
+#include "../algorithm/comparison.h"
 
 #define OPT(v) ((void**)&v)
 
@@ -38,20 +39,11 @@ extern bool argopt_parse(const size_t argc, const char **const argv, const size_
 Prints help message (the usage manual)
 
 Params:
-    header = header msg
+    header = msg before the usage  manual
+    footer = msg after the usage manual
     optc = number of options
     optv = an array of argument options
 */
-extern void argopt_print_help(const char* header, const size_t optc, const argopt_t *const optv);
+extern void argopt_print_help(const char *header, const char *footer, const size_t optc, const argopt_t *const optv);
 
-/**
-Prints user argument options and their values
-
-Params:
-    optc = number of options
-    optv = an array of argument options
-    padding = adds padding 
-*/
-extern void argopt_print_opts(const size_t optc, const argopt_t *const optv, int32_t padding);
-
-#endif // VITA_ARGS_H
+#endif // VITA_ARGOPT_H
