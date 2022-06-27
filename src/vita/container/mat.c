@@ -7,7 +7,7 @@ mat_t *mat_new(void) {
     }
 
     // default-init
-    *m = (mat_t) {};
+    *m = (mat_t) {0};
 
     return m;
 }
@@ -78,7 +78,7 @@ void mat_dtor(mat_t *const m) {
     free(m->ptr2);
 
     // default-init
-    *m = (mat_t) {};
+    *m = (mat_t) {0};
 }
 
 void mat_free(mat_t *m) {
