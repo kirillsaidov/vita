@@ -4,7 +4,7 @@
 
 int32_t main(void) {
 	// strings
-	str_t *rpath = NULL;
+	str_t *rpath = str("my/temp/folder/default/initialized");
 	str_t *wpath = NULL;
 
 	// floats

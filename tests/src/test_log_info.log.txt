@@ -752,3 +752,9 @@
 2022-06-26 10:41:40  INFO src/test_log.c:23: Logging to file
 2022-06-26 10:43:17  INFO src/test_log.c:21: This is an info test.
 2022-06-26 10:43:17  INFO src/test_log.c:23: Logging to file
+2022-06-27 21:55:41  INFO src/test_log.c:21: This is an info test.
+2022-06-27 21:55:41  INFO src/test_log.c:23: Logging to file
+2022-06-27 21:56:29  INFO src/test_log.c:21: This is an info test.
+2022-06-27 21:56:29  INFO src/test_log.c:23: Logging to file
+2022-06-27 21:58:24  INFO src/test_log.c:21: This is an info test.
+2022-06-27 21:58:24  INFO src/test_log.c:23: Logging to file

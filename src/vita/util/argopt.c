@@ -88,6 +88,9 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     float fvalue = 0.0;
     bool bvalue = false;
 
+    // handling str_t (we need to check if it has been initialized with default value)
+    str_t **svalue = (str_t**)opt->optionValue;
+
     // save arg value
     switch(opt->optionType) {
         case dt_int:
@@ -106,7 +109,12 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
             *(char*)(opt->optionValue) = value[0];
             break;
         case dt_str:
-            *(str_t**)opt->optionValue = str(value);
+            if(*svalue == NULL) {
+                *(str_t**)opt->optionValue = str(value);
+            } else {
+                str_clear(*svalue);
+                str_append(*svalue, value);
+            }
             break;
         default:
             break;
