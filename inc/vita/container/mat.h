@@ -163,7 +163,7 @@ Params:
     m = mat_t instance
     func = function to execute action on each element: func(pointer, row index, col index)
 */
-extern void mat_foreach(const mat_t *const m, void (*func)(void*, size_t, size_t));
+extern void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t));
 
 
 #endif // VITA_MAT_H

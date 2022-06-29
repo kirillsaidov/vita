@@ -25,7 +25,7 @@
     - vec_insert
     - vec_remove
     - vec_contains
-    - vec_foreach
+    - vec_apply
 */
 
 #include "../core/core.h"
@@ -292,7 +292,7 @@ Params:
     v = vec_t instance
     func = function to execute action on each element: func(pointer, for loop index)
 */
-extern void vec_foreach(const vec_t *const v, void (*func)(void*, size_t));
+extern void vec_apply(const vec_t *const v, void (*func)(void*, size_t));
 
 
 #endif // VITA_VEC_H

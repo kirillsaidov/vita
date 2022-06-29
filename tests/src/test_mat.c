@@ -17,7 +17,7 @@ int main(void) {
 		mat_resize(m, 10, 10);
 		assert(mat_rows(m) == 10 && mat_cols(m) == 10);
 
-		mat_foreach(m, func);
+		mat_apply(m, func);
 		assert(mat_getd(m, 1, 1) == 2);
 
 		mat_setd(m, 24.5, 5, 5);
@@ -33,15 +33,15 @@ int main(void) {
 
 		// mat_resize(m, 0, 0); // false: cannot do it
 		mat_resize(m, 3, 3);
-		mat_foreach(m, func);
+		mat_apply(m, func);
 		assert(mat_getd(m, 2, 2) == 4);
-		// mat_foreach(m, print);
+		// mat_apply(m, print);
 	} mat_destroy(m);
 
     m = mat_create(3, 6, sizeof(double)); {
 		assert(mat_rows(m) == 3 && mat_cols(m) == 6);
 
-		mat_foreach(m, func);
+		mat_apply(m, func);
 		assert(mat_getd(m, 1, 1) == 2);
 
 		mat_setd(m, 24.5, 2, 5);
@@ -56,7 +56,7 @@ int main(void) {
 		assert(mat_getd(m, 2, 5) == 0);
 
 		// mat_resize(m, 0, 0); // false: cannot do it
-		// mat_foreach(m, print);
+		// mat_apply(m, print);
 	} mat_destroy(m);
 
 	return 0;

@@ -448,7 +448,7 @@ int64_t vec_contains(const vec_t *const v, const void *const val) {
     return -1;
 }
 
-void vec_foreach(const vec_t *const v, void (*func)(void*, size_t)) {
+void vec_apply(const vec_t *const v, void (*func)(void*, size_t)) {
     if(v == NULL || func == NULL) {
         return;
     }

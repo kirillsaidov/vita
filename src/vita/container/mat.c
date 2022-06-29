@@ -269,7 +269,7 @@ double mat_getd(const mat_t *const m, const size_t atRow, const size_t atCol) {
     return *(double*)(mat_get(m, atRow, atCol));
 }
 
-void mat_foreach(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
+void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
     if(m == NULL || func == NULL) {
         return;
     }

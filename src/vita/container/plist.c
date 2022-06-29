@@ -225,7 +225,7 @@ enum VitaError plist_remove(plist_t *const p, const size_t at, const enum Remove
     return ve_operation_success;
 }
 
-void plist_foreach(const plist_t *const p, void (*func)(void*, size_t)) {
+void plist_apply(const plist_t *const p, void (*func)(void*, size_t)) {
     if(p == NULL || func == NULL) {
         return;
     }

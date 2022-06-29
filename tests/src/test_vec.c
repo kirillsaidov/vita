@@ -19,7 +19,7 @@ int main(void) {
 		assert(vec_has_space(v) == 0);
 		assert(!vec_is_empty(v));
 
-		vec_foreach(v, func);
+		vec_apply(v, func);
 		assert(vec_getd(v, 1) == 0.5);
 
 		vec_pushd(v, 3.125);

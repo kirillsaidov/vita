@@ -20,7 +20,7 @@
     - plist_pop
     - plist_pop_get
     - plist_remove
-    - plist_foreach
+    - plist_apply
 */
 
 #include "../core/core.h"
@@ -200,7 +200,7 @@ Params:
     p = plist_t instance
     func = function to execute upon each element: func(pointer, for loop index)
 */
-extern void plist_foreach(const plist_t *const p, void (*func)(void*, size_t));
+extern void plist_apply(const plist_t *const p, void (*func)(void*, size_t));
 
 
 #endif // VITA_PLIST_H

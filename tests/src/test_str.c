@@ -99,7 +99,7 @@ int main(void) {
 			assert(plist_len(p) == 3);
 
 			// free each str_t in plist_t
-			plist_foreach(p, print_str);
+			plist_apply(p, print_str);
 		} plist_destroy(p);
 
         str_t *spf = str_pop_get_first(NULL, sto, "Kirillos"); {

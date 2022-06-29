@@ -37,7 +37,7 @@ int main(void) {
 
 	plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
-	    plist_foreach(pdir, free_str);
+	    plist_apply(pdir, free_str);
 	} plist_free(pdir);
 
     #else
@@ -51,7 +51,7 @@ int main(void) {
 
 	plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", true); {
 	    assert(plist_len(pdir) == FILES_IN_DIR);
-	    plist_foreach(pdir, free_str);
+	    plist_apply(pdir, free_str);
 	} plist_free(pdir);
     #endif
 
@@ -67,7 +67,7 @@ int main(void) {
     //path_rename("hello", "hello_renamed"); // works
     
     const size_t fs = path_get_file_size("src/test_str.c");
-    assert(fs == 4022);
+    assert(fs == 4020);
 
     return 0;
 }
