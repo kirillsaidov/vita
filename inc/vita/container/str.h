@@ -23,7 +23,8 @@
     - str_append_n
     - str_insert
     - str_remove
-    - str_remove_str
+    - str_remove_s
+    - str_strip
     - str_find
     - str_can_find
     - str_split
@@ -33,6 +34,8 @@
     - str_starts_with
     - str_ends_with
 */
+
+#include <ctype.h>
 
 #include "../core/core.h"
 #include "plist.h"
@@ -269,7 +272,27 @@ Params:
 
 Returns: enum VitaError
 */
-extern enum VitaError str_remove_str(str_t *const s, const char *cs);
+extern enum VitaError str_remove_s(str_t *const s, const char *cs);
+
+/**
+Strips leading and tailing whitespace and control symbols
+
+Params:
+    s = str_t instance
+
+Returns: enum VitaError
+*/
+extern enum VitaError str_strip(str_t *const s);
+
+/**
+Strips leading and tailing punctuation marks + whitespace and control symbols
+
+Params:
+    s = str_t instance
+
+Returns: enum VitaError
+*/
+enum VitaError str_strip_punct(str_t *const s);
 
 /**
 Find a substring

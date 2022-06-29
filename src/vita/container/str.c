@@ -299,7 +299,7 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_str(str_t *const s, const char *cs) {
+enum VitaError str_remove_s(str_t *const s, const char *cs) {
     if(s == NULL || cs == NULL) {
         return ve_error_is_null;
     }
@@ -322,6 +322,74 @@ enum VitaError str_remove_str(str_t *const s, const char *cs) {
 
     // add the '\0' terminator
     ((char*)s->ptr)[s->len] = '\0';
+
+    return ve_operation_success;
+}
+
+enum VitaError str_strip(str_t *const s) {
+    if(s == NULL) {
+        return ve_operation_failure;
+    }
+
+    // prepare
+    size_t offset = 0;
+    size_t *len = &s->len;
+    char *start = (char*)cstr(s);
+    char *end = start + (*len - 1) * sizeof(char);;
+
+    // strip tailing whitespace and control symbols
+    while(end >= start && isspace(*end)) {
+        end -= 1 * sizeof(char);
+        offset++;
+    }
+    *len -= offset;
+    end[*len] = '\0';
+
+    // strip leading whitespace and control symbols
+    offset = 0;
+    while(*(start + offset * sizeof(char)) && isspace(*(start + offset * sizeof(char)))) {
+        offset++;
+    }
+
+    if(offset) {
+        memmove(start, start + offset * sizeof(char), *len - offset);
+    }
+    *len -= offset;
+    start[*len] = '\0';
+
+    return ve_operation_success;
+}
+
+enum VitaError str_strip_punct(str_t *const s) {
+    if(s == NULL) {
+        return ve_operation_failure;
+    }
+
+    // prepare
+    size_t offset = 0;
+    size_t *len = &s->len;
+    char *start = (char*)cstr(s);
+    char *end = start + (*len - 1) * sizeof(char);;
+
+    // strip tailing whitespace and control symbols
+    while(end >= start && (isspace(*end) || ispunct(*end))) {
+        end -= 1 * sizeof(char);
+        offset++;
+    }
+    *len -= offset;
+    end[*len] = '\0';
+
+    // strip leading whitespace and control symbols
+    offset = 0;
+    while(*(start + offset * sizeof(char)) && (isspace(*(start + offset * sizeof(char))) || ispunct(*(start + offset * sizeof(char))))) {
+        offset++;
+    }
+
+    if(offset) {
+        memmove(start, start + offset * sizeof(char), *len - offset);
+    }
+    *len -= offset;
+    start[*len] = '\0';
 
     return ve_operation_success;
 }

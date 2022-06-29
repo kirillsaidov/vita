@@ -40,7 +40,7 @@ int main(void) {
 		assert(str_has_space(mystr) == 65 + 13 - 17 - 19 - 8);
 
 		str_remove(mystr, 4, 3);
-		str_remove_str(mystr, "Watermellon is red");
+		str_remove_s(mystr, "Watermellon is red");
 		assert(str_can_find(mystr, "sweet") == 1);
         assert(str_equals(cstr(mystr), "Oran.Apples are sweet!?"));
 
@@ -121,6 +121,18 @@ int main(void) {
         } str_free(_s__);
 
     } str_free(sto);
+
+	str_t *s_strip = str("   \nhello, world\t  ");
+	str_strip(s_strip);
+	assert(str_len(s_strip) == 12);
+	assert(str_equals(cstr(s_strip), "hello, world"));
+	str_free(s_strip);
+
+	s_strip = str("\n  ..,!  hello, world  ;;-!  \t\n");
+	str_strip_punct(s_strip);
+	assert(str_len(s_strip) == 12);
+	assert(str_equals(cstr(s_strip), "hello, world"));
+	str_free(s_strip);
 
 	return 0;
 }
