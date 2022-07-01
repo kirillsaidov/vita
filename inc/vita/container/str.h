@@ -23,8 +23,11 @@
     - str_append_n
     - str_insert
     - str_remove
-    - str_remove_s
+    - str_remove_first
+    - str_remove_c
     - str_strip
+    - str_strip_punct
+    - str_strip_c
     - str_find
     - str_can_find
     - str_split
@@ -272,7 +275,18 @@ Params:
 
 Returns: enum VitaError
 */
-extern enum VitaError str_remove_s(str_t *const s, const char *cs);
+extern enum VitaError str_remove_first(str_t *const s, const char *cs);
+
+/**
+Removes all encountered characters specified by the user from str_t
+
+Params:
+    s = str_t instance
+    c = characters to strip one after another: "\n ," => strip new line, whitespace, comma
+
+Returns: enum VitaError
+*/
+extern enum VitaError str_remove_c(str_t *const s, const char *const c);
 
 /**
 Strips leading and tailing whitespace and control symbols
@@ -293,6 +307,17 @@ Params:
 Returns: enum VitaError
 */
 enum VitaError str_strip_punct(str_t *const s);
+
+/**
+Strips leading and tailing characters specified by the user
+
+Params:
+    s = str_t instance
+    c = characters to strip one after another: "\n ," => strip new line, whitespace, comma
+
+Returns: enum VitaError
+*/
+enum VitaError str_strip_c(str_t *const s, const char *const c);
 
 /**
 Find a substring

@@ -299,7 +299,7 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_s(str_t *const s, const char *cs) {
+enum VitaError str_remove_first(str_t *const s, const char *cs) {
     if(s == NULL || cs == NULL) {
         return ve_error_is_null;
     }
@@ -326,6 +326,52 @@ enum VitaError str_remove_s(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
+enum VitaError str_remove_c(str_t *const s, const char *const c) {
+    if (s == NULL || c == NULL) {
+        return ve_operation_failure;
+    }
+
+    // prepare
+    size_t offset = 0;
+    size_t last_index = 0;
+    size_t *slen = &s->len;
+    size_t clen = strlen(c);
+    char *start = s->ptr;
+    char *sdup = strdup(start);
+
+    // remove all specitified characters
+    bool copy = true;
+    for(size_t i = 0; i < *slen; i++) {
+        for(size_t j = 0; j < clen; j++) {
+            if(start[i] == c[j]) {
+                offset++;
+
+                // do not copy characters
+                copy = false;
+                break;
+            }
+        }
+        
+        // copy data
+        if(copy) {
+            last_index = i - offset;
+            sdup[last_index] = start[i];
+        } else {
+            copy = true;
+        }
+    }
+    
+    // update length
+    *slen -= offset;
+
+    // update ptr data
+    free(start);
+    sdup[*slen] = '\0';
+    s->ptr = sdup;
+    
+    return ve_operation_success;
+}
+
 enum VitaError str_strip(str_t *const s) {
     if(s == NULL) {
         return ve_operation_failure;
@@ -334,7 +380,7 @@ enum VitaError str_strip(str_t *const s) {
     // prepare
     size_t offset = 0;
     size_t *len = &s->len;
-    char *start = (char*)cstr(s);
+    char *start = s->ptr;
     char *end = start + (*len - 1) * sizeof(char);;
 
     // strip tailing whitespace and control symbols
@@ -354,6 +400,8 @@ enum VitaError str_strip(str_t *const s) {
     if(offset) {
         memmove(start, start + offset * sizeof(char), *len - offset);
     }
+
+    // update
     *len -= offset;
     start[*len] = '\0';
 
@@ -368,7 +416,7 @@ enum VitaError str_strip_punct(str_t *const s) {
     // prepare
     size_t offset = 0;
     size_t *len = &s->len;
-    char *start = (char*)cstr(s);
+    char *start = s->ptr;
     char *end = start + (*len - 1) * sizeof(char);;
 
     // strip tailing whitespace and control symbols
@@ -388,8 +436,73 @@ enum VitaError str_strip_punct(str_t *const s) {
     if(offset) {
         memmove(start, start + offset * sizeof(char), *len - offset);
     }
+
+    // update
     *len -= offset;
     start[*len] = '\0';
+
+    return ve_operation_success;
+}
+
+enum VitaError str_strip_c(str_t *const s, const char *const c) {
+    if (s == NULL || c == NULL) {
+        return ve_operation_failure;
+    }
+
+    // preparation
+    size_t offset = 0;
+    size_t last_index = 0;
+    size_t *slen = &s->len;
+    size_t clen = strlen(c);
+    
+    // strip end
+    bool stop = false;
+    char *start = s->ptr;
+    char *end = start + (*slen) - 1;
+    while (end >= start && !stop) {		
+        for(size_t i = 0; i < clen; i++) {
+            if(*end == c[i]) {
+                end -= 1 * sizeof(char);
+                offset++;
+
+                // continue while loop
+                stop = false;
+                
+                break;
+            }
+            
+            stop = true;
+        }
+    }
+
+    // update tail and length
+    *slen -= offset;
+    end[*slen] = '\0';
+
+    stop = false;
+    offset = 0;
+    while (*(start + offset) && !isalpha(*(start + offset)) && !stop) {
+        for(size_t i = 0; i < clen; i++) {
+            if(*(start + offset) == c[i]) {
+                offset++;
+
+                // continue while loop
+                stop = false;
+
+                break;
+            }
+            
+            stop = true;
+        }
+    }
+    
+    if(offset) {
+        memmove(start, start + offset * sizeof(char), *slen - offset);
+    }
+
+    // update
+    *slen -= offset;
+    start[*slen] = '\0';
 
     return ve_operation_success;
 }
