@@ -381,12 +381,12 @@ enum VitaError str_strip(str_t *const s) {
     size_t offset = 0;
     size_t *len = &s->len;
     const char *p = s->ptr;
-    const char *curr = p + offset * s->elsize;
+    const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
     while(isspace(*curr)) {
         offset++;
-        curr = p + offset * s->elsize;
+        curr = p + offset;
     }
 
     // update length
@@ -417,12 +417,12 @@ enum VitaError str_strip_punct(str_t *const s) {
     size_t offset = 0;
     size_t *len = &s->len;
     const char *p = s->ptr;
-    const char *curr = p + offset * s->elsize;
+    const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
     while(isspace(*curr) || ispunct(*curr)) {
         offset++;
-        curr = p + offset * s->elsize;
+        curr = p + offset;
     }
 
     // update length
@@ -455,14 +455,14 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     size_t clen = strlen(c);
     size_t *len = &s->len;
     const char *p = s->ptr;
-    const char *curr = p + offset * s->elsize;
+    const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
     while(!stop) {
         for(size_t i = 0; i < clen; i++) {
             if(*curr == c[i]) {
                 offset++;
-                curr = p + offset * s->elsize;
+                curr = p + offset;
 
                 // continue looping
                 stop = false;
@@ -522,7 +522,7 @@ size_t str_can_find(const str_t *const s, const char *cs) {
     size_t count = 0;
     const size_t csLen = strlen(cs);
     const char *p = s->ptr;
-    while((p = strstr(p + csLen * s->elsize, cs)) != NULL) {
+    while((p = strstr(p + csLen, cs)) != NULL) {
         count++;
     }
 
@@ -566,7 +566,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
         // count copy length
         size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
         if(copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
-            head += sepLen * s->elsize;
+            head += sepLen;
             continue;
         } else {
             // create a str_t instance and copy the values
@@ -575,7 +575,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
             plist_push(p, tempStr);
 
             // update head
-            head = current + sepLen * s->elsize;
+            head = current + sepLen;
         }
 
         // break from loop when no more sep is found or we are at the end of string
@@ -633,7 +633,7 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     // find the last instance of sep
     const char *p = strstr(s->ptr, sep);
     const char *lastInstance = p;
-    while((p = strstr(p + sepLen * s->elsize, sep)) != NULL) {
+    while((p = strstr(p + sepLen, sep)) != NULL) {
         lastInstance = p;
     }
 

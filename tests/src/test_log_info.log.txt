@@ -880,3 +880,7 @@
 2022-07-12 16:26:59  INFO src/test_log.c:23: Logging to file
 2022-07-12 16:27:14  INFO src/test_log.c:21: This is an info test.
 2022-07-12 16:27:14  INFO src/test_log.c:23: Logging to file
+2022-07-12 16:30:30  INFO src/test_log.c:21: This is an info test.
+2022-07-12 16:30:30  INFO src/test_log.c:23: Logging to file
+2022-07-12 16:34:52  INFO src/test_log.c:21: This is an info test.
+2022-07-12 16:34:52  INFO src/test_log.c:23: Logging to file
