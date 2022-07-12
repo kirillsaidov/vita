@@ -32,7 +32,7 @@ str_t *str(const char *cs) {
 
 str_t *strn(const size_t n) {
     // allocate memory for a str_t struct
-    str_t *s = malloc(sizeof(str_t));
+    str_t *s = calloc(1, sizeof(str_t));
 
     // check if s was allocated
     if(s == NULL) {
@@ -69,7 +69,7 @@ str_t *str_take_ownership(const char *const cs) {
     }
 
     // allocate memory for a str_t struct
-    str_t *s = malloc(sizeof(str_t));
+    str_t *s = calloc(1, sizeof(str_t));
 
     // check if s was allocated
     if(s == NULL) {
@@ -315,7 +315,7 @@ enum VitaError str_remove_first(str_t *const s, const char *cs) {
     const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - (sub + csLen * s->elsize));
 
     // shift the characters to the left of the string by the substring length
-    memmove(sub, (sub + csLen * s->elsize), diff);
+    memmove(sub, (sub + csLen * s->elsize), diff * s->elsize);
 
     // set new length
     s->len -= csLen;
@@ -381,24 +381,30 @@ enum VitaError str_strip(str_t *const s) {
     size_t offset = 0;
     size_t *len = &s->len;
     char *start = s->ptr;
-    char *end = start + (*len - 1) * sizeof(char);;
+    char *end = start + (*len - 1) * s->elsize;
 
     // strip tailing whitespace and control symbols
     while(end >= start && isspace(*end)) {
-        end -= 1 * sizeof(char);
+        end -= s->elsize;
         offset++;
     }
+
+    // update
     *len -= offset;
     end[*len] = '\0';
 
     // strip leading whitespace and control symbols
     offset = 0;
-    while(*(start + offset * sizeof(char)) && isspace(*(start + offset * sizeof(char)))) {
+    end = start; // use end as temporary variable
+    while(*end && isspace(*end)) {
+        // move forward
         offset++;
+        end = start + offset * s->elsize;
     }
 
+    // copy to the begining
     if(offset) {
-        memmove(start, start + offset * sizeof(char), *len - offset);
+        memmove(start, end, (*len - offset) * s->elsize);
     }
 
     // update
@@ -417,24 +423,30 @@ enum VitaError str_strip_punct(str_t *const s) {
     size_t offset = 0;
     size_t *len = &s->len;
     char *start = s->ptr;
-    char *end = start + (*len - 1) * sizeof(char);;
+    char *end = start + (*len - 1) * s->elsize;
 
     // strip tailing whitespace and control symbols
     while(end >= start && (isspace(*end) || ispunct(*end))) {
-        end -= 1 * sizeof(char);
+        end -= s->elsize;
         offset++;
     }
+
+    // update
     *len -= offset;
     end[*len] = '\0';
 
     // strip leading whitespace and control symbols
     offset = 0;
-    while(*(start + offset * sizeof(char)) && (isspace(*(start + offset * sizeof(char))) || ispunct(*(start + offset * sizeof(char))))) {
+    end = start; // use end as temporary variable
+    while(*end && (isspace(*end) || ispunct(*end))) {
+        // move forward
         offset++;
+        end = start + offset * s->elsize;
     }
 
+    // copy to the begining
     if(offset) {
-        memmove(start, start + offset * sizeof(char), *len - offset);
+        memmove(start, end, (*len - offset) * s->elsize);
     }
 
     // update
@@ -449,7 +461,7 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
         return ve_operation_failure;
     }
 
-    // preparation
+    // prepare
     size_t offset = 0;
     size_t last_index = 0;
     size_t *slen = &s->len;
@@ -462,7 +474,7 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     while (end >= start && !stop) {		
         for(size_t i = 0; i < clen; i++) {
             if(*end == c[i]) {
-                end -= 1 * sizeof(char);
+                end -= s->elsize;
                 offset++;
 
                 // continue while loop
@@ -479,12 +491,16 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     *slen -= offset;
     end[*slen] = '\0';
 
+    // strip leading characters
     stop = false;
     offset = 0;
-    while (*(start + offset) && !isalpha(*(start + offset)) && !stop) {
+    end = start; // use end as temporary variable
+    while (*end && !isalpha(*end) && !stop) {
         for(size_t i = 0; i < clen; i++) {
             if(*(start + offset) == c[i]) {
+                // move forward
                 offset++;
+                end = start + offset * s->elsize;
 
                 // continue while loop
                 stop = false;
@@ -497,7 +513,7 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     }
     
     if(offset) {
-        memmove(start, start + offset * sizeof(char), *slen - offset);
+        memmove(start, end, (*slen - offset) * s->elsize);
     }
 
     // update
@@ -524,7 +540,7 @@ size_t str_can_find(const str_t *const s, const char *cs) {
     size_t count = 0;
     const size_t csLen = strlen(cs);
     const char *p = s->ptr;
-    while((p = strstr(p + csLen * sizeof(char), cs)) != NULL) {
+    while((p = strstr(p + csLen * s->elsize, cs)) != NULL) {
         count++;
     }
 
