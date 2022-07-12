@@ -282,7 +282,7 @@ Removes all encountered characters specified by the user from str_t
 
 Params:
     s = str_t instance
-    c = characters to strip one after another: "\n ," => strip new line, whitespace, comma
+    c = characters to remove one after another: "\n ," => remove new line, whitespace, comma
 
 Returns: enum VitaError
 */

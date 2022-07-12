@@ -380,36 +380,30 @@ enum VitaError str_strip(str_t *const s) {
     // prepare
     size_t offset = 0;
     size_t *len = &s->len;
-    char *start = s->ptr;
-    char *end = start + (*len - 1) * s->elsize;
-
-    // strip tailing whitespace and control symbols
-    while(end >= start && isspace(*end)) {
-        end -= s->elsize;
-        offset++;
-    }
-
-    // update
-    *len -= offset;
-    end[*len] = '\0';
+    const char *p = s->ptr;
+    const char *curr = p + offset * s->elsize;
 
     // strip leading whitespace and control symbols
-    offset = 0;
-    end = start; // use end as temporary variable
-    while(*end && isspace(*end)) {
-        // move forward
+    while(isspace(*curr)) {
         offset++;
-        end = start + offset * s->elsize;
+        curr = p + offset * s->elsize;
     }
 
-    // copy to the begining
-    if(offset) {
-        memmove(start, end, (*len - offset) * s->elsize);
-    }
-
-    // update
+    // update length
     *len -= offset;
-    start[*len] = '\0';
+
+    // strip tailing whitespace and control symbols
+    curr = p + (*len + offset - 1);
+    while(isspace(*curr)) {
+        (*len)--;
+        curr = p + (*len + offset - 1);
+    }
+
+    // move string to the begining
+    memmove(s->ptr, s->ptr + offset, *len);
+
+    // update end
+    ((char*)(s->ptr))[*len] = '\0';
 
     return ve_operation_success;
 }
@@ -422,103 +416,91 @@ enum VitaError str_strip_punct(str_t *const s) {
     // prepare
     size_t offset = 0;
     size_t *len = &s->len;
-    char *start = s->ptr;
-    char *end = start + (*len - 1) * s->elsize;
-
-    // strip tailing whitespace and control symbols
-    while(end >= start && (isspace(*end) || ispunct(*end))) {
-        end -= s->elsize;
-        offset++;
-    }
-
-    // update
-    *len -= offset;
-    end[*len] = '\0';
+    const char *p = s->ptr;
+    const char *curr = p + offset * s->elsize;
 
     // strip leading whitespace and control symbols
-    offset = 0;
-    end = start; // use end as temporary variable
-    while(*end && (isspace(*end) || ispunct(*end))) {
-        // move forward
+    while(isspace(*curr) || ispunct(*curr)) {
         offset++;
-        end = start + offset * s->elsize;
+        curr = p + offset * s->elsize;
     }
 
-    // copy to the begining
-    if(offset) {
-        memmove(start, end, (*len - offset) * s->elsize);
-    }
-
-    // update
+    // update length
     *len -= offset;
-    start[*len] = '\0';
+
+    // strip tailing whitespace and control symbols
+    curr = p + (*len + offset - 1);
+    while(isspace(*curr) || ispunct(*curr)) {
+        (*len)--;
+        curr = p + (*len + offset - 1);
+    }
+
+    // move string to the begining
+    memmove(s->ptr, s->ptr + offset, *len);
+
+    // update end
+    ((char*)(s->ptr))[*len] = '\0';
 
     return ve_operation_success;
 }
 
 enum VitaError str_strip_c(str_t *const s, const char *const c) {
-    if (s == NULL || c == NULL) {
+    if(s == NULL) {
         return ve_operation_failure;
     }
 
     // prepare
-    size_t offset = 0;
-    size_t last_index = 0;
-    size_t *slen = &s->len;
-    size_t clen = strlen(c);
-    
-    // strip end
     bool stop = false;
-    char *start = s->ptr;
-    char *end = start + (*slen) - 1;
-    while (end >= start && !stop) {		
-        for(size_t i = 0; i < clen; i++) {
-            if(*end == c[i]) {
-                end -= s->elsize;
-                offset++;
+    size_t offset = 0;
+    size_t clen = strlen(c);
+    size_t *len = &s->len;
+    const char *p = s->ptr;
+    const char *curr = p + offset * s->elsize;
 
-                // continue while loop
+    // strip leading whitespace and control symbols
+    while(!stop) {
+        for(size_t i = 0; i < clen; i++) {
+            if(*curr == c[i]) {
+                offset++;
+                curr = p + offset * s->elsize;
+
+                // continue looping
                 stop = false;
-                
+
                 break;
             }
-            
+
             stop = true;
         }
     }
 
-    // update tail and length
-    *slen -= offset;
-    end[*slen] = '\0';
+    // update length
+    *len -= offset;
 
-    // strip leading characters
+    // strip tailing whitespace and control symbols
     stop = false;
-    offset = 0;
-    end = start; // use end as temporary variable
-    while (*end && !isalpha(*end) && !stop) {
+    curr = p + (*len + offset - 1);
+    while(!stop) {
         for(size_t i = 0; i < clen; i++) {
-            if(*(start + offset) == c[i]) {
-                // move forward
-                offset++;
-                end = start + offset * s->elsize;
+            if(*curr == c[i]) {
+                (*len)--;
+                curr = p + (*len + offset - 1);
 
-                // continue while loop
+                // continue looping
                 stop = false;
 
                 break;
             }
-            
+
             stop = true;
         }
     }
-    
-    if(offset) {
-        memmove(start, end, (*slen - offset) * s->elsize);
-    }
 
-    // update
-    *slen -= offset;
-    start[*slen] = '\0';
+    // move string to the begining
+    memmove(s->ptr, s->ptr + offset, *len);
+
+    // update end
+    ((char*)(s->ptr))[*len] = '\0';
 
     return ve_operation_success;
 }
