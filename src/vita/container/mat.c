@@ -1,13 +1,10 @@
 #include "vita/container/mat.h"
 
 mat_t *mat_new(void) {
-    mat_t *m = malloc(sizeof(mat_t));
+    mat_t *m = calloc(1, sizeof(mat_t));
     if(m == NULL) {
         return NULL;
     }
-
-    // default-init
-    *m = (mat_t) {0};
 
     return m;
 }
@@ -19,7 +16,7 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
     // mat_t init
     *m = (mat_t) {
-        .ptr2 = malloc(rows * sizeof(void*)),
+        .ptr2 = calloc(rows, sizeof(void*)),
         .rows = rows,
         .cols = cols,
         .elsize = elsize,

@@ -1,13 +1,10 @@
 #include "vita/container/vec.h"
 
 vec_t *vec_new(void) {
-    vec_t *v = malloc(sizeof(vec_t));
+    vec_t *v = calloc(1, sizeof(vec_t));
     if(v == NULL) {
         return NULL;
     }
-
-    // default-init
-    *v = (vec_t) {0};
 
     return v;
 }

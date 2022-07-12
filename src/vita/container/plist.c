@@ -1,13 +1,10 @@
 #include "vita/container/plist.h"
 
 plist_t *plist_new(void) {
-    plist_t *p = malloc(sizeof(plist_t));
+    plist_t *p = calloc(1, sizeof(plist_t));
     if(p == NULL) {
         return NULL;
     }
-
-    // default-init
-    *p = (plist_t) {0};
 
     return p;
 }
