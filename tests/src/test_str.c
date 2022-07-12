@@ -76,7 +76,7 @@ int main(void) {
 		assert(str_capacity(ns) == 0);
 		assert(str_has_space(ns) == 0);
 
-		assert(str_append(ns, "hello"));
+		assert(str_append(ns, "hello") == ve_operation_success);
 		assert(str_equals(cstr(ns), "hello"));
 
 		// fails, because str_len(ns) < strlen("hello, world") => append instead
@@ -88,10 +88,10 @@ int main(void) {
 		assert(str_capacity(sto) == 12);
 		assert(str_has_space(sto) == 0);
 
-		assert(str_append(sto, "! How are you?"));
+		assert(str_append(sto, "! How are you?") == ve_operation_success);
 		assert(str_len(sto) == strlen("12345, world! How are you?"));
 		assert(str_equals(cstr(sto), "12345, world! How are you?"));
-		assert(str_append(sto, " hello, world; hello again. This is hello!"));
+		assert(str_append(sto, " hello, world; hello again. This is hello!") == ve_operation_success);
 
 		str_clear(sto);
 		str_append(sto, ";My name is Kirillos;How are you?;let's play;");

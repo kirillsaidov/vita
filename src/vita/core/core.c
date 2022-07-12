@@ -15,7 +15,7 @@ bool gswap(void* a, void* b, const size_t elsize) {
     }
 
     // allocate a temporary variable
-    void* temp = malloc(elsize);
+    void* temp = calloc(1, elsize);
     if(temp == NULL) {
         return false;
     }
