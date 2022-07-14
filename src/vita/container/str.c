@@ -304,7 +304,8 @@ enum VitaError str_remove_first(str_t *const s, const char *cs) {
         return ve_error_is_null;
     }
 
-    // find a substring in strbuf
+    // find a substring in strbuf, 
+    // if substring wasn't found, return
     const size_t csLen = strlen(cs);
     void* sub = strstr(s->ptr, cs);
     if(sub == NULL) {
@@ -326,9 +327,20 @@ enum VitaError str_remove_first(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
+enum VitaError str_remove_all(str_t *const s, const char *cs) {
+    if(s == NULL || cs == NULL) {
+        return ve_error_is_null;
+    }
+
+    // remove all instances of substring
+    while(str_remove_first(s, cs) == ve_operation_success);
+
+    return ve_operation_success;
+}
+
 enum VitaError str_remove_c(str_t *const s, const char *const c) {
     if (s == NULL || c == NULL) {
-        return ve_operation_failure;
+        return ve_error_is_null;
     }
 
     // prepare
@@ -374,7 +386,7 @@ enum VitaError str_remove_c(str_t *const s, const char *const c) {
 
 enum VitaError str_strip(str_t *const s) {
     if(s == NULL) {
-        return ve_operation_failure;
+        return ve_error_is_null;
     }
 
     // prepare
@@ -410,7 +422,7 @@ enum VitaError str_strip(str_t *const s) {
 
 enum VitaError str_strip_punct(str_t *const s) {
     if(s == NULL) {
-        return ve_operation_failure;
+        return ve_error_is_null;
     }
 
     // prepare
@@ -446,7 +458,7 @@ enum VitaError str_strip_punct(str_t *const s) {
 
 enum VitaError str_strip_c(str_t *const s, const char *const c) {
     if(s == NULL) {
-        return ve_operation_failure;
+        return ve_error_is_null;
     }
 
     // prepare

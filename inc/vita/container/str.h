@@ -24,6 +24,7 @@
     - str_insert
     - str_remove
     - str_remove_first
+    - str_remove_all
     - str_remove_c
     - str_strip
     - str_strip_punct
@@ -273,9 +274,20 @@ Params:
     s = str_t instance
     cs = raw C string
 
-Returns: enum VitaError
+Returns: enum VitaError (ve_operation_failure if s does not contain cs)
 */
 extern enum VitaError str_remove_first(str_t *const s, const char *cs);
+
+/**
+Removes all instances of encountered substring from str_t
+
+Params:
+    s = str_t instance
+    cs = raw C string
+
+Returns: enum VitaError
+*/
+extern enum VitaError str_remove_all(str_t *const s, const char *cs);
 
 /**
 Removes all encountered characters specified by the user from str_t

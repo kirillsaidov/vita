@@ -145,6 +145,11 @@ int main(void) {
 	assert(str_len(s_strip) == 10);
 	assert(str_equals(cstr(s_strip), "helloworld"));
 	str_free(s_strip);
+	
+	s_strip = str("Here is a shopping list: apples and oranges, milk and sugar, and vinegar.");
+	str_remove_all(s_strip, " and");
+	assert(str_equals(cstr(s_strip), "Here is a shopping list: apples oranges, milk sugar, vinegar."));
+	str_free(s_strip);
 
 	return 0;
 }

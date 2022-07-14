@@ -34,7 +34,6 @@ enum RemoveStrategy {
 
 // container operations errors
 enum VitaError {
-    ve_error_none,                      // nothing's happened yet
     ve_error_is_null,                   // element wasn't initialized or is NULL
     ve_error_allocation,                // failed to allocate or reallocate memory
     ve_error_incompatible_datatype,     // working with different datatypes
