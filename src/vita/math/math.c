@@ -26,3 +26,7 @@ bool is_palindrome(const uint64_t num) {
 
     return (reversed == num);
 }
+
+double map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax) {
+    return (x - xMin) * (outMax - outMin) / (xMax - xMin) + outMin;
+}

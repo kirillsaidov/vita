@@ -4,6 +4,7 @@
 #include "../../inc/vita/container/str.h"
 
 void print_str(void *ptr, size_t i);
+void apply_func(char *c, size_t i);
 
 int main(void) {
     const str_t static_s = str_make_on_stack("hello, world");
@@ -151,9 +152,17 @@ int main(void) {
 	assert(str_equals(cstr(s_strip), "Here is a shopping list: apples oranges, milk sugar, vinegar."));
 	str_free(s_strip);
 
+	s_strip = str("A A A\n");
+	//str_apply(s_strip, apply_func);
+	str_free(s_strip);
+
 	return 0;
 }
 
 void print_str(void *ptr, size_t i) {
 	str_free(ptr);
+}
+
+void apply_func(char *c, size_t i) {
+	printf("%c", *c);
 }

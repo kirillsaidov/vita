@@ -894,3 +894,17 @@
 2022-07-14 20:51:43  INFO src/test_log.c:23: Logging to file
 2022-07-14 21:02:57  INFO src/test_log.c:21: This is an info test.
 2022-07-14 21:02:57  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:19:31  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:19:31  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:20:03  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:20:03  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:20:30  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:20:30  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:20:45  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:20:45  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:22:15  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:22:15  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:22:31  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:22:31  INFO src/test_log.c:23: Logging to file
+2022-07-25 21:22:53  INFO src/test_log.c:21: This is an info test.
+2022-07-25 21:22:53  INFO src/test_log.c:23: Logging to file

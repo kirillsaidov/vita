@@ -707,3 +707,13 @@ bool str_ends_with(const char *const cs, const char *const cs_sub) {
 
     return (!strncmp(cs + csLen - subLen, cs_sub, subLen));
 }
+
+void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
+    if(s == NULL || func == NULL) {
+        return;
+    }
+
+    for(size_t i = 0; i < str_len(s); i++) {
+        func(&((char*)s->ptr)[i], i);
+    }
+}

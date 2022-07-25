@@ -422,4 +422,13 @@ Returns: `true` if cs ends with cs_sub
 */
 extern bool str_ends_with(const char *const cs, const char *const cs_sub);
 
+/**
+Applies function upon each char
+
+Params:
+    s = str_t
+    func = function to execute upon each element: func(char pointer, for loop index) 
+*/
+extern void str_apply(const str_t *const s, void (*func)(char*, size_t));
+
 #endif // VITA_STR_H
