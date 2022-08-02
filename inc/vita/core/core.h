@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define VITA_VERSION "Vita v0.2"
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 

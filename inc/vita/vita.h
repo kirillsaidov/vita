@@ -5,8 +5,6 @@
     -
 */
 
-#define VITA_VERSION "Vita v0.2"
-
 #include "container/vec.h"
 #include "container/mat.h"
 #include "container/str.h"
