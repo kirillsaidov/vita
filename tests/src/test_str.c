@@ -6,7 +6,7 @@
 void print_str(void *ptr, size_t i);
 void apply_func(char *c, size_t i);
 
-int main(void) {
+int32_t main(void) {
     const str_t static_s = str_make_on_stack("hello, world");
     assert(str_equals(cstr(&static_s), "hello, world"));
     assert(str_starts_with(cstr(&static_s), "hello"));
