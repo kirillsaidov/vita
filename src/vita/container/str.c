@@ -1,5 +1,8 @@
 #include "vita/container/str.h"
 
+// static functions for internal usage
+static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args);
+
 const str_t str_make_on_stack(const char *const cs) {
     str_t s = {
         .ptr = (void*)cs,
@@ -26,6 +29,22 @@ str_t *str(const char *cs) {
         str_free(s);
         return NULL;
     }
+
+    return s;
+}
+
+str_t *str_fmt(str_t *s, const char *const fmt, ...) {
+    if(fmt == NULL || (s == NULL && (s = strn(DEFAULT_INIT_ELEMENTS)) == NULL)) {
+        return s;
+    }
+
+    // clear str_t
+    str_clear(s);
+
+    // append all data
+    va_list args; va_start(args, fmt);
+    s = str_vfmt(s, fmt, args);
+    va_end(args);
 
     return s;
 }
@@ -215,7 +234,15 @@ enum VitaError str_append(str_t *const s, const char *cs) {
 }
 
 enum VitaError str_appendf(str_t *const s, const char *const fmt, ...) {
-    //
+    if(s == NULL || fmt == NULL) {
+        return ve_error_is_null;
+    }
+
+    // iterate over all arguments
+    va_list args; va_start(args, fmt);
+    str_vfmt(s, fmt, args);
+    va_end(args);
+
     return ve_operation_success;
 }
 
@@ -717,4 +744,26 @@ void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
     for(size_t i = 0; i < len; i++) {
         func(&((char*)s->ptr)[i], i);
     }
+}
+
+static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
+    if(s == NULL || fmt == NULL) {
+        return s;
+    }
+
+    // format string
+    va_list args2; va_copy(args2, args); 
+    {
+        // check if new memory needs to be allocated
+        const int32_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
+            return s;
+        }
+
+        // print data to s
+        vsprintf(s->ptr, fmt, args2);
+    } 
+    va_end(args2);
+
+    return s;
 }

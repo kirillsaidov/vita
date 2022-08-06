@@ -40,7 +40,7 @@
 */
 
 #include <ctype.h>
-
+#include <stdarg.h>
 #include "../core/core.h"
 #include "plist.h"
 
@@ -66,6 +66,18 @@ Params:
 Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *str(const char *cs);
+
+/**
+Creates a formatted dynamic string (it is initialized to zero before usage)
+
+Params:
+    s = str_t instance; if `NULL` is passed, allocates
+    fmt = formatting
+    ... = additional arguments
+
+Returns: `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *str_fmt(str_t *s, const char *const fmt, ...);
 
 /**
 Creates an empty dynamic string of specified size (allocates additional memory for '\0')
