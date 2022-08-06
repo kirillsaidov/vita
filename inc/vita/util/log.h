@@ -77,8 +77,8 @@ Params:
     expr = expression to test
     file = source file name (__FILE__) from where the logger has been called
     line = source file line (__LINE__)
-    fmt = string format
-    ... = format variables
+    fmt = formatting
+    ... = additional arguments
 */
 void log_log(enum LogLevel log_level, const bool expr, const char *const file, const int32_t line, const char *const fmt, ...);
 

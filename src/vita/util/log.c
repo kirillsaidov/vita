@@ -44,30 +44,29 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
         tbuf[strftime(tbuf, sizeof(tbuf), "%Y-%m-%d %H:%M:%S", stm)] = '\0';
         
         // getting arguments
-        va_list args;
-        va_start(args, fmt);
-        
-        // logging to stderr, else to file
-        if(log_filenames[log_level] == NULL) {
-            fprintf(stderr, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
-            vfprintf(stderr, fmt, args);
-            fprintf(stderr, "\n");
-        } else {
-            // open file
-            FILE *fp = fopen(log_filenames[log_level], "a");
-            if(fp == NULL) {
-                return;
+        va_list args; va_start(args, fmt); 
+        {
+            // logging to stderr, else to file
+            if(log_filenames[log_level] == NULL) {
+                fprintf(stderr, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
+                vfprintf(stderr, fmt, args);
+                fprintf(stderr, "\n");
+            } else {
+                // open file
+                FILE *fp = fopen(log_filenames[log_level], "a");
+                if(fp == NULL) {
+                    return;
+                }
+                
+                // write to file
+                fprintf(fp, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
+                vfprintf(fp, fmt, args);
+                fprintf(fp, "\n");
+                
+                // close file
+                fclose(fp);
             }
-            
-            // write to file
-            fprintf(fp, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
-            vfprintf(fp, fmt, args);
-            fprintf(fp, "\n");
-            
-            // close file
-            fclose(fp);
         }
-
         va_end(args);
 
         // if log level = fatal or assert, exit
