@@ -214,7 +214,7 @@ enum VitaError str_append(str_t *const s, const char *cs) {
     return str_append_n(s, cs, strlen(cs));
 }
 
-enum VitaError str_appendf(str_t *const s, const char *const cs_fmt, ...) {
+enum VitaError str_appendf(str_t *const s, const char *const fmt, ...) {
     //
     return ve_operation_success;
 }
@@ -689,23 +689,23 @@ bool str_equals(const char *const cs1, const char *const cs2) {
     return (!strncmp(cs1, cs2, cs1Len));
 }
 
-bool str_starts_with(const char *const cs, const char *const cs_sub) {
-    const size_t subLen = strlen(cs_sub);
+bool str_starts_with(const char *const cs, const char *const sub) {
+    const size_t subLen = strlen(sub);
     if(subLen > strlen(cs)) {
         return false;
     }
 
-    return (!strncmp(cs, cs_sub, subLen));
+    return (!strncmp(cs, sub, subLen));
 }
 
-bool str_ends_with(const char *const cs, const char *const cs_sub) {
+bool str_ends_with(const char *const cs, const char *const sub) {
     const size_t csLen = strlen(cs);
-    const size_t subLen = strlen(cs_sub);
+    const size_t subLen = strlen(sub);
     if(subLen > csLen) {
         return false;
     }
 
-    return (!strncmp(cs + csLen - subLen, cs_sub, subLen));
+    return (!strncmp(cs + csLen - subLen, sub, subLen));
 }
 
 void str_apply(const str_t *const s, void (*func)(char*, size_t)) {

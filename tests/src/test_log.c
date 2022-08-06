@@ -13,19 +13,19 @@ int main(void) {
     //LOG_FATAL("Must crash after logging this message."); // exits after logging the message
     
     // log level
-    log_set_level(ll_info, "src/test_log_info.log.txt");
-    log_set_level(ll_error, "src/test_log_error.log.txt");
+    // log_set_level(ll_info, "src/test_log_info.log.txt");
+    // log_set_level(ll_error, "src/test_log_error.log.txt");
 
     // logs to files
-    int a = 100;
-    LOG_INFO("This is an info test.");
-    LOG_ERROR("Error: %s", "testing...");
-    LOG_INFO("Logging to %s", "file");
-    LOG_ERROR("Error %s to file (%d)", "logging", a);
+    // int32_t a = 100;
+    // LOG_INFO("This is an info test.");
+    // LOG_ERROR("Error: %s", "testing...");
+    // LOG_INFO("Logging to %s", "file");
+    // LOG_ERROR("Error %s to file (%d)", "logging", a);
 
     // log assert
     LOG_ASSERT(1, "%s\n", "Hello, world!"); // does not print to stderr
-    LOG_ASSERT(0, "%s\n", "Hello, world!"); // prints to stderr
+    // LOG_ASSERT(0, "%s\n", "Hello, world!"); // prints to stderr
 
     return 0;
 }

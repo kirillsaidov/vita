@@ -229,7 +229,7 @@ Params:
 
 Returns: enum VitaError
 */
-extern enum VitaError str_appendf(str_t *const s, const char *const cs_fmt, ...);
+extern enum VitaError str_appendf(str_t *const s, const char *const fmt, ...);
 
 /**
 Appends n characters of raw C string at the end of str_t
@@ -405,22 +405,22 @@ Checks if a raw C string starts with a substring
 
 Params:
     cs = raw C string
-    cs_sub = raw C substring
+    sub = raw C substring
 
-Returns: `true` if cs starts with cs_sub
+Returns: `true` if cs starts with sub
 */
-extern bool str_starts_with(const char *const cs, const char *const cs_sub);
+extern bool str_starts_with(const char *const cs, const char *const sub);
 
 /**
 Checks if a raw C string ends with a substring
 
 Params:
     cs = raw C string
-    cs_sub = raw C substring
+    sub = raw C substring
 
-Returns: `true` if cs ends with cs_sub
+Returns: `true` if cs ends with sub
 */
-extern bool str_ends_with(const char *const cs, const char *const cs_sub);
+extern bool str_ends_with(const char *const cs, const char *const sub);
 
 /**
 Applies a user specified function upon each char
