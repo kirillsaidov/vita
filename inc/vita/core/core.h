@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define VITA_VERSION "Vita v0.2"
+#define VITA_VERSION 0.2
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 
@@ -44,7 +44,7 @@ enum VitaError {
     ve_count                            // number of elements
 };
 
-// array struct wrapper
+// array struct wrapper: base container type
 struct BaseArrayType {
     union {
         void *ptr;

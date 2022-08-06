@@ -713,7 +713,8 @@ void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
         return;
     }
 
-    for(size_t i = 0; i < str_len(s); i++) {
+    const size_t len = str_len(s);
+    for(size_t i = 0; i < len; i++) {
         func(&((char*)s->ptr)[i], i);
     }
 }

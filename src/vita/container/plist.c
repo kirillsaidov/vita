@@ -227,7 +227,8 @@ void plist_apply(const plist_t *const p, void (*func)(void*, size_t)) {
         return;
     }
 
-    for(size_t i = 0; i < plist_len(p); i++) {
+    const size_t len = plist_len(p);
+    for(size_t i = 0; i < len; i++) {
         func(p->ptr2[i], i);
     }
 }
