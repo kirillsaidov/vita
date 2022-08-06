@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define VITA_VERSION 0.2
+#define VITA_VERSION "0.2"
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 
@@ -45,6 +45,7 @@ enum VitaError {
     // general
     ve_operation_failure,               // failed to perform an action
     ve_operation_success,               // all good
+    ve_operation_element_not_found,     // element was not found
 
     // log errors
     ve_log_error,                       // unknown log error

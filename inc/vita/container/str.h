@@ -280,16 +280,16 @@ Returns: enum VitaError
 extern enum VitaError str_remove(str_t *const s, const size_t from, size_t n);
 
 /**
-Removes the first encountered substring from str_t
+Removes the first/last encountered substring from str_t
 
 Params:
     s = str_t instance
     cs = raw C string
 
-Returns: enum VitaError (ve_operation_failure if s does not contain cs)
+Returns: enum VitaError
 */
 extern enum VitaError str_remove_first(str_t *const s, const char *cs);
-
+extern enum VitaError str_remove_last(str_t *s, const char *const cs);
 /**
 Removes all instances of encountered substring from str_t
 

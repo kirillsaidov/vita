@@ -152,6 +152,12 @@ int32_t main(void) {
     assert(str_equals(cstr(s_strip), "Here is a shopping list: apples oranges, milk sugar, vinegar."));
     str_free(s_strip);
 
+    s_strip = str("hello, world, world!");
+    str_remove_last(s_strip, ", world");
+    assert(str_equals(cstr(s_strip), "hello, world!"));
+    assert(str_len(s_strip) == 13);
+    str_free(s_strip);
+
     s_strip = str("A A A");
     str_apply(s_strip, apply_func);
     assert(str_equals(cstr(s_strip), "bbbbb"));

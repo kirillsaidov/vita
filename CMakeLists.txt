@@ -7,7 +7,7 @@ project(vita
 		LANGUAGES C)
 
 # setting default build type
-set(default_buid_type "Release")
+set(DEFAULT_BUILD_TYPE "Debug")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # finding all headers and sources 

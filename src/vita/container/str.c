@@ -327,16 +327,15 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
 }
 
 enum VitaError str_remove_first(str_t *const s, const char *cs) {
-    if(s == NULL || cs == NULL) {
+    const size_t csLen = strlen(cs);
+    if(s == NULL || cs == NULL || !csLen) {
         return ve_error_is_null;
     }
 
-    // find a substring in strbuf, 
-    // if substring wasn't found, return
-    const size_t csLen = strlen(cs);
+    // find a substring in strbuf; if substring wasn't found, return
     void* sub = strstr(s->ptr, cs);
     if(sub == NULL) {
-        return ve_operation_failure;
+        return ve_operation_element_not_found;
     }
 
     // find how many characters to copy from the end
@@ -350,6 +349,36 @@ enum VitaError str_remove_first(str_t *const s, const char *cs) {
 
     // add the '\0' terminator
     ((char*)s->ptr)[s->len] = '\0';
+
+    return ve_operation_success;
+}
+
+enum VitaError str_remove_last(str_t *s, const char *const cs) {
+    const size_t csLen = strlen(cs);
+    if(s == NULL || cs == NULL || !csLen) {
+        return ve_error_is_null;
+    }
+
+    // find the last instance of sep
+    char *p = strstr(s->ptr, cs);
+    char *lastInstance = p;
+    while((p = strstr(p + csLen, cs)) != NULL) {
+        lastInstance = p;
+    }
+
+    // if not found, return
+    if(lastInstance == NULL) {
+        return ve_operation_success;
+    }
+
+    // find how many characters to shrink the string
+    const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - ((void*)lastInstance));
+
+    // set cs to zero where it begins
+    lastInstance[0]= '\0';
+
+    // update str_t
+    s->len -= diff - 1;
 
     return ve_operation_success;
 }
