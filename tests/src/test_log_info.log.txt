@@ -9,3 +9,13 @@
 2022-08-06 09:47:52  INFO src/test_log.c:23: Logging to file
 2022-08-06 09:48:18  INFO src/test_log.c:21: This is an info test.
 2022-08-06 09:48:18  INFO src/test_log.c:23: Logging to file
+2022-08-06 11:09:14  INFO src/test_log.c:21: This is an info test.
+2022-08-06 11:09:14  INFO src/test_log.c:23: Logging to file
+2022-08-06 11:14:15  INFO src/test_log.c:21: This is an info test.
+2022-08-06 11:14:15  INFO src/test_log.c:23: Logging to file
+2022-08-06 11:14:36  INFO src/test_log.c:21: This is an info test.
+2022-08-06 11:14:36  INFO src/test_log.c:23: Logging to file
+2022-08-06 11:14:52  INFO src/test_log.c:21: This is an info test.
+2022-08-06 11:14:52  INFO src/test_log.c:23: Logging to file
+2022-08-06 11:15:44  INFO src/test_log.c:21: This is an info test.
+2022-08-06 11:15:44  INFO src/test_log.c:23: Logging to file
