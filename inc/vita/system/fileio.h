@@ -15,7 +15,7 @@
 #include <stdarg.h>
 
 /**
-Reads contents of a file
+Reads contents of a file in 'r' mode
 
 Params:
     cs_filename = file name
@@ -23,6 +23,16 @@ Params:
 Returns: `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *file_read(const char *const cs_filename);
+
+/**
+Reads contents of a file in 'rb' binary mode
+
+Params:
+    cs_filename = file name
+
+Returns: `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *file_readb(const char *const cs_filename);
 
 /**
 Writes to a file in custom mode
@@ -49,6 +59,8 @@ Params:
 Returns: `true` upon success
 */
 extern bool file_writef(const char *const cs_filename, const char *const cs_mode, const char *const cs_fmt, ...);
+
+/* -------------------- SPECIALIZED FUNCTIONS -------------------- */
 
 /**
 Writes to a file

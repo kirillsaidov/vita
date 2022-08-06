@@ -2,13 +2,13 @@
 #define VITA_CORE_H
 
 /** VITA_CORE MODULE
-    - is_null
     - gswap
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -23,6 +23,7 @@ enum DataType {
     dt_bool,    // boolean values
     dt_char,    // chars
     dt_str,     // str_t type (its not a raw C string!)
+    dt_unknown, // unknown data type
     dt_count    // number of elements
 };
 
@@ -33,14 +34,21 @@ enum RemoveStrategy {
     rs_count    // number of elements
 };
 
-// container operations errors
+// vita errors
 enum VitaError {
+    // container operations
     ve_error_is_null,                   // element wasn't initialized or is NULL
     ve_error_allocation,                // failed to allocate or reallocate memory
     ve_error_incompatible_datatype,     // working with different datatypes
     ve_error_out_of_bounds_access,      // accessing memory beyond allocated size
+
+    // general
     ve_operation_failure,               // failed to perform an action
     ve_operation_success,               // all good
+
+    // log errors
+    ve_log_error,                       // unknown log error
+
     ve_count                            // number of elements
 };
 
@@ -77,15 +85,5 @@ Params:
 Returns: `true` upon success
 */
 extern bool gswap(void* a, void* b, const size_t elsize);
-
-/**
-Returns a string for enum DataType value
-
-Params:
-    dt = enum DataType
-
-Returns: a raw C string
-*/
-extern const char *const dt_to_str(const enum DataType dt);
 
 #endif // VITA_CORE_H

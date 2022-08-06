@@ -23,6 +23,10 @@ int main(void) {
     LOG_INFO("Logging to %s", "file");
     LOG_ERROR("Error %s to file (%d)", "logging", a);
 
+    // log assert
+    LOG_ASSERT(1, "%s\n", "Hello, world!"); // does not print to stderr
+    LOG_ASSERT(0, "%s\n", "Hello, world!"); // prints to stderr
+
     return 0;
 }
 

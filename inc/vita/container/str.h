@@ -423,7 +423,7 @@ Returns: `true` if cs ends with cs_sub
 extern bool str_ends_with(const char *const cs, const char *const cs_sub);
 
 /**
-Applies function upon each char
+Applies a user specified function upon each char
 
 Params:
     s = str_t
