@@ -3,6 +3,7 @@
 
 /** VITA_CORE MODULE
     - gswap
+    - get_current_timestamp
 */
 
 #include <stdio.h>
@@ -11,6 +12,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdarg.h>
+#include <time.h>
 
 #define VITA_VERSION "0.2"
 #define DEFAULT_INIT_ELEMENTS 10
@@ -86,5 +89,13 @@ Params:
 Returns: `true` upon success
 */
 extern bool gswap(void* a, void* b, const size_t elsize);
+
+/**
+Returns a timestamp "year-month-day hour-minute-seconds"
+
+Params:
+    timebuf = to store timestamp data with len 21 chars
+*/
+extern void get_current_timestamp(char *timebuf, const size_t len);
 
 #endif // VITA_CORE_H

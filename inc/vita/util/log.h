@@ -17,9 +17,7 @@
     - log_log
 */
 
-#include <time.h>
-#include <stdarg.h>
-#include <assert.h>
+#include "../core/core.h"
 #include "../system/fileio.h"
 
 // Log levels

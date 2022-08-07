@@ -39,9 +39,7 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
 
         // get time
         char tbuf[21];
-        const time_t t = time(NULL);
-        const struct tm *stm = localtime(&t);
-        tbuf[strftime(tbuf, sizeof(tbuf), "%Y-%m-%d %H:%M:%S", stm)] = '\0';
+        get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
         va_list args; va_start(args, fmt); 
