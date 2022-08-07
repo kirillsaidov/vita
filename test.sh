@@ -13,6 +13,7 @@ declare -a tests=(
     "test_log" \
     "test_argopt" \
 	"test_math" \
+	"test_debug" \
 )
 
 # colored output

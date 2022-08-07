@@ -2,7 +2,7 @@
 
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 13
+#define FILES_IN_DIR 14
 
 void free_str(void *ptr, size_t i);
 
