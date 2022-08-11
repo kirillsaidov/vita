@@ -7,10 +7,18 @@ int32_t main(void) {
 
     debug_mh_handler_default_create();
 
-    debug_mh_t *mh = debug_mh_handler_default_get_handler();
-    int *a = DEBUG_MALLOC(sizeof(int));
-    DEBUG_FREE(a);
+        debug_mh_t *mh = debug_mh_handler_default_get_handler();
+        assert(mh != NULL);
+        
+        int *a = DEBUG_MALLOC(sizeof(int));
+        a = DEBUG_REALLOC(a, 40);
+        a = DEBUG_REALLOC(a, 12);
+        assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 12);
+
+        DEBUG_FREE(a);
+        assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
+
     
-    // debug_mh_handler_default_destroy();
+    debug_mh_handler_default_destroy();
     return 0;
 }

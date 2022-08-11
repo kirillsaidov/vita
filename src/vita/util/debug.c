@@ -317,3 +317,66 @@ static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t len) {
 
     return (len * sizeof(cache_t));
 }
+
+/* ---------------------- STATS FUNCTIONS ---------------------- */
+
+size_t debug_mh_get_nallocs(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return mh->n_allocs;
+}
+
+size_t debug_mh_get_nreallocs(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return mh->n_reallocs;
+}
+
+size_t debug_mh_get_nfrees(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return mh->n_frees;
+}
+
+size_t debug_mh_get_bytes_totally_alloced(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return mh->bytes_totally_alloced;
+}
+
+size_t debug_mh_get_bytes_currently_alloced(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return (mh->bytes_totally_alloced - mh->bytes_freed);
+}
+
+size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        return 0;
+    }
+    
+    return mh->bytes_freed;
+}
+
+// char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer) {
+//     return NULL;
+// }
+
+// void debug_mh_print_stats(const debug_mh_t *const mh) {}
+
+
+
+
+
+
+

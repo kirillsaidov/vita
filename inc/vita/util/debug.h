@@ -24,7 +24,6 @@ typedef struct DebugMemoryHandler debug_mh_t;
     #define DEBUG_CALLOC(bytes) debug_mh_calloc(debug_mh_handler_default_get_handler(), bytes, __FILE__, __LINE__)
     #define DEBUG_REALLOC(ptr, bytes) debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, __FILE__, __LINE__)
     #define DEBUG_FREE(ptr) debug_mh_free(debug_mh_handler_default_get_handler(), ptr, __FILE__, __LINE__)
-    #define DEBUG_SHUTDOWN debug_mh_handler_default_destroy()
 #else
     #define DEBUG_ASSERT(expr, ...)
     #define DEBUG_ASSERT2(expr, file, line, ...)
@@ -36,6 +35,14 @@ typedef struct DebugMemoryHandler debug_mh_t;
     #define DEBUG_REALLOC(ptr, bytes) realloc(ptr, bytes)
     #define DEBUG_FREE(ptr) free(ptr)
 #endif
+
+// stats
+#define DEBUG_NALLOCS debug_mh_get_nallocs(debug_mh_handler_default_get_handler())
+#define DEBUG_NREALLOCS debug_mh_get_nreallocs(debug_mh_handler_default_get_handler())
+#define DEBUG_NFREES debug_mh_get_nfrees(debug_mh_handler_default_get_handler())
+#define DEBUG_BYTES_TOTALLY_ALOCATED debug_mh_get_bytes_totally_alloced(debug_mh_handler_default_get_handler())
+#define DEBUG_BYTES_CURRENTLY_ALOCATED debug_mh_get_bytes_currently_alloced(debug_mh_handler_default_get_handler())
+#define DEBUG_BYTES_FREED debug_mh_get_bytes_freed(debug_mh_handler_default_get_handler())
 
 /**
 Asserts an expression and exits upon its evaluation to false
@@ -182,5 +189,16 @@ Params:
 */
 extern size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr);
 
+/* ---------------------- STATS FUNCTIONS ---------------------- */
+
+extern size_t debug_mh_get_nallocs(const debug_mh_t *const mh);
+extern size_t debug_mh_get_nreallocs(const debug_mh_t *const mh);
+extern size_t debug_mh_get_nfrees(const debug_mh_t *const mh);
+extern size_t debug_mh_get_bytes_totally_alloced(const debug_mh_t *const mh);
+extern size_t debug_mh_get_bytes_currently_alloced(const debug_mh_t *const mh);
+extern size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh);
+
+extern char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer);
+extern void debug_mh_print_stats(const debug_mh_t *const mh);
 
 #endif // VITA_DEBUG_H
