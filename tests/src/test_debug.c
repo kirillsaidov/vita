@@ -15,10 +15,10 @@ int32_t main(void) {
         a = DEBUG_REALLOC(a, 12);
         assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 12);
 
+        a = DEBUG_REALLOC(a, 30);
         DEBUG_FREE(a);
         assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
 
-    
     debug_mh_handler_default_destroy();
     return 0;
 }

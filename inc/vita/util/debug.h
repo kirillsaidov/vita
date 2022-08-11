@@ -9,6 +9,7 @@
     - debug_assert
 */
 
+#include <math.h>
 #include "../core/core.h"
 
 // memory handler instance
@@ -191,14 +192,84 @@ extern size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr);
 
 /* ---------------------- STATS FUNCTIONS ---------------------- */
 
+/**
+Returns number of allocations 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of allocations
+*/
 extern size_t debug_mh_get_nallocs(const debug_mh_t *const mh);
+
+/**
+Returns number of reallocations 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of reallocations
+*/
 extern size_t debug_mh_get_nreallocs(const debug_mh_t *const mh);
+
+/**
+Returns number of frees 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of frees
+*/
 extern size_t debug_mh_get_nfrees(const debug_mh_t *const mh);
+
+/**
+Returns number of bytes totally allocated throughout the program 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of bytes
+*/
 extern size_t debug_mh_get_bytes_totally_alloced(const debug_mh_t *const mh);
+
+/**
+Returns number of bytes currently allocated 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of bytes
+*/
 extern size_t debug_mh_get_bytes_currently_alloced(const debug_mh_t *const mh);
+
+/**
+Returns number of bytes freed throughout the program 
+
+Params:
+    mh = memory handler instance
+
+Returns: number of bytes
+*/
 extern size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh);
 
-extern char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer);
+/**
+Returns a formatted string with stats
+
+Params:
+    mh = memory handler instance
+    buffer = buffer to store formatted stats; if `NULL` is specified, allocates
+    buf_len = buffer length (must be >= 256)
+
+Returns: C string
+*/
+extern char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer, const size_t buff_len);
+
+/**
+Prints a formatted string with stats
+
+Params:
+    mh = memory handler instance
+*/
 extern void debug_mh_print_stats(const debug_mh_t *const mh);
 
 #endif // VITA_DEBUG_H

@@ -185,7 +185,7 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
 
         // count stats
         mh->n_reallocs++;
-        mh->bytes_totally_alloced += bytes - bytes_old;
+        mh->bytes_totally_alloced += ((int64_t)bytes - (int64_t)bytes_old);
 
         // print info
         DEBUG_PRINT("%s:%d: %zu bytes reallocated (old size: %d)\n", file, line, bytes, bytes_old);
@@ -292,7 +292,7 @@ static int64_t debug_mh_handler_find_element(const debug_mh_t *const mh, const v
     // find element
     const size_t len = debug_mh_handler_length(mh);
     for(size_t i = 0; i < len; i++) {
-        if(memcmp(mh->cache[i].ptr, ptr, mh->cache_elsize) == 0) {
+        if(mh->cache[i].ptr == ptr) {
             return i;
         }
     }
@@ -368,11 +368,68 @@ size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh) {
     return mh->bytes_freed;
 }
 
-// char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer) {
-//     return NULL;
-// }
+char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer, const size_t buff_len) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT(0, "Memory handler was not initialized!");
+        return NULL;
+    }
 
-// void debug_mh_print_stats(const debug_mh_t *const mh) {}
+    // check buffer size
+    const size_t req_buf_len = 256;
+    if(buff_len < req_buf_len) {
+        DEBUG_ASSERT(0, "buff_len must be >= 256!");
+        return NULL;
+    }
+
+    char *buf = (buffer == NULL) ? calloc(req_buf_len, sizeof(char)) : buffer;
+    if(buf == NULL) {
+        DEBUG_ASSERT(0, "Unable to allocate memory!");
+        return NULL;
+    }
+
+    // clear buffer
+    memset(buf, 0, req_buf_len * sizeof(char));
+
+    // create formatter
+    const char *const fmt = 
+"\
+N      allocs: %zu\n\
+N    reallocs: %zu\n\
+N       frees: %zu\n\
+B tot.alloced: %zu\n\
+B cur.alloced: %zu\n\
+B       freed: %zu\n\
+(N) - count\n\
+(B) - bytes\
+";
+
+    // print data to buffer
+    sprintf(
+        buffer, fmt,
+        debug_mh_get_nallocs(mh),
+        debug_mh_get_nreallocs(mh),
+        debug_mh_get_nfrees(mh),
+        debug_mh_get_bytes_totally_alloced(mh),
+        debug_mh_get_bytes_currently_alloced(mh),
+        debug_mh_get_bytes_freed(mh)
+    );
+
+    return buffer;
+}
+
+void debug_mh_print_stats(const debug_mh_t *const mh) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT(0, "Memory handler was not initialized!");
+        return;
+    }
+
+    // get stats
+    char s_stats[256] = {};
+    debug_mh_get_stats_str(mh, s_stats, sizeof(s_stats)/sizeof(s_stats[0]));
+
+    // print to stderr
+    fprintf(stderr, "%s\n", s_stats);
+}
 
 
 
