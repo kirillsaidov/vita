@@ -2,13 +2,15 @@
 #include "../../inc/vita/util/debug.h"
 
 int32_t main(void) {
-	// prints to stderr
+    // prints to stderr
     // DEBUG_ASSERT(0, "This is a debug assert error message!");
 
     debug_mh_handler_default_create();
 
     debug_mh_t *mh = debug_mh_handler_default_get_handler();
+    int *a = DEBUG_MALLOC(sizeof(int));
+    DEBUG_FREE(a);
     
-    debug_mh_handler_default_destroy();
+    // debug_mh_handler_default_destroy();
     return 0;
 }

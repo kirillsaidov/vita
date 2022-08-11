@@ -1,7 +1,7 @@
 #include "vita/util/debug.h"
 
 // Memory handler
-typedef struct Cache { void *ptr; size_t size; } cache_t;
+typedef struct Cache { void *ptr; size_t bytes; } cache_t;
 struct DebugMemoryHandler {
     cache_t *cache;                 // cache
     size_t cache_len;               // cache length
@@ -121,6 +121,141 @@ void debug_mh_handler_default_create(void) {
 
 void debug_mh_handler_default_destroy(void) {
     debug_mh_handler_destroy(gi_mh);
+}
+
+debug_mh_t *debug_mh_handler_default_get_handler(void) {
+    return gi_mh;
+}
+
+/* ---------------- MEMORY MANAGEMENT FUNCTIONS ----------------- */
+
+void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
+        return NULL;
+    }
+
+    // allocate memory
+    void *ptr = malloc(bytes);
+    if(ptr == NULL) {
+        DEBUG_ASSERT2(0, file, line, "Unable to allocate memory!");
+        return NULL;
+    }
+
+    // add ptr to mh
+    debug_mh_add(mh, ptr, bytes);
+
+    // count stats
+    mh->n_allocs++;
+    mh->bytes_totally_alloced += bytes;
+
+    // print info
+    DEBUG_PRINT("%s:%d: %zu bytes allocated\n", file, line, bytes);
+
+    return ptr;
+}
+
+void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
+    void *ptr = debug_mh_malloc(mh, bytes, file, line);
+    memset(ptr, 0, bytes);
+    return ptr;
+}
+
+void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const int32_t line) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
+        return NULL;
+    }
+
+    // remove ptr from mh
+    const size_t bytes_old = debug_mh_remove(mh, ptr);
+    if(bytes > 0) {
+        // allocate memory
+        void *ptr_new = realloc(ptr, bytes);
+        if(ptr_new == NULL) {
+            DEBUG_ASSERT2(0, file, line, "Unable to allocate memory!");
+
+            // roll back
+            debug_mh_add(mh, ptr, bytes_old);
+            return NULL;
+        }
+
+        // add ptr to mh
+        debug_mh_add(mh, ptr_new, bytes);
+
+        // count stats
+        mh->n_reallocs++;
+        mh->bytes_totally_alloced += bytes - bytes_old;
+
+        // print info
+        DEBUG_PRINT("%s:%d: %zu bytes reallocated (old size: %d)\n", file, line, bytes, bytes_old);
+        
+        return ptr_new;
+    }
+
+    return NULL;
+}
+void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, const int32_t line) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
+        return;
+    }
+
+    // remove from mh
+    const size_t bytes = debug_mh_remove(mh, ptr);
+    if(bytes > 0) {
+        // count stats
+        mh->n_frees++;
+        mh->bytes_freed += bytes;
+
+        // print info
+        DEBUG_PRINT("%s:%d: %zu bytes freed\n", file, line, bytes);
+
+        // free the data
+        free(ptr);
+        ptr = NULL;
+    }
+}
+
+void debug_mh_add(debug_mh_t *const mh, const void *const ptr, const size_t bytes) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT(0, "Memory handler was not initialized!");
+        return;
+    }
+
+    // check if we have enough space
+    if(!debug_mh_handler_has_space(mh) && !debug_mh_handler_realloc(mh, 2 * mh->cache_capacity)) {
+        DEBUG_ASSERT(0, "Unable to allocate memory!");
+        return;
+    }
+
+    // add cache data
+    mh->cache[mh->cache_len].ptr = (void*)ptr;
+    mh->cache[mh->cache_len++].bytes = bytes;
+}
+
+size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr) {
+    if(!debug_mh_handler_is_init(mh)) {
+        DEBUG_ASSERT(0, "Memory handler was not initialized!");
+        return 0;
+    }
+
+    // remove data from cache
+    size_t bytes = 0;
+    if(mh->cache_len > 0) {
+        const int64_t i = debug_mh_handler_find_element(mh, ptr);
+        if(i < 0) {
+            DEBUG_ASSERT(0, "Element not found!");
+            return bytes;
+        }
+
+        // remove ptr from cache
+        bytes = mh->cache[i].bytes;
+        mh->cache[i].ptr = mh->cache[mh->cache_len - 1].ptr;
+        mh->cache[i].bytes = mh->cache[--mh->cache_len].bytes;
+    }
+
+    return bytes;
 }
 
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
