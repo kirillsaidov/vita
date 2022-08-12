@@ -106,15 +106,15 @@ void mat_destroy(mat_t *m) {
 }
 
 size_t mat_rows(const mat_t *const m) {
-    return m->rows;
+    return (m == NULL) ? 0 : m->rows;
 }
 
 size_t mat_cols(const mat_t *const m) {
-    return m->cols;
+    return (m == NULL) ? 0 : m->cols;
 }
 
 size_t mat_size(const mat_t *const m) {
-    return (m->rows * m->cols);
+    return (m == NULL) ? 0 : (m->rows * m->cols);
 }
 
 enum VitaError mat_clear(mat_t *const m) {

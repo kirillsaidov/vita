@@ -77,15 +77,15 @@ void plist_destroy(plist_t *p) {
 }
 
 size_t plist_len(const plist_t *const p) {
-    return p->len;
+    return (p == NULL) ? 0 : p->len;
 }
 
 size_t plist_capacity(const plist_t *const p) {
-    return p->capacity;
+    return (p == NULL) ? 0 : p->capacity;
 }
 
 size_t plist_has_space(const plist_t *const p) {
-    return (p->capacity - p->len);
+    return (p == NULL) ? 0 : (p->capacity - p->len);
 }
 
 enum VitaError plist_reserve(plist_t *const p, const size_t n) {

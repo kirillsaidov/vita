@@ -126,15 +126,15 @@ const char *cstr(const str_t *const s) {
 }
 
 size_t str_len(const str_t *const s) {
-    return s->len;
+    return (s == NULL) ? 0 : s->len;
 }
 
 size_t str_capacity(const str_t *const s) {
-    return s->capacity;
+    return (s == NULL) ? 0 : s->capacity;
 }
 
 size_t str_has_space(const str_t *const s) {
-    return (s->capacity - s->len);
+    return (s == NULL) ? 0 : (s->capacity - s->len);
 }
 
 bool str_is_empty(const str_t *const s) {

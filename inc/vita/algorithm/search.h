@@ -45,6 +45,6 @@ Notes:
          0 => if a == b
         -1 => if a < b
 */
-int64_t search_binary(void* arr, const size_t len, const size_t elsize, const void* val, int8_t (*compare)(const void* a, const void* b));
+// int64_t search_binary(void* arr, const size_t len, const size_t elsize, const void* val, int8_t (*compare)(const void* a, const void* b));
 
 #endif // VITA_SEARCH_H

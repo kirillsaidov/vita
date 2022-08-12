@@ -33,7 +33,6 @@ int main(void) {
         assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
         assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src"));
     	assert(path_is_file("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_path.c"));
-        assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/test_log_error.log.txt"));
 
 	plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab@kirill.saidov/Vita/tests/src/", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);

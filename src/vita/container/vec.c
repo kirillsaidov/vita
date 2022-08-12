@@ -100,15 +100,15 @@ void vec_destroy(vec_t *v) {
 }
 
 size_t vec_len(const vec_t *const v) {
-    return v->len;
+    return (v == NULL) ? 0 : v->len;
 }
 
 size_t vec_capacity(const vec_t *const v) {
-    return v->capacity;
+    return (v == NULL) ? 0 : v->capacity;
 }
 
 size_t vec_has_space(const vec_t *const v) {
-    return (v->capacity - v->len);
+    return (v == NULL) ? 0 : (v->capacity - v->len);
 }
 
 bool vec_is_empty(const vec_t *const v) {

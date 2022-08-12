@@ -4,6 +4,7 @@
 /** VITA_STR MODULE (dynamic string)
     - str_make_on_stack
     - str
+    - str_fmt
     - strn
     - str_dup
     - str_take_ownership
@@ -37,6 +38,7 @@
     - str_equals
     - str_starts_with
     - str_ends_with
+    - str_apply
 */
 
 #include <ctype.h>
