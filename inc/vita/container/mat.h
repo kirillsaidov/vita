@@ -16,10 +16,11 @@
     - mat_resize
     - mat_set
     - mat_get
-    - mat_foreach
+    - mat_apply
 */
 
 #include "../core/core.h"
+#include "../util/debug.h"
 
 // see core/core.h for definition
 typedef struct BaseArrayType mat_t;
