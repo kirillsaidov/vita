@@ -4,9 +4,41 @@
 /** VITA_DEBUG MODULE
  * Macros
     - DEBUG_ASSERT
+    - DEBUG_ASSERT2
+    - DEBUG_PRINT
+    - DEBUG_MALLOC
+    - DEBUG_CALLOC
+    - DEBUG_REALLOC
+    - DEBUG_NALLOCS
+    - DEBUG_NREALLOCS
+    - DEBUG_NFREES
+    - DEBUG_BYTES_TOTALLY_ALOCATED
+    - DEBUG_BYTES_CURRENTLY_ALOCATED
+    - DEBUG_BYTES_FREED
 
  * Functions
     - debug_assert
+    - debug_printf
+    - debug_mh_handler_new
+    - debug_mh_handler_free
+    - debug_mh_handler_free
+    - debug_mh_handler_default_create
+    - debug_mh_handler_default_destroy
+    - debug_mh_handler_default_get_handler
+    - debug_mh_malloc
+    - debug_mh_calloc
+    - debug_mh_realloc
+    - debug_mh_free
+    - debug_mh_add
+    - debug_mh_remove
+    - debug_mh_get_nallocs
+    - debug_mh_get_nreallocs
+    - debug_mh_get_nfrees
+    - debug_mh_get_bytes_totally_alloced
+    - debug_mh_get_bytes_currently_alloced
+    - debug_mh_get_bytes_freed
+    - debug_mh_get_stats_str
+    - debug_mh_print_stats
 */
 
 #include <math.h>
