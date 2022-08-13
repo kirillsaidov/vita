@@ -73,7 +73,7 @@ Creates a mh handler
 
 Returns: handler pointer, `NULL` upon failure
 */
-extern debug_mh_t *debug_mh_handler_create(void);
+extern debug_mh_t *debug_mh_handler_new(void);
 
 /**
 Frees mh handler
@@ -81,7 +81,7 @@ Frees mh handler
 Params:
     mh = memory handler instance
 */
-extern void debug_mh_handler_destroy(debug_mh_t *mh);
+extern void debug_mh_handler_free(debug_mh_t *mh);
 
 /**
 Checks if mh was initialized

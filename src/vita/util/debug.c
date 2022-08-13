@@ -62,7 +62,7 @@ void debug_printf(const char *const fmt, ...) {
 
 /* ------------------- MH HANDLER INIT FUNCTIONS -------------------- */
 
-debug_mh_t *debug_mh_handler_create(void) {
+debug_mh_t *debug_mh_handler_new(void) {
     // create a mh handler instance
     debug_mh_t *mh = malloc(sizeof(debug_mh_t));
     if(mh == NULL) {
@@ -88,7 +88,7 @@ debug_mh_t *debug_mh_handler_create(void) {
     return mh;
 }
 
-void debug_mh_handler_destroy(debug_mh_t *mh) {
+void debug_mh_handler_free(debug_mh_t *mh) {
     if(!debug_mh_handler_is_init(mh)) {
         return;
     }
@@ -116,11 +116,11 @@ bool debug_mh_handler_is_init(const debug_mh_t *const mh) {
 }
 
 void debug_mh_handler_default_create(void) {
-    gi_mh = debug_mh_handler_create();
+    gi_mh = debug_mh_handler_new();
 }
 
 void debug_mh_handler_default_destroy(void) {
-    debug_mh_handler_destroy(gi_mh);
+    debug_mh_handler_free(gi_mh);
 }
 
 debug_mh_t *debug_mh_handler_default_get_handler(void) {
