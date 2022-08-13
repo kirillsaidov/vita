@@ -57,7 +57,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
 
         // if it turned out to be an unrecognized option, return
         if(unrecognized_option != NULL) {
-            printf("Unrecognized option: %s!\n", unrecognized_option);
+            fprintf(stderr, "Unrecognized option: %s!\n", unrecognized_option);
             return false;
         }
     }
@@ -80,17 +80,17 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
 
     // print header
     if(header != NULL) {
-        printf("%s\n", header);
+        fprintf(stderr, "%s\n", header);
     }
 
     // print help (usage) manual
     for(size_t i = 0; i < optc; i++) {
-        printf("%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
+        fprintf(stderr, "%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
     }
 
     // print footer
     if(footer != NULL) {
-        printf("%s\n", footer);
+        fprintf(stderr, "%s\n", footer);
     }
 }
 
@@ -110,10 +110,20 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     // save arg value
     switch(opt->optionType) {
         case dt_int:
+            if(!str_is_numeric(value, 256)) {
+                fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
+                exit(0);
+            }
+
             ivalue = (int32_t)strtol(value, NULL, 10);
             *(int32_t*)(opt->optionValue) = ivalue;
             break;
         case dt_float:
+            if(!str_is_numeric(value, 256)) {
+                fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
+                exit(0);
+            }
+
             fvalue = strtof(value, NULL);
             *(float*)(opt->optionValue) = fvalue;
             break;
