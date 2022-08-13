@@ -39,6 +39,8 @@
     - str_starts_with
     - str_ends_with
     - str_apply
+    - str_is_numeric
+    - str_capitalize
 */
 
 #include <ctype.h>
@@ -53,21 +55,21 @@ typedef struct BaseArrayType str_t;
 Creates a static string with length
 
 Params:
-    cs = raw C string
+    z = raw C string
 
 Returns: const str_t
 */
-const str_t str_make_on_stack(const char *const cs);
+const str_t str_make_on_stack(const char *const z);
 
 /**
 Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
 
 Params:
-    cs = raw C string
+    z = raw C string
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *str(const char *cs);
+extern str_t *str(const char *z);
 
 /**
 Creates a formatted dynamic string (it is initialized to zero before usage)
@@ -105,11 +107,11 @@ extern str_t *str_dup(const str_t *const s);
 Takes ownership of an allocated string instead of allocating memory itself
 
 Params:
-    cs = a raw C string allocated on heap
+    z = a raw C string allocated on heap
 
 Returns: str_t* instance upon success, `NULL` otherwise
 */
-extern str_t *str_take_ownership(const char *const cs);
+extern str_t *str_take_ownership(const char *const z);
 
 /**
 Frees the str instance
@@ -205,34 +207,34 @@ Assigns a new raw C string to str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: enum VitaError
 */
-extern enum VitaError str_set(str_t *const s, const char *cs);
+extern enum VitaError str_set(str_t *const s, const char *z);
 
 /**
 Assigns n characters of raw C string to str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
     n = number of characters
 
 Returns: enum VitaError
 */
-extern enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n);
+extern enum VitaError str_set_n(str_t *const s, const char *z, const size_t n);
 
 /**
 Appends a raw C string at the end of str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: enum VitaError
 */
-extern enum VitaError str_append(str_t *const s, const char *cs);
+extern enum VitaError str_append(str_t *const s, const char *z);
 
 /**
 Appends a formatted raw C string at the end of str_t
@@ -250,24 +252,24 @@ Appends n characters of raw C string at the end of str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
     n = number of characters
 
 Returns: enum VitaError
 */
-extern enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n);
+extern enum VitaError str_append_n(str_t *const s, const char *z, const size_t n);
 
 /**
 Inserts a raw C string into str_t starting at the specified index
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
     at = start at index (including `at`)
 
 Returns: enum VitaError
 */
-extern enum VitaError str_insert(str_t *const s, const char *cs, const size_t at);
+extern enum VitaError str_insert(str_t *const s, const char *z, const size_t at);
 
 /**
 Removes n chars from str_t, starting from the specified index
@@ -286,22 +288,22 @@ Removes the first/last encountered substring from str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: enum VitaError
 */
-extern enum VitaError str_remove_first(str_t *const s, const char *cs);
-extern enum VitaError str_remove_last(str_t *s, const char *const cs);
+extern enum VitaError str_remove_first(str_t *const s, const char *z);
+extern enum VitaError str_remove_last(str_t *s, const char *const z);
 /**
 Removes all instances of encountered substring from str_t
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: enum VitaError
 */
-extern enum VitaError str_remove_all(str_t *const s, const char *cs);
+extern enum VitaError str_remove_all(str_t *const s, const char *z);
 
 /**
 Removes all encountered characters specified by the user from str_t
@@ -350,22 +352,22 @@ Find a substring
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: pointer to the begining of a substring in a string
 */
-extern const char *str_find(const char *const cs, const char *csub);
+extern const char *str_find(const char *const z, const char *csub);
 
 /**
 Checks if str_t contains a substring
 
 Params:
     s = str_t instance
-    cs = raw C string
+    z = raw C string
 
 Returns: number of substring instances in str_t
 */
-extern size_t str_can_find(const str_t *const s, const char *cs);
+extern size_t str_can_find(const str_t *const s, const char *z);
 
 /**
 Splits a string given a separator into substrings
@@ -418,23 +420,23 @@ extern bool str_equals(const char *const cs1, const char *const cs2);
 Checks if a raw C string starts with a substring
 
 Params:
-    cs = raw C string
+    z = raw C string
     sub = raw C substring
 
-Returns: `true` if cs starts with sub
+Returns: `true` if z starts with sub
 */
-extern bool str_starts_with(const char *const cs, const char *const sub);
+extern bool str_starts_with(const char *const z, const char *const sub);
 
 /**
 Checks if a raw C string ends with a substring
 
 Params:
-    cs = raw C string
+    z = raw C string
     sub = raw C substring
 
-Returns: `true` if cs ends with sub
+Returns: `true` if z ends with sub
 */
-extern bool str_ends_with(const char *const cs, const char *const sub);
+extern bool str_ends_with(const char *const z, const char *const sub);
 
 /**
 Applies a user specified function upon each char
@@ -444,5 +446,24 @@ Params:
     func = function to execute upon each element: func(char pointer, for loop index) 
 */
 extern void str_apply(const str_t *const s, void (*func)(char*, size_t));
+
+/**
+Checks if the entire string is a number
+
+Params:
+    z = raw c string
+    max_len = max len to top checking (internally it uses strnlen)
+
+Return: true upon z being a number
+*/
+extern bool str_is_numeric(const char *const z, const size_t max_len);
+
+/**
+Capitalizes a string
+
+Params:
+    s = str_t
+*/
+extern void str_capitalize(str_t *const s);
 
 #endif // VITA_STR_H

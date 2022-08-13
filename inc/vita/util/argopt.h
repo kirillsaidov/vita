@@ -2,7 +2,8 @@
 #define VITA_ARGOPT_H
 
 /** VITA_ARGOPT MODULE
-    - //
+    - argopt_parse
+    - argopt_print_help
 */
 
 #include <stdarg.h>

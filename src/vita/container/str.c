@@ -3,29 +3,29 @@
 // static functions for internal usage
 static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args);
 
-const str_t str_make_on_stack(const char *const cs) {
+const str_t str_make_on_stack(const char *const z) {
     str_t s = {
-        .ptr = (void*)cs,
-        .len = strlen(cs),
+        .ptr = (void*)z,
+        .len = strlen(z),
         .elsize = sizeof(char)
     };
 
     return s;
 }
 
-str_t *str(const char *cs) {
-    if(cs == NULL) {
-        cs = "";
+str_t *str(const char *z) {
+    if(z == NULL) {
+        z = "";
     }
 
     // create str
-    str_t *s = strn(strlen(cs));
+    str_t *s = strn(strlen(z));
     if(s == NULL) {
         return NULL;
     }
 
-    // set cs to str
-    if(str_set(s, cs) != ve_operation_success) {
+    // set z to str
+    if(str_set(s, z) != ve_operation_success) {
         str_free(s);
         return NULL;
     }
@@ -82,8 +82,8 @@ str_t *str_dup(const str_t *const s) {
     return str(s->ptr);
 }
 
-str_t *str_take_ownership(const char *const cs) {
-    if(cs == NULL) {
+str_t *str_take_ownership(const char *const z) {
+    if(z == NULL) {
         return NULL;
     }
 
@@ -96,11 +96,11 @@ str_t *str_take_ownership(const char *const cs) {
     }
 
     // str_t init
-    const size_t csLen = strlen(cs);
+    const size_t zLen = strlen(z);
     *s = (str_t) {
-        .ptr = (void*)(cs),
-        .len = csLen,
-        .capacity = csLen,
+        .ptr = (void*)(z),
+        .len = zLen,
+        .capacity = zLen,
         .elsize = sizeof(char),
     };
 
@@ -202,13 +202,13 @@ enum VitaError str_reserve(str_t *const s, const size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_set(str_t *const s, const char *cs) {
-    return str_set_n(s, cs, strlen(cs));
+enum VitaError str_set(str_t *const s, const char *z) {
+    return str_set_n(s, z, strlen(z));
 }
 
-enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n) {
+enum VitaError str_set_n(str_t *const s, const char *z, const size_t n) {
     // error checking
-    if(s == NULL || cs == NULL) {
+    if(s == NULL || z == NULL) {
         return ve_error_is_null;
     }
 
@@ -217,8 +217,8 @@ enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n) {
         return ve_error_out_of_bounds_access;
     }
 
-    // copy cs data to str_t
-    memcpy(s->ptr, cs, (n * s->elsize));
+    // copy z data to str_t
+    memcpy(s->ptr, z, (n * s->elsize));
 
     // add the '\0' terminator
     ((char*)s->ptr)[n] = '\0';
@@ -229,8 +229,8 @@ enum VitaError str_set_n(str_t *const s, const char *cs, const size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_append(str_t *const s, const char *cs) {
-    return str_append_n(s, cs, strlen(cs));
+enum VitaError str_append(str_t *const s, const char *z) {
+    return str_append_n(s, z, strlen(z));
 }
 
 enum VitaError str_appendf(str_t *const s, const char *const fmt, ...) {
@@ -246,8 +246,8 @@ enum VitaError str_appendf(str_t *const s, const char *const fmt, ...) {
     return ve_operation_success;
 }
 
-enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n) {
-    if(s == NULL || cs == NULL) {
+enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
+    if(s == NULL || z == NULL) {
         return ve_error_is_null;
     }
 
@@ -256,8 +256,8 @@ enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n) {
         return ve_error_allocation;
     }
 
-    // copy cs to str_t
-    memcpy((s->ptr + s->len * s->elsize), cs, (n * s->elsize));
+    // copy z to str_t
+    memcpy((s->ptr + s->len * s->elsize), z, (n * s->elsize));
 
     // set new length
     s->len += n;
@@ -268,8 +268,8 @@ enum VitaError str_append_n(str_t *const s, const char *cs, const size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_insert(str_t *const s, const char *cs, const size_t at) {
-    if(s == NULL || cs == NULL) {
+enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
+    if(s == NULL || z == NULL) {
         return ve_error_is_null;
     }
 
@@ -279,19 +279,19 @@ enum VitaError str_insert(str_t *const s, const char *cs, const size_t at) {
     }
 
     // check if new memory needs to be allocated
-    const size_t csLen = strlen(cs);
-    if(str_has_space(s) <= csLen && str_reserve(s, (csLen - str_has_space(s))) != ve_operation_success) {
+    const size_t zLen = strlen(z);
+    if(str_has_space(s) <= zLen && str_reserve(s, (zLen - str_has_space(s))) != ve_operation_success) {
         return ve_error_allocation;
     }
 
-    // shift the end of string from the specified index `at` to `at + csLen` in str
-    memmove((s->ptr + (at + csLen) * s->elsize), (s->ptr + at * s->elsize), ((s->len - at) * s->elsize));
+    // shift the end of string from the specified index `at` to `at + zLen` in str
+    memmove((s->ptr + (at + zLen) * s->elsize), (s->ptr + at * s->elsize), ((s->len - at) * s->elsize));
 
     // copy the str contents to str from the specified index
-    memcpy((s->ptr + at * s->elsize), cs, (csLen * s->elsize));
+    memcpy((s->ptr + at * s->elsize), z, (zLen * s->elsize));
 
     // set new length
-    s->len += csLen;
+    s->len += zLen;
 
     // add the '\0' terminator
     ((char*)s->ptr)[s->len] = '\0';
@@ -326,26 +326,26 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_first(str_t *const s, const char *cs) {
-    const size_t csLen = strlen(cs);
-    if(s == NULL || cs == NULL || !csLen) {
+enum VitaError str_remove_first(str_t *const s, const char *z) {
+    const size_t zLen = strlen(z);
+    if(s == NULL || z == NULL || !zLen) {
         return ve_error_is_null;
     }
 
     // find a substring in strbuf; if substring wasn't found, return
-    void* sub = strstr(s->ptr, cs);
+    void* sub = strstr(s->ptr, z);
     if(sub == NULL) {
         return ve_operation_element_not_found;
     }
 
     // find how many characters to copy from the end
-    const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - (sub + csLen * s->elsize));
+    const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - (sub + zLen * s->elsize));
 
     // shift the characters to the left of the string by the substring length
-    memmove(sub, (sub + csLen * s->elsize), diff * s->elsize);
+    memmove(sub, (sub + zLen * s->elsize), diff * s->elsize);
 
     // set new length
-    s->len -= csLen;
+    s->len -= zLen;
 
     // add the '\0' terminator
     ((char*)s->ptr)[s->len] = '\0';
@@ -353,16 +353,16 @@ enum VitaError str_remove_first(str_t *const s, const char *cs) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_last(str_t *s, const char *const cs) {
-    const size_t csLen = strlen(cs);
-    if(s == NULL || cs == NULL || !csLen) {
+enum VitaError str_remove_last(str_t *s, const char *const z) {
+    const size_t zLen = strlen(z);
+    if(s == NULL || z == NULL || !zLen) {
         return ve_error_is_null;
     }
 
     // find the last instance of sep
-    char *p = strstr(s->ptr, cs);
+    char *p = strstr(s->ptr, z);
     char *lastInstance = p;
-    while((p = strstr(p + csLen, cs)) != NULL) {
+    while((p = strstr(p + zLen, z)) != NULL) {
         lastInstance = p;
     }
 
@@ -374,7 +374,7 @@ enum VitaError str_remove_last(str_t *s, const char *const cs) {
     // find how many characters to shrink the string
     const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - ((void*)lastInstance));
 
-    // set cs to zero where it begins
+    // set z to zero where it begins
     lastInstance[0]= '\0';
 
     // update str_t
@@ -383,13 +383,13 @@ enum VitaError str_remove_last(str_t *s, const char *const cs) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_all(str_t *const s, const char *cs) {
-    if(s == NULL || cs == NULL) {
+enum VitaError str_remove_all(str_t *const s, const char *z) {
+    if(s == NULL || z == NULL) {
         return ve_error_is_null;
     }
 
     // remove all instances of substring
-    while(str_remove_first(s, cs) == ve_operation_success);
+    while(str_remove_first(s, z) == ve_operation_success);
 
     return ve_operation_success;
 }
@@ -573,24 +573,24 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     return ve_operation_success;
 }
 
-const char *str_find(const char *const cs, const char *csub) {
-    if(cs == NULL || csub == NULL) {
+const char *str_find(const char *const z, const char *zsub) {
+    if(z == NULL || zsub == NULL) {
         return NULL;
     }
 
-    return strstr(cs, csub);
+    return strstr(z, zsub);
 }
 
-size_t str_can_find(const str_t *const s, const char *cs) {
-    if(s == NULL || cs == NULL || !str_len(s)) {
+size_t str_can_find(const str_t *const s, const char *z) {
+    if(s == NULL || z == NULL || !str_len(s)) {
         return 0;
     }
 
     // count the number of substring instances in strbuf
     size_t count = 0;
-    const size_t csLen = strlen(cs);
+    const size_t zLen = strlen(z);
     const char *p = s->ptr;
-    while((p = strstr(p + csLen, cs)) != NULL) {
+    while((p = strstr(p + zLen, z)) != NULL) {
         count++;
     }
 
@@ -736,32 +736,32 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     return spop;
 }
 
-bool str_equals(const char *const cs1, const char *const cs2) {
-    const size_t cs1Len = strlen(cs1);
-    if(cs1Len > strlen(cs2)) {
+bool str_equals(const char *const z1, const char *const z2) {
+    const size_t cs1Len = strlen(z1);
+    if(cs1Len > strlen(z2)) {
         return false;
     }
 
-    return (!strncmp(cs1, cs2, cs1Len));
+    return (!strncmp(z1, z2, cs1Len));
 }
 
-bool str_starts_with(const char *const cs, const char *const sub) {
+bool str_starts_with(const char *const z, const char *const sub) {
     const size_t subLen = strlen(sub);
-    if(subLen > strlen(cs)) {
+    if(subLen > strlen(z)) {
         return false;
     }
 
-    return (!strncmp(cs, sub, subLen));
+    return (!strncmp(z, sub, subLen));
 }
 
-bool str_ends_with(const char *const cs, const char *const sub) {
-    const size_t csLen = strlen(cs);
+bool str_ends_with(const char *const z, const char *const sub) {
+    const size_t zLen = strlen(z);
     const size_t subLen = strlen(sub);
-    if(subLen > csLen) {
+    if(subLen > zLen) {
         return false;
     }
 
-    return (!strncmp(cs + csLen - subLen, sub, subLen));
+    return (!strncmp(z + zLen - subLen, sub, subLen));
 }
 
 void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
@@ -796,3 +796,34 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
 
     return s;
 }
+
+bool str_is_numeric(const char *const z, const size_t max_len) {
+    if(z == NULL || !max_len) {
+        return false;
+    }
+
+    // check if string is a number
+    const size_t zLen = strnlen(z, max_len);
+    for(size_t i = 0; i < zLen; i++) {
+        if(!isdigit(z[i]) && z[i] != '.') {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void str_capitalize(str_t *const s) {
+    if(s == NULL) {
+        return;
+    }
+
+    // check if string is a number
+    char *const z = s->ptr;
+    const size_t zLen = str_len(s);
+    for(size_t i = 0; i < zLen; i++) {
+        z[i] = toupper(z[i]);
+    }
+}
+
+

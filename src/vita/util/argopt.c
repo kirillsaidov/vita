@@ -10,6 +10,10 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
     // parse argument options (skipping the binary name)
     const char *unrecognized_option = NULL;
     for (size_t i = 1; i < argc; i++) {
+        // save argv[i] as unrecognized_option
+        unrecognized_option = argv[i];
+
+        // split option=value by '='
         str_t *s_arg_value = str(argv[i]);
         str_t *s_opt_split = str_pop_get_first(NULL, s_arg_value, "=");
 
@@ -21,9 +25,6 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
                 1. Parsing with "="
                 2. Parsing without "="
             */
-
-            // save argv[i] as unrecognized_option
-            unrecognized_option = argv[i];
 
             // Case 1
             if(s_opt_split != NULL) { 
@@ -54,10 +55,10 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         str_free(s_arg_value);
         str_free(s_opt_split);
 
-        // unrecognized option
+        // if it turned out to be an unrecognized option, return
         if(unrecognized_option != NULL) {
             printf("Unrecognized option: %s!\n", unrecognized_option);
-            break;
+            return false;
         }
     }
 

@@ -176,6 +176,18 @@ int32_t main(void) {
     assert(str_equals(cstr(s_strip), "hello, world. hi 5!"));
     str_free(s_strip);
 
+    s_strip = str("hello, world!");
+    str_capitalize(s_strip);
+    assert(str_equals(cstr(s_strip), "HELLO, WORLD!"));
+    assert(!str_is_numeric(cstr(s_strip), 256));
+    
+    str_set(s_strip, "123");
+    assert(str_is_numeric(cstr(s_strip), 256));
+
+    str_set(s_strip, "564.025");
+    assert(str_is_numeric(cstr(s_strip), 256));
+    str_free(s_strip);
+
     return 0;
 }
 

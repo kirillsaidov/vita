@@ -1,4 +1,6 @@
 #include <assert.h>
+
+#define NDEBUG
 #include "../../inc/vita/util/debug.h"
 
 int32_t main(void) {
@@ -13,11 +15,17 @@ int32_t main(void) {
         int *a = DEBUG_MALLOC(sizeof(int));
         a = DEBUG_REALLOC(a, 40);
         a = DEBUG_REALLOC(a, 12);
-        assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 12);
 
+        #ifndef NDEBUG
+            assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 12);
+        #endif
+        
         a = DEBUG_REALLOC(a, 30);
         DEBUG_FREE(a);
-        assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
+        
+        #ifndef NDEBUG
+            assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
+        #endif
 
     debug_mh_handler_default_destroy();
     return 0;
