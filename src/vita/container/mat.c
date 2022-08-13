@@ -277,3 +277,18 @@ void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
         }
     }
 }
+
+enum VitaError mat_add(const mat_t *const m);
+enum VitaError mat_mult(const mat_t *const m);
+enum VitaError mat_scale(const mat_t *const m, const int8_t axis);
+enum VitaError mat_transpose(void);
+enum VitaError mat_inverse(void);
+enum VitaError mat_round(const mat_t *const m, const int8_t axis);
+vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
+vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
+double mat_sum(const mat_t *const m, const int8_t axis);
+
+
+
+
+

@@ -17,10 +17,22 @@
     - mat_set
     - mat_get
     - mat_apply
+    
+    new:
+    - mat_add
+    - mat_mult
+    - mat_scale
+    - mat_transpose
+    - mat_inverse
+    - mat_round
+    - mat_elmax
+    - mat_elmin
+    - mat_sum
 */
 
 #include "../core/core.h"
 #include "../util/debug.h"
+#include "vec.h"
 
 // see core/core.h for definition
 typedef struct BaseArrayType mat_t;
@@ -151,7 +163,7 @@ Params:
 
 Returns: value (depends on data type)
 */
-extern void* mat_get(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern int64_t mat_geti64(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern float mat_getf(const mat_t *const m, const size_t atRow, const size_t atCol);
@@ -166,5 +178,14 @@ Params:
 */
 extern void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t));
 
+extern enum VitaError mat_add(const mat_t *const m);
+extern enum VitaError mat_mult(const mat_t *const m);
+extern enum VitaError mat_scale(const mat_t *const m, const int8_t axis);
+extern enum VitaError mat_transpose(void);
+extern enum VitaError mat_inverse(void);
+extern enum VitaError mat_round(const mat_t *const m, const int8_t axis);
+extern vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
+extern vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
+extern double mat_sum(const mat_t *const m, const int8_t axis);
 
 #endif // VITA_MAT_H
