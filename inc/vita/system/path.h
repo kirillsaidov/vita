@@ -26,7 +26,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <dirent.h>
 #if defined(_WIN32) || defined(_WIN64)
     #include <io.h>
     #include <direct.h>
@@ -50,12 +50,12 @@ Builds path from raw C strings
 
 Params:
     s = str_t instance (if `NULL` is passed, str_t is allocated)
-    cs1 = raw c string
-    cs2 = raw c string
+    z1 = raw c string
+    z2 = raw c string
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_build(str_t *const s, const char *const cs1, const char *const cs2);
+extern str_t *path_build(str_t *const s, const char *const z1, const char *const z2);
 
 /**
 Builds path from raw C strings
@@ -79,136 +79,136 @@ extern str_t *path_getcwd();
 Checks if path exists
 
 Params:
-    cs = path
+    z = path
 
 Returns: `true` if directory exists
 */
-extern bool path_exists(const char *const cs);
+extern bool path_exists(const char *const z);
 
 /**
 Checks if path is a directory
 
 Params:
-    cs = path directory
+    z = path directory
 
 Returns: `true` if directory exists
 */
-extern bool path_is_dir(const char *const cs);
+extern bool path_is_dir(const char *const z);
 
 /**
 Checks if path is a file
 
 Params:
-    cs = path to file
+    z = path to file
 
 Returns: `true` if file exists
 */
-extern bool path_is_file(const char *const cs);
+extern bool path_is_file(const char *const z);
 
 /**
 Returns file size
 
 Params:
-    cs = path to file
+    z = path to file
 
 Returns: size_t filesize >= 0 upon success, -1 upon failure
 */
-extern int64_t path_get_file_size(const char *const cs);
+extern int64_t path_get_file_size(const char *const z);
 
 /**
 Get all directory contents
 
 Params:
     p = container where to save the data; if NULL is passed, it is allocated
-    cs = path
+    z = path
     ignoreDotFiles = skip hidden .files
 
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
-extern plist_t *path_listdir(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
+extern plist_t *path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /**
 Get all files and sub-directories recursively
 
 Params:
     p = container where to save the data; if NULL is passed, it is allocated
-    cs = path
+    z = path
     ignoreDotFiles = skip hidden .files
 
 Returns: `plist_t*` of str_t upon success, `NULL` otherwise
 */
-extern plist_t *path_listdir_recurse(plist_t *const p, const char *const cs, const bool ignoreDotFiles);
+extern plist_t *path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /**
 Get path basename
 
 Params:
     s = str_t instance (if `NULL` is passed, str_t is allocated)
-    cs = path
+    z = path
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_basename(str_t *const s, const char *const cs);
+extern str_t *path_basename(str_t *const s, const char *const z);
 
 /**
 Creates a directory
 
 Params:
-    cs = a raw C string
+    z = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_mkdir(const char *const cs);
+extern bool path_mkdir(const char *const z);
 
 /**
 Creates a directory and its parent directories
 
 Params:
-    cs = a raw C string
+    z = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_mkdir_parents(const char *const cs);
+extern bool path_mkdir_parents(const char *const z);
 
 /**
 Deletes an empty directory
 
 Params:
-    cs = a raw C string
+    z = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_rmdir(const char *const cs);
+extern bool path_rmdir(const char *const z);
 
 /**
 Deletes an directory and its contents
 
 Params:
-    cs = a raw C string
+    z = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_rmdir_recurse(const char *const cs);
+extern bool path_rmdir_recurse(const char *const z);
 
 /**
 Deletes a file
 
 Params:
-    cs = a raw C string
+    z = a raw C string
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_remove(const char *const cs);
+extern bool path_remove(const char *const z);
 
 /**
 Rename/move a directory/file
 
 Params:
-    cs1 = file/directory
-    cs2 = new file/directory
+    z1 = file/directory
+    z2 = new file/directory
 
 Returns: `true` upon success, `false` otherwise
 */
-extern bool path_rename(const char *const cs1, const char *const cs2);
+extern bool path_rename(const char *const z1, const char *const z2);
 
 #endif // VITA_PATH_H
