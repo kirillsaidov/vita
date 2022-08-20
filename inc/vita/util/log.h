@@ -32,11 +32,11 @@ enum LogLevel {
 };
 
 // macros
-#define LOG_INFO(...) log_log(ll_info, true, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_WARN(...) log_log(ll_warn, true, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_DEBUG(...) log_log(ll_debug, true, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_ERROR(...) log_log(ll_error, true, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_FATAL(...) log_log(ll_fatal, true, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_INFO(...) log_log(ll_info, false, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_WARN(...) log_log(ll_warn, false, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_DEBUG(...) log_log(ll_debug, false, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_ERROR(...) log_log(ll_error, false, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_FATAL(...) log_log(ll_fatal, false, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_ASSERT(expr, ...) log_log(ll_assert, expr, __FILE__, __LINE__, __VA_ARGS__)
 
 /**

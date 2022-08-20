@@ -112,7 +112,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
         case dt_int:
             if(!str_is_numeric(value, 256)) {
                 fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
 
             ivalue = (int32_t)strtol(value, NULL, 10);
@@ -121,7 +121,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
         case dt_float:
             if(!str_is_numeric(value, 256)) {
                 fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
 
             fvalue = strtof(value, NULL);

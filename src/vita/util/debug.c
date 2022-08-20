@@ -40,8 +40,8 @@ void debug_assert(const bool expr, const char *const file, const int32_t line, c
         }
         va_end(args);
 
-        // if log level = fatal or assert, exit
-        exit(0);
+        // exit upon failure
+        exit(EXIT_FAILURE);
     }
 }
 

@@ -69,7 +69,7 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
 
         // if log level = fatal or assert, exit
         if(log_level == ll_fatal || log_level == ll_assert) {
-            exit(0);
+            exit(EXIT_FAILURE);
         }
     }
 }
