@@ -18,47 +18,47 @@
 Reads contents of a file in 'r' mode
 
 Params:
-    cs_filename = file name
+    z_filename = file name
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *file_read(const char *const cs_filename);
+extern str_t *file_read(const char *const z_filename);
 
 /**
 Reads contents of a file in 'rb' binary mode
 
 Params:
-    cs_filename = file name
+    z_filename = file name
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *file_readb(const char *const cs_filename);
+extern str_t *file_readb(const char *const z_filename);
 
 /**
 Writes to a file in custom mode
 
 Params:
-    cs_filename = file name
-    cs_mode = file open mode
+    z_filename = file name
+    z_mode = file open mode
     sbuffer = contents to write to file
     add_ln = add new line at the end
 
 Returns: `true` upon success
 */
-extern bool file_writec(const char *const cs_filename, const char *const cs_mode, const str_t *const sbuffer, const bool add_ln);
+extern bool file_writec(const char *const z_filename, const char *const z_mode, const str_t *const sbuffer, const bool add_ln);
 
 /**
 Writes to a file in custom mode
 
 Params:
-    cs_filename = file name
-    cs_mode = file open mode
-    cs_fmt = formatted string
+    z_filename = file name
+    z_mode = file open mode
+    z_fmt = formatted string
     ... = other variable arguments
 
 Returns: `true` upon success
 */
-extern bool file_writef(const char *const cs_filename, const char *const cs_mode, const char *const cs_fmt, ...);
+extern bool file_writef(const char *const z_filename, const char *const z_mode, const char *const z_fmt, ...);
 
 /* -------------------- SPECIALIZED FUNCTIONS -------------------- */
 
@@ -66,25 +66,25 @@ extern bool file_writef(const char *const cs_filename, const char *const cs_mode
 Writes to a file
 
 Params:
-    cs_filename = file name
+    z_filename = file name
     sbuffer = contents to write to file
 
 Returns: `true` upon success
 */
-extern bool file_write(const char *const cs_filename, const str_t *const sbuffer);
-extern bool file_writeln(const char *const cs_filename, const str_t *const sbuffer);
+extern bool file_write(const char *const z_filename, const str_t *const sbuffer);
+extern bool file_writeln(const char *const z_filename, const str_t *const sbuffer);
 
 /**
 Appends to a file
 
 Params:
-    cs_filename = file name
+    z_filename = file name
     sbuffer = contents to write to file
 
 Returns: `true` upon success
 */
-extern bool file_append(const char *const cs_filename, const str_t *const sbuffer);
-extern bool file_appendln(const char* const cs_filename, const str_t *const sbuffer);
+extern bool file_append(const char *const z_filename, const str_t *const sbuffer);
+extern bool file_appendln(const char* const z_filename, const str_t *const sbuffer);
 
 #endif // VITA_FILEIO_H
 
