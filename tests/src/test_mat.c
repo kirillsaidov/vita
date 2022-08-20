@@ -10,7 +10,9 @@ void print(void *ptr, size_t i, size_t j) {
 	printf("%.2f\n", *(double*)ptr);
 }
 
-int main(void) {
+int32_t main(void) {
+	debug_mh_handler_default_create();
+
 	mat_t *m = mat_create(15, 15, sizeof(double)); {
 		assert(mat_rows(m) == 15 && mat_cols(m) == 15);
 
@@ -59,6 +61,7 @@ int main(void) {
 		// mat_apply(m, print);
 	} mat_destroy(m);
 
+	debug_mh_handler_default_destroy();
 	return 0;
 }
 

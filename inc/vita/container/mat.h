@@ -178,14 +178,14 @@ Params:
 */
 extern void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t));
 
-extern enum VitaError mat_add(const mat_t *const m);
-extern enum VitaError mat_mult(const mat_t *const m);
-extern enum VitaError mat_scale(const mat_t *const m, const int8_t axis);
-extern enum VitaError mat_transpose(void);
-extern enum VitaError mat_inverse(void);
-extern enum VitaError mat_round(const mat_t *const m, const int8_t axis);
-extern vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
-extern vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
-extern double mat_sum(const mat_t *const m, const int8_t axis);
+// extern enum VitaError mat_add(mat_t *const m1, const mat_t *const m2);
+// extern enum VitaError mat_mult(mat_t *const m1, const mat_t *const m2);
+// extern enum VitaError mat_scale(mat_t *const m, const double value, const int8_t axis);
+// extern enum VitaError mat_transpose(void);
+// extern enum VitaError mat_inverse(void);
+// extern enum VitaError mat_round(const mat_t *const m, const int8_t axis);
+// extern vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
+// extern vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
+// extern double mat_sum(const mat_t *const m, const int8_t axis);
 
 #endif // VITA_MAT_H

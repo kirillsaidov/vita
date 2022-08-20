@@ -1,7 +1,7 @@
 #include "vita/container/mat.h"
 
 mat_t *mat_new(void) {
-    mat_t *m = calloc(1, sizeof(mat_t));
+    mat_t *m = DEBUG_CALLOC(sizeof(mat_t));
     if(m == NULL) {
         return NULL;
     }
@@ -11,16 +11,18 @@ mat_t *mat_new(void) {
 
 enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not allocated!");
         return ve_error_is_null;
     }
 
     if(!rows || !cols) {
+        DEBUG_PRINT("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
         return ve_error_invalid_size;
     }
 
     // mat_t init
     *m = (mat_t) {
-        .ptr = calloc(rows * cols, sizeof(char*)),
+        .ptr = DEBUG_CALLOC(rows * cols * sizeof(char*)),
         .rows = rows,
         .cols = cols,
         .elsize = elsize,
@@ -28,6 +30,7 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
     // error checking
     if(m->ptr == NULL) {
+        DEBUG_PRINT("%s", "Unable to construct mat_t instance!");
         return ve_error_allocation;
     }
 
@@ -36,12 +39,14 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
 mat_t *mat_dup(const mat_t *const m) {
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized!");
         return NULL;
     }
 
     // allocate a new mat_t instance
     mat_t *mdup = mat_new();
     if(mdup == NULL) {
+        DEBUG_PRINT("%s", "Failed to allocate memory for mat_t before copy!");
         return NULL;
     }
 
@@ -60,11 +65,12 @@ mat_t *mat_dup(const mat_t *const m) {
 void mat_dtor(mat_t *const m) {
     // if NULL, exit
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized!");
         return;
     }
 
     // free mat_t contents
-    free(m->ptr);
+    DEBUG_FREE(m->ptr);
 
     // default-init
     *m = (mat_t) {0};
@@ -75,12 +81,13 @@ void mat_free(mat_t *m) {
         return;
     }
 
-    free(m);
+    DEBUG_FREE(m);
 }
 
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     mat_t *m = mat_new(); // allocate mem for mat_t
     if(m == NULL) {
+        DEBUG_PRINT("%s", "Unable to allocate memory for mat_t instance!");
         return NULL;
     }
 
@@ -112,6 +119,7 @@ size_t mat_size(const mat_t *const m) {
 
 enum VitaError mat_clear(mat_t *const m) {
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized!");
         return ve_error_is_null;
     }
 
@@ -123,10 +131,12 @@ enum VitaError mat_clear(mat_t *const m) {
 
 enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized!");
         return ve_error_is_null;
     }
 
     if(!rows || !cols) {
+        DEBUG_PRINT("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
         return ve_error_invalid_size;
     }
 
@@ -135,8 +145,9 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     }
 
     // allocate memory for rows*cols number of elements
-    void *els = realloc(m->ptr, rows * cols * m->elsize);
+    void *els = DEBUG_REALLOC(m->ptr, rows * cols * m->elsize);
     if(els == NULL) {
+        DEBUG_PRINT("%s", "Unable to reallocate memory for mat_t instance before resizing!");
         return ve_error_allocation;
     }
 
@@ -150,10 +161,12 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
 
 enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
     if(m == NULL || val == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized or value supplied is NULL!");
         return ve_error_is_null;
     }
 
     if(!(atRow < m->rows) || !(atCol < m->cols)) {
+        DEBUG_PRINT("Accessing elements out of mat_t bounds at (%zu, %zu), but size is (%zu, %zu)!", m->rows, m->cols, atRow, atCol);
         return ve_error_out_of_bounds_access;
     }
 
@@ -165,6 +178,7 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
 
 enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
+        DEBUG_PRINT("%s", "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
 
@@ -173,6 +187,7 @@ enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow,
 
 enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
+        DEBUG_PRINT("%s", "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
 
@@ -181,6 +196,7 @@ enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow,
 
 enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
+        DEBUG_PRINT("%s", "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
 
@@ -189,6 +205,7 @@ enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, con
 
 enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
+        DEBUG_PRINT("%s", "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
 
@@ -197,10 +214,12 @@ enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, co
 
 void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
     if(m == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized!");
         return NULL;
     }
 
     if(!(atRow < m->rows) || !(atCol < m->cols)) {
+        DEBUG_PRINT("Accessing elements out of mat_t bounds at (%zu, %zu), but size is (%zu, %zu)!", m->rows, m->cols, atRow, atCol);
         return NULL;
     }
 
@@ -225,6 +244,7 @@ double mat_getd(const mat_t *const m, const size_t atRow, const size_t atCol) {
 
 void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
     if(m == NULL || func == NULL) {
+        DEBUG_PRINT("%s", "mat_t instance was not initialized or func supplied is NULL!");
         return;
     }
 
@@ -235,18 +255,6 @@ void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
         }
     }
 }
-
-enum VitaError mat_add(const mat_t *const m);
-enum VitaError mat_mult(const mat_t *const m);
-enum VitaError mat_scale(const mat_t *const m, const int8_t axis);
-enum VitaError mat_transpose(void);
-enum VitaError mat_inverse(void);
-enum VitaError mat_round(const mat_t *const m, const int8_t axis);
-vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
-vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
-double mat_sum(const mat_t *const m, const int8_t axis);
-
-
 
 
 
