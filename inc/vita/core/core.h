@@ -39,19 +39,17 @@ enum RemoveStrategy {
 
 // vita errors
 enum VitaError {
-    // container operations
+    // container errors
     ve_error_is_null,                   // element wasn't initialized or is NULL
     ve_error_allocation,                // failed to allocate or reallocate memory
     ve_error_incompatible_datatype,     // working with different datatypes
     ve_error_out_of_bounds_access,      // accessing memory beyond allocated size
+    ve_error_invalid_size,              // invalid container size
 
     // general
     ve_operation_failure,               // failed to perform an action
     ve_operation_success,               // all good
     ve_operation_element_not_found,     // element was not found
-
-    // log errors
-    ve_log_error,                       // unknown log error
 
     ve_count                            // number of elements
 };

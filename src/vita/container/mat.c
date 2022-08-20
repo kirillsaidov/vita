@@ -10,32 +10,25 @@ mat_t *mat_new(void) {
 }
 
 enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
+    if(m == NULL) {
+        return ve_error_is_null;
+    }
+
     if(!rows || !cols) {
-        return ve_operation_failure;
+        return ve_error_invalid_size;
     }
 
     // mat_t init
     *m = (mat_t) {
-        .ptr2 = calloc(rows, sizeof(void*)),
+        .ptr = calloc(rows * cols, sizeof(char*)),
         .rows = rows,
         .cols = cols,
         .elsize = elsize,
     };
 
-    if(m->ptr2 == NULL) {
+    // error checking
+    if(m->ptr == NULL) {
         return ve_error_allocation;
-    }
-
-    // allocate memory for rows*cols number of elements
-    void *els = calloc(rows*cols, elsize);
-    if(els == NULL) {
-        free(m->ptr2);
-        return ve_error_allocation;
-    }
-
-    // distribute the elements row-col-wise
-    for(size_t i = 0; i < rows; i++) {
-        m->ptr2[i] = els + i * cols * elsize;
     }
 
     return ve_operation_success;
@@ -59,7 +52,7 @@ mat_t *mat_dup(const mat_t *const m) {
     }
 
     // copy values
-    memcpy(*(mdup->ptr2), *(m->ptr2), m->rows * m->cols * m->elsize);
+    memcpy(mdup->ptr, m->ptr, m->rows * m->cols * m->elsize);
 
     return mdup;
 }
@@ -71,8 +64,7 @@ void mat_dtor(mat_t *const m) {
     }
 
     // free mat_t contents
-    free(*(m->ptr2));
-    free(m->ptr2);
+    free(m->ptr);
 
     // default-init
     *m = (mat_t) {0};
@@ -87,11 +79,12 @@ void mat_free(mat_t *m) {
 }
 
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
-    mat_t *m = mat_new();
+    mat_t *m = mat_new(); // allocate mem for mat_t
     if(m == NULL) {
         return NULL;
     }
 
+    // construct mat_t
     if(mat_ctor(m, rows, cols, elsize) != ve_operation_success) {
         mat_free(m);
         return NULL;
@@ -123,7 +116,7 @@ enum VitaError mat_clear(mat_t *const m) {
     }
 
     // set values to 0
-    memset(*m->ptr2, 0, m->rows * m->cols * m->elsize);
+    memset(m->ptr, 0, m->rows * m->cols * m->elsize);
 
     return ve_operation_success;
 }
@@ -134,7 +127,7 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     }
 
     if(!rows || !cols) {
-        return ve_operation_failure;
+        return ve_error_invalid_size;
     }
 
     if(m->rows == rows && m->cols == cols) {
@@ -142,17 +135,13 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     }
 
     // allocate memory for rows*cols number of elements
-    void *els = realloc(*(m->ptr2), rows * cols * m->elsize);
+    void *els = realloc(m->ptr, rows * cols * m->elsize);
     if(els == NULL) {
         return ve_error_allocation;
     }
 
-    // distribute the elements row-col-wise
-    for(size_t i = 0; i < rows; i++) {
-        m->ptr2[i] = els + i * cols * m->elsize;
-    }
-
     // update values
+    m->ptr = els;
     m->rows = rows;
     m->cols = cols;
 
@@ -169,20 +158,12 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     }
 
     // set the value
-    memcpy(*m->ptr2 + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
+    memcpy(m->ptr + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
     return ve_operation_success;
 }
 
 enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
-    if(m == NULL) {
-        return ve_error_is_null;
-    }
-
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
-        return ve_error_out_of_bounds_access;
-    }
-
     if(m->elsize != sizeof(val)) {
         return ve_error_incompatible_datatype;
     }
@@ -191,14 +172,6 @@ enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow,
 }
 
 enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
-    if(m == NULL) {
-        return ve_error_is_null;
-    }
-
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
-        return ve_error_out_of_bounds_access;
-    }
-
     if(m->elsize != sizeof(val)) {
         return ve_error_incompatible_datatype;
     }
@@ -207,14 +180,6 @@ enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow,
 }
 
 enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
-    if(m == NULL) {
-        return ve_error_is_null;
-    }
-
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
-        return ve_error_out_of_bounds_access;
-    }
-
     if(m->elsize != sizeof(val)) {
         return ve_error_incompatible_datatype;
     }
@@ -223,14 +188,6 @@ enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, con
 }
 
 enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
-    if(m == NULL) {
-        return ve_error_is_null;
-    }
-
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
-        return ve_error_out_of_bounds_access;
-    }
-
     if(m->elsize != sizeof(val)) {
         return ve_error_incompatible_datatype;
     }
@@ -247,7 +204,7 @@ void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
         return NULL;
     }
 
-    return (*m->ptr2 + (atRow * m->cols + atCol) * m->elsize);
+    return (m->ptr + (atRow * m->cols + atCol) * m->elsize);
 }
 
 int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol) {
@@ -271,6 +228,7 @@ void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
         return;
     }
 
+    // call func upon each element
     for(size_t i = 0; i < m->rows; i++) {
         for(size_t j = 0; j < m->cols; j++) {
             func(mat_get(m, i, j), i, j);
