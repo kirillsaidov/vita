@@ -30,3 +30,15 @@ bool is_palindrome(const uint64_t num) {
 double map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax) {
     return (x - xMin) * (outMax - outMin) / (xMax - xMin) + outMin;
 }
+
+uint64_t random() {
+    static int8_t random_func_is_init = 0;
+    static uint64_t random_func_x = 0;
+    if (!random_func_is_init) {
+        random_func_x = time(NULL);
+        random_func_is_init = 1;
+    }
+
+    random_func_x = (0x343FDULL * random_func_x + 0x269EC3ULL) % 0xFFFFFFFFULL;
+    return (random_func_x & 0x3FFF8000) >> 15;
+}

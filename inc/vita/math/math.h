@@ -33,4 +33,11 @@ Returns: double value mapped between [outMin, outMax]
 */
 extern double map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax);
 
+/**
+Behaves like rand() library function producing random number in [0, uint64_t.max] range
+
+Returns: uint64_t value
+*/
+uint64_t random();
+
 #endif // VITA_MATH_H
