@@ -38,6 +38,6 @@ Behaves like rand() library function producing random number in [0, uint64_t.max
 
 Returns: uint64_t value
 */
-uint64_t random();
+uint64_t get_random();
 
 #endif // VITA_MATH_H

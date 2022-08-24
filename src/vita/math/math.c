@@ -31,7 +31,7 @@ double map_to(const double x, const double xMin, const double xMax, const double
     return (x - xMin) * (outMax - outMin) / (xMax - xMin) + outMin;
 }
 
-uint64_t random() {
+uint64_t get_random() {
     static int8_t random_func_is_init = 0;
     static uint64_t random_func_x = 0;
     if (!random_func_is_init) {
