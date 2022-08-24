@@ -57,7 +57,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
 
         // if it turned out to be an unrecognized option, return
         if(unrecognized_option != NULL) {
-            fprintf(stderr, "Unrecognized option: %s!\n", unrecognized_option);
+            fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
             return false;
         }
     }
@@ -80,17 +80,17 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
 
     // print header
     if(header != NULL) {
-        fprintf(stderr, "%s\n", header);
+        fprintf(stdout, "%s\n", header);
     }
 
     // print help (usage) manual
     for(size_t i = 0; i < optc; i++) {
-        fprintf(stderr, "%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
+        fprintf(stdout, "%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
     }
 
     // print footer
     if(footer != NULL) {
-        fprintf(stderr, "%s\n", footer);
+        fprintf(stdout, "%s\n", footer);
     }
 }
 
@@ -111,7 +111,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     switch(opt->optionType) {
         case dt_int:
             if(!str_is_numeric(value, 256)) {
-                fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
+                fprintf(stdout, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
                 exit(EXIT_SUCCESS);
             }
 
@@ -120,7 +120,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
             break;
         case dt_float:
             if(!str_is_numeric(value, 256)) {
-                fprintf(stderr, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
+                fprintf(stdout, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
                 exit(EXIT_SUCCESS);
             }
 
