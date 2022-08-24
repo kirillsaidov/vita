@@ -2,6 +2,11 @@
 #define VITA_CORE_H
 
 /** VITA_CORE MODULE
+ * Macros:
+    - STRINGOF
+    - AS
+
+ * Functions:
     - gswap
     - get_current_timestamp
 */
@@ -15,9 +20,14 @@
 #include <stdarg.h>
 #include <time.h>
 
+// constants
 #define VITA_VERSION "0.2"
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
+
+// useful macros
+#define STRINGOF(x) #x
+#define AS(type, x) ((type)(x))
 
 // types for argopt
 enum DataType {
