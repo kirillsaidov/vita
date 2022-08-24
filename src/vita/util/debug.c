@@ -195,6 +195,7 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
 
     return NULL;
 }
+
 void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, const int32_t line) {
     if(!debug_mh_handler_is_init(mh)) {
         DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
@@ -209,7 +210,7 @@ void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, cons
         mh->bytes_freed += bytes;
 
         // print info
-        DEBUG_PRINT("%s:%d: %zu bytes freed\n", file, line, bytes);
+        DEBUG_PRINT("%s:%d: %zu bytes freed (left: %zu)\n", file, line, bytes, debug_mh_get_bytes_currently_alloced(mh));
 
         // free the data
         free(ptr);
