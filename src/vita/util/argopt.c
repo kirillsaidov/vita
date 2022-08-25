@@ -9,7 +9,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
 
     // parse argument options (skipping the binary name)
     const char *unrecognized_option = NULL;
-    for (size_t i = 1; i < argc; i++) {
+    for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
         unrecognized_option = argv[i];
 
