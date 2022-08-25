@@ -1,25 +1,22 @@
 #include "vita/system/path.h"
 
-str_t *path_build(str_t *const s, const char *const z1, const char *const z2) {
-    if(z1 == NULL || z2 == NULL) {
-        return NULL;
-    }
-
+str_t *path_build(str_t *const s, ...) {
     // create a new str_t instance and append
-    str_t *st = ((s == NULL) ? (strn(strlen(z1) + strlen(z2))) : (s));
+    str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
         return NULL;
     }
+    str_clear(st);
 
     // append
-    if(str_append(st, PATH_SEPARATOR) != ve_operation_success && str_append(st, z2) != ve_operation_success) {
-        // if s is NULL, free st (this is done to avoid freeing user's s instance)
-        if(s == NULL) {
-            str_free(st);
-        }
-
-        return NULL;
+    va_list args;
+    va_start(args, s);
+    const char* z = NULL;
+    while((z = va_arg(args, char*))) {
+        str_append(st, z);
+        str_append(st, PATH_SEPARATOR);
     }
+    va_end(args);
 
     return st;
 }
