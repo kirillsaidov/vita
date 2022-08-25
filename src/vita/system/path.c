@@ -307,7 +307,8 @@ bool path_mkdir_parents(const char *const z) {
     }
 
     // make directories with parents
-    for(size_t i = 0; i < plist_len(dir_list); i++) {
+    const size_t dirLen = plist_len(dir_list);
+    for(size_t i = 0; i < dirLen; i++) {
         // get the first directory in the directory tree that we need to make
         str_t *sdir = (str_t*)(plist_get(dir_list, i));
         
@@ -326,7 +327,8 @@ path_mkdir_parents_cleanup:
     
     // free all strings in dir_list
     if(dir_list != NULL) {
-        for(size_t i = 0; i < plist_len(dir_list); i++) {
+        const size_t dirLen = plist_len(dir_list);
+        for(size_t i = 0; i < dirLen; i++) {
             str_t *s = (str_t*)(plist_get(dir_list, i));
             str_free(s);
         }
@@ -386,7 +388,8 @@ bool path_rmdir_recurse(const char *const z) {
 path_rmdir_recurse_cleanup:
     // free all strings in dir_list
     if(dir_list != NULL) {
-        for(size_t i = 0; i < plist_len(dir_list); i++) {
+        const size_t dirLen = plist_len(dir_list);
+        for(size_t i = 0; i < dirLen; i++) {
             str_t *s = (str_t*)(plist_get(dir_list, i));
             str_free(s);
         }
