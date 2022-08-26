@@ -1,13 +1,13 @@
 #include <assert.h>
 
-#define NDEBUG
+// #define NDEBUG
 #include "../../inc/vita/util/debug.h"
 
 int32_t main(void) {
     // prints to stderr
     // DEBUG_ASSERT(0, "This is a debug assert error message!");
 
-    debug_mh_handler_default_create();
+    DEBUG_DEFAULT_INIT;
 
         debug_mh_t *mh = debug_mh_handler_default_get_handler();
         assert(mh != NULL);
@@ -27,6 +27,6 @@ int32_t main(void) {
             assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
         #endif
 
-    debug_mh_handler_default_destroy();
+    DEBUG_DEFAULT_QUIT;
     return 0;
 }

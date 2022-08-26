@@ -21,7 +21,6 @@
     - debug_printf
     - debug_mh_handler_new
     - debug_mh_handler_free
-    - debug_mh_handler_free
     - debug_mh_handler_default_create
     - debug_mh_handler_default_destroy
     - debug_mh_handler_default_get_handler
@@ -48,16 +47,26 @@
 typedef struct DebugMemoryHandler debug_mh_t;
 
 #ifndef NDEBUG
+    // error handling
     #define DEBUG_ASSERT(expr, ...) debug_assert(expr, __FILE__, __LINE__, __VA_ARGS__)
     #define DEBUG_ASSERT2(expr, file, line, ...) debug_assert(expr, file, line, __VA_ARGS__)
     #define DEBUG_PRINT(fmt, ...) debug_printf(fmt, __VA_ARGS__)
-    
+
     // memory management
     #define DEBUG_MALLOC(bytes) debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, __FILE__, __LINE__)
     #define DEBUG_CALLOC(bytes) debug_mh_calloc(debug_mh_handler_default_get_handler(), bytes, __FILE__, __LINE__)
     #define DEBUG_REALLOC(ptr, bytes) debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, __FILE__, __LINE__)
     #define DEBUG_FREE(ptr) debug_mh_free(debug_mh_handler_default_get_handler(), ptr, __FILE__, __LINE__)
+
+    // stats
+    #define DEBUG_NALLOCS debug_mh_get_nallocs(debug_mh_handler_default_get_handler())
+    #define DEBUG_NREALLOCS debug_mh_get_nreallocs(debug_mh_handler_default_get_handler())
+    #define DEBUG_NFREES debug_mh_get_nfrees(debug_mh_handler_default_get_handler())
+    #define DEBUG_BYTES_TOTALLY_ALOCATED debug_mh_get_bytes_totally_alloced(debug_mh_handler_default_get_handler())
+    #define DEBUG_BYTES_CURRENTLY_ALOCATED debug_mh_get_bytes_currently_alloced(debug_mh_handler_default_get_handler())
+    #define DEBUG_BYTES_FREED debug_mh_get_bytes_freed(debug_mh_handler_default_get_handler())
 #else
+    // error handling
     #define DEBUG_ASSERT(expr, ...)
     #define DEBUG_ASSERT2(expr, file, line, ...)
     #define DEBUG_PRINT(fmt, ...)
@@ -67,15 +76,19 @@ typedef struct DebugMemoryHandler debug_mh_t;
     #define DEBUG_CALLOC(bytes) calloc(1, bytes)
     #define DEBUG_REALLOC(ptr, bytes) realloc(ptr, bytes)
     #define DEBUG_FREE(ptr) free(ptr)
+
+    // stats
+    #define DEBUG_NALLOCS(mh) debug_mh_get_nallocs(mh)
+    #define DEBUG_NREALLOCS(mh) debug_mh_get_nreallocs(mh)
+    #define DEBUG_NFREES(mh) debug_mh_get_nfrees(mh)
+    #define DEBUG_BYTES_TOTALLY_ALOCATED(mh) debug_mh_get_bytes_totally_alloced(mh)
+    #define DEBUG_BYTES_CURRENTLY_ALOCATED(mh) debug_mh_get_bytes_currently_alloced(mh)
+    #define DEBUG_BYTES_FREED(mh) debug_mh_get_bytes_freed(mh)
 #endif
 
-// stats
-#define DEBUG_NALLOCS debug_mh_get_nallocs(debug_mh_handler_default_get_handler())
-#define DEBUG_NREALLOCS debug_mh_get_nreallocs(debug_mh_handler_default_get_handler())
-#define DEBUG_NFREES debug_mh_get_nfrees(debug_mh_handler_default_get_handler())
-#define DEBUG_BYTES_TOTALLY_ALOCATED debug_mh_get_bytes_totally_alloced(debug_mh_handler_default_get_handler())
-#define DEBUG_BYTES_CURRENTLY_ALOCATED debug_mh_get_bytes_currently_alloced(debug_mh_handler_default_get_handler())
-#define DEBUG_BYTES_FREED debug_mh_get_bytes_freed(debug_mh_handler_default_get_handler())
+// default memory handler
+#define DEBUG_DEFAULT_INIT debug_mh_handler_default_create()
+#define DEBUG_DEFAULT_QUIT debug_mh_handler_default_destroy()
 
 /**
 Asserts an expression and exits upon its evaluation to false
@@ -128,7 +141,7 @@ extern bool debug_mh_handler_is_init(const debug_mh_t *const mh);
 /**
 Creates the default internal mh handler
 */
-extern void debug_mh_handler_default_create(void);
+extern bool debug_mh_handler_default_create(void);
 
 /**
 Frees the default internal mh handler

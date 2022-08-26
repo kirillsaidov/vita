@@ -115,8 +115,11 @@ bool debug_mh_handler_is_init(const debug_mh_t *const mh) {
     return (mh != NULL && mh->cache != NULL);
 }
 
-void debug_mh_handler_default_create(void) {
-    gi_mh = debug_mh_handler_new();
+bool debug_mh_handler_default_create(void) {
+    gi_mh = (gi_mh == NULL) ? debug_mh_handler_new() : gi_mh;
+
+    DEBUG_ASSERT(debug_mh_handler_is_init(gi_mh), "Failed to initialize the default memory handler!");
+    return (gi_mh != NULL);
 }
 
 void debug_mh_handler_default_destroy(void) {
@@ -131,8 +134,14 @@ debug_mh_t *debug_mh_handler_default_get_handler(void) {
 
 void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
     if(!debug_mh_handler_is_init(mh)) {
-        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
-        return NULL;
+        DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
+        
+        // create the default memory handler
+        if(!debug_mh_handler_default_create()) {
+            return NULL;
+        }
+
+        return debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, file, line);
     }
 
     // allocate memory
@@ -163,8 +172,14 @@ void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *cons
 
 void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const int32_t line) {
     if(!debug_mh_handler_is_init(mh)) {
-        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
-        return NULL;
+        DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
+        
+        // create the default memory handler
+        if(!debug_mh_handler_default_create()) {
+            return NULL;
+        }
+
+        return debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, file, line);
     }
 
     // remove ptr from mh
