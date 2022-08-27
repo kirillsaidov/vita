@@ -11,7 +11,7 @@ void print(void *ptr, size_t i, size_t j) {
 }
 
 int32_t main(void) {
-	debug_mh_handler_default_create();
+	DEBUG_DEFAULT_INIT;
 
 	mat_t *m = mat_create(15, 15, sizeof(double)); {
 		assert(mat_rows(m) == 15 && mat_cols(m) == 15);
@@ -61,7 +61,7 @@ int32_t main(void) {
 		// mat_apply(m, print);
 	} mat_destroy(m);
 
-	debug_mh_handler_default_destroy();
+	DEBUG_DEFAULT_QUIT;
 	return 0;
 }
 

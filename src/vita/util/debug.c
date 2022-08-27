@@ -1,7 +1,7 @@
 #include "vita/util/debug.h"
 
 // Memory handler
-typedef struct Cache { void *ptr; size_t bytes; } cache_t;
+typedef struct DebugMemoryCache { void *ptr; size_t bytes; } cache_t;
 struct DebugMemoryHandler {
     cache_t *cache;                 // cache
     size_t cache_len;               // cache length
@@ -115,14 +115,14 @@ bool debug_mh_handler_is_init(const debug_mh_t *const mh) {
     return (mh != NULL && mh->cache != NULL);
 }
 
-bool debug_mh_handler_default_create(void) {
+bool debug_mh_handler_default_init(void) {
     gi_mh = (gi_mh == NULL) ? debug_mh_handler_new() : gi_mh;
 
-    DEBUG_ASSERT(debug_mh_handler_is_init(gi_mh), "Failed to initialize the default memory handler!");
+    DEBUG_ASSERT(gi_mh != NULL, "Failed to initialize the default memory handler!");
     return (gi_mh != NULL);
 }
 
-void debug_mh_handler_default_destroy(void) {
+void debug_mh_handler_default_quit(void) {
     debug_mh_handler_free(gi_mh);
 }
 
@@ -133,11 +133,13 @@ debug_mh_t *debug_mh_handler_default_get_handler(void) {
 /* ---------------- MEMORY MANAGEMENT FUNCTIONS ----------------- */
 
 void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
+    // error checking
+    DEBUG_ASSERT2(bytes, file, line, "Cannot allocate %zu bytes!", bytes);
     if(!debug_mh_handler_is_init(mh)) {
         DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
         
         // create the default memory handler
-        if(!debug_mh_handler_default_create()) {
+        if(!debug_mh_handler_default_init()) {
             return NULL;
         }
 
@@ -171,11 +173,13 @@ void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *cons
 }
 
 void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const int32_t line) {
+    // error checking
+    DEBUG_ASSERT2(bytes, file, line, "Cannot reallocate to %zu bytes! Use `debug_mh_free` instead!", bytes);
     if(!debug_mh_handler_is_init(mh)) {
         DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
         
         // create the default memory handler
-        if(!debug_mh_handler_default_create()) {
+        if(!debug_mh_handler_default_init()) {
             return NULL;
         }
 
@@ -277,27 +281,18 @@ size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr) {
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
 
 static size_t debug_mh_handler_length(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-
-    return mh->cache_len;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->cache_len : 0;
 }
 
 static size_t debug_mh_handler_capacity(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-
-    return mh->cache_capacity;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->cache_capacity : 0;
 }
 
 static size_t debug_mh_handler_has_space(const debug_mh_t *const mh)  {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-
-    return (mh->cache_capacity - mh->cache_len);
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? (mh->cache_capacity - mh->cache_len) : 0;
 }
 
 static int64_t debug_mh_handler_find_element(const debug_mh_t *const mh, const void *const ptr) {
@@ -337,51 +332,33 @@ static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t len) {
 /* ---------------------- STATS FUNCTIONS ---------------------- */
 
 size_t debug_mh_get_nallocs(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return mh->n_allocs;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->n_allocs : 0;
 }
 
 size_t debug_mh_get_nreallocs(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return mh->n_reallocs;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->n_reallocs : 0;
 }
 
 size_t debug_mh_get_nfrees(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return mh->n_frees;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->n_frees : 0;
 }
 
 size_t debug_mh_get_bytes_totally_alloced(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return mh->bytes_totally_alloced;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->bytes_totally_alloced : 0;
 }
 
 size_t debug_mh_get_bytes_currently_alloced(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return (mh->bytes_totally_alloced - mh->bytes_freed);
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? (mh->bytes_totally_alloced - mh->bytes_freed) : 0;
 }
 
 size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh) {
-    if(!debug_mh_handler_is_init(mh)) {
-        return 0;
-    }
-    
-    return mh->bytes_freed;
+    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
+    return debug_mh_handler_is_init(mh) ? mh->bytes_freed : 0;
 }
 
 char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer, const size_t buff_len) {

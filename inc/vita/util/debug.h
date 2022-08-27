@@ -21,8 +21,8 @@
     - debug_printf
     - debug_mh_handler_new
     - debug_mh_handler_free
-    - debug_mh_handler_default_create
-    - debug_mh_handler_default_destroy
+    - debug_mh_handler_default_init
+    - debug_mh_handler_default_quit
     - debug_mh_handler_default_get_handler
     - debug_mh_malloc
     - debug_mh_calloc
@@ -87,8 +87,8 @@ typedef struct DebugMemoryHandler debug_mh_t;
 #endif
 
 // default memory handler
-#define DEBUG_DEFAULT_INIT debug_mh_handler_default_create()
-#define DEBUG_DEFAULT_QUIT debug_mh_handler_default_destroy()
+#define DEBUG_DEFAULT_INIT debug_mh_handler_default_init()
+#define DEBUG_DEFAULT_QUIT debug_mh_handler_default_quit()
 
 /**
 Asserts an expression and exits upon its evaluation to false
@@ -141,12 +141,12 @@ extern bool debug_mh_handler_is_init(const debug_mh_t *const mh);
 /**
 Creates the default internal mh handler
 */
-extern bool debug_mh_handler_default_create(void);
+extern bool debug_mh_handler_default_init(void);
 
 /**
 Frees the default internal mh handler
 */
-extern void debug_mh_handler_default_destroy(void);
+extern void debug_mh_handler_default_quit(void);
 
 /**
 Returns the default internal mh handler instance
