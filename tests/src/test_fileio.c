@@ -3,6 +3,8 @@
 #include "../../inc/vita/system/fileio.h"
 
 int32_t main(void) {
+    DEBUG_DEFAULT_INIT;
+
     #if defined(_WIN32) || defined(_WIN64)
         str_t *s = file_read("src\\test_file.txt");
         {
@@ -53,6 +55,7 @@ int32_t main(void) {
         assert(!file_writec("src/test_file2.txt", "r", &sbuf, false));
     #endif
     
+    DEBUG_DEFAULT_QUIT;
     return 0;
 }
 

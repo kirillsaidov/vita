@@ -3,6 +3,8 @@
 #include "../../inc/vita/util/argopt.h"
 
 int32_t main(void) {
+    DEBUG_DEFAULT_INIT;
+
     // strings
     str_t *rpath = str("my/temp/folder/default/initialized");
     str_t *wpath = NULL;
@@ -69,5 +71,6 @@ int32_t main(void) {
     str_free(rpath);
     str_free(wpath);
 
+    DEBUG_DEFAULT_QUIT;
     return 0;
 }

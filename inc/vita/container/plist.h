@@ -24,6 +24,7 @@
 */
 
 #include "../core/core.h"
+#include "../util/debug.h"
 
 // new pointer list type
 typedef struct BaseArrayType plist_t;

@@ -3,6 +3,8 @@
 #include "../../inc/vita/container/plist.h"
 
 int main(void) {
+	DEBUG_DEFAULT_INIT;
+	
 	plist_t *p = plist_create(5); {
 		assert(plist_len(p) == 0);
 		assert(plist_capacity(p) == 5);
@@ -30,5 +32,6 @@ int main(void) {
 		assert(plist_capacity(p) == 7);
 	} plist_destroy(p);
 
+	DEBUG_DEFAULT_QUIT;
 	return 0;
 }

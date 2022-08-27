@@ -7,6 +7,8 @@
 void free_str(void *ptr, size_t i);
 
 int main(void) {
+    DEBUG_DEFAULT_INIT;
+
     plist_t *p = plist_create(3); {
         plist_push(p, "hello");
         plist_push(p, "world");
@@ -102,6 +104,7 @@ int main(void) {
     const size_t fs = path_get_file_size("src/test_str.c");
     // assert(fs == 7077);
 
+    DEBUG_DEFAULT_QUIT;
     return 0;
 }
 
