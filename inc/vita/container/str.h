@@ -46,6 +46,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include "../core/core.h"
+#include "../util/debug.h"
 #include "plist.h"
 
 // see core/core.h for definition

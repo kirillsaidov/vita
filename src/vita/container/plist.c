@@ -81,17 +81,17 @@ void plist_destroy(plist_t *p) {
 
 size_t plist_len(const plist_t *const p) {
     DEBUG_ASSERT(p != NULL, "plist_t was not initialized!");
-    return (p != NULL) ? p->len : 0;
+    return (p == NULL) ? 0 : p->len;
 }
 
 size_t plist_capacity(const plist_t *const p) {
     DEBUG_ASSERT(p != NULL, "plist_t was not initialized!");
-    return (p != NULL) ? p->capacity : 0;
+    return (p == NULL) ? 0 : p->capacity;
 }
 
 size_t plist_has_space(const plist_t *const p) {
     DEBUG_ASSERT(p != NULL, "plist_t was not initialized!");
-    return (p != NULL) ? (p->capacity - p->len) : 0;
+    return (p == NULL) ? 0 : (p->capacity - p->len);
 }
 
 enum VitaError plist_reserve(plist_t *const p, const size_t n) {
