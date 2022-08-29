@@ -24,7 +24,7 @@ static size_t debug_mh_handler_has_space(const debug_mh_t *const mh);
 static int64_t debug_mh_handler_find_element(const debug_mh_t *const mh, const void *const ptr);
 static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t bytes);
 
-void debug_assert(const bool expr, const char *const file, const int32_t line, const char *const fmt, ...) {
+void debug_assert(const bool expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...) {
     if(!expr) {
         // get time
         char tbuf[21];
@@ -34,7 +34,7 @@ void debug_assert(const bool expr, const char *const file, const int32_t line, c
         va_list args; va_start(args, fmt); 
         {
             // logging to stderr
-            fprintf(stderr, "%s %s %s:%d: ", tbuf, "DEBUG ASSERT", file, line);
+            fprintf(stderr, "%s %s %s:%s:%d: ", tbuf, "DEBUG ASSERT", file, func, line);
             vfprintf(stderr, fmt, args);
             fprintf(stderr, "\n");
         }
@@ -132,9 +132,9 @@ debug_mh_t *debug_mh_handler_default_get_handler(void) {
 
 /* ---------------- MEMORY MANAGEMENT FUNCTIONS ----------------- */
 
-void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
+void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     // error checking
-    DEBUG_ASSERT2(bytes, file, line, "Cannot allocate %zu bytes!", bytes);
+    DEBUG_ASSERT2(bytes, file, func, line, "Cannot allocate %zu bytes!", bytes);
     if(!debug_mh_handler_is_init(mh)) {
         DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
         
@@ -143,13 +143,13 @@ void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *cons
             return NULL;
         }
 
-        return debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, file, line);
+        return debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, file, func, line);
     }
 
     // allocate memory
     void *ptr = malloc(bytes);
     if(ptr == NULL) {
-        DEBUG_ASSERT2(0, file, line, "Unable to allocate memory!");
+        DEBUG_ASSERT2(0, file, func, line, "Unable to allocate memory!");
         return NULL;
     }
 
@@ -161,20 +161,20 @@ void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *cons
     mh->bytes_totally_alloced += bytes;
 
     // print info
-    DEBUG_PRINT("%s:%d: %zu bytes allocated\n", file, line, bytes);
+    DEBUG_PRINT("%s:%s:%d: %zu bytes allocated\n", file, func, line, bytes);
 
     return ptr;
 }
 
-void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const int32_t line) {
-    void *ptr = debug_mh_malloc(mh, bytes, file, line);
+void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+    void *ptr = debug_mh_malloc(mh, bytes, file, func, line);
     memset(ptr, 0, bytes);
     return ptr;
 }
 
-void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const int32_t line) {
+void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     // error checking
-    DEBUG_ASSERT2(bytes, file, line, "Cannot reallocate to %zu bytes! Use `debug_mh_free` instead!", bytes);
+    DEBUG_ASSERT2(bytes, file, func, line, "Cannot reallocate to %zu bytes! Use `debug_mh_free` instead!", bytes);
     if(!debug_mh_handler_is_init(mh)) {
         DEBUG_PRINT("%s\n", "Memory handler was not initialized. Initializing the default memory handler.");
         
@@ -183,7 +183,7 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
             return NULL;
         }
 
-        return debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, file, line);
+        return debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, file, func, line);
     }
 
     // remove ptr from mh
@@ -192,7 +192,7 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
         // allocate memory
         void *ptr_new = realloc(ptr, bytes);
         if(ptr_new == NULL) {
-            DEBUG_ASSERT2(0, file, line, "Unable to allocate memory!");
+            DEBUG_ASSERT2(0, file, func, line, "Unable to allocate memory!");
 
             // roll back
             debug_mh_add(mh, ptr, bytes_old);
@@ -207,7 +207,7 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
         mh->bytes_totally_alloced += ((int64_t)bytes - (int64_t)bytes_old);
 
         // print info
-        DEBUG_PRINT("%s:%d: %zu bytes reallocated (old size: %d)\n", file, line, bytes, bytes_old);
+        DEBUG_PRINT("%s:%s:%d: %zu bytes reallocated (old size: %d)\n", file, func, line, bytes, bytes_old);
         
         return ptr_new;
     }
@@ -215,9 +215,9 @@ void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, cons
     return NULL;
 }
 
-void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, const int32_t line) {
+void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, const char *const func, const int32_t line) {
     if(!debug_mh_handler_is_init(mh)) {
-        DEBUG_ASSERT2(0, file, line, "Memory handler was not initialized!");
+        DEBUG_ASSERT2(0, file, func, line, "Memory handler was not initialized!");
         return;
     }
 
@@ -229,7 +229,7 @@ void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, cons
         mh->bytes_freed += bytes;
 
         // print info
-        DEBUG_PRINT("%s:%d: %zu bytes freed (left: %zu)\n", file, line, bytes, debug_mh_get_bytes_currently_alloced(mh));
+        DEBUG_PRINT("%s:%s:%d: %zu bytes freed (left: %zu)\n", file, func, line, bytes, debug_mh_get_bytes_currently_alloced(mh));
 
         // free the data
         free(ptr);
@@ -265,7 +265,6 @@ size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr) {
     if(mh->cache_len > 0) {
         const int64_t i = debug_mh_handler_find_element(mh, ptr);
         if(i < 0) {
-            DEBUG_ASSERT(0, "Element not found!");
             return bytes;
         }
 

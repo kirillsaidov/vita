@@ -668,11 +668,13 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
     if(ps == NULL) {
         p = plist_create(strInstances + 1);
         if(p == NULL) {
+            DEBUG_ASSERT(p != NULL, "Failed to allocate plist_t instance!");
             return NULL;
         }
     } else {
         p = ps;
         if(plist_has_space(p) < strInstances + 1 && plist_reserve(p, (strInstances + 1) - plist_has_space(p)) != ve_operation_success) {
+            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
             return p;
         }
     }
@@ -712,7 +714,13 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
 
 // CONTINUE FROM HERE
 str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
-    if(s == NULL || sep == NULL || !str_len(s) || !strlen(sep)) {
+    if(s == NULL || sep == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
+        return sr;
+    }
+
+    if(!str_len(s) || !strlen(sep)) {
         return sr;
     }
 
@@ -731,6 +739,7 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
     // create str_t instance
     str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
     if(spop == NULL) {
+        DEBUG_ASSERT(spop != NULL, "Failed to allocate str_t instance!");
         return sr;
     }
 
@@ -750,7 +759,13 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
 
 str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
     const size_t sepLen = strlen(sep);
-    if(s == NULL || sep == NULL || !str_len(s) || !sepLen) {
+    if(s == NULL || sep == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
+        return sr;
+    }
+
+    if(!str_len(s) || !sepLen) {
         return sr;
     }
 
@@ -822,6 +837,8 @@ bool str_ends_with(const char *const z, const char *const sub) {
 
 void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
     if(s == NULL || func == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        DEBUG_ASSERT(func != NULL, "Supplied func is NULL!");
         return;
     }
 
@@ -833,6 +850,8 @@ void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
 
 static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
     if(s == NULL || fmt == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
         return s;
     }
 
@@ -842,6 +861,7 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
         // check if new memory needs to be allocated
         const int32_t len = vsnprintf(NULL, (size_t)0, fmt, args);
         if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
+            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
             return s;
         }
 
@@ -855,6 +875,8 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
 
 bool str_is_numeric(const char *const z, const size_t max_len) {
     if(z == NULL || !max_len) {
+        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        DEBUG_ASSERT(max_len, "max_len cannot be 0!");
         return false;
     }
 
@@ -871,6 +893,7 @@ bool str_is_numeric(const char *const z, const size_t max_len) {
 
 void str_capitalize(str_t *const s) {
     if(s == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
         return;
     }
 

@@ -20,6 +20,12 @@
 #include <stdarg.h>
 #include <time.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+    #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+#else
+    #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#endif
+
 // constants
 #define VITA_VERSION "0.2"
 #define DEFAULT_INIT_ELEMENTS 10
