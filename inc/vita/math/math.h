@@ -5,6 +5,7 @@
     - 
 */
 
+#include <math.h>
 #include "../core/core.h"
 
 // extern float isqrt(const float x);
@@ -34,10 +35,51 @@ Returns: double value mapped between [outMin, outMax]
 extern double map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax);
 
 /**
-Behaves like rand() library function producing random number in [0, uint64_t.max] range
+Behaves like rand() library function producing random number in [0, uint64_t.max) range
 
-Returns: uint64_t value
+Returns: uint64_t
 */
-uint64_t get_random();
+extern uint64_t random_u64(void);
+
+/**
+Carmack fast sqrt
+
+Params:
+    v = value
+
+Returns: float
+*/
+extern float sqrt_c(float v);
+
+/**
+Carmack fast inverse sqrt
+
+Params:
+    v = value
+
+Returns: float
+*/
+extern float isqrt_c(float v);
+
+/**
+Generates a random float value in range [0; ubound)
+
+Params:
+    ubound = upper bound
+
+Returns: float
+*/
+extern float random_f32(const uint32_t ubound);
+
+/**
+Generates a random float value in range [lbound; ubound); approximately 'uniformely distributed' 
+
+Params:
+    lbound = lower bound
+    ubound = upper bound
+
+Returns: float
+*/
+extern float random_f32_uniform(float lbound, float ubound);
 
 #endif // VITA_MATH_H
