@@ -7,6 +7,12 @@
     - AS
 
  * Functions:
+    - bct_head
+    - bct_len
+    - bct_capacity
+    - bct_rows
+    - bct_cols
+    - bct_elsize
     - gswap
     - get_current_timestamp
 */
