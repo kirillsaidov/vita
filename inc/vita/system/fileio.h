@@ -11,8 +11,9 @@
     - file_writef *
 */
 
-#include "path.h"
 #include <stdarg.h>
+#include "path.h"
+#include "../util/debug.h"
 
 /**
 Reads contents of a file in 'r' mode
@@ -51,7 +52,7 @@ extern bool file_writec(const char *const z_filename, const char *const z_mode, 
 Writes to a file in custom mode
 
 Params:
-    z_filename = file name
+    z_filename = file name (if NULL, writes to stderr)
     z_mode = file open mode
     z_fmt = formatted string
     ... = other variable arguments
