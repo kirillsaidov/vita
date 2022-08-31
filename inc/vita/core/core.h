@@ -70,8 +70,8 @@ enum VitaError {
     ve_count                            // number of elements
 };
 
-// array struct wrapper: base container type
-struct BaseArrayType {
+// base container type for all primitives
+struct BaseContainerType {
     union {
         void *ptr;
         void **ptr2;
@@ -91,6 +91,70 @@ struct BaseArrayType {
 
     size_t elsize;
 };
+
+/* ------------- BASE CONTAINER TYPE ------------- */
+
+/**
+Returns BaseContainerType's ptr head
+
+Params:
+    bct = BaseContainerType ptr instance
+
+Returns: `NULL` upon failure
+*/
+extern void *bct_head(const struct BaseContainerType *const bct);
+
+/**
+Returns BaseContainerType's length
+
+Params:
+    bct = BaseContainerType ptr
+
+Returns: length
+*/
+extern size_t bct_len(const struct BaseContainerType *const bct);
+
+/**
+Returns BaseContainerType's capacity
+
+Params:
+    bct = BaseContainerType ptr
+
+Returns: capacity
+*/
+extern size_t bct_capacity(const struct BaseContainerType *const bct);
+
+/**
+Returns BaseContainerType's rows
+
+Params:
+    bct = BaseContainerType ptr
+
+Returns: rows
+*/
+extern size_t bct_rows(const struct BaseContainerType *const bct);
+
+/**
+Returns BaseContainerType's cols
+
+Params:
+    bct = BaseContainerType ptr
+
+Returns: cols
+*/
+extern size_t bct_cols(const struct BaseContainerType *const bct);
+
+/**
+Returns BaseContainerType's element size
+
+Params:
+    bct = BaseContainerType ptr
+
+Returns: element size
+*/
+extern size_t bct_elsize(const struct BaseContainerType *const bct);
+
+/* ------------- OTHER FUNCTIONALITY ------------- */
 
 /**
 Generic swap

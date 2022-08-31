@@ -27,7 +27,7 @@
 #include "../util/debug.h"
 
 // new pointer list type
-typedef struct BaseArrayType plist_t;
+typedef struct BaseContainerType plist_t;
 
 /**
 Allocates memory for plist_t

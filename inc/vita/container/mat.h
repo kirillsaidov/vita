@@ -35,7 +35,7 @@
 #include "vec.h"
 
 // see core/core.h for definition
-typedef struct BaseArrayType mat_t;
+typedef struct BaseContainerType mat_t;
 
 /**
 Allocates memory for mat_t

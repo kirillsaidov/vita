@@ -50,7 +50,7 @@
 #include "plist.h"
 
 // see core/core.h for definition
-typedef struct BaseArrayType str_t;
+typedef struct BaseContainerType str_t;
 
 /**
 Creates a static string with length

@@ -1,5 +1,33 @@
 #include "vita/core/core.h"
 
+/* ------------- BASE CONTAINER TYPE ------------- */
+
+void *bct_head(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? NULL : bct->ptr;
+}
+
+size_t bct_len(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? 0 : bct->len;
+}
+
+size_t bct_capacity(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? 0 : bct->capacity;
+}
+
+size_t bct_rows(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? 0 : bct->rows;
+}
+
+size_t bct_cols(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? 0 : bct->cols;
+}
+
+size_t bct_elsize(const struct BaseContainerType *const bct) {
+    return (bct == NULL) ? 0 : bct->elsize;
+}
+
+/* ------------- OTHER FUNCTIONALITY ------------- */
+
 bool gswap(void* a, void* b, const size_t elsize) {
     if(a == NULL || b == NULL || elsize == 0) {
         return false;
