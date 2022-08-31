@@ -29,6 +29,7 @@
 */
 
 #include "../core/core.h"
+#include "../util/debug.h"
 
 // see core/core.h for definition
 typedef struct BaseContainerType vec_t;

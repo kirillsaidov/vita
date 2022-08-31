@@ -3,6 +3,7 @@
 mat_t *mat_new(void) {
     mat_t *m = DEBUG_CALLOC(sizeof(mat_t));
     if(m == NULL) {
+        DEBUG_ASSERT(m != NULL, "Failed to allocate mat_t instance!");
         return NULL;
     }
 
@@ -93,6 +94,8 @@ mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
 
     // construct mat_t
     if(mat_ctor(m, rows, cols, elsize) != ve_operation_success) {
+        DEBUG_ASSERT(0, "Failed to construct mat_t instance!");
+
         mat_free(m);
         return NULL;
     }
@@ -106,18 +109,18 @@ void mat_destroy(mat_t *m) {
 }
 
 size_t mat_rows(const mat_t *const m) {
-    DEBUG_ASSERT(m != NULL, "mat_t was not initialized!");
-    return (m != NULL) ? m->rows : 0;
+    DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
+    return (m == NULL) ? 0 : m->rows;
 }
 
 size_t mat_cols(const mat_t *const m) {
-    DEBUG_ASSERT(m != NULL, "mat_t was not initialized!");
-    return (m != NULL) ? m->cols : 0;
+    DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
+    return (m == NULL) ? 0 : m->cols;
 }
 
 size_t mat_size(const mat_t *const m) {
-    DEBUG_ASSERT(m != NULL, "mat_t was not initialized!");
-    return (m != NULL) ? (m->rows * m->cols) : 0;
+    DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
+    return (m == NULL) ? 0 : (m->rows * m->cols);
 }
 
 enum VitaError mat_clear(mat_t *const m) {

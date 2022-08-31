@@ -3,6 +3,7 @@
 plist_t *plist_new(void) {
     plist_t *p = DEBUG_CALLOC(sizeof(plist_t));
     if(p == NULL) {
+        DEBUG_ASSERT(p != NULL, "Failed to allocate plist_t instance!");
         return NULL;
     }
 
@@ -39,7 +40,7 @@ void plist_dtor(plist_t *p) {
         return;
     }
 
-    // DEBUG_FREE plist_t contents
+    // free plist_t contents
     DEBUG_FREE(p->ptr2);
 
     // default-init
@@ -52,7 +53,7 @@ void plist_free(plist_t *p) {
         return;
     }
 
-    // DEBUG_FREE the plist_t itself
+    // free the plist_t itself
     DEBUG_FREE(p);
 
     // reset to NULL
@@ -67,6 +68,8 @@ plist_t *plist_create(const size_t n) {
     }
 
     if(plist_ctor(p, n) != ve_operation_success) {
+        DEBUG_ASSERT(0, "Failed to construct plist_t instance!");
+
         plist_free(p);
         return NULL;
     }
@@ -108,6 +111,7 @@ enum VitaError plist_reserve(plist_t *const p, const size_t n) {
     // reserve memory for additional n elements
     void **newptr = DEBUG_REALLOC(p->ptr2, (p->capacity + n) * p->elsize);
     if(newptr == NULL) {
+        DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory!");
         return ve_error_allocation;
     }
 
@@ -131,7 +135,7 @@ enum VitaError plist_shrink(plist_t *const p) {
 
     void **newptr = DEBUG_REALLOC(p->ptr2, p->len * p->elsize);
     if(newptr == NULL) {
-        DEBUG_ASSERT(newptr != NULL, "Failed to allocate memory!");
+        DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory!");
         return ve_error_allocation;
     }
 
@@ -216,13 +220,17 @@ enum VitaError plist_pop(plist_t *const p) {
 }
 
 void *plist_pop_get(plist_t *const p) {
-    if(p == NULL || !p->len) {
+    if(p == NULL) {
         DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");
         return NULL;
     }
 
     // pop the last element
-    return p->ptr2[--p->len];
+    if(p->len > 0) {
+        return ((char**)p->ptr2)[--p->len];
+    }
+
+    return p->ptr2;
 }
 
 enum VitaError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
@@ -238,9 +246,9 @@ enum VitaError plist_remove(plist_t *const p, const size_t at, const enum Remove
 
     // check remove strategy
     if(rs == rs_stable) {
-        memmove(p->ptr2 + at * p->elsize, p->ptr2 + (at + 1) * p->elsize, (p->len - at) * p->elsize);
+        memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
-        gswap(p->ptr2 + at * p->elsize, p->ptr2 + (p->len - 1) * p->elsize, p->elsize);
+        gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
     }
 
     // update length
