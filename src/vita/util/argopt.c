@@ -4,6 +4,10 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value);
 
 bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
     if(argc < 2 && optc < 1 && argv == NULL && optv == NULL) {
+        DEBUG_ASSERT(argc >= 2, "argc must be >= 2!");
+        DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
+        DEBUG_ASSERT(argv != NULL, "argv is NULL!");
+        DEBUG_ASSERT(optv != NULL, "optv is NULL!");
         return false;
     }
 
@@ -58,7 +62,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         // if it turned out to be an unrecognized option, return
         if(unrecognized_option != NULL) {
             fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
-            return false;
+            exit(EXIT_SUCCESS);
         }
     }
 
@@ -67,6 +71,8 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
 
 void argopt_print_help(const char *header, const char *footer, const size_t optc, const argopt_t *const optv) {
     if(optc < 1 || optv == NULL) {
+        DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
+        DEBUG_ASSERT(optv != NULL, "optv is NULL!");
         return;
     }
     

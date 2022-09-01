@@ -11,6 +11,7 @@
 #include "../container/str.h"
 #include "../container/plist.h"
 #include "../algorithm/comparison.h"
+#include "../util/debug.h"
 
 #define OPT(v) ((void**)&v)
 
