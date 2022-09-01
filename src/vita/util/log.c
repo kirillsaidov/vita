@@ -38,7 +38,7 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
         }
 
         // get time
-        char tbuf[21];
+        char tbuf[21] = {0};
         get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments

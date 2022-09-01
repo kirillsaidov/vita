@@ -27,7 +27,7 @@ static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t bytes)
 void debug_assert(const bool expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...) {
     if(!expr) {
         // get time
-        char tbuf[21];
+        char tbuf[21] = {0};
         get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
