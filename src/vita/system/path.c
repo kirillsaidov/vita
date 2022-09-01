@@ -4,6 +4,7 @@ str_t *path_build(str_t *const s, ...) {
     // create a new str_t instance and append
     str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
+        DEBUG_ASSERT(st != NULL, "Unable to allocate str_t buffer!");
         return NULL;
     }
     str_clear(st);
@@ -23,11 +24,13 @@ str_t *path_build(str_t *const s, ...) {
 
 str_t *path_build_n(str_t *const s, const plist_t *const p) {
     if(p == NULL) {
+        DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");
         return NULL;
     }
 
     str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
+        DEBUG_ASSERT(st != NULL, "Unable to allocate str_t buffer!");
         return NULL;
     }
 
@@ -63,6 +66,7 @@ str_t *path_getcwd() {
 
 bool path_exists(const char *const z) {
     if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
     }
 
@@ -72,6 +76,7 @@ bool path_exists(const char *const z) {
 
 bool path_is_dir(const char *const z) {
     if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
     }
 
@@ -82,6 +87,7 @@ bool path_is_dir(const char *const z) {
 
 bool path_is_file(const char *const z) {
     if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
     }
 
@@ -121,18 +127,21 @@ int64_t path_get_file_size(const char *const z) {
 
 plist_t *path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     if(!path_exists(z)) {
+        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
         return NULL;
     }
 
     // create plist instance
     plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
+        DEBUG_ASSERT(pl != NULL, "Failed to allocate plist_t instance!");
         return NULL;
     }
 
     // open directory
     DIR *dir = opendir(z);
     if(dir == NULL) {
+        DEBUG_ASSERT(dir != NULL, "Failed read the directory %s!", z);
         return pl;
     }
 
@@ -159,18 +168,21 @@ plist_t *path_listdir(plist_t *const p, const char *const z, const bool ignoreDo
 
 plist_t *path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     if(!path_exists(z)) {
+        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
         return NULL;
     }
     
     // create plist instance
     plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
+        DEBUG_ASSERT(pl != NULL, "Failed to allocate plist_t instance!");
         return NULL;
     }
 
     // open directory
     DIR *dir = opendir(z);
     if(dir == NULL) {
+        DEBUG_ASSERT(dir != NULL, "Failed read the directory: %s!", z);
         return pl;
     }
 
@@ -240,6 +252,7 @@ str_t *path_basename(str_t *const s, const char *const z) {
 
 bool path_mkdir(const char *const z) {
     if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
@@ -265,6 +278,7 @@ bool path_mkdir(const char *const z) {
 
 bool path_mkdir_parents(const char *const z) {
     if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
@@ -282,6 +296,8 @@ bool path_mkdir_parents(const char *const z) {
     // copy the raw C string into str_t for ease of use
     s = str(z);
     if(s == NULL) {
+        DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
+
         status = false;
         goto path_mkdir_parents_cleanup;
     }
@@ -289,6 +305,8 @@ bool path_mkdir_parents(const char *const z) {
     // create a fullpath variable
     sfull = strn(str_len(s) + 1);
     if(sfull == NULL) {
+        DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
+
         status = false;
         goto path_mkdir_parents_cleanup;
     }
@@ -339,6 +357,8 @@ path_mkdir_parents_cleanup:
 
 bool path_rmdir(const char *const z) {
     if(z == NULL || !path_exists(z)) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -353,6 +373,8 @@ bool path_rmdir(const char *const z) {
 
 bool path_rmdir_recurse(const char *const z) {
     if(z == NULL || !path_exists(z)) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -400,6 +422,8 @@ path_rmdir_recurse_cleanup:
 
 bool path_remove(const char *const z) {
     if(z == NULL || !path_exists(z)) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -408,6 +432,9 @@ bool path_remove(const char *const z) {
 
 bool path_rename(const char *const z1, const char *const z2) {
     if(z1 == NULL || z2 == NULL || !path_exists(z1)) {
+        DEBUG_ASSERT(z1 != NULL, "Path/File (z1) supplied is NULL!");
+        DEBUG_ASSERT(z2 != NULL, "Path/File (z2) supplied is NULL!");
+        DEBUG_ASSERT(path_exists(z1), "Path/File does not exist %s!", z1);
         return false;
     }
 

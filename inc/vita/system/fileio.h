@@ -4,11 +4,11 @@
 /** VITA_FILEIO MODULE (working with files)
     - file_read
     - file_writec (custom mode)
+    - file_writef
     - file_write
     - file_writeln
     - file_append
     - file_appendln
-    - file_writef *
 */
 
 #include <stdarg.h>
