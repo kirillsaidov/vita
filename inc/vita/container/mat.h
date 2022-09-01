@@ -103,6 +103,26 @@ Params:
 extern void mat_destroy(mat_t *m);
 
 /**
+Allocates and constructs mat_t from an array
+
+Params:
+    ptr = array 
+    rows = number of rows
+    cols = number of cols
+    elsize = element size
+
+Returns: `mat_t*` upon success, `NULL` otherwise
+
+Note: 
+    If ptr == NULL, returns an empty `mat_t` instance
+*/
+extern mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, const size_t elsize);
+extern mat_t *mat_fromi32(const int32_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromi64(const int64_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromf(const float *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromd(const double *const ptr, const size_t rows, const size_t cols);
+
+/**
 Returns mat_t rows, cols, number of elements (size)
 
 Params:

@@ -84,6 +84,20 @@ Params:
 extern void plist_destroy(plist_t *p);
 
 /**
+Allocates and constructs plist_t from an array
+
+Params:
+    ptr = array 
+    n = number of elements
+
+Returns: `plist_t*` upon success, `NULL` otherwise
+
+Note: 
+    If ptr == NULL, returns an empty `plist_t` instance
+*/
+extern plist_t *plist_from(const void *const ptr, const size_t n);
+
+/**
 Returns length, capacity, available space (capacity - length)
 
 Params:

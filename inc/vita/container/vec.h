@@ -9,6 +9,7 @@
     - vec_free
     - vec_create
     - vec_destroy
+    - vec_from (i32, i64, d, f versions as well)
     - vec_len
     - vec_capacity
     - vec_has_space
@@ -17,11 +18,11 @@
     - vec_clear
     - vec_reserve
     - vec_resize
-    - vec_push
-    - vec_pop
+    - vec_push (i32, i64, d, f versions as well)
+    - vec_pop (i32, i64, d, f versions as well)
     - vec_pop_get
-    - vec_set
-    - vec_get
+    - vec_set (i32, i64, d, f versions as well)
+    - vec_get (i32, i64, d, f versions as well)
     - vec_insert
     - vec_remove
     - vec_contains
@@ -97,6 +98,25 @@ Params:
     v = vec_t pointer
 */
 extern void vec_destroy(vec_t *v);
+
+/**
+Allocates and constructs vec_t from an array
+
+Params:
+    ptr = array 
+    n = number of elements
+    elsize = element size
+
+Returns: `vec_t*` upon success, `NULL` otherwise
+
+Note: 
+    If ptr == NULL, returns an empty `vec_t` instance
+*/
+extern vec_t *vec_from(const void *const ptr, const size_t n, const size_t elsize);
+extern vec_t *vec_fromi32(const int32_t *const ptr, const size_t n);
+extern vec_t *vec_fromi64(const int64_t *const ptr, const size_t n);
+extern vec_t *vec_fromf(const float *const ptr, const size_t n);
+extern vec_t *vec_fromd(const double *const ptr, const size_t n);
 
 /**
 Returns vec_t length

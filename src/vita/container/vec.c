@@ -109,6 +109,41 @@ void vec_destroy(vec_t *v) {
     vec_free(v);
 }
 
+vec_t *vec_from(const void *const ptr, const size_t n, const size_t elsize) {
+    vec_t *v = vec_create(n, elsize);
+    if(v == NULL) {
+        DEBUG_ASSERT(v != NULL, "Failed to create vec_t instance!");
+        return NULL;
+    }
+
+    // if nothing to copy return an empty vec_t instance
+    if(ptr == NULL) {
+        return v;
+    }
+
+    // copy values
+    memmove(v->ptr, ptr, n * elsize);
+    v->len = n;
+
+    return v;
+}
+
+vec_t *vec_fromi32(const int32_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(int32_t));
+}
+
+vec_t *vec_fromi64(const int64_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(int64_t));
+}
+
+vec_t *vec_fromf(const float *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(float));
+}
+
+vec_t *vec_fromd(const double *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(double));
+}
+
 size_t vec_len(const vec_t *const v) {
     DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
     return (v == NULL) ? 0 : v->len;

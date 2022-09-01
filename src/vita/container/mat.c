@@ -108,6 +108,42 @@ void mat_destroy(mat_t *m) {
     mat_free(m);
 }
 
+mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, const size_t elsize) {
+    mat_t *m = mat_create(rows, cols, elsize);
+    if(m == NULL) {
+        DEBUG_ASSERT(m != NULL, "Failed to create mat_t instance!");
+        return NULL;
+    }
+
+    // if nothing to copy return an empty mat_t instance
+    if(ptr == NULL) {
+        return m;
+    }
+
+    // copy values
+    memmove(m->ptr, ptr, rows * cols * elsize);
+    m->rows = rows;
+    m->cols = cols;
+
+    return m;
+}
+
+mat_t *mat_fromi32(const int32_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(int32_t));
+}
+
+mat_t *mat_fromi64(const int64_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(int64_t));
+}
+
+mat_t *mat_fromf(const float *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(float));
+}
+
+mat_t *mat_fromd(const double *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(double));
+}
+
 size_t mat_rows(const mat_t *const m) {
     DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
     return (m == NULL) ? 0 : m->rows;
