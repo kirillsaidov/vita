@@ -35,7 +35,7 @@
 #endif
 
 // constants
-#define VITA_VERSION "0.2"
+#define VITA_VERSION "0.3"
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 
