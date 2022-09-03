@@ -58,7 +58,9 @@ int32_t main(void) {
     argopt_parse(argc, argv, optc, optv);
     
     // check
+    printf("HAHAHA ---- : %s\n", cstr(rpath));
     assert(str_equals(cstr(rpath), "../temp"));
+    
     assert(str_equals(cstr(wpath), "./docs/dw/data/"));
     assert(intensity == (float)0.7);
     assert(polarity == (float)0.35);

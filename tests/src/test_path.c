@@ -22,7 +22,7 @@ int main(void) {
     assert(path_exists("/home/lala") == false); // must fail
 
     #if defined(_WIN32) || defined(_WIN64)
-        str_t *s = path_build(NULL, "hello", "world", "media", "dev");
+        str_t *s = path_build(NULL, 4, "hello", "world", "media", "dev");
         assert(str_equals(cstr(s), "hello\\world\\media\\dev\\"));
         str_free(s);
 
@@ -47,7 +47,7 @@ int main(void) {
         // path_mkdir("hello_test_dir"); // works
         // path_mkdir_parents("\\hello\\world\\of\\my\\"); // works
     #elif defined(__linux__)
-        str_t *s = path_build(NULL, "hello", "world", "media", "dev");
+        str_t *s = path_build(NULL, 4, "hello", "world", "media", "dev");
         assert(str_equals(cstr(s), "hello/world/media/dev/"));
         str_free(s);
 
@@ -72,7 +72,7 @@ int main(void) {
         // path_mkdir("hello_test_dir"); // works
         // path_mkdir_parents("/hello/world/of/my/"); // works
     #else
-        str_t *s = path_build(NULL, "hello", "world", "media", "dev");
+        str_t *s = path_build(NULL, 4, "hello", "world", "media", "dev");
         assert(str_equals(cstr(s), "hello/world/media/dev/"));
         str_free(s);
 

@@ -1,6 +1,6 @@
 #include "vita/system/path.h"
 
-str_t *path_build(str_t *const s, ...) {
+str_t *path_build(str_t *const s, const size_t n, ...) {
     // create a new str_t instance and append
     str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
@@ -11,9 +11,12 @@ str_t *path_build(str_t *const s, ...) {
 
     // append
     va_list args;
-    va_start(args, s);
+    va_start(args, n);
     const char* z = NULL;
-    while((z = va_arg(args, char*))) {
+    for(size_t i = 0; i < n; i++) {
+        // get next item
+        z = va_arg(args, char*);
+        
         str_append(st, z);
         str_append(st, PATH_SEPARATOR);
     }

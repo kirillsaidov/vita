@@ -51,11 +51,12 @@ Builds path from raw C strings
 
 Params:
     s = str_t instance (if `NULL` is passed, str_t is allocated)
+    n = number of strings to concatenate into path
     ... = c strings to combine into path
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_build(str_t *const s, ...);
+extern str_t *path_build(str_t *const s, const size_t n, ...);
 
 /**
 Builds path from raw C strings
