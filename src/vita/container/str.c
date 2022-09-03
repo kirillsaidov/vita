@@ -123,7 +123,7 @@ void str_free(str_t *s) {
         return;
     }
 
-    // DEBUG_FREE the str_t string and str_t struct
+    // free the str_t string and str_t struct
     DEBUG_FREE(s->ptr);
     DEBUG_FREE(s);
 

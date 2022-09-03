@@ -68,7 +68,7 @@ void vec_dtor(vec_t *const v) {
     }
 
     // free vec_t contents
-    free(v->ptr);
+    DEBUG_FREE(v->ptr);
 
     // default-init
     *v = (vec_t) {};
@@ -81,7 +81,7 @@ void vec_free(vec_t *v) {
     }
 
     // free the vec_t
-    free(v);
+    DEBUG_FREE(v);
 
     // reset to NULL
     v = NULL;
