@@ -1,5 +1,12 @@
 #include "vita/core/core.h"
 
+// generate vita error strings
+#define X(a) STRINGOF(a),
+const char *const vita_error_str[] = {
+    ___GENERATE_VITA_ERRORS(X)
+};
+#undef X
+
 /* ------------- BASE CONTAINER TYPE ------------- */
 
 void *bct_head(const struct BaseContainerType *const bct) {
@@ -59,4 +66,12 @@ void get_current_timestamp(char *timebuf, const size_t len) {
     const time_t t = time(NULL);
     const struct tm *stm = localtime(&t);
     timebuf[strftime(timebuf, timestamp_size, "%Y-%m-%d %H:%M:%S", stm)] = '\0';
+}
+
+const char *const get_vita_error_str(const enum VitaError e) {
+    if(e >= 0 && e < ve_count) {
+        return vita_error_str[e];
+    }
+
+    return NULL;
 }

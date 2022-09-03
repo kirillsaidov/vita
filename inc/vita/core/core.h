@@ -59,22 +59,24 @@ enum RemoveStrategy {
     rs_count    // number of elements
 };
 
-// vita errors
+// define vita errors
+#define ___GENERATE_VITA_ERRORS(apply) \
+    apply(ve_error_is_null)                     /* element wasn't initialized or is NULL */ \
+    apply(ve_error_allocation)                  /* failed to allocate or reallocate memory */ \
+    apply(ve_error_incompatible_datatype)       /* working with different datatypes */ \
+    apply(ve_error_out_of_bounds_access)        /* accessing memory beyond allocated size */ \
+    apply(ve_error_invalid_size)                /* invalid container element size */ \
+    apply(ve_operation_failure)                 /* failed to perform an action */ \
+    apply(ve_operation_success)                 /* all good */ \
+    apply(ve_operation_element_not_found)       /* element was not found */ \
+    apply(ve_count)                             /* number of elements */
+
+// generate vita errors enum
+#define X(a) a,
 enum VitaError {
-    // container errors
-    ve_error_is_null,                   // element wasn't initialized or is NULL
-    ve_error_allocation,                // failed to allocate or reallocate memory
-    ve_error_incompatible_datatype,     // working with different datatypes
-    ve_error_out_of_bounds_access,      // accessing memory beyond allocated size
-    ve_error_invalid_size,              // invalid container size
-
-    // general
-    ve_operation_failure,               // failed to perform an action
-    ve_operation_success,               // all good
-    ve_operation_element_not_found,     // element was not found
-
-    ve_count                            // number of elements
+    ___GENERATE_VITA_ERRORS(X)
 };
+#undef X
 
 // base container type for all primitives
 struct BaseContainerType {
@@ -175,11 +177,21 @@ Returns: `true` upon success
 extern bool gswap(void* a, void* b, const size_t elsize);
 
 /**
-Returns a timestamp "year-month-day hour-minute-seconds"
+Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
 
 Params:
     timebuf = to store timestamp data with len 21 chars
 */
 extern void get_current_timestamp(char *timebuf, const size_t len);
+
+/**
+Returns a vita error string from vita error code
+
+Params:
+    e = vita error code
+
+Returns: c string upon success, `NULL` otherwise
+*/
+extern const char *const get_vita_error_str(const enum VitaError e);
 
 #endif // VITA_CORE_H
