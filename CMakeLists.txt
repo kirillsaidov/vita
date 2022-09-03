@@ -8,6 +8,7 @@ project(vita
 
 # setting default build type
 set(DEFAULT_BUILD_TYPE "Debug")
+set(CMAKE_C_FLAGS "-Werror -Wall")
 # set(CMAKE_C_FLAGS "-Weverything")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 

@@ -3,7 +3,7 @@
 // static functions for internal usage
 static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args);
 
-const str_t str_make_on_stack(const char *const z) {
+str_t str_make_on_stack(const char *const z) {
     str_t s = {
         .ptr = (void*)z,
         .len = strlen(z),
@@ -286,7 +286,7 @@ enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
     }
 
     // copy z to str_t
-    memcpy((s->ptr + s->len * s->elsize), z, (n * s->elsize));
+    memcpy((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
 
     // set new length
     s->len += n;
@@ -318,10 +318,10 @@ enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
     }
 
     // shift the end of string from the specified index `at` to `at + zLen` in str
-    memmove((s->ptr + (at + zLen) * s->elsize), (s->ptr + at * s->elsize), ((s->len - at) * s->elsize));
+    memmove((char*)(s->ptr) + (at + zLen) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
 
     // copy the str contents to str from the specified index
-    memcpy((s->ptr + at * s->elsize), z, (zLen * s->elsize));
+    memcpy((char*)(s->ptr) + at * s->elsize, z, zLen * s->elsize);
 
     // set new length
     s->len += zLen;
@@ -350,7 +350,7 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     }
 
     // shift the characters in string from index `from + n` to `from` in strbuf
-    memmove((s->ptr + from * s->elsize), (s->ptr + (from + n) * s->elsize), ((s->len - (from + n)) * s->elsize));
+    memmove((char*)(s->ptr) + from * s->elsize, (char*)(s->ptr) + (from + n) * s->elsize, (s->len - (from + n)) * s->elsize);
 
     // set new length
     s->len -= n;
@@ -371,13 +371,13 @@ enum VitaError str_remove_first(str_t *const s, const char *z) {
     }
 
     // find a substring in strbuf; if substring wasn't found, return
-    void* sub = strstr(s->ptr, z);
+    char* sub = strstr(s->ptr, z);
     if(sub == NULL) {
         return ve_operation_element_not_found;
     }
 
     // find how many characters to copy from the end
-    const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - (sub + zLen * s->elsize));
+    const size_t diff = (size_t)(((char*)(s->ptr) + s->len * s->elsize) - (sub + zLen * s->elsize));
 
     // shift the characters to the left of the string by the substring length
     memmove(sub, (sub + zLen * s->elsize), diff * s->elsize);
@@ -413,7 +413,7 @@ enum VitaError str_remove_last(str_t *s, const char *const z) {
     }
 
     // find how many characters to shrink the string
-    const size_t diff = (size_t)((s->ptr + s->len * s->elsize) - ((void*)lastInstance));
+    const size_t diff = (size_t)(((char*)(s->ptr) + s->len * s->elsize) - lastInstance);
 
     // set z to zero where it begins
     lastInstance[0]= '\0';
@@ -514,7 +514,7 @@ enum VitaError str_strip(str_t *const s) {
     }
 
     // move string to the begining
-    memmove(s->ptr, s->ptr + offset, *len);
+    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';
@@ -551,7 +551,7 @@ enum VitaError str_strip_punct(str_t *const s) {
     }
 
     // move string to the begining
-    memmove(s->ptr, s->ptr + offset, *len);
+    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';
@@ -614,7 +614,7 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     }
 
     // move string to the begining
-    memmove(s->ptr, s->ptr + offset, *len);
+    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';
@@ -686,7 +686,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
     const char *current = head;
     while(1) {
         // find sep
-        const char *current = strstr(head, sep);
+        current = strstr(head, sep);
 
         // count copy length
         size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
@@ -859,7 +859,13 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
     va_list args2; va_copy(args2, args); 
     {
         // check if new memory needs to be allocated
-        const int32_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        if(len < 0) {
+            DEBUG_ASSERT(0, "Encoding error occured!");
+            return NULL;
+        }
+
+        // check for space
         if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
             DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
             return s;

@@ -26,10 +26,12 @@
 #include <stdarg.h>
 #include <time.h>
 
-#if defined(_WIN32) || defined(_WIN64)
-    #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
-#else
-    #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#ifndef __FILENAME__
+    #if defined(_WIN32) || defined(_WIN64)
+        #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+    #else
+        #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+    #endif
 #endif
 
 // constants
@@ -60,7 +62,7 @@ enum RemoveStrategy {
 };
 
 // define vita errors
-#define ___GENERATE_VITA_ERRORS(apply) \
+#define i_GENERATE_VITA_ERRORS(apply) \
     apply(ve_error_is_null)                     /* element wasn't initialized or is NULL */ \
     apply(ve_error_allocation)                  /* failed to allocate or reallocate memory */ \
     apply(ve_error_incompatible_datatype)       /* working with different datatypes */ \
@@ -74,7 +76,7 @@ enum RemoveStrategy {
 // generate vita errors enum
 #define X(a) a,
 enum VitaError {
-    ___GENERATE_VITA_ERRORS(X)
+    i_GENERATE_VITA_ERRORS(X)
 };
 #undef X
 
@@ -192,6 +194,6 @@ Params:
 
 Returns: c string upon success, `NULL` otherwise
 */
-extern const char *const get_vita_error_str(const enum VitaError e);
+extern const char *get_vita_error_str(const enum VitaError e);
 
 #endif // VITA_CORE_H

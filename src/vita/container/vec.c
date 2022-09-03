@@ -71,7 +71,7 @@ void vec_dtor(vec_t *const v) {
     free(v->ptr);
 
     // default-init
-    *v = (vec_t) {0};
+    *v = (vec_t) {};
 }
 
 void vec_free(vec_t *v) {
@@ -540,7 +540,7 @@ int64_t vec_contains(const vec_t *const v, const void *const val) {
     }
 
     size_t i = 0;
-    for (void *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
+    for (char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
         if(memcmp(iter, val, v->elsize) == 0) {
             return i;
         }
@@ -557,7 +557,7 @@ void vec_apply(const vec_t *const v, void (*func)(void*, size_t)) {
     }
 
     size_t i = 0;
-    for(void *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
+    for(char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
         func(iter, i);
     }
 }

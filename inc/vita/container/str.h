@@ -58,9 +58,9 @@ Creates a static string with length
 Params:
     z = raw C string
 
-Returns: const str_t
+Returns: str_t
 */
-const str_t str_make_on_stack(const char *const z);
+str_t str_make_on_stack(const char *const z);
 
 /**
 Creates a new dynamic string from a raw C string (allocates additional memory for '\0')

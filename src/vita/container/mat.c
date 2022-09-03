@@ -74,7 +74,7 @@ void mat_dtor(mat_t *const m) {
     DEBUG_FREE(m->ptr);
 
     // default-init
-    *m = (mat_t) {0};
+    *m = (mat_t) {};
 }
 
 void mat_free(mat_t *m) {
@@ -214,7 +214,7 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     }
 
     // set the value
-    memcpy(m->ptr + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
+    memcpy((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
     return ve_operation_success;
 }
@@ -266,7 +266,7 @@ void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
         return NULL;
     }
 
-    return (m->ptr + (atRow * m->cols + atCol) * m->elsize);
+    return ((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize);
 }
 
 int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol) {

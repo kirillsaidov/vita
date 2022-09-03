@@ -150,7 +150,7 @@ Params:
 
 Returns: enum VitaError
 */
-extern enum VitaError plist_set(plist_t *const p, const void *ptr, const size_t at);
+extern enum VitaError plist_set(plist_t *const p, const void *const ptr, const size_t at);
 
 /**
 Returns a pointer at an index
@@ -172,7 +172,7 @@ Params:
 
 Returns: enum VitaError
 */
-extern enum VitaError plist_push(plist_t *const p, const void *ptr);
+extern enum VitaError plist_push(plist_t *const p, const void *const ptr);
 
 /**
 Pop the last value from the end

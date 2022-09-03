@@ -44,7 +44,7 @@ void plist_dtor(plist_t *p) {
     DEBUG_FREE(p->ptr2);
 
     // default-init
-    *p = (plist_t) {0};
+    *p = (plist_t) {};
 }
 
 void plist_free(plist_t *p) {
@@ -177,7 +177,7 @@ enum VitaError plist_clear(plist_t *const p) {
     return ve_operation_success;
 }
 
-enum VitaError plist_set(plist_t *const p, const void *ptr, const size_t at) {
+enum VitaError plist_set(plist_t *const p, const void *const ptr, const size_t at) {
     if(p == NULL || ptr == NULL) {
         DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");
         DEBUG_ASSERT(ptr != NULL, "ptr value supplied is NULL!");

@@ -73,7 +73,7 @@ Get current working directory
 
 Returns: `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *path_getcwd();
+extern str_t *path_getcwd(void);
 
 /**
 Checks if path exists

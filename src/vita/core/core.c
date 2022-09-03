@@ -2,8 +2,8 @@
 
 // generate vita error strings
 #define X(a) STRINGOF(a),
-const char *const vita_error_str[] = {
-    ___GENERATE_VITA_ERRORS(X)
+static const char *const vita_error_str[] = {
+    i_GENERATE_VITA_ERRORS(X)
 };
 #undef X
 
@@ -68,7 +68,7 @@ void get_current_timestamp(char *timebuf, const size_t len) {
     timebuf[strftime(timebuf, timestamp_size, "%Y-%m-%d %H:%M:%S", stm)] = '\0';
 }
 
-const char *const get_vita_error_str(const enum VitaError e) {
+const char *get_vita_error_str(const enum VitaError e) {
     if(e >= 0 && e < ve_count) {
         return vita_error_str[e];
     }

@@ -19,7 +19,6 @@ struct DebugMemoryHandler {
 // private functions
 static debug_mh_t *gi_mh = NULL;
 static size_t debug_mh_handler_length(const debug_mh_t *const mh);
-static size_t debug_mh_handler_capacity(const debug_mh_t *const mh);
 static size_t debug_mh_handler_has_space(const debug_mh_t *const mh);
 static int64_t debug_mh_handler_find_element(const debug_mh_t *const mh, const void *const ptr);
 static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t bytes);
@@ -284,11 +283,6 @@ static size_t debug_mh_handler_length(const debug_mh_t *const mh) {
     return debug_mh_handler_is_init(mh) ? mh->cache_len : 0;
 }
 
-static size_t debug_mh_handler_capacity(const debug_mh_t *const mh) {
-    DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
-    return debug_mh_handler_is_init(mh) ? mh->cache_capacity : 0;
-}
-
 static size_t debug_mh_handler_has_space(const debug_mh_t *const mh)  {
     DEBUG_ASSERT(debug_mh_handler_is_init(mh), "Memory handler was not initialized!");
     return debug_mh_handler_is_init(mh) ? (mh->cache_capacity - mh->cache_len) : 0;
@@ -416,7 +410,7 @@ void debug_mh_print_stats(const debug_mh_t *const mh) {
     }
 
     // get stats
-    char s_stats[256] = {};
+    char s_stats[256] = {0};
     debug_mh_get_stats_str(mh, s_stats, sizeof(s_stats)/sizeof(s_stats[0]));
 
     // print to stderr
