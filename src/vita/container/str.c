@@ -242,7 +242,7 @@ enum VitaError str_set_n(str_t *const s, const char *z, const size_t n) {
     }
 
     // copy z data to str_t
-    memcpy(s->ptr, z, (n * s->elsize));
+    memmove(s->ptr, z, (n * s->elsize));
 
     // add the '\0' terminator
     ((char*)s->ptr)[n] = '\0';
@@ -286,7 +286,7 @@ enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
     }
 
     // copy z to str_t
-    memcpy((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
+    memmove((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
 
     // set new length
     s->len += n;
@@ -321,7 +321,7 @@ enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
     memmove((char*)(s->ptr) + (at + zLen) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
 
     // copy the str contents to str from the specified index
-    memcpy((char*)(s->ptr) + at * s->elsize, z, zLen * s->elsize);
+    memmove((char*)(s->ptr) + at * s->elsize, z, zLen * s->elsize);
 
     // set new length
     s->len += zLen;
@@ -742,13 +742,14 @@ str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
         DEBUG_ASSERT(spop != NULL, "Failed to allocate str_t instance!");
         return sr;
     }
+    str_clear(spop);
 
     // if not enough space, reserve more
     if(str_len(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_len(spop) + 1);
+        str_reserve(spop, copyLen - str_len(spop));
     }
 
-    // copy the string before the separator
+    // // copy the string before the separator
     str_set_n(spop, s->ptr, copyLen);
 
     // pop the part of the string with the separator

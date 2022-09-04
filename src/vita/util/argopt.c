@@ -62,7 +62,7 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         // if it turned out to be an unrecognized option, return
         if(unrecognized_option != NULL) {
             fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
-            exit(EXIT_SUCCESS);
+            break;
         }
     }
 
