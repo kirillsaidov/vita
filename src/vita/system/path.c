@@ -64,7 +64,7 @@ str_t *path_build_n(str_t *const s, const plist_t *const p) {
 }
 
 str_t *path_getcwd(void) {
-    return str_take_ownership(getcwd(0, 0));
+    return str_take_ownership(getcwd(NULL, 0));
 }
 
 bool path_exists(const char *const z) {

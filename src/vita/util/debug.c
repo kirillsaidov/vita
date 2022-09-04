@@ -229,11 +229,11 @@ void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, cons
 
         // print info
         DEBUG_PRINT("%s:%s:%d: %zu bytes freed (left: %zu)\n", file, func, line, bytes, debug_mh_get_bytes_currently_alloced(mh));
-
-        // free the data
-        free(ptr);
-        ptr = NULL;
     }
+
+    // free the data
+    free(ptr);
+    ptr = NULL;
 }
 
 void debug_mh_add(debug_mh_t *const mh, const void *const ptr, const size_t bytes) {
