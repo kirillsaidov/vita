@@ -41,6 +41,7 @@
     - str_apply
     - str_is_numeric
     - str_capitalize
+    - str_index_of
 */
 
 #include <ctype.h>
@@ -466,5 +467,16 @@ Params:
     s = str_t
 */
 extern void str_capitalize(str_t *const s);
+
+/**
+Returns the first occurance of char in string
+
+Params:
+    s = str_t
+    z = character 
+
+Returns: position of z in str_t upon success, -1 upon failure
+*/
+extern int64_t str_index_of(const str_t *const s, const char z);
 
 #endif // VITA_STR_H

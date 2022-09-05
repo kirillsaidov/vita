@@ -1,14 +1,31 @@
 #include <assert.h>
-
 #include "../../inc/vita/system/path.h"
 
 #define FILES_IN_DIR 14
 
+// helper functions
 void free_str(void *ptr, size_t i);
+
+// test functions
+void test_path(void);
+void test_expand_tilde(void);
 
 int main(void) {
     DEBUG_DEFAULT_INIT;
 
+    // tests
+    test_path();    
+    test_expand_tilde();
+
+    DEBUG_DEFAULT_QUIT;
+    return 0;
+}
+
+void free_str(void *ptr, size_t i) {
+    str_free(ptr);
+}
+
+void test_path(void) {
     plist_t *p = plist_create(3); {
         plist_push(p, "hello");
         plist_push(p, "world");
@@ -103,13 +120,26 @@ int main(void) {
     
     const size_t fs = path_get_file_size("src/test_str.c");
     // assert(fs == 7077);
-
-    DEBUG_DEFAULT_QUIT;
-    return 0;
 }
 
-void free_str(void *ptr, size_t i) {
-    str_free(ptr);
+void test_expand_tilde(void) {
+    const char *z_path_tilde1 = "~/hello";
+    const char *z_path_tilde2 = "./~";
+    str_t *s_path_tilde1 = path_expand_tilde(z_path_tilde1);
+    str_t *s_path_tilde2 = path_expand_tilde(z_path_tilde2);
+    {   
+        #if defined(_WIN32) || defined(_WIN64)
+            assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
+        #elif defined(__linux__)
+            assert(str_equals(cstr(s_path_tilde1), "/home/kirill/hello"));
+        #else
+            assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
+        #endif
+
+        assert(str_equals(cstr(s_path_tilde2), z_path_tilde2));
+    }
+    str_free(s_path_tilde1);
+    str_free(s_path_tilde2);
 }
 
 

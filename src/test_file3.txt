@@ -1,9 +1,0 @@
-hello, world
-this is a new day
-12345 test
-hello, world
-this is a new day
-12345 test
-hello, world
-this is a new day
-12345 test

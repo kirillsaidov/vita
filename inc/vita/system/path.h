@@ -18,6 +18,7 @@
     - path_rmdir_recurse
     - path_remove
     - path_rename
+    - path_expand_tilde
 */
 
 #include "../core/core.h"
@@ -211,5 +212,15 @@ Params:
 Returns: `true` upon success, `false` otherwise
 */
 extern bool path_rename(const char *const z1, const char *const z2);
+
+/**
+Expands tilde `~` to HOMEPATH
+
+Params:
+    z1 = path
+
+Returns: a newly allocated `str_t` path with the expanded tilde `~` upon success, `NULL` otherwise
+*/
+extern str_t *path_expand_tilde(const char *const z);
 
 #endif // VITA_PATH_H

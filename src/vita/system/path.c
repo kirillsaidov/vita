@@ -448,6 +448,41 @@ bool path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
+str_t *path_expand_tilde(const char *const z) {
+    if(z == NULL) {
+        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        return NULL;
+    }
+
+    // find tilde `~`
+    const str_t stmp = str_make_on_stack(z);
+    const int64_t tilde_pos = str_index_of(&stmp, '~');
+    if(stmp.len < 1 || tilde_pos != 0) {
+        return str(z);
+    }
+
+    // define HOME path
+    const char *const z_envhome = 
+    #if defined(_WIN32) || defined(_WIN64)
+        "HOMEPATH";
+    #else
+        "HOME";
+    #endif
+
+    // get HOME path
+    const char *z_homepath = getenv(z_envhome);
+    if(z_homepath == NULL) {
+        DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'%s\' was not found!", z_envhome);
+        return NULL;
+    }
+
+    // expand tilde
+    str_t *s_tilde_expanded = str(z);
+    str_remove(s_tilde_expanded, 0, 1);                  // remove tilde
+    str_insert(s_tilde_expanded, z_homepath, tilde_pos); // insert HOME path inplace of tilde
+
+    return s_tilde_expanded;
+}
 
 
 

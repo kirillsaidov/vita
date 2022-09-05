@@ -849,37 +849,6 @@ void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
     }
 }
 
-static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
-    if(s == NULL || fmt == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
-        return s;
-    }
-
-    // format string
-    va_list args2; va_copy(args2, args); 
-    {
-        // check if new memory needs to be allocated
-        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
-        if(len < 0) {
-            DEBUG_ASSERT(0, "Encoding error occured!");
-            return NULL;
-        }
-
-        // check for space
-        if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
-            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
-            return s;
-        }
-
-        // print data to s
-        vsprintf(s->ptr, fmt, args2);
-    } 
-    va_end(args2);
-
-    return s;
-}
-
 bool str_is_numeric(const char *const z, const size_t max_len) {
     if(z == NULL || !max_len) {
         DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
@@ -912,4 +881,45 @@ void str_capitalize(str_t *const s) {
     }
 }
 
+int64_t str_index_of(const str_t *const s, const char z) {
+    const char *const ztmp = strchr(s->ptr, z);
+    if(ztmp == NULL) {
+        return -1;
+    }
+
+    return (int64_t)(ztmp - (char*)(s->ptr));
+}
+
+// -------------------------- PRIVATE -------------------------- //
+
+static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
+    if(s == NULL || fmt == NULL) {
+        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
+        return s;
+    }
+
+    // format string
+    va_list args2; va_copy(args2, args); 
+    {
+        // check if new memory needs to be allocated
+        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        if(len < 0) {
+            DEBUG_ASSERT(0, "Encoding error occured!");
+            return NULL;
+        }
+
+        // check for space
+        if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
+            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
+            return s;
+        }
+
+        // print data to s
+        vsprintf(s->ptr, fmt, args2);
+    } 
+    va_end(args2);
+
+    return s;
+}
 
