@@ -14,6 +14,7 @@ declare -a tests=(
     "test_argopt" \
 	"test_math" \
 	"test_debug" \
+	"test_version" \
 )
 
 # colored output

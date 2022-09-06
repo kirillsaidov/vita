@@ -2,7 +2,7 @@
 
 #include "../../inc/vita/util/log.h"
 
-int main(void) {
+int32_t main(void) {
     assert(str_equals(log_get_level_string(ll_fatal), "FATAL"));
     assert(str_equals(log_get_level_string(-1), "INFO") && str_equals(log_get_level_string(ll_count), "INFO"));
     

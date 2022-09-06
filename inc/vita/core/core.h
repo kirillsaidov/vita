@@ -34,14 +34,16 @@
     #endif
 #endif
 
-// constants
-#define VITA_VERSION "0.3"
+// useful macros
 #define DEFAULT_INIT_ELEMENTS 10
 #define CONTAINER_GROWTH_RATE 2
 
-// useful macros
-#define STRINGOF(x) #x
-#define AS(type, x) ((type)(x))
+#define i_PCAT_NX(x, y) x ## y        // preprocessor concatenation
+#define i_STR_EXPAND(x) #x            // expands macros to its value
+
+#define PCAT(x, y) i_PCAT_NX(x, y)    // preprocessor concatenation
+#define STRINGOF(x) i_STR_EXPAND(x)   // converts to string
+#define AS(type, x) ((type)(x))       // cast
 
 // types for argopt
 enum DataType {
