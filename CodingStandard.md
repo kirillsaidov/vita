@@ -134,28 +134,25 @@ If its long, split it into multiple lines.
 * for documentation: `/** ... */`
 
 ```C
-/**
-Description
+/** Description
+    @param param1 description
+    @param param2 description
 
-Params:
-    param1 = explanation
-    param2 = explanation
+    @returns result
 
-Returns: result
+    @note
+        additional information about the function,
+        or requirements (if both are needed, seperate
+        them into different sections)
 
-Notes:
-    additional information about the function,
-    or requirements (if both are needed, seperate
-    them into different sections)
+    @bug
+        Found some weird bug #112
 
-Bug:
-    Found some weird bug #112
+    @see
+        Check this out: link
 
-See:
-    Check this out: link
-
-Todo:
-    Fix bug #112
+    @todo
+        Fix bug #112
 */
 float some_func(int param1, int param2) {...}
 ```
