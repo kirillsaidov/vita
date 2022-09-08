@@ -2,7 +2,7 @@
 
 static void argopt_assign_value(argopt_t *const opt, const char *const value);
 
-bool argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
+int8_t argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
     if(argc < 2 && optc < 1 && argv == NULL && optv == NULL) {
         DEBUG_ASSERT(argc >= 2, "argc must be >= 2!");
         DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
@@ -11,27 +11,38 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
         return false;
     }
 
+    // parse status
+    int8_t parse_status = ARGOPT_PARSE_SUCCESS;
+
+    // if help wanted
+    if(argc == 2 && (argv[1][0] == '?' || str_equals(argv[1], "-h") || str_equals(argv[1], "--help"))) {
+        return ARGOPT_PARSE_HELP_WANTED;
+    }
+
     // parse argument options (skipping the binary name)
+    str_t *s_arg_value = strn_empty(DEFAULT_INIT_ELEMENTS);
+    str_t *s_opt_split = strn_empty(DEFAULT_INIT_ELEMENTS);
     const char *unrecognized_option = NULL;
     for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
         unrecognized_option = argv[i];
 
-        // split option=value by '='
-        str_t *s_arg_value = str(argv[i]);
-        str_t *s_opt_split = str_pop_get_first(NULL, s_arg_value, "=");
+        // split 'option=value' by '='
+        str_append(s_arg_value, argv[i]);
+        s_opt_split = str_pop_get_first(s_opt_split, s_arg_value, "=");
 
         // find the corresponding option in optv
         for(size_t j = 0; j < optc; j++) {
             argopt_t *const opt = &optv[j];
 
             /* Check for 2 cases:
-                1. Parsing with "="
-                2. Parsing without "="
+                1. Parsing with "="     | 'option=value'
+                2. Parsing without "="  | 'option value'
             */
 
             // Case 1
-            if(s_opt_split != NULL) { 
+            if(str_len(s_opt_split)) {
+                // check if option is known
                 if(str_equals(cstr(s_opt_split), opt->optionLong) || str_equals(cstr(s_opt_split), opt->optionShort)) {
                     argopt_assign_value(opt, cstr(s_arg_value));
 
@@ -39,13 +50,13 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
                     unrecognized_option = NULL;
                     break;
                 }
-            } else {
-                // Case 2:
+            } else { // Case 2:
+                // check if option is known
                 if(str_equals(cstr(s_arg_value), opt->optionLong) || str_equals(cstr(s_arg_value), opt->optionShort)) {
                     if(i + 1 < argc && argv[i+1][0] != '-') {
                         argopt_assign_value(opt, argv[++i]);
                     } else {
-                        argopt_assign_value(opt, "true");
+                        argopt_assign_value(opt, "1"); // if it's a boolean | '--verbose'
                     }
 
                     // reset to NULL, since it was recognized
@@ -54,19 +65,24 @@ bool argopt_parse(const size_t argc, const char **const argv, const size_t optc,
                 }
             }
         }
-        
-        // free resources
-        str_free(s_arg_value);
-        str_free(s_opt_split);
 
-        // if it turned out to be an unrecognized option, return
+        // if an option wasn't unrecognized, return
         if(unrecognized_option != NULL) {
             fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
+            parse_status = ARGOPT_PARSE_ERROR;
             break;
         }
+
+        // reset to zero
+        str_clear(s_arg_value);
+        str_clear(s_opt_split);
     }
 
-    return true;
+    // free resources
+    str_free(s_arg_value);
+    str_free(s_opt_split);
+
+    return parse_status;
 }
 
 void argopt_print_help(const char *header, const char *footer, const size_t optc, const argopt_t *const optv) {
@@ -100,52 +116,90 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
     }
 }
 
+/* ------------------------ PRIVATE ------------------------ */
+
 static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     if(opt == NULL || value == NULL) {
         return;
     }
 
     // temp value place holders
-    int32_t ivalue = 0;
-    float fvalue = 0.0;
-    bool bvalue = false;
-
-    // handling str_t (we need to check if it has been initialized with default value)
+    char **zvalue = (char**)opt->optionValue;
     str_t **svalue = (str_t**)opt->optionValue;
 
     // save arg value
     switch(opt->optionType) {
+        // int
+        case dt_int8:
+            *(int8_t*)(opt->optionValue) = (int8_t)conv_str2int64(value);
+            break;
+        case dt_int16:
+            *(int16_t*)(opt->optionValue) = (int16_t)conv_str2int64(value);
+            break;
         case dt_int:
-            if(!str_is_numeric(value, 256)) {
-                fprintf(stdout, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
-                exit(EXIT_SUCCESS);
-            }
-
-            ivalue = (int32_t)strtol(value, NULL, 10);
-            *(int32_t*)(opt->optionValue) = ivalue;
+        case dt_int32:
+            *(int32_t*)(opt->optionValue) = (int32_t)conv_str2int64(value);
             break;
+        case dt_long:
+        case dt_int64:
+            *(int64_t*)(opt->optionValue) = conv_str2int64(value);
+            break;
+        
+        // uint
+        case dt_uint8:
+            *(uint8_t*)(opt->optionValue) = (uint8_t)conv_str2uint64(value);
+            break;
+        case dt_uint16:
+            *(uint16_t*)(opt->optionValue) = (uint16_t)conv_str2uint64(value);
+            break;
+        case dt_uint:
+        case dt_uint32:
+            *(uint32_t*)(opt->optionValue) = (uint32_t)conv_str2uint64(value);
+            break;
+        case dt_ulong:
+        case dt_uint64:
+            *(uint64_t*)(opt->optionValue) = conv_str2uint64(value);
+            break;
+        
+        // float
         case dt_float:
-            if(!str_is_numeric(value, 256)) {
-                fprintf(stdout, "Wrong argument type specified! Must be digits only, not \"%s\".\n", value);
-                exit(EXIT_SUCCESS);
-            }
-
-            fvalue = strtof(value, NULL);
-            *(float*)(opt->optionValue) = fvalue;
+            *(float*)(opt->optionValue) = (float)conv_str2double(value);
             break;
+        case dt_double:
+            *(double*)(opt->optionValue) = conv_str2double(value);
+            break;
+        
+        // bool, char, str, cstr
         case dt_bool:
-            bvalue = (str_equals(value, "true") || value[0] == '1' ? true : false);
-            *(bool*)(opt->optionValue) = bvalue;
+            *(bool*)(opt->optionValue) = (value[0] == '1' || str_equals(value, "true") ? true : false);
             break;
         case dt_char:
             *(char*)(opt->optionValue) = value[0];
             break;
         case dt_str:
             if(*svalue == NULL) {
-                *(str_t**)opt->optionValue = str(value);
+                *svalue = str(value);
             } else {
                 str_clear(*svalue);
                 str_append(*svalue, value);
+            }
+            break;
+        case dt_cstr:
+            if(*zvalue == NULL) {
+                *zvalue = strdup(value);
+            } else {
+                // create a temporary str_t variable
+                str_t *stmp = str(*zvalue);
+
+                // clear and append a new value
+                str_clear(stmp);
+                str_append(stmp, value);
+
+                // copy the resulting value
+                *zvalue = strdup(cstr(stmp));
+
+                // free the temporary variable
+                str_free(stmp);
             }
             break;
         default:
