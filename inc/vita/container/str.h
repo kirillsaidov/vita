@@ -53,429 +53,317 @@
 // see core/core.h for definition
 typedef struct BaseContainerType str_t;
 
-/**
-Creates a static string with length
-
-Params:
-    z = raw C string
-
-Returns: str_t
+/** Creates a static string with length
+    @param z raw C string
+    @returns str_t
 */
 str_t str_make_on_stack(const char *const z);
 
-/**
-Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
-
-Params:
-    z = raw C string
-
-Returns: `str_t*` upon success, `NULL` otherwise
+/** Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
+    @param z raw C string
+    @returns `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *str(const char *z);
 
-/**
-Creates a formatted dynamic string (it is initialized to zero before usage)
+/** Creates a formatted dynamic string (it is initialized to zero before usage)
+    @param s str_t instance; if `NULL` is passed, allocates
+    @param fmt formatting
+    @param ... additional arguments
 
-Params:
-    s = str_t instance; if `NULL` is passed, allocates
-    fmt = formatting
-    ... = additional arguments
-
-Returns: `str_t*` upon success, `NULL` otherwise
+    @returns `str_t*` upon success, `NULL` otherwise
 */
 extern str_t *str_fmt(str_t *s, const char *const fmt, ...);
 
-/**
-Creates an empty dynamic string of specified size (allocates additional memory for '\0')
+/** Creates a dynamic string of specified length and fills it with zeros (allocates additional memory for '\0')
+    @param n number of elements
+    @returns `str_t*` upon success, `NULL` otherwise
 
-Params:
-    n = number of elements
-
-Returns: `str_t*` upon success, `NULL` otherwise
+    @note:
+        Its length is n, thus, appending to it, will add a string to the end (after n elements). 
+        It won't start appending from the begining. Use `str_set` for that. 
 */
 extern str_t *strn(const size_t n);
 
-/**
-Duplicates and returns a new dynamic string
+/** Creates an empty dynamic string of specified capacity and fills it with zeros (allocates additional memory for '\0')
+    @param n number of elements
+    @returns `str_t*` upon success, `NULL` otherwise
 
-Params:
-    s = str_t instance
+    @note:
+        Its length is 0, capacity is n. Appending to it will start from the begining. 
+        `str_set` won't work this time, because not enough space (length 0).
+*/
+extern str_t *strn_empty(const size_t n);
 
-Returns: str_t* instance upon success, `NULL` otherwise
+/** Duplicates and returns a new dynamic string
+    @param s str_t instance
+    @returns str_t* instance upon success, `NULL` otherwise
 */
 extern str_t *str_dup(const str_t *const s);
 
-/**
-Takes ownership of an allocated string instead of allocating memory itself
-
-Params:
-    z = a raw C string allocated on heap
-
-Returns: str_t* instance upon success, `NULL` otherwise
+/** Takes ownership of an allocated string instead of allocating memory itself
+    @param z a raw C string allocated on heap
+    @returns str_t* instance upon success, `NULL` otherwise
 */
 extern str_t *str_take_ownership(const char *const z);
 
-/**
-Frees the str instance
-
-Params:
-    s = str_t instance
+/** Frees the str instance
+    @param s str_t instance
 */
 extern void str_free(str_t *s);
 
-/**
-Returns a raw immutable C string
-
-Params:
-    s = str_t string
-
-Returns: raw C string upon success, `NULL` otherwise
+/** Returns a raw immutable C string
+    @param s str_t string
+    @returns raw C string upon success, `NULL` otherwise
 */
 extern const char *cstr(const str_t *const s);
 
-/**
-Returns str_t length
-
-Params:
-    s = str_t instance
-
-Returns: str_t length
+/** Returns str_t length
+    @param s str_t instance
+    @returns str_t length
 */
 extern size_t str_len(const str_t *const s);
 
-/**
-Returns str_t capacity
-
-Params:
-    s = str_t instance
-
-Returns: str_t capacity
+/** Returns str_t capacity
+    @param s str_t instance
+    @returns str_t capacity
 */
 extern size_t str_capacity(const str_t *const s);
 
-/**
-Returns available space before new allocation is required
-
-Params:
-    s = str_t instance
-
-Returns: free space (capacity - length)
+/** Returns available space before new allocation is required
+    @param s str_t instance
+    @returns free space (capacity - length)
 */
 extern size_t str_has_space(const str_t *const s);
 
-/**
-Checks if string is emtpy ("")
-
-Params:
-    s = str_t instance
-
-Returns: `true` if length == 0
+/** Checks if string is emtpy ("")
+    @param s str_t instance
+    @returns `true` if length == 0
 */
 extern bool str_is_empty(const str_t *const s);
 
-/**
-Shrinks str_t capacity to its length
-
-Params:
-    s = str_t instance
-
-Returns: enum VitaError
+/** Shrinks str_t capacity to its length
+    @param s str_t instance
+    @returns enum VitaError
 */
 extern enum VitaError str_shrink(str_t *const s);
 
-/**
-Clears the str_t (sets length to 0)
-
-Params:
-    s = str_t instance
-
-Returns: enum VitaError
+/** Clears the str_t (sets length to 0)
+    @param s str_t instance
+    @returns enum VitaError
 */
 extern enum VitaError str_clear(str_t *const s);
 
-/**
-Reserves memory for str_t
+/** Reserves memory for str_t
+    @param s str_t instance
+    @param n how many elements to reserve
 
-Params:
-    s = str_t instance
-    n = how many elements to reserve
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_reserve(str_t *const s, const size_t n);
 
-/**
-Assigns a new raw C string to str_t
+/** Assigns a new raw C string to str_t
+    @param s str_t instance
+    @param z raw C string
 
-Params:
-    s = str_t instance
-    z = raw C string
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_set(str_t *const s, const char *z);
 
-/**
-Assigns n characters of raw C string to str_t
+/** Assigns n characters of raw C string to str_t
+    @param s str_t instance
+    @param z raw C string
+    @param n number of characters
 
-Params:
-    s = str_t instance
-    z = raw C string
-    n = number of characters
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_set_n(str_t *const s, const char *z, const size_t n);
 
-/**
-Appends a raw C string at the end of str_t
+/** Appends a raw C string at the end of str_t
+    @param s str_t instance
+    @param z raw C string
 
-Params:
-    s = str_t instance
-    z = raw C string
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_append(str_t *const s, const char *z);
 
-/**
-Appends a formatted raw C string at the end of str_t
+/** Appends a formatted raw C string at the end of str_t
+    @param s str_t instance
+    @param fmt format
 
-Params:
-    s = str_t instance
-    fmt = format
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_appendf(str_t *const s, const char *const fmt, ...);
 
-/**
-Appends n characters of raw C string at the end of str_t
+/** Appends n characters of raw C string at the end of str_t
+    @param s str_t instance
+    @param z raw C string
+    @param n number of characters
 
-Params:
-    s = str_t instance
-    z = raw C string
-    n = number of characters
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_append_n(str_t *const s, const char *z, const size_t n);
 
-/**
-Inserts a raw C string into str_t starting at the specified index
+/** Inserts a raw C string into str_t starting at the specified index
+    @param s str_t instance
+    @param z raw C string
+    @param at start at index (including `at`)
 
-Params:
-    s = str_t instance
-    z = raw C string
-    at = start at index (including `at`)
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_insert(str_t *const s, const char *z, const size_t at);
 
-/**
-Removes n chars from str_t, starting from the specified index
+/** Removes n chars from str_t, starting from the specified index
+    @param s str_t instance
+    @param from start from index
+    @param n number of elements to remove after `from`
 
-Params:
-    s = str_t instance
-    from = start from index
-    n = number of elements to remove after `from`
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_remove(str_t *const s, const size_t from, size_t n);
 
-/**
-Removes the first/last encountered substring from str_t
+/** Removes the first encountered substring from str_t
+    @param s str_t instance
+    @param z raw C string
 
-Params:
-    s = str_t instance
-    z = raw C string
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_remove_first(str_t *const s, const char *z);
+
+/** Removes the last encountered substring from str_t
+    @param s str_t instance
+    @param z raw C string
+
+    @returns enum VitaError
+*/
 extern enum VitaError str_remove_last(str_t *s, const char *const z);
-/**
-Removes all instances of encountered substring from str_t
 
-Params:
-    s = str_t instance
-    z = raw C string
+/** Removes all instances of encountered substring from str_t
+    @param s str_t instance
+    @param z raw C string
 
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_remove_all(str_t *const s, const char *z);
 
-/**
-Removes all encountered characters specified by the user from str_t
+/** Removes all encountered characters specified by the user from str_t
+    @param s str_t instance
+    @param c characters to remove one after another: "\\n ," => remove new line, whitespace, comma
 
-Params:
-    s = str_t instance
-    c = characters to remove one after another: "\n ," => remove new line, whitespace, comma
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 extern enum VitaError str_remove_c(str_t *const s, const char *const c);
 
-/**
-Strips leading and tailing whitespace and control symbols
-
-Params:
-    s = str_t instance
-
-Returns: enum VitaError
+/** Strips leading and tailing whitespace and control symbols
+    @param s str_t instance
+    @returns enum VitaError
 */
 extern enum VitaError str_strip(str_t *const s);
 
-/**
-Strips leading and tailing punctuation marks + whitespace and control symbols
-
-Params:
-    s = str_t instance
-
-Returns: enum VitaError
+/** Strips leading and tailing punctuation marks + whitespace and control symbols
+    @param s str_t instance
+    @returns enum VitaError
 */
 enum VitaError str_strip_punct(str_t *const s);
 
-/**
-Strips leading and tailing characters specified by the user
+/** Strips leading and tailing characters specified by the user
+    @param s str_t instance
+    @param c characters to strip one after another: "\n ," => strip new line, whitespace, comma
 
-Params:
-    s = str_t instance
-    c = characters to strip one after another: "\n ," => strip new line, whitespace, comma
-
-Returns: enum VitaError
+    @returns enum VitaError
 */
 enum VitaError str_strip_c(str_t *const s, const char *const c);
 
-/**
-Find a substring
+/** Find a substring
+    @param s str_t instance
+    @param z raw C string
 
-Params:
-    s = str_t instance
-    z = raw C string
-
-Returns: pointer to the begining of a substring in a string
+    @returns pointer to the begining of a substring in a string
 */
 extern const char *str_find(const char *const z, const char *csub);
 
-/**
-Checks if str_t contains a substring
+/** Checks if str_t contains a substring
+    @param s str_t instance
+    @param z raw C string
 
-Params:
-    s = str_t instance
-    z = raw C string
-
-Returns: number of substring instances in str_t
+    @returns number of substring instances in str_t
 */
 extern size_t str_can_find(const str_t *const s, const char *z);
 
-/**
-Splits a string given a separator into substrings
+/** Splits a string given a separator into substrings
+    @param p plist_t instance, if `NULL` allocates
+    @param s str_t instance
+    @param sep seperator string
 
-Params:
-    p = plist_t instance, if `NULL` allocates
-    s = str_t instance
-    sep = seperator string
-
-Returns: plist_t of str_t, `NULL` upon failure
+    @returns plist_t of str_t, `NULL` upon failure
 */
 extern plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep);
 
-/**
-Pops off the first part of the string before the separator
+/** Pops off the first part of the string before the separator
+    @param sr str_t instance where the result will be saved, if NULL is passed, it's allocated
+    @param s str_t instance
+    @param sep seperator string
 
-Params:
-    sr = str_t instance where the result will be saved, if NULL is passed, it's allocated
-    s = str_t instance
-    sep = seperator string
-
-Returns: str_t, `NULL` upon failure
+    @returns str_t, `NULL` upon failure
 */
 extern str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep);
 
-/**
-Pops off the last part of the string after the separator
+/** Pops off the last part of the string after the separator
+    @param sr str_t instance where the result will be saved, if NULL is passed, it's allocated
+    @param s str_t instance
+    @param sep seperator string
 
-Params:
-    sr = str_t instance where the result will be saved, if NULL is passed, it's allocated
-    s = str_t instance
-    sep = seperator string
-
-Returns: str_t, `NULL` upon failure
+    @returns str_t, `NULL` upon failure
 */
 extern str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep);
 
-/**
-Checks if two raw C strings are the same
+/** Checks if two raw C strings are the same
+    @param z1 raw C string
+    @param z2 raw C string
 
-Params:
-    cs1 = raw C string
-    cs2 = raw C string
-
-Returns: `true` if cs1 == cs2
+    @returns `true` if z1 == z2
 */
-extern bool str_equals(const char *const cs1, const char *const cs2);
+extern bool str_equals(const char *const z1, const char *const z2);
 
-/**
-Checks if a raw C string starts with a substring
+/** Checks if a raw C string starts with a substring
+    @param z raw C string
+    @param sub raw C substring
 
-Params:
-    z = raw C string
-    sub = raw C substring
-
-Returns: `true` if z starts with sub
+    @returns `true` if z starts with sub
 */
 extern bool str_starts_with(const char *const z, const char *const sub);
 
-/**
-Checks if a raw C string ends with a substring
+/** Checks if a raw C string ends with a substring
+    @param z raw C string
+    @param sub raw C substring
 
-Params:
-    z = raw C string
-    sub = raw C substring
-
-Returns: `true` if z ends with sub
+    @returns `true` if z ends with sub
 */
 extern bool str_ends_with(const char *const z, const char *const sub);
 
-/**
-Applies a user specified function upon each char
-
-Params:
-    s = str_t
-    func = function to execute upon each element: func(char pointer, for loop index) 
+/** Applies a user specified function upon each char
+    @param s str_t
+    @param func function to execute upon each element: func(char pointer, for loop index) 
 */
 extern void str_apply(const str_t *const s, void (*func)(char*, size_t));
 
-/**
-Checks if the entire string is a number
+/** Checks if the entire string is a number
+    @param z raw c string
+    @param max_len max len to top checking (internally it uses strnlen)
 
-Params:
-    z = raw c string
-    max_len = max len to top checking (internally it uses strnlen)
-
-Return: true upon z being a number
+    @returns true upon z being a number
 */
 extern bool str_is_numeric(const char *const z, const size_t max_len);
 
-/**
-Capitalizes a string
-
-Params:
-    s = str_t
+/** Capitalizes a string
+    @param s str_t
 */
 extern void str_capitalize(str_t *const s);
 
-/**
-Returns the first occurance of char in string
+/** Returns the first occurance of char in string
+    @param s str_t
+    @param z character 
 
-Params:
-    s = str_t
-    z = character 
-
-Returns: position of z in str_t upon success, -1 upon failure
+    @returns position of z in str_t upon success, -1 upon failure
 */
 extern int64_t str_index_of(const str_t *const s, const char z);
 

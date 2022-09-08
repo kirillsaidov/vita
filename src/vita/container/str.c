@@ -86,6 +86,12 @@ str_t *strn(const size_t n) {
     return s;
 }
 
+str_t *strn_empty(const size_t n) {
+    str_t *s = strn(n);
+    str_clear(s);
+    return s;
+}
+
 str_t *str_dup(const str_t *const s) {
     return str(s->ptr);
 }
@@ -132,8 +138,8 @@ void str_free(str_t *s) {
 }
 
 const char *cstr(const str_t *const s) {
-    DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? NULL : (const char*)(s->ptr);
+    // DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+    return (s == NULL) ? "NULL" : (const char*)(s->ptr);
 }
 
 size_t str_len(const str_t *const s) {
@@ -280,7 +286,7 @@ enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
     }
 
     // check if new memory needs to be allocated
-    if(str_has_space(s) <= n && str_reserve(s, (n - str_has_space(s))) != ve_operation_success) {
+    if(str_has_space(s) < n && str_reserve(s, (n - str_has_space(s))) != ve_operation_success) {
         DEBUG_ASSERT(0, "Failed to reserve memory for str_t!");
         return ve_error_allocation;
     }
@@ -312,7 +318,7 @@ enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
 
     // check if new memory needs to be allocated
     const size_t zLen = strlen(z);
-    if(str_has_space(s) <= zLen && str_reserve(s, (zLen - str_has_space(s))) != ve_operation_success) {
+    if(str_has_space(s) < zLen && str_reserve(s, (zLen - str_has_space(s))) != ve_operation_success) {
         DEBUG_ASSERT(0, "Failed to reserve memory for str_t!");
         return ve_error_allocation;
     }
@@ -809,12 +815,12 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
 }
 
 bool str_equals(const char *const z1, const char *const z2) {
-    const size_t cs1Len = strlen(z1);
-    if(cs1Len > strlen(z2)) {
+    const size_t z1Len = strlen(z1);
+    if(z1Len > strlen(z2)) {
         return false;
     }
 
-    return (!strncmp(z1, z2, cs1Len));
+    return (!strncmp(z1, z2, z1Len));
 }
 
 bool str_starts_with(const char *const z, const char *const sub) {
@@ -910,7 +916,7 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
         }
 
         // check for space
-        if(str_has_space(s) <= len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
+        if(str_has_space(s) < len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
             DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
             return s;
         }

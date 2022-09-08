@@ -45,13 +45,31 @@
 #define STRINGOF(x) i_STR_EXPAND(x)   // converts to string
 #define AS(type, x) ((type)(x))       // cast
 
-// types for argopt
+// data types for argopt
 enum DataType {
-    dt_int,     // integer
-    dt_float,   // floating point numbers
-    dt_bool,    // boolean values
-    dt_char,    // chars
-    dt_str,     // str_t type (its not a raw C string!)
+    // system specific
+    dt_int,     // will be treated the same as dt_int32
+    dt_long,    // will be treated the same as dt_int64
+    dt_uint,    // will be treated the same as dt_uint32
+    dt_ulong,   // will be treated the same as dt_uint64
+
+    // fixed size
+    dt_int8,    // int8_t
+    dt_uint8,   // uint8_t
+    dt_int16,   // int16_t
+    dt_uint16,  // uint16_t
+    dt_int32,   // int32_t
+    dt_uint32,  // uint32_t
+    dt_int64,   // int64_t
+    dt_uint64,  // uint64_t
+
+    // floats
+    dt_float,   // float
+    dt_double,  // double
+    dt_bool,    // bool
+    dt_char,    // char
+    dt_str,     // str_t (its not a raw C string!)
+    dt_cstr,    // char*
     dt_unknown, // unknown data type
     dt_count    // number of elements
 };
@@ -106,95 +124,61 @@ struct BaseContainerType {
 
 /* ------------- BASE CONTAINER TYPE ------------- */
 
-/**
-Returns BaseContainerType's ptr head
-
-Params:
-    bct = BaseContainerType ptr instance
-
-Returns: `NULL` upon failure
+/** Returns BaseContainerType's ptr head
+    @param bct BaseContainerType ptr instance
+    @returns `NULL` upon failure
 */
 extern void *bct_head(const struct BaseContainerType *const bct);
 
-/**
-Returns BaseContainerType's length
-
-Params:
-    bct = BaseContainerType ptr
-
-Returns: length
+/** Returns BaseContainerType's length
+    @param bct BaseContainerType ptr
+    @returns length
 */
 extern size_t bct_len(const struct BaseContainerType *const bct);
 
-/**
-Returns BaseContainerType's capacity
-
-Params:
-    bct = BaseContainerType ptr
-
-Returns: capacity
+/** Returns BaseContainerType's capacity
+    @param bct BaseContainerType ptr
+    @returns capacity
 */
 extern size_t bct_capacity(const struct BaseContainerType *const bct);
 
-/**
-Returns BaseContainerType's rows
-
-Params:
-    bct = BaseContainerType ptr
-
-Returns: rows
+/** Returns BaseContainerType's rows
+    @param bct BaseContainerType ptr
+    @returns rows
 */
 extern size_t bct_rows(const struct BaseContainerType *const bct);
 
-/**
-Returns BaseContainerType's cols
-
-Params:
-    bct = BaseContainerType ptr
-
-Returns: cols
+/** Returns BaseContainerType's cols
+    @param bct BaseContainerType ptr
+    @returns cols
 */
 extern size_t bct_cols(const struct BaseContainerType *const bct);
 
-/**
-Returns BaseContainerType's element size
-
-Params:
-    bct = BaseContainerType ptr
-
-Returns: element size
+/** Returns BaseContainerType's element size
+    @param bct BaseContainerType ptr
+    @returns element size
 */
 extern size_t bct_elsize(const struct BaseContainerType *const bct);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
-/**
-Generic swap
+/** Generic swap
+    @param a first value
+    @param b second value
+    @param elsize element size
 
-Params:
-    a = first value
-    b = second value
-    elsize = element size
-
-Returns: `true` upon success
+    @returns `true` upon success
 */
 extern bool gswap(void* a, void* b, const size_t elsize);
 
-/**
-Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
-
-Params:
-    timebuf = to store timestamp data with len 21 chars
+/** Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
+    @param timebuf to store timestamp data with len 21 chars
 */
 extern void get_current_timestamp(char *timebuf, const size_t len);
 
-/**
-Returns a vita error string from vita error code
-
-Params:
-    e = vita error code
-
-Returns: c string upon success, `NULL` otherwise
+/** Returns a vita error string from vita error code
+    @param e vita error code
+    @returns c string upon success, `NULL` otherwise
 */
 extern const char *get_vita_error_str(const enum VitaError e);
 
