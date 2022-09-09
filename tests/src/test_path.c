@@ -26,7 +26,7 @@ void free_str(void *ptr, size_t i) {
 }
 
 void test_path(void) {
-    plist_t *p = plist_create(3); {
+    plist_t *p = plist_create(3);
         plist_push(p, "hello");
         plist_push(p, "world");
         plist_push(p, "folder");
@@ -34,7 +34,7 @@ void test_path(void) {
         str_t *sp = path_build_n(NULL, p); {
             assert(str_equals(cstr(sp), "hello/world/folder"));
         } str_free(sp);
-    } plist_free(p);
+    plist_destroy(p);
 
     assert(path_exists("/home/lala") == false); // must fail
 
@@ -54,7 +54,7 @@ void test_path(void) {
         plist_t *pdir = path_listdir(NULL, "D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests\\src", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
             plist_apply(pdir, free_str);
-        } plist_free(pdir);
+        } plist_destroy(pdir);
 
         str_t *sbasename = str("my\\test\\folder\\text.txt"); {
             assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
@@ -79,7 +79,7 @@ void test_path(void) {
         plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
             plist_apply(pdir, free_str);
-        } plist_free(pdir);
+        } plist_destroy(pdir);
 
         str_t *sbasename = str("my/test/folder/text.txt"); {
             assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
@@ -104,7 +104,7 @@ void test_path(void) {
         plist_t *pdir = path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
             plist_apply(pdir, free_str);
-        } plist_free(pdir);
+        } plist_destroy(pdir);
 
         str_t *sbasename = str("my/test/folder/text.txt"); {
             assert(str_equals(cstr(path_basename(sbasename, cstr(sbasename))), "text.txt"));
