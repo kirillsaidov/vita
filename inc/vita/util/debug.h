@@ -90,236 +90,169 @@ typedef struct DebugMemoryHandler debug_mh_t;
 #define DEBUG_DEFAULT_INIT debug_mh_handler_default_init()
 #define DEBUG_DEFAULT_QUIT debug_mh_handler_default_quit()
 
-/**
-Asserts an expression and exits upon its evaluation to false
-
-Params:
-    expr = expression to test
-    z_expr = string of expr condition
-    file = source file name (__FILENAME__) from where the logger has been called
-    func = function name (__FUNCTION__)
-    line = source file line (__LINE__)
-    fmt = formatting
-    ... = additional arguments
+/** Asserts an expression and exits upon its evaluation to false
+    @param expr expression to test
+    @param z_expr string of expr condition
+    @param file source file name (__FILENAME__) from where the logger has been called
+    @param func function name (__FUNCTION__)
+    @param line source file line (__LINE__)
+    @param fmt formatting
+    @param ... additional arguments
 */
 extern void debug_assert(const bool expr, const char *const z_expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...);
 
-/**
-Debug info print
-
-Params:
-    fmt = formatting
-    ... = additional arguments
+/** Debug info print
+    @param fmt formatting
+    @param ... additional arguments
 */
 extern void debug_printf(const char *const fmt, ...);
 
 /* ------------------- MH HANDLER INIT FUNCTIONS -------------------- */
 
-/**
-Creates a mh handler
-
-Returns: handler pointer, `NULL` upon failure
+/** Creates a mh handler
+    @returns handler pointer, `NULL` upon failure
 */
 extern debug_mh_t *debug_mh_handler_new(void);
 
-/**
-Frees mh handler
-
-Params:
-    mh = memory handler instance
+/** Frees mh handler
+    @param mh memory handler instance
 */
 extern void debug_mh_handler_free(debug_mh_t *mh);
 
-/**
-Checks if mh was initialized
-
-Params:
-    mh = memory handler instance
-
-Returns: true if it was initialized
+/** Checks if mh was initialized
+    @param mh memory handler instance
+    @returns true if it was initialized
 */
 extern bool debug_mh_handler_is_init(const debug_mh_t *const mh);
 
-/**
-Creates the default internal mh handler
+/** Creates the default internal mh handler
 */
 extern bool debug_mh_handler_default_init(void);
 
-/**
-Frees the default internal mh handler
+/** Frees the default internal mh handler
 */
 extern void debug_mh_handler_default_quit(void);
 
-/**
-Returns the default internal mh handler instance
-
-Returns: handler pointer
+/** Returns the default internal mh handler instance
+    @returns handler pointer
 */
 extern debug_mh_t *debug_mh_handler_default_get_handler(void);
 
 /* ---------------- MEMORY MANAGEMENT FUNCTIONS ----------------- */
 
-/**
-Allocates memory like malloc
+/** Allocates memory like malloc
+    @param mh memory handler instance
+    @param bytes memory size in bytes
+    @param file source file name (__FILENAME__) from where the logger has been called
+    @param func function name (__FUNCTION__)
+    @param line source file line (__LINE__)
 
-Params:
-    mh = memory handler instance
-    bytes = memory size in bytes
-    file = source file name (__FILENAME__) from where the logger has been called
-    func = function name (__FUNCTION__)
-    line = source file line (__LINE__)
-
-Returns: pointer to allocated block of memory, `NULL` upon failure
+    @returns pointer to allocated block of memory, `NULL` upon failure
 */
 extern void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const char *const func, const char *const file, const int32_t line);
 
-/**
-Allocates memory like calloc
+/** Allocates memory like calloc
+    @param mh memory handler instance
+    @param bytes memory size in bytes
+    @param file source file name (__FILENAME__) from where the logger has been called
+    @param func function name (__FUNCTION__)
+    @param line source file line (__LINE__)
 
-Params:
-    mh = memory handler instance
-    bytes = memory size in bytes
-    file = source file name (__FILENAME__) from where the logger has been called
-    func = function name (__FUNCTION__)
-    line = source file line (__LINE__)
-
-Returns: pointer to allocated block of memory, `NULL` upon failure
+    @returns pointer to allocated block of memory, `NULL` upon failure
 */
 extern void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line);
 
-/**
-Rellocates memory like realloc
+/** Rellocates memory like realloc
+    @param mh memory handler instance
+    @param ptr pointer to current memory
+    @param bytes memory size in bytes
+    @param file source file name (__FILENAME__) from where the logger has been called
+    @param func function name (__FUNCTION__)
+    @param line source file line (__LINE__)
 
-Params:
-    mh = memory handler instance
-    ptr = pointer to current memory
-    bytes = memory size in bytes
-    file = source file name (__FILENAME__) from where the logger has been called
-    func = function name (__FUNCTION__)
-    line = source file line (__LINE__)
+    @returns pointer to allocated block of memory, `NULL` upon failure
 
-Returns: pointer to allocated block of memory, `NULL` upon failure
-
-Note:
-    It's meant to work with mh instance. 
-    If ptr is not found the mh cache, then nothing happens.
+    @note
+        It's meant to work with mh instance. 
+        If ptr is not found the mh cache, then nothing happens.
 */
 extern void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
 
-/**
-Frees memory like free
+/** Frees memory like free
+    @param mh memory handler instance
+    @param ptr pointer to current memory
+    @param file source file name (__FILENAME__) from where the logger has been called
+    @param func function name (__FUNCTION__)
+    @param line source file line (__LINE__)
 
-Params:
-    mh = memory handler instance
-    ptr = pointer to current memory
-    file = source file name (__FILENAME__) from where the logger has been called
-    func = function name (__FUNCTION__)
-    line = source file line (__LINE__)
-
-Note:
-    It's meant to work with mh instance. 
-    If ptr is not found the mh cache, then nothing happens.
+    @note
+        It's meant to work with mh instance. 
+        If ptr is not found the mh cache, then nothing happens.
 */
 extern void debug_mh_free(debug_mh_t *const mh, void *ptr, const char *const file, const char *const func, const int32_t line);
 
-/**
-Adds allocated memory to memory handler cache
-
-Params:
-    mh = memory handler instance
-    ptr = pointer to current memory
-    bytes = memory size in bytes
+/** Adds allocated memory to memory handler cache
+    @param mh memory handler instance
+    @param ptr pointer to current memory
+    @param bytes memory size in bytes
 */
 extern void debug_mh_add(debug_mh_t *const mh, const void *const ptr, const size_t bytes);
 
-/**
-Removes allocated memory from memory handler cache
-
-Params:
-    mh = memory handler instance
-    ptr = pointer to current memory
+/** Removes allocated memory from memory handler cache
+    @param mh memory handler instance
+    @param ptr pointer to current memory
 */
 extern size_t debug_mh_remove(debug_mh_t *const mh, const void *const ptr);
 
 /* ---------------------- STATS FUNCTIONS ---------------------- */
 
-/**
-Returns number of allocations 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of allocations
+/** Returns number of allocations 
+    @param mh memory handler instance
+    @returns number of allocations
 */
 extern size_t debug_mh_get_nallocs(const debug_mh_t *const mh);
 
-/**
-Returns number of reallocations 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of reallocations
+/** Returns number of reallocations 
+    @param mh memory handler instance
+    @returns number of reallocations
 */
 extern size_t debug_mh_get_nreallocs(const debug_mh_t *const mh);
 
-/**
-Returns number of frees 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of frees
+/** Returns number of frees 
+    @param mh memory handler instance
+    @returns number of frees
 */
 extern size_t debug_mh_get_nfrees(const debug_mh_t *const mh);
 
-/**
-Returns number of bytes totally allocated throughout the program 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of bytes
+/** Returns number of bytes totally allocated throughout the program 
+    @param mh memory handler instance
+    @returns number of bytes
 */
 extern size_t debug_mh_get_bytes_totally_alloced(const debug_mh_t *const mh);
 
-/**
-Returns number of bytes currently allocated 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of bytes
+/** Returns number of bytes currently allocated 
+    @param mh memory handler instance
+    @returns number of bytes
 */
 extern size_t debug_mh_get_bytes_currently_alloced(const debug_mh_t *const mh);
 
-/**
-Returns number of bytes freed throughout the program 
-
-Params:
-    mh = memory handler instance
-
-Returns: number of bytes
+/** Returns number of bytes freed throughout the program 
+    @param mh memory handler instance
+    @returns number of bytes
 */
 extern size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh);
 
-/**
-Returns a formatted string with stats
+/** Returns a formatted string with stats
+    @param mh memory handler instance
+    @param buffer buffer to store formatted stats; if `NULL` is specified, allocates
+    @param buf_len buffer length (must be >= 256)
 
-Params:
-    mh = memory handler instance
-    buffer = buffer to store formatted stats; if `NULL` is specified, allocates
-    buf_len = buffer length (must be >= 256)
-
-Returns: C string
+    @returns C string char*
 */
 extern char *debug_mh_get_stats_str(const debug_mh_t *const mh, char *buffer, const size_t buff_len);
 
-/**
-Prints a formatted string with stats
-
-Params:
-    mh = memory handler instance
+/** Prints a formatted string with stats
+    @param mh memory handler instance
 */
 extern void debug_mh_print_stats(const debug_mh_t *const mh);
 
