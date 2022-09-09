@@ -2,7 +2,10 @@
 #define VITA_COMPARISON_H
 
 /** VITA_COMPARISON MODULE
-    - //
+ * Macros:
+    - MAX
+    - MIN
+    - CLAMP
 */
 
 #include <stdint.h>

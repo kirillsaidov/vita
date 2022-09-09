@@ -18,6 +18,9 @@ typedef struct {
     const char *str;
 } version_t;
 
+/** Query Vita version
+    @returns version_t struct containing major, minor, patch and full version str
+*/
 extern version_t get_vita_version(void);
 
 #endif // VITA_VERSION_H
