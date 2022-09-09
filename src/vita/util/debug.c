@@ -23,7 +23,7 @@ static size_t debug_mh_handler_has_space(const debug_mh_t *const mh);
 static int64_t debug_mh_handler_find_element(const debug_mh_t *const mh, const void *const ptr);
 static size_t debug_mh_handler_realloc(debug_mh_t *const mh, const size_t bytes);
 
-void debug_assert(const bool expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...) {
+void debug_assert(const bool expr, const char *const z_expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...) {
     if(!expr) {
         // get time
         char tbuf[21] = {0};
@@ -33,7 +33,7 @@ void debug_assert(const bool expr, const char *const file, const char *const fun
         va_list args; va_start(args, fmt); 
         {
             // logging to stderr
-            fprintf(stderr, "%s %s %s:%s:%d: ", tbuf, "DEBUG ASSERT", file, func, line);
+            fprintf(stderr, "%s %s [%s] %s:%s:%d: ", tbuf, "DEBUG ASSERTION FAILURE", z_expr, file, func, line);
             vfprintf(stderr, fmt, args);
             fprintf(stderr, "\n");
         }

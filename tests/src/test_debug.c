@@ -5,7 +5,9 @@
 
 int32_t main(void) {
     // prints to stderr
-    // DEBUG_ASSERT(0, "This is a debug assert error message!");
+    // DEBUG_ASSERT(10 > 13, "This is a debug assert error message!"); // must fail
+    // output: 2022-09-09 21:13:32 DEBUG ASSERTION FAILURE (value > 13) test_debug.c:main:9: This is a debug assert error message!
+
 
     DEBUG_DEFAULT_INIT;
 

@@ -48,8 +48,8 @@ typedef struct DebugMemoryHandler debug_mh_t;
 
 #ifndef NDEBUG
     // error handling
-    #define DEBUG_ASSERT(expr, ...) debug_assert(expr, __FILENAME__, __FUNCTION__, __LINE__, __VA_ARGS__)
-    #define DEBUG_ASSERT2(expr, file, func, line, ...) debug_assert(expr, file, func, line, __VA_ARGS__)
+    #define DEBUG_ASSERT(expr, ...) debug_assert(expr, STRINGOF(expr), __FILENAME__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    #define DEBUG_ASSERT2(expr, file, func, line, ...) debug_assert(expr, STRINGOF(expr), file, func, line, __VA_ARGS__)
     #define DEBUG_PRINT(fmt, ...) debug_printf(fmt, __VA_ARGS__)
 
     // memory management
@@ -95,13 +95,14 @@ Asserts an expression and exits upon its evaluation to false
 
 Params:
     expr = expression to test
+    z_expr = string of expr condition
     file = source file name (__FILENAME__) from where the logger has been called
     func = function name (__FUNCTION__)
     line = source file line (__LINE__)
     fmt = formatting
     ... = additional arguments
 */
-extern void debug_assert(const bool expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...);
+extern void debug_assert(const bool expr, const char *const z_expr, const char *const file, const char *const func, const int32_t line, const char *const fmt, ...);
 
 /**
 Debug info print
