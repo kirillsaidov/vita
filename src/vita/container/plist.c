@@ -116,6 +116,11 @@ size_t plist_has_space(const plist_t *const p) {
     return (p == NULL) ? 0 : (p->capacity - p->len);
 }
 
+bool plist_is_empty(const plist_t *const p) {
+    DEBUG_ASSERT(p != NULL, "plist_t was not initialized!");
+    return (p == NULL) ? false : !(p->len);
+}
+
 enum VitaError plist_reserve(plist_t *const p, const size_t n) {
     if(p == NULL) {
         DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");

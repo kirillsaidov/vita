@@ -161,7 +161,7 @@ size_t vec_has_space(const vec_t *const v) {
 
 bool vec_is_empty(const vec_t *const v) {
     DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-    return !(v->len);
+    return (v == NULL) ? false : !(v->len);
 }
 
 enum VitaError vec_shrink(vec_t *const v) {

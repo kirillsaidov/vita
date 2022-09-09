@@ -11,6 +11,7 @@
     - plist_len
     - plist_capacity
     - plist_has_space
+    - plist_is_empty
     - plist_reserve
     - plist_shrink
     - plist_clear
@@ -82,6 +83,12 @@ extern plist_t *plist_from(const void *const ptr, const size_t n);
 extern size_t plist_len(const plist_t *const p);
 extern size_t plist_capacity(const plist_t *const p);
 extern size_t plist_has_space(const plist_t *const p);
+
+/** Checks if length == 0
+    @param p vec_t instance
+    @returns `true` if length == 0
+*/
+extern bool plist_is_empty(const plist_t *const p);
 
 /** Reserves additional memory of n elements
     @param p plist_t pointer
