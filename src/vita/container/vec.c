@@ -128,12 +128,36 @@ vec_t *vec_from(const void *const ptr, const size_t n, const size_t elsize) {
     return v;
 }
 
+vec_t *vec_fromi8(const int8_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(int8_t));
+}
+
+vec_t *vec_fromu8(const uint8_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(uint8_t));
+}
+
+vec_t *vec_fromi16(const int16_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(int16_t));
+}
+
+vec_t *vec_fromu16(const uint16_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(uint16_t));
+}
+
 vec_t *vec_fromi32(const int32_t *const ptr, const size_t n) {
     return vec_from(ptr, n, sizeof(int32_t));
 }
 
+vec_t *vec_fromu32(const uint32_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(uint32_t));
+}
+
 vec_t *vec_fromi64(const int64_t *const ptr, const size_t n) {
     return vec_from(ptr, n, sizeof(int64_t));
+}
+
+vec_t *vec_fromu64(const uint64_t *const ptr, const size_t n) {
+    return vec_from(ptr, n, sizeof(uint64_t));
 }
 
 vec_t *vec_fromf(const float *const ptr, const size_t n) {
@@ -275,12 +299,52 @@ enum VitaError vec_push(vec_t *const v, const void *const val) {
     return ve_operation_success;
 }
 
-enum VitaError vec_pushi32(vec_t *const v, const int32_t val) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
+enum VitaError vec_pushi8(vec_t *const v, const int8_t val) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
     }
 
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushu8(vec_t *const v, const uint8_t val) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushi16(vec_t *const v, const int16_t val) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushu16(vec_t *const v, const uint16_t val) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushi32(vec_t *const v, const int32_t val) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushu32(vec_t *const v, const uint32_t val) {
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -290,11 +354,15 @@ enum VitaError vec_pushi32(vec_t *const v, const int32_t val) {
 }
 
 enum VitaError vec_pushi64(vec_t *const v, const int64_t val) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
     }
 
+    return vec_push(v, &val);
+}
+
+enum VitaError vec_pushu64(vec_t *const v, const uint64_t val) {
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -304,11 +372,6 @@ enum VitaError vec_pushi64(vec_t *const v, const int64_t val) {
 }
 
 enum VitaError vec_pushf(vec_t *const v, const float val) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
-    }
-
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -318,11 +381,6 @@ enum VitaError vec_pushf(vec_t *const v, const float val) {
 }
 
 enum VitaError vec_pushd(vec_t *const v, const double val) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
-    }
-
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -377,17 +435,52 @@ enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at) {
     return ve_operation_success;
 }
 
+enum VitaError vec_seti8(vec_t *const v, const int8_t val, const size_t at) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_set(v, &val, at);
+}
+
+enum VitaError vec_setu8(vec_t *const v, const uint8_t val, const size_t at) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_set(v, &val, at);
+}
+
+enum VitaError vec_seti16(vec_t *const v, const int16_t val, const size_t at) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_set(v, &val, at);
+}
+
+enum VitaError vec_setu16(vec_t *const v, const uint16_t val, const size_t at) {
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return vec_set(v, &val, at);
+}
+
 enum VitaError vec_seti32(vec_t *const v, const int32_t val, const size_t at) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
     }
 
-    if(!(at < v->len)) {
-        DEBUG_ASSERT(at < v->len, "Out of bounds access at %zu, but length is %zu!", at, v->len);
-        return ve_error_out_of_bounds_access;
-    }
+    return vec_set(v, &val, at);
+}
 
+enum VitaError vec_setu32(vec_t *const v, const uint32_t val, const size_t at) {
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -397,16 +490,15 @@ enum VitaError vec_seti32(vec_t *const v, const int32_t val, const size_t at) {
 }
 
 enum VitaError vec_seti64(vec_t *const v, const int64_t val, const size_t at) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
+    if(v->elsize != sizeof(val)) {
+        DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
     }
 
-    if(!(at < v->len)) {
-        DEBUG_ASSERT(at < v->len, "Out of bounds access at %zu, but length is %zu!", at, v->len);
-        return ve_error_out_of_bounds_access;
-    }
+    return vec_set(v, &val, at);
+}
 
+enum VitaError vec_setu64(vec_t *const v, const uint64_t val, const size_t at) {
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -416,16 +508,6 @@ enum VitaError vec_seti64(vec_t *const v, const int64_t val, const size_t at) {
 }
 
 enum VitaError vec_setf(vec_t *const v, const float val, const size_t at) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
-    }
-
-    if(!(at < v->len)) {
-        DEBUG_ASSERT(at < v->len, "Out of bounds access at %zu, but length is %zu!", at, v->len);
-        return ve_error_out_of_bounds_access;
-    }
-
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -435,16 +517,6 @@ enum VitaError vec_setf(vec_t *const v, const float val, const size_t at) {
 }
 
 enum VitaError vec_setd(vec_t *const v, const double val, const size_t at) {
-    if(v == NULL) {
-        DEBUG_ASSERT(v != NULL, "vec_t instance was not initialized!");
-        return ve_error_is_null;
-    }
-
-    if(!(at < v->len)) {
-        DEBUG_ASSERT(at < v->len, "Out of bounds access at %zu, but length is %zu!", at, v->len);
-        return ve_error_out_of_bounds_access;
-    }
-
     if(v->elsize != sizeof(val)) {
         DEBUG_ASSERT(v->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -463,12 +535,36 @@ void *vec_get(const vec_t *const v, const size_t at) {
     return ((char*)(v->ptr) + at * v->elsize);
 }
 
+int8_t vec_geti8(const vec_t *const v, const size_t at) {
+    return *(int8_t*)(vec_get(v, at));
+}
+
+uint8_t vec_getu8(const vec_t *const v, const size_t at) {
+    return *(uint8_t*)(vec_get(v, at));
+}
+
+int16_t vec_geti16(const vec_t *const v, const size_t at) {
+    return *(int16_t*)(vec_get(v, at));
+}
+
+uint16_t vec_getu16(const vec_t *const v, const size_t at) {
+    return *(uint16_t*)(vec_get(v, at));
+}
+
 int32_t vec_geti32(const vec_t *const v, const size_t at) {
     return *(int32_t*)(vec_get(v, at));
 }
 
+uint32_t vec_getu32(const vec_t *const v, const size_t at) {
+    return *(uint32_t*)(vec_get(v, at));
+}
+
 int64_t vec_geti64(const vec_t *const v, const size_t at) {
     return *(int64_t*)(vec_get(v, at));
+}
+
+uint64_t vec_getu64(const vec_t *const v, const size_t at) {
+    return *(uint64_t*)(vec_get(v, at));
 }
 
 float vec_getf(const vec_t *const v, const size_t at) {

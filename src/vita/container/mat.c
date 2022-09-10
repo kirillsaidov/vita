@@ -128,12 +128,36 @@ mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, con
     return m;
 }
 
+mat_t *mat_fromi8(const int8_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(int8_t));
+}
+
+mat_t *mat_fromu8(const uint8_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(uint8_t));
+}
+
+mat_t *mat_fromi16(const int16_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(int16_t));
+}
+
+mat_t *mat_fromu16(const uint16_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(uint16_t));
+}
+
 mat_t *mat_fromi32(const int32_t *const ptr, const size_t rows, const size_t cols) {
     return mat_from(ptr, rows, cols, sizeof(int32_t));
 }
 
+mat_t *mat_fromu32(const uint32_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(uint32_t));
+}
+
 mat_t *mat_fromi64(const int64_t *const ptr, const size_t rows, const size_t cols) {
     return mat_from(ptr, rows, cols, sizeof(int64_t));
+}
+
+mat_t *mat_fromu64(const uint64_t *const ptr, const size_t rows, const size_t cols) {
+    return mat_from(ptr, rows, cols, sizeof(uint64_t));
 }
 
 mat_t *mat_fromf(const float *const ptr, const size_t rows, const size_t cols) {
@@ -219,6 +243,42 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     return ve_operation_success;
 }
 
+enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
+enum VitaError mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
+enum VitaError mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
+enum VitaError mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
 enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
@@ -228,7 +288,25 @@ enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow,
     return mat_set(m, &val, atRow, atCol);
 }
 
+enum VitaError mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
 enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
+    if(m->elsize != sizeof(val)) {
+        DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
+        return ve_error_incompatible_datatype;
+    }
+
+    return mat_set(m, &val, atRow, atCol);
+}
+
+enum VitaError mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -269,12 +347,36 @@ void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
     return ((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize);
 }
 
+int8_t mat_geti8(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(int8_t*)(mat_get(m, atRow, atCol));
+}
+
+uint8_t mat_getu8(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(uint8_t*)(mat_get(m, atRow, atCol));
+}
+
+int16_t mat_geti16(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(int16_t*)(mat_get(m, atRow, atCol));
+}
+
+uint16_t mat_getu16(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(uint16_t*)(mat_get(m, atRow, atCol));
+}
+
 int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol) {
     return *(int32_t*)(mat_get(m, atRow, atCol));
 }
 
+uint32_t mat_getu32(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(uint32_t*)(mat_get(m, atRow, atCol));
+}
+
 int64_t mat_geti64(const mat_t *const m, const size_t atRow, const size_t atCol) {
     return *(int64_t*)(mat_get(m, atRow, atCol));
+}
+
+uint64_t mat_getu64(const mat_t *const m, const size_t atRow, const size_t atCol) {
+    return *(uint64_t*)(mat_get(m, atRow, atCol));
 }
 
 float mat_getf(const mat_t *const m, const size_t atRow, const size_t atCol) {

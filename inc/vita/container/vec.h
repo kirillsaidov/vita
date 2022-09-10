@@ -9,7 +9,7 @@
     - vec_free
     - vec_create
     - vec_destroy
-    - vec_from (i32, i64, d, f versions as well)
+    - vec_from ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
     - vec_len
     - vec_capacity
     - vec_has_space
@@ -18,11 +18,11 @@
     - vec_clear
     - vec_reserve
     - vec_resize
-    - vec_push (i32, i64, d, f versions as well)
-    - vec_pop (i32, i64, d, f versions as well)
+    - vec_push ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
+    - vec_pop
     - vec_pop_get
-    - vec_set (i32, i64, d, f versions as well)
-    - vec_get (i32, i64, d, f versions as well)
+    - vec_set ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
+    - vec_get ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
     - vec_insert
     - vec_remove
     - vec_contains
@@ -89,8 +89,14 @@ extern void vec_destroy(vec_t *v);
         If ptr == NULL, returns an empty `vec_t` instance
 */
 extern vec_t *vec_from(const void *const ptr, const size_t n, const size_t elsize);
+extern vec_t *vec_fromi8(const int8_t *const ptr, const size_t n);
+extern vec_t *vec_fromu8(const uint8_t *const ptr, const size_t n);
+extern vec_t *vec_fromi16(const int16_t *const ptr, const size_t n);
+extern vec_t *vec_fromu16(const uint16_t *const ptr, const size_t n);
 extern vec_t *vec_fromi32(const int32_t *const ptr, const size_t n);
+extern vec_t *vec_fromu32(const uint32_t *const ptr, const size_t n);
 extern vec_t *vec_fromi64(const int64_t *const ptr, const size_t n);
+extern vec_t *vec_fromu64(const uint64_t *const ptr, const size_t n);
 extern vec_t *vec_fromf(const float *const ptr, const size_t n);
 extern vec_t *vec_fromd(const double *const ptr, const size_t n);
 
@@ -153,8 +159,14 @@ extern enum VitaError vec_resize(vec_t *const v, const size_t n);
     @returns enum VitaError code
 */
 extern enum VitaError vec_push(vec_t *const v, const void *const val);
+extern enum VitaError vec_pushi8(vec_t *const v, const int8_t val);
+extern enum VitaError vec_pushu8(vec_t *const v, const uint8_t val);
+extern enum VitaError vec_pushi16(vec_t *const v, const int16_t val);
+extern enum VitaError vec_pushu16(vec_t *const v, const uint16_t val);
 extern enum VitaError vec_pushi32(vec_t *const v, const int32_t val);
+extern enum VitaError vec_pushu32(vec_t *const v, const uint32_t val);
 extern enum VitaError vec_pushi64(vec_t *const v, const int64_t val);
+extern enum VitaError vec_pushu64(vec_t *const v, const uint64_t val);
 extern enum VitaError vec_pushf(vec_t *const v, const float val);
 extern enum VitaError vec_pushd(vec_t *const v, const double val);
 
@@ -178,8 +190,14 @@ extern void *vec_pop_get(vec_t *const v);
     @returns enum VitaError code
 */
 extern enum VitaError vec_set(vec_t *const v, const void *const val, const size_t at);
+extern enum VitaError vec_seti8(vec_t *const v, const int8_t val, const size_t at);
+extern enum VitaError vec_setu8(vec_t *const v, const uint8_t val, const size_t at);
+extern enum VitaError vec_seti16(vec_t *const v, const int16_t val, const size_t at);
+extern enum VitaError vec_setu16(vec_t *const v, const uint16_t val, const size_t at);
 extern enum VitaError vec_seti32(vec_t *const v, const int32_t val, const size_t at);
+extern enum VitaError vec_setu32(vec_t *const v, const uint32_t val, const size_t at);
 extern enum VitaError vec_seti64(vec_t *const v, const int64_t val, const size_t at);
+extern enum VitaError vec_setu64(vec_t *const v, const uint64_t val, const size_t at);
 extern enum VitaError vec_setf(vec_t *const v, const float val, const size_t at);
 extern enum VitaError vec_setd(vec_t *const v, const double val, const size_t at);
 
@@ -190,8 +208,14 @@ extern enum VitaError vec_setd(vec_t *const v, const double val, const size_t at
     @returns value (depends on data type)
 */
 extern void* vec_get(const vec_t *const v, const size_t at);
+extern int8_t vec_geti8(const vec_t *const v, const size_t at);
+extern uint8_t vec_getu8(const vec_t *const v, const size_t at);
+extern int16_t vec_geti16(const vec_t *const v, const size_t at);
+extern uint16_t vec_getu16(const vec_t *const v, const size_t at);
 extern int32_t vec_geti32(const vec_t *const v, const size_t at);
+extern uint32_t vec_getu32(const vec_t *const v, const size_t at);
 extern int64_t vec_geti64(const vec_t *const v, const size_t at);
+extern uint64_t vec_getu64(const vec_t *const v, const size_t at);
 extern float vec_getf(const vec_t *const v, const size_t at);
 extern double vec_getd(const vec_t *const v, const size_t at);
 

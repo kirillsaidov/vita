@@ -94,8 +94,14 @@ extern void mat_destroy(mat_t *m);
         If ptr == NULL, returns an empty `mat_t` instance
 */
 extern mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, const size_t elsize);
+extern mat_t *mat_fromi8(const int8_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromu8(const uint8_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromi16(const int16_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromu16(const uint16_t *const ptr, const size_t rows, const size_t cols);
 extern mat_t *mat_fromi32(const int32_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromu32(const uint32_t *const ptr, const size_t rows, const size_t cols);
 extern mat_t *mat_fromi64(const int64_t *const ptr, const size_t rows, const size_t cols);
+extern mat_t *mat_fromu64(const uint64_t *const ptr, const size_t rows, const size_t cols);
 extern mat_t *mat_fromf(const float *const ptr, const size_t rows, const size_t cols);
 extern mat_t *mat_fromd(const double *const ptr, const size_t rows, const size_t cols);
 
@@ -131,8 +137,14 @@ extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t
     @returns`true` upon success
 */
 extern enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol);
+extern enum VitaError mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
 
@@ -144,8 +156,14 @@ extern enum VitaError mat_setd(mat_t *const m, const double val, const size_t at
     @returns value (depends on data type)
 */
 extern void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern int8_t mat_geti8(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern uint8_t mat_getu8(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern int16_t mat_geti16(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern uint16_t mat_getu16(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern int32_t mat_geti32(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern uint32_t mat_getu32(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern int64_t mat_geti64(const mat_t *const m, const size_t atRow, const size_t atCol);
+extern uint64_t mat_getu64(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern float mat_getf(const mat_t *const m, const size_t atRow, const size_t atCol);
 extern double mat_getd(const mat_t *const m, const size_t atRow, const size_t atCol);
 
