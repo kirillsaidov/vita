@@ -1,6 +1,6 @@
 #include "vita/core/conv.h"
 
-int64_t conv_str2int64(const char *const z) {
+int64_t conv_str_to_int64(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Value supplied is NULL!");
         return 0;
@@ -16,7 +16,7 @@ int64_t conv_str2int64(const char *const z) {
     return (int64_t)strtoll(z, NULL, 10);
 }
 
-uint64_t conv_str2uint64(const char *const z) {
+uint64_t conv_str_to_uint64(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Value supplied is NULL!");
         return 0;
@@ -32,7 +32,7 @@ uint64_t conv_str2uint64(const char *const z) {
     return (uint64_t)strtoull(z, NULL, 10);
 }
 
-double conv_str2double(const char *const z) {
+double conv_str_to_double(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Value supplied is NULL!");
         return 0;
