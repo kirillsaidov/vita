@@ -24,9 +24,9 @@ int32_t main(const int32_t argc, const char *argv[]) {
     // create options to parse
     argopt_t optv[] = {
           // long       short     description           argument               type
-        { "--verbose",  "-v", "verbose output",   ARGOPT(app_verbose),        dt_str },
-        { "--max",      "-m", "max grab files",   ARGOPT(app_max_grab_files), dt_str },
-        { "--save",     "-s", "save directory",   ARGOPT(app_savedir),        dt_float },
+        { "--verbose",  "-v", "verbose output",   ARGOPT(app_verbose),        dt_bool },
+        { "--max",      "-m", "max grab files",   ARGOPT(app_max_grab_files), dt_int },
+        { "--save",     "-s", "save directory",   ARGOPT(app_savedir),        dt_cstr },
     };
     const size_t optc = sizeof(optv)/sizeof(argopt_t);
 
