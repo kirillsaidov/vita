@@ -48,7 +48,7 @@
 #include <stdarg.h>
 #include "../core/core.h"
 #include "../util/debug.h"
-#include "plist.h"
+#include "../container/plist.h"
 
 // see core/core.h for definition
 typedef struct BaseContainerType str_t;

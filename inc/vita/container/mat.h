@@ -32,7 +32,7 @@
 
 #include "../core/core.h"
 #include "../util/debug.h"
-#include "vec.h"
+#include "../container/vec.h"
 
 // see core/core.h for definition
 typedef struct BaseContainerType mat_t;
