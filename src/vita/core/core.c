@@ -33,6 +33,15 @@ size_t bct_elsize(const struct BaseContainerType *const bct) {
     return (bct == NULL) ? 0 : bct->elsize;
 }
 
+size_t index_2d_to_1d(const size_t row, const size_t col, const size_t ncols) {
+    return (ncols * row + col);
+}
+
+void index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols) {
+    *row = (size_t)(idx / ncols);
+    *col = (size_t)(idx % ncols);
+}
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 bool gswap(void* a, void* b, const size_t elsize) {

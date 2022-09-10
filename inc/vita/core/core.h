@@ -160,6 +160,22 @@ extern size_t bct_cols(const struct BaseContainerType *const bct);
 */
 extern size_t bct_elsize(const struct BaseContainerType *const bct);
 
+/** Maps a 2d index to 1d index
+    @param row row index
+    @param col col index
+    @param ncols number of columns (horizontal width)
+    @returns size_t 1d index
+*/
+extern size_t index_2d_to_1d(const size_t row, const size_t col, const size_t ncols);
+
+/** Maps a 1d index to 2d index
+    @param row row index to save the value
+    @param col col index to save the value
+    @param idx 1d index to convert to 2d
+    @param ncols number of columns (horizontal width)
+*/
+extern void index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 /** Generic swap

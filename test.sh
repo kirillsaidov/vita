@@ -4,6 +4,7 @@ cd tests;
 
 # declare an array variable
 declare -a tests=(
+	"test_core" \
 	"test_str" \
 	"test_vec" \
 	"test_mat" \
