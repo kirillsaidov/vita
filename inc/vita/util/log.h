@@ -39,44 +39,31 @@ enum LogLevel {
 #define LOG_FATAL(...) log_log(ll_fatal, false, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_ASSERT(expr, ...) log_log(ll_assert, expr, __FILE__, __LINE__, __VA_ARGS__)
 
-/**
-Sets custom log level
-
-Params:
-    log_level = enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
-    filename = file name to log to
+/** Sets custom log level
+    @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
+    @param filename file name to log to
 */
 void log_set_level(enum LogLevel log_level, const char *const filename);
 
-/**
-Sets default log level for all levels
-
-Params:
-    log_level = enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
-    filename = file name to log to
+/** Sets default log level for all levels
+    @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
+    @param filename file name to log to
 */
 void log_set_level_default(const char *const filename);
 
-/**
-Returns log level string
-
-Params:
-    log_level = enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
-
-Returns: const char*
+/** Returns log level string
+    @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
+    @returns const char*
 */
 const char *log_get_level_string(enum LogLevel log_level);
 
-/**
-Custom logger
-
-Params:
-    log_level = enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
-    expr = expression to test
-    file = source file name (__FILE__) from where the logger has been called
-    line = source file line (__LINE__)
-    fmt = formatting
-    ... = additional arguments
+/** Custom logger
+    @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
+    @param expr expression to test
+    @param file source file name (__FILE__) from where the logger has been called
+    @param line source file line (__LINE__)
+    @param fmt formatting
+    @param ... additional arguments
 */
 void log_log(enum LogLevel log_level, const bool expr, const char *const file, const int32_t line, const char *const fmt, ...);
 
