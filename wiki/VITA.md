@@ -1,0 +1,10 @@
+# Welcome to Vita Wiki!
+Vita is a general purpose library for quick prototyping with C. In includes various containers, command line arguments parser, logger, functionality to work with paths and files, and many more. No external dependencies.
+
+## Contents
+1. [Building and using Vita](wiki/page1.md)
+2. [Using Vita containers](wiki/page2.md)
+3. [Working with paths and files](wiki/page3.md)
+4. [Logging](wiki/page4.md)
+5. [Parsing command line arguments](wiki/page5.md)
+6. [Debugging with Vita](wiki/page6.md)
