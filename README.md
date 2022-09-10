@@ -17,10 +17,10 @@ A custom C library for quick prototyping with simple data structures, string man
 #include "vita/vita.h"
 
 int32_t main(const int32_t argc, const char *argv[]) {
-    bool app_verbose = false;
+    char *app_savedir = strdup("./media");
     int32_t app_max_grab_files = 10;
-    const char *app_savedir = strdup("./media");
-
+    bool app_verbose = false;
+    
     // create options to parse
     argopt_t optv[] = {
           // long       short     description           argument               type
