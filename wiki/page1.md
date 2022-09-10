@@ -36,9 +36,9 @@ int32_t main(void) {
 
 Let's build and run our project:
 ```
-gcc main.c -o main -lvita -L.
-./main
-$ Vita version: 0.3.0
+$ gcc main.c -o main -lvita -L.
+$ ./main
+Vita version: 0.3.0
 ```
 
 ## Debug vs Release builds
