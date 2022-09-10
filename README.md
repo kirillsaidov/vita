@@ -66,7 +66,7 @@ $ ./argopt --max 15 -s my/save/dir/ --verbose
         app_verbose : 1
  app_max_grab_files : 15
         app_savedir : my/save/dir/
-$
+
 $ ./argopt -h
 argopt_showcase v0.3.0 -- Testing argopt parser
 -v --verbose verbose output
