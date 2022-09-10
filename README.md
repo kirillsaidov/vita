@@ -16,7 +16,7 @@ A custom C library for quick prototyping with simple data structures, string man
 // argopt_showcase.c
 #include "vita/vita.h"
 
-int32_t main(int argc, const char *argv[]) {
+int32_t main(const int32_t argc, const char *argv[]) {
     bool app_verbose = false;
     int32_t app_max_grab_files = 10;
     const char *app_savedir = strdup("./media");
