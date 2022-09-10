@@ -38,7 +38,7 @@
 typedef struct BaseContainerType mat_t;
 
 /** Allocates memory for mat_t
-    @returns`mat_t*` upon success, `NULL` otherwise
+    @returns `mat_t*` upon success, `NULL` otherwise
 */
 extern mat_t *mat_new(void);
 
@@ -48,7 +48,7 @@ extern mat_t *mat_new(void);
     @param cols number of cols
     @param elsize element size
 
-    @returns`mat_t*` upon success, `NULL` otherwise
+    @returns enum VitaError
 */
 extern enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
 
@@ -73,7 +73,7 @@ extern void mat_free(mat_t *m);
     @param cols number of cols
     @param elsize element size
 
-    @returns`mat_t*` upon success, `NULL` otherwise
+    @returns `mat_t*` upon success, `NULL` otherwise
 */
 extern mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize);
 
@@ -88,7 +88,7 @@ extern void mat_destroy(mat_t *m);
     @param cols number of cols
     @param elsize element size
 
-    @returns`mat_t*` upon success, `NULL` otherwise
+    @returns `mat_t*` upon success, `NULL` otherwise
 
     @note 
         If ptr == NULL, returns an empty `mat_t` instance
@@ -115,7 +115,7 @@ extern size_t mat_size(const mat_t *const m);
 
 /** Clears the mat_t (memset to 0)
     @param m mat_t instance
-    @returns`true` upon success
+    @returns `true` upon success
 */
 extern enum VitaError mat_clear(mat_t *const m);
 
@@ -124,7 +124,7 @@ extern enum VitaError mat_clear(mat_t *const m);
     @param rows number of rows
     @param cols number of cols
 
-    @returns`true` upon success
+    @returns `true` upon success
 */
 extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols);
 
@@ -134,7 +134,7 @@ extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t
     @param atRow row index
     @param atCol col index
 
-    @returns`true` upon success
+    @returns `true` upon success
 */
 extern enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
 extern enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol);

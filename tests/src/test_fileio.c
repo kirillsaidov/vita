@@ -27,7 +27,7 @@ void test_filewrite(void) {
         file_appendln("src\\test_file3.txt", cstr(&sbuf));
         file_append("src\\test_file3.txt", cstr(&sbuf));
 
-        str_t sbuf_check = str_make_on_stack("hello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test");
+        str_t sbuf_check = str_make_on_stack("hello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test");
         str_t *ss = file_read("src\\test_file3.txt"); {
             assert(str_equals(cstr(ss), cstr(&sbuf_check)));
         } str_free(ss);

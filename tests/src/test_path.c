@@ -126,17 +126,17 @@ void test_expand_tilde(void) {
     const char *z_path_tilde1 = "~/hello";
     const char *z_path_tilde2 = "./~";
     str_t *s_path_tilde1 = path_expand_tilde(z_path_tilde1);
-    str_t *s_path_tilde2 = path_expand_tilde(z_path_tilde2);
+    str_t *s_path_tilde2 = path_expand_tilde(z_path_tilde2);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
-            assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
+            assert(str_equals(cstr(s_path_tilde1), "C:\\Users\\Kirill Saidov/hello"));
         #elif defined(__linux__)
             assert(str_equals(cstr(s_path_tilde1), "/home/kirill/hello"));
         #else
             assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
         #endif
 
-        assert(str_equals(cstr(s_path_tilde2), z_path_tilde2));
+        assert(str_equals(cstr(s_path_tilde2), z_path_tilde2)); // since '~' does not start from [0] position, don't do anything
     }
     str_free(s_path_tilde1);
     str_free(s_path_tilde2);

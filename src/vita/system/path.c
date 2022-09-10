@@ -455,33 +455,24 @@ str_t *path_expand_tilde(const char *const z) {
     }
 
     // find tilde `~`
-    const str_t stmp = str_make_on_stack(z);
-    const int64_t tilde_pos = str_index_of(&stmp, '~');
-    if(stmp.len < 1 || tilde_pos != 0) {
-        return str(z);
+    str_t *s_tilde = str(z);
+    const int64_t tilde_pos = str_index_of(s_tilde, '~');
+    if(str_len(s_tilde) < 1 || tilde_pos != 0) {
+        return s_tilde;
     }
-
-    // define HOME path
-    const char *const z_envhome = 
-    #if defined(_WIN32) || defined(_WIN64)
-        "HOMEPATH";
-    #else
-        "HOME";
-    #endif
-
+    
     // get HOME path
-    const char *z_homepath = getenv(z_envhome);
+    const char *const z_homepath = getenv("HOME");
     if(z_homepath == NULL) {
-        DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'%s\' was not found!", z_envhome);
-        return NULL;
+        DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'HOME\' was not found, returning as-is!");
+        return s_tilde;
     }
 
     // expand tilde
-    str_t *s_tilde_expanded = str(z);
-    str_remove(s_tilde_expanded, 0, 1);                  // remove tilde
-    str_insert(s_tilde_expanded, z_homepath, tilde_pos); // insert HOME path inplace of tilde
+    str_remove(s_tilde, 0, 1);                  // remove tilde
+    str_insert(s_tilde, z_homepath, tilde_pos); // insert HOME path inplace of tilde
 
-    return s_tilde_expanded;
+    return s_tilde;
 }
 
 

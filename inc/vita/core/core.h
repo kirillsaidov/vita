@@ -26,11 +26,16 @@
 #include <stdarg.h>
 #include <time.h>
 
-#ifndef __FILENAME__
+// getting file name
+#if defined(__clang__)
+    #define __SOURCE_FILENAME__ __FILE_NAME__
+#elif defined(__GNUC__) || defined(__GNUG__)
+    #define __SOURCE_FILENAME__ __BASE_FILE__
+#else
     #if defined(_WIN32) || defined(_WIN64)
-        #define __FILENAME__ (strrchr("/" __FILE__, '\\') + 1)
+        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
     #else
-        #define __FILENAME__ (strrchr("/" __FILE__, '/') + 1)
+        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
     #endif
 #endif
 

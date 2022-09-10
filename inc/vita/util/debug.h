@@ -48,15 +48,15 @@ typedef struct DebugMemoryHandler debug_mh_t;
 
 #ifndef NDEBUG
     // error handling
-    #define DEBUG_ASSERT(expr, ...) debug_assert(expr, STRINGOF(expr), __FILENAME__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    #define DEBUG_ASSERT(expr, ...) debug_assert(expr, STRINGOF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
     #define DEBUG_ASSERT2(expr, file, func, line, ...) debug_assert(expr, STRINGOF(expr), file, func, line, __VA_ARGS__)
     #define DEBUG_PRINT(fmt, ...) debug_printf(fmt, __VA_ARGS__)
 
     // memory management
-    #define DEBUG_MALLOC(bytes) debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, __FILENAME__, __FUNCTION__, __LINE__)
-    #define DEBUG_CALLOC(bytes) debug_mh_calloc(debug_mh_handler_default_get_handler(), bytes, __FILENAME__, __FUNCTION__, __LINE__)
-    #define DEBUG_REALLOC(ptr, bytes) debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, __FILENAME__, __FUNCTION__, __LINE__)
-    #define DEBUG_FREE(ptr) debug_mh_free(debug_mh_handler_default_get_handler(), ptr, __FILENAME__, __FUNCTION__, __LINE__)
+    #define DEBUG_MALLOC(bytes) debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+    #define DEBUG_CALLOC(bytes) debug_mh_calloc(debug_mh_handler_default_get_handler(), bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+    #define DEBUG_REALLOC(ptr, bytes) debug_mh_realloc(debug_mh_handler_default_get_handler(), ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+    #define DEBUG_FREE(ptr) debug_mh_free(debug_mh_handler_default_get_handler(), ptr, __SOURCE_FILENAME__, __func__, __LINE__)
 
     // stats
     #define DEBUG_NALLOCS debug_mh_get_nallocs(debug_mh_handler_default_get_handler())
@@ -93,8 +93,8 @@ typedef struct DebugMemoryHandler debug_mh_t;
 /** Asserts an expression and exits upon its evaluation to false
     @param expr expression to test
     @param z_expr string of expr condition
-    @param file source file name (__FILENAME__) from where the logger has been called
-    @param func function name (__FUNCTION__)
+    @param file source file name (__SOURCE_FILENAME__) from where the logger has been called
+    @param func function name (__func__)
     @param line source file line (__LINE__)
     @param fmt formatting
     @param ... additional arguments
@@ -143,8 +143,8 @@ extern debug_mh_t *debug_mh_handler_default_get_handler(void);
 /** Allocates memory like malloc
     @param mh memory handler instance
     @param bytes memory size in bytes
-    @param file source file name (__FILENAME__) from where the logger has been called
-    @param func function name (__FUNCTION__)
+    @param file source file name (__SOURCE_FILENAME__) from where the logger has been called
+    @param func function name (__func__)
     @param line source file line (__LINE__)
 
     @returns pointer to allocated block of memory, `NULL` upon failure
@@ -154,8 +154,8 @@ extern void *debug_mh_malloc(debug_mh_t *const mh, const size_t bytes, const cha
 /** Allocates memory like calloc
     @param mh memory handler instance
     @param bytes memory size in bytes
-    @param file source file name (__FILENAME__) from where the logger has been called
-    @param func function name (__FUNCTION__)
+    @param file source file name (__SOURCE_FILENAME__) from where the logger has been called
+    @param func function name (__func__)
     @param line source file line (__LINE__)
 
     @returns pointer to allocated block of memory, `NULL` upon failure
@@ -166,8 +166,8 @@ extern void *debug_mh_calloc(debug_mh_t *const mh, const size_t bytes, const cha
     @param mh memory handler instance
     @param ptr pointer to current memory
     @param bytes memory size in bytes
-    @param file source file name (__FILENAME__) from where the logger has been called
-    @param func function name (__FUNCTION__)
+    @param file source file name (__SOURCE_FILENAME__) from where the logger has been called
+    @param func function name (__func__)
     @param line source file line (__LINE__)
 
     @returns pointer to allocated block of memory, `NULL` upon failure
@@ -181,8 +181,8 @@ extern void *debug_mh_realloc(debug_mh_t *const mh, void *ptr, const size_t byte
 /** Frees memory like free
     @param mh memory handler instance
     @param ptr pointer to current memory
-    @param file source file name (__FILENAME__) from where the logger has been called
-    @param func function name (__FUNCTION__)
+    @param file source file name (__SOURCE_FILENAME__) from where the logger has been called
+    @param func function name (__func__)
     @param line source file line (__LINE__)
 
     @note

@@ -23,7 +23,7 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
     // mat_t init
     *m = (mat_t) {
-        .ptr = DEBUG_CALLOC(rows * cols * sizeof(char*)),
+        .ptr = DEBUG_CALLOC(rows * cols * elsize),
         .rows = rows,
         .cols = cols,
         .elsize = elsize,
@@ -45,20 +45,11 @@ mat_t *mat_dup(const mat_t *const m) {
     }
 
     // allocate a new mat_t instance
-    mat_t *mdup = mat_new();
+    mat_t *mdup = mat_from(m->ptr, m->rows, m->cols, m->elsize);
     if(mdup == NULL) {
-        DEBUG_PRINT("%s", "Failed to allocate memory for mat_t before copy!");
+        DEBUG_PRINT("%s", "Failed to create a mat_t copy!");
         return NULL;
     }
-
-    // construct mat_t instance
-    if(mat_ctor(mdup, m->rows, m->cols, m->elsize) != ve_operation_success) {
-        mat_free(mdup);
-        return NULL;
-    }
-
-    // copy values
-    memcpy(mdup->ptr, m->ptr, m->rows * m->cols * m->elsize);
 
     return mdup;
 }
