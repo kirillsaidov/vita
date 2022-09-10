@@ -41,6 +41,9 @@ typedef struct ArgOpt {
     @param optv an array of argument options
 
     @returns `1` if help wanted, `0` upon sucess and `-1` upon error
+
+    @note
+        Strings must be heap-allocated be it char* or str_t!
 */
 extern int8_t argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv);
 

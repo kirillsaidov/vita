@@ -28,9 +28,9 @@
 
 #ifndef __FILENAME__
     #if defined(_WIN32) || defined(_WIN64)
-        #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+        #define __FILENAME__ (strrchr("/" __FILE__, '\\') + 1)
     #else
-        #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+        #define __FILENAME__ (strrchr("/" __FILE__, '/') + 1)
     #endif
 #endif
 

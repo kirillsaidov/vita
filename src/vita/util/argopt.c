@@ -189,17 +189,17 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
                 *zvalue = strdup(value);
             } else {
                 // create a temporary str_t variable
-                str_t *stmp = str(*zvalue);
+                str_t *stmp = str_take_ownership(*zvalue);
 
                 // clear and append a new value
                 str_clear(stmp);
                 str_append(stmp, value);
 
-                // copy the resulting value
-                *zvalue = strdup(cstr(stmp));
+                // save the resulting value
+                *zvalue = (char*)cstr(stmp);
 
-                // free the temporary variable
-                str_free(stmp);
+                // free the temporary variable only (we do not free the stmp->ptr)
+                DEBUG_FREE(stmp);
             }
             break;
         default:
