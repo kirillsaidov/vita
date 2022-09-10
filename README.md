@@ -40,17 +40,17 @@ int32_t main(const int32_t argc, const char *argv[]) {
     // display help manual
     if(parse_status == ARGOPT_PARSE_HELP_WANTED) {
         argopt_print_help(
-            "argopt_showcase v0.3.0 -- Testing argopt parser", // header
-            "Example: argopt --max 15 -s my/save/dir/ --verbose",
+            "argopt_showcase v0.3.0 -- Testing argopt parser",    // header
+            "Example: argopt --max 15 -s my/save/dir/ --verbose", // footer
             optc, optv
         );
         return 0;
     }
 
     // now do your thing
-    printf("%20s : %d", "app_verbose", app_verbose);
-    printf("%20s : %d", "app_max_grab_files", app_max_grab_files);
-    printf("%20s : %s", "app_savedir", app_savedir);
+    printf("%20s : %d\n", "app_verbose", app_verbose);
+    printf("%20s : %d\n", "app_max_grab_files", app_max_grab_files);
+    printf("%20s : %s\n", "app_savedir", app_savedir);
 
 cleanup:
     free(app_savedir);
@@ -66,6 +66,13 @@ $ ./argopt --max 15 -s my/save/dir/ --verbose
         app_verbose : 1
  app_max_grab_files : 15
         app_savedir : my/save/dir/
+$
+$ ./argopt -h
+argopt_showcase v0.3.0 -- Testing argopt parser
+-v --verbose verbose output
+-m     --max max grab files
+-s    --save save directory
+Example: argopt --max 15 -s my/save/dir/ --verbose
 ```
 
 ## More examples
