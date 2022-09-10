@@ -44,9 +44,9 @@ Vita version: 0.3.0
 ## Debug vs Release builds
 Vita comes in two variants: debug and release builds. It is highly recommended to use the debug-built Vita library for testing and debugging purposes and the release-built Vita library for your release builds.
 
-There reason is simple: when using the debug version, your will benefit from internal checks done Vita (asserts) that are removed in release builds. Nonetheless, you can still check the return value of a function to determine if an operation was successful. Almost every Vita functions returns a certain value.
+There reason is simple: when using the debug version, your will benefit from internal checks done by Vita (asserts with error messages) that are removed in release builds. Nonetheless, you can still check the return value of a function to determine if an operation was successful. Almost every Vita functions returns a certain value.
 
-Read more in [6. Debugging with Vita](wiki/page6.md).
+Read more in [6. Debugging with Vita](page6.md).
 
 
 
