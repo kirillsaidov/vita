@@ -71,7 +71,7 @@ void vec_dtor(vec_t *const v) {
     DEBUG_FREE(v->ptr);
 
     // default-init
-    *v = (vec_t) {};
+    *v = (vec_t) {0};
 }
 
 void vec_free(vec_t *v) {

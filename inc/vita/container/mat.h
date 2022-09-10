@@ -69,7 +69,8 @@ extern void mat_dtor(mat_t *const m);
 extern void mat_free(mat_t *m);
 
 /** Allocates and constructs mat_t
-    @param n number of elements
+    @param rows number of rows
+    @param cols number of cols
     @param elsize element size
 
     @returns`mat_t*` upon success, `NULL` otherwise

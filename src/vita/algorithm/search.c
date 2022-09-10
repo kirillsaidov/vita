@@ -46,3 +46,5 @@
     
 //     return -1;
 // }
+
+void search_test(void) {}

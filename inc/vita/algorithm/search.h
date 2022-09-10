@@ -47,4 +47,6 @@ Notes:
 */
 // int64_t search_binary(void* arr, const size_t len, const size_t elsize, const void* val, int8_t (*compare)(const void* a, const void* b));
 
+extern void search_test(void);
+
 #endif // VITA_SEARCH_H

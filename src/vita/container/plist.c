@@ -44,7 +44,7 @@ void plist_dtor(plist_t *p) {
     DEBUG_FREE(p->ptr2);
 
     // default-init
-    *p = (plist_t) {};
+    *p = (plist_t) {0};
 }
 
 void plist_free(plist_t *p) {

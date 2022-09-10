@@ -245,7 +245,7 @@ extern size_t debug_mh_get_bytes_freed(const debug_mh_t *const mh);
 /** Returns a formatted string with stats
     @param mh memory handler instance
     @param buffer buffer to store formatted stats; if `NULL` is specified, allocates
-    @param buf_len buffer length (must be >= 256)
+    @param buff_len buffer length (must be >= 256)
 
     @returns C string char*
 */

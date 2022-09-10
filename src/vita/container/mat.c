@@ -74,7 +74,7 @@ void mat_dtor(mat_t *const m) {
     DEBUG_FREE(m->ptr);
 
     // default-init
-    *m = (mat_t) {};
+    *m = (mat_t) {0};
 }
 
 void mat_free(mat_t *m) {
