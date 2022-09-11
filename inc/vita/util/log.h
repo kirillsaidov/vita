@@ -2,8 +2,7 @@
 #define VITA_LOG_H
 
 /** VITA_LOG MODULE
- * ------ GLOBAL LOGGER BASED ON LOG LEVEL ------ *
- * Macros
+ * Macros - GLOBAL LOGGER BASED ON LOG LEVEL
     - LOG_INFO
     - LOG_WARN
     - LOG_DEBUG
@@ -33,8 +32,6 @@ enum LogLevel {
 };
 
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
-
-// macros
 #define LOG_INFO(...) log_log(ll_info, false, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_WARN(...) log_log(ll_warn, false, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_DEBUG(...) log_log(ll_debug, false, __FILE__, __LINE__, __VA_ARGS__)
