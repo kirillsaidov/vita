@@ -50,9 +50,13 @@
 #define STRINGOF(x) i_STR_EXPAND(x)   // converts to string
 #define AS(type, x) ((type)(x))       // cast
 
-// data types for argopt
+// data types for internal usage
 enum DataType {
     // system specific
+    dt_byte,    // will be treated the same as dt_int8
+    dt_ubyte,   // will be treated the same as dt_uint8
+    dt_short,   // will be treated the same as dt_int16
+    dt_ushort,  // will be treated the same as dt_uint16
     dt_int,     // will be treated the same as dt_int32
     dt_long,    // will be treated the same as dt_int64
     dt_uint,    // will be treated the same as dt_uint32
@@ -71,9 +75,11 @@ enum DataType {
     // floats
     dt_float,   // float
     dt_double,  // double
+
+    // other
     dt_bool,    // bool
     dt_char,    // char
-    dt_str,     // str_t (its not a raw C string!)
+    dt_str,     // str_t
     dt_cstr,    // char*
     dt_unknown, // unknown data type
     dt_count    // number of elements

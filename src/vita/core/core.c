@@ -1,11 +1,9 @@
 #include "vita/core/core.h"
 
 // generate vita error strings
-#define X(a) STRINGOF(a),
 static const char *const vita_error_str[] = {
-    i_GENERATE_VITA_ERRORS(X)
+    i_GENERATE_VITA_ERRORS(STRINGOF)
 };
-#undef X
 
 /* ------------- BASE CONTAINER TYPE ------------- */
 
@@ -78,7 +76,7 @@ void get_current_timestamp(char *timebuf, const size_t len) {
 }
 
 const char *get_vita_error_str(const enum VitaError e) {
-    if(e >= 0 && e < ve_count) {
+    if(e < ve_count) {
         return vita_error_str[e];
     }
 

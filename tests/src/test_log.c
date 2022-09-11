@@ -3,8 +3,8 @@
 #include "../../inc/vita/util/log.h"
 
 int32_t main(void) {
-    assert(str_equals(log_get_level_string(ll_fatal), "FATAL"));
-    assert(str_equals(log_get_level_string(-1), "INFO") && str_equals(log_get_level_string(ll_count), "INFO"));
+    assert(str_equals(log_get_level_str(ll_fatal), "FATAL"));
+    assert(str_equals(log_get_level_str(-1), "INFO") && str_equals(log_get_level_str(ll_count), "INFO"));
     
     //LOG_INFO("This is an info test.");
     //LOG_WARN("Testing %s formatter.", "LOG");

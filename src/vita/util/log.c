@@ -5,11 +5,13 @@ static const char *const log_level_strings[] = {
     "INFO", "WARN", "DEBUG", "ERROR", "FATAL", "ASSERT FAILURE"
 };
 
+/* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
+
 // log to file
-static const char *log_filenames[ll_count - 1] = {0};
+static const char *log_filenames[ll_count - 1] = {0}; 
 
 void log_set_level(enum LogLevel log_level, const char *const cs_filename) {
-    if(log_level < 0 || log_level >= ll_count) {
+    if(log_level >= ll_count) {
         log_level = ll_info;
     }
     
@@ -23,8 +25,8 @@ void log_set_level_default(const char *const cs_filename) {
     }
 }
 
-const char *log_get_level_string(enum LogLevel log_level) {
-    if(log_level < 0 || log_level >= ll_count) {
+const char *log_get_level_str(enum LogLevel log_level) {
+    if(log_level >= ll_count) {
         log_level = ll_info;
     }
 
@@ -33,7 +35,7 @@ const char *log_get_level_string(enum LogLevel log_level) {
 
 void log_log(enum LogLevel log_level, const bool expr, const char *const file, const int32_t line, const char *const fmt, ...) {
     if(!expr) {
-        if(log_level < 0 || log_level >= ll_count) {
+        if(log_level >= ll_count) {
             log_level = ll_info;
         }
 
@@ -46,7 +48,7 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
         {
             // logging to stderr, else to file
             if(log_filenames[log_level] == NULL) {
-                fprintf(stderr, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
+                fprintf(stderr, "%s %5s %s:%d: ", tbuf, log_get_level_str(log_level), file, line);
                 vfprintf(stderr, fmt, args);
                 fprintf(stderr, "\n");
             } else {
@@ -57,7 +59,7 @@ void log_log(enum LogLevel log_level, const bool expr, const char *const file, c
                 }
                 
                 // write to file
-                fprintf(fp, "%s %5s %s:%d: ", tbuf, log_get_level_string(log_level), file, line);
+                fprintf(fp, "%s %5s %s:%d: ", tbuf, log_get_level_str(log_level), file, line);
                 vfprintf(fp, fmt, args);
                 fprintf(fp, "\n");
                 
