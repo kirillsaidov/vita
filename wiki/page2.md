@@ -20,7 +20,7 @@ Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h) st
 `Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [str_t](../inc/vita/container/str.h) header file.
 
 ### Creating strings
-```C
+```c
 // creates a string and sets its value to "hello, world!"
 str_t *msg = str("hello, world!");
 

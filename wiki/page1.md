@@ -22,7 +22,7 @@ Create a new project, lets call it `vita_test`, and copy the contents of `inc` f
     - main.c      // our source file
 ```
 
-```C
+```c
 // main.c
 #include "vita/vita.h"
 

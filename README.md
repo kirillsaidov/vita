@@ -12,7 +12,7 @@ A custom C library for quick prototyping with simple data structures, string man
 * facilities to work with paths and directories
 
 ### Arguments parser showcase
-```C
+```c
 // argopt_showcase.c
 #include "vita/vita.h"
 
@@ -20,7 +20,7 @@ int32_t main(const int32_t argc, const char *argv[]) {
     char *app_savedir = strdup("./media");
     int32_t app_max_grab_files = 10;
     bool app_verbose = false;
-    
+
     // create options to parse
     argopt_t optv[] = {
           // long       short     description           argument               type
