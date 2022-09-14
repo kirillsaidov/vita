@@ -40,8 +40,8 @@ int32_t main(const int32_t argc, const char *argv[]) {
     // display help manual
     if(parse_status == ARGOPT_PARSE_HELP_WANTED) {
         argopt_print_help(
-            "argopt v0.3.0 -- Testing argopt parser",    // header
-            "Example: argopt --max 15 -s my/save/dir/ --verbose", // footer
+            "argopt v0.3.0 -- Testing argopt parser",               // header
+            "Example: argopt --max 15 -s my/save/dir/ --verbose",   // footer
             optc, optv
         );
         return 0;
