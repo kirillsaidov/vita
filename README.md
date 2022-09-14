@@ -33,14 +33,14 @@ int32_t main(const int32_t argc, const char *argv[]) {
     // parse args and opts
     const int8_t parse_status = argopt_parse(argc, argv, optc, optv);
     if(parse_status < 0) { // or (parse_status == ARGOPT_PARSE_ERROR)
-        printf("Failed to parse command line arguments!\n");
+        printf("See 'argopt -h' for more info!\n");
         goto cleanup;
     }
 
     // display help manual
     if(parse_status == ARGOPT_PARSE_HELP_WANTED) {
         argopt_print_help(
-            "argopt_showcase v0.3.0 -- Testing argopt parser",    // header
+            "argopt v0.3.0 -- Testing argopt parser",    // header
             "Example: argopt --max 15 -s my/save/dir/ --verbose", // footer
             optc, optv
         );
@@ -68,10 +68,11 @@ $ ./argopt --max 15 -s my/save/dir/ --verbose
         app_savedir : my/save/dir/
 
 $ ./argopt -h
-argopt_showcase v0.3.0 -- Testing argopt parser
+argopt v0.3.0 -- Testing argopt parser
 -v --verbose verbose output
 -m     --max max grab files
 -s    --save save directory
+-h    --help This help information.
 Example: argopt --max 15 -s my/save/dir/ --verbose
 ```
 
