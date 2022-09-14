@@ -93,8 +93,8 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
     }
     
     // calculate optionLong and optionShort padding
-    int32_t olPadding = 0;
-    int32_t osPadding = 0;
+    int32_t olPadding = 6; // strlen("--help")
+    int32_t osPadding = 2; // strlen("-h")
     for(size_t i = 0; i < optc; i++) {
         olPadding = MAX(strlen(optv[i].optionLong), olPadding);
         osPadding = MAX(strlen(optv[i].optionShort), osPadding);
@@ -109,6 +109,7 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
     for(size_t i = 0; i < optc; i++) {
         fprintf(stdout, "%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
     }
+    fprintf(stdout, "%*s %*s %s\n", osPadding, "-h", olPadding, "--help", "This help information.");
 
     // print footer
     if(footer != NULL) {
