@@ -124,10 +124,6 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
         return;
     }
 
-    // temp value place holders
-    char **zvalue = (char**)opt->optionValue;
-    str_t **svalue = (str_t**)opt->optionValue;
-
     // save arg value
     switch(opt->optionType) {
         // int
@@ -182,29 +178,44 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
             *(char*)(opt->optionValue) = value[0];
             break;
         case dt_str:
-            if(*svalue == NULL) {
-                *svalue = str(value);
-            } else {
-                str_clear(*svalue);
-                str_append(*svalue, value);
+            {
+                str_t **svalue = (str_t**)opt->optionValue;
+
+                // check if we need to allocate
+                if(*svalue == NULL) {
+                    *svalue = str(value);
+                } else {
+                    str_clear(*svalue);
+                    str_append(*svalue, value);
+                }
             }
             break;
         case dt_cstr:
-            if(*zvalue == NULL) {
-                *zvalue = strdup(value);
-            } else {
-                // create a temporary str_t variable
-                str_t *stmp = str_take_ownership(*zvalue);
+            {
+                char **zvalue = (char**)opt->optionValue;
 
-                // clear and append a new value
-                str_clear(stmp);
-                str_append(stmp, value);
+                // check if we need to allocate
+                if(*zvalue == NULL) {
+                    *zvalue = strdup(value);
+                } else {
+                    const size_t len = strlen(value);
+                    const size_t zLen = strlen(*zvalue);
 
-                // save the resulting value
-                *zvalue = (char*)cstr(stmp);
+                    // check we need to reallocate
+                    if(len > zLen) {
+                        char *ztmp = realloc(*zvalue, len - zLen);
+                        if(ztmp == NULL) {
+                            DEBUG_PRINTF("Failed to reallocate cstr!\n");
+                            return;
+                        }
 
-                // free the temporary variable only (we do not free the stmp->ptr)
-                DEBUG_FREE(stmp);
+                        // save
+                        *zvalue = ztmp;
+                    }
+
+                    // copy values
+                    memcpy(*zvalue, value, len);
+                }
             }
             break;
         default:
