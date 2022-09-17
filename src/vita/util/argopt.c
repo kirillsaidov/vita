@@ -205,7 +205,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
                     if(len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
                         if(ztmp == NULL) {
-                            DEBUG_PRINTF("Failed to reallocate cstr!\n");
+                            DEBUG_PRINTF("Failed to reallocate cstr to assign a new value!\n");
                             return;
                         }
 
