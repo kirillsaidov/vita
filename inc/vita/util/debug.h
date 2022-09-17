@@ -50,7 +50,7 @@ typedef struct DebugMemoryHandler debug_mh_t;
     // error handling
     #define DEBUG_ASSERT(expr, ...) debug_assert(expr, STRINGOF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
     #define DEBUG_ASSERT2(expr, file, func, line, ...) debug_assert(expr, STRINGOF(expr), file, func, line, __VA_ARGS__)
-    #define DEBUG_PRINT(fmt, ...) debug_printf(fmt, __VA_ARGS__)
+    #define DEBUG_PRINT(...) debug_printf(__VA_ARGS__)
 
     // memory management
     #define DEBUG_MALLOC(bytes) debug_mh_malloc(debug_mh_handler_default_get_handler(), bytes, __SOURCE_FILENAME__, __func__, __LINE__)
@@ -68,8 +68,8 @@ typedef struct DebugMemoryHandler debug_mh_t;
 #else
     // error handling
     #define DEBUG_ASSERT(expr, ...)
-    #define DEBUG_ASSERT2(expr, file, line, ...)
-    #define DEBUG_PRINT(fmt, ...)
+    #define DEBUG_ASSERT2(expr, file, func, line, ...)
+    #define DEBUG_PRINT(...)
 
     // memory management
     #define DEBUG_MALLOC(bytes) malloc(bytes)
