@@ -11,13 +11,14 @@ void test_path(void);
 void test_expand_tilde(void);
 
 int main(void) {
-    DEBUG_DEFAULT_INIT;
+    DEBUG_DEFAULT_INIT();
+    // debug_disable_output(true);
 
     // tests
     test_path();    
     test_expand_tilde();
 
-    DEBUG_DEFAULT_QUIT;
+    DEBUG_DEFAULT_QUIT();
     return 0;
 }
 

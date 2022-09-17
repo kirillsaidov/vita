@@ -12,12 +12,12 @@ mat_t *mat_new(void) {
 
 enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
     if(m == NULL) {
-        DEBUG_PRINT("%s", "mat_t instance was not allocated!");
+        DEBUG_PRINTF("%s", "mat_t instance was not allocated!");
         return ve_error_is_null;
     }
 
     if(!rows || !cols) {
-        DEBUG_PRINT("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
+        DEBUG_PRINTF("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
         return ve_error_invalid_size;
     }
 
@@ -31,7 +31,7 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
     // error checking
     if(m->ptr == NULL) {
-        DEBUG_PRINT("%s", "Unable to construct mat_t instance!");
+        DEBUG_PRINTF("%s", "Unable to construct mat_t instance!");
         return ve_error_allocation;
     }
 
@@ -47,7 +47,7 @@ mat_t *mat_dup(const mat_t *const m) {
     // allocate a new mat_t instance
     mat_t *mdup = mat_from(m->ptr, m->rows, m->cols, m->elsize);
     if(mdup == NULL) {
-        DEBUG_PRINT("%s", "Failed to create a mat_t copy!");
+        DEBUG_PRINTF("%s", "Failed to create a mat_t copy!");
         return NULL;
     }
 
@@ -79,7 +79,7 @@ void mat_free(mat_t *m) {
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     mat_t *m = mat_new(); // allocate mem for mat_t
     if(m == NULL) {
-        DEBUG_PRINT("%s", "Unable to allocate memory for mat_t instance!");
+        DEBUG_PRINTF("%s", "Unable to allocate memory for mat_t instance!");
         return NULL;
     }
 

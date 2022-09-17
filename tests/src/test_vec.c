@@ -93,6 +93,6 @@ int main(void) {
 		assert(vec_has_space(v) == 1);
 	} vec_destroy(v);
 
-	DEBUG_DEFAULT_QUIT;
+	DEBUG_DEFAULT_QUIT();
 	return 0;
 }

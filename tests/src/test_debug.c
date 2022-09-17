@@ -6,12 +6,12 @@
 int32_t main(void) {
     // prints to stderr
     // DEBUG_ASSERT(10 > 13, "This is a debug assert error message!"); // must fail
-    // output: 2022-09-09 21:13:32 DEBUG ASSERTION FAILURE (value > 13) test_debug.c:main:9: This is a debug assert error message!
+    // output: 2022-09-09 21:13:32 DEBUG ASSERTION FAILURE (10 > 13) test_debug.c:main:9: This is a debug assert error message!
 
 
-    DEBUG_DEFAULT_INIT;
+    DEBUG_DEFAULT_INIT();
 
-        debug_mh_t *mh = debug_mh_handler_default_get_handler();
+        debug_handler_t *mh = debug_handler_default_get_handler();
         assert(mh != NULL);
         
         int *a = DEBUG_MALLOC(sizeof(int));
@@ -29,6 +29,6 @@ int32_t main(void) {
             assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);
         #endif
 
-    DEBUG_DEFAULT_QUIT;
+    DEBUG_DEFAULT_QUIT();
     return 0;
 }

@@ -8,7 +8,7 @@ int64_t conv_str_to_int64(const char *const z) {
 
     // check if value is numeric
     if(!str_is_numeric(z, MAX_PRECISION)) {
-        DEBUG_PRINT("Must be digits only, not \"%s\".\n", z);
+        DEBUG_PRINTF("Must be digits only, not \"%s\".\n", z);
         return 0;
     }
 
@@ -24,7 +24,7 @@ uint64_t conv_str_to_uint64(const char *const z) {
 
     // check if value is numeric
     if(!str_is_numeric(z, MAX_PRECISION)) {
-        DEBUG_PRINT("Must be digits only, not \"%s\".\n", z);
+        DEBUG_PRINTF("Must be digits only, not \"%s\".\n", z);
         return 0;
     }
 
@@ -40,7 +40,7 @@ double conv_str_to_double(const char *const z) {
 
     // check if value is numeric
     if(!str_is_numeric(z, MAX_PRECISION)) {
-        DEBUG_PRINT("Must be digits only, not \"%s\".\n", z);
+        DEBUG_PRINTF("Must be digits only, not \"%s\".\n", z);
         return 0;
     }
 

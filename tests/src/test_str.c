@@ -7,7 +7,7 @@ void print_str(void *ptr, size_t i);
 void apply_func(char *c, size_t i);
 
 int32_t main(void) {
-    DEBUG_DEFAULT_INIT;
+    DEBUG_DEFAULT_INIT();
 
     const str_t static_s = str_make_on_stack("hello, world");
     assert(str_equals(cstr(&static_s), "hello, world"));
@@ -190,7 +190,7 @@ int32_t main(void) {
     assert(str_is_numeric(cstr(s_strip), 256));
     str_free(s_strip);
 
-    DEBUG_DEFAULT_QUIT;
+    DEBUG_DEFAULT_QUIT();
     return 0;
 }
 

@@ -4,12 +4,12 @@
 void test_filewrite(void);
 
 int32_t main(void) {
-    DEBUG_DEFAULT_INIT;
+    DEBUG_DEFAULT_INIT();
 
     // tests
     test_filewrite();
     
-    DEBUG_DEFAULT_QUIT;
+    DEBUG_DEFAULT_QUIT();
     return 0;
 }
 
