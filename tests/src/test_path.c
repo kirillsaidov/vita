@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 16
+#define FILES_IN_DIR 12
 
 // helper functions
 void free_str(void *ptr, size_t i);
