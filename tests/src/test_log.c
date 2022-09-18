@@ -5,8 +5,8 @@
 int32_t main(void) {
     const char *const logger_filename = "other/test_logger.log";
 
-    assert(str_equals(log_get_level_str(ll_fatal), "FATAL"));
-    assert(str_equals(log_get_level_str(-1), "INFO") && str_equals(log_get_level_str(ll_count), "INFO"));
+    assert(str_equals(log_level_get_str(ll_fatal), "FATAL"));
+    assert(str_equals(log_level_get_str(-1), "INFO") && str_equals(log_level_get_str(ll_count), "INFO"));
     
     // --- outputs to stderr
     LOG_INFO("[s] This is an info test. 12345 qwerty.");
@@ -16,7 +16,7 @@ int32_t main(void) {
 
     // -- outputs to 'logger' file
     // FIXME: fails to log to a file after setting all lob_levels to that file
-    log_set_level_default(logger_filename);
+    log_level_set_default(logger_filename);
     LOG_INFO("[f] This is an info test.");
     LOG_WARN("[f] Testing %s formatter.", "LOG");
     LOG_DEBUG("[f] Testing: debugging = %s, %s", "debug msg", "debug2");

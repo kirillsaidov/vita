@@ -19,9 +19,9 @@
     - LOGF_ASSERT
 
  * Functions
-    - log_set_level
-    - log_set_level_default
-    - log_get_level_str
+    - log_level_set
+    - log_level_set_default
+    - log_level_get_str
     - log_log
 */
 
@@ -59,19 +59,19 @@ enum LogLevel {
     @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
     @param filename file name to log to
 */
-extern void log_set_level(enum LogLevel log_level, const char *const filename);
+extern void log_level_set(enum LogLevel log_level, const char *const filename);
 
 /** Sets default log level for all levels
     @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
     @param filename file name to log to
 */
-extern void log_set_level_default(const char *const filename);
+extern void log_level_set_default(const char *const filename);
 
 /** Returns log level string
     @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
     @returns const char*
 */
-extern const char *log_get_level_str(enum LogLevel log_level);
+extern const char *log_level_get_str(enum LogLevel log_level);
 
 /** Global logger
     @param zfilename filename to log info to; if `NULL` is passed, uses `stderr`
@@ -85,24 +85,7 @@ extern const char *log_get_level_str(enum LogLevel log_level);
 */
 extern void log_log(const char *const zfilename, enum LogLevel log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
 
-/** Custom logger to file
-    @param zfilename filename to log info to; if `NULL` is passed, uses `stderr`
-    @param log_level enum LogLevel (if invalid log_level is specified, LOG_INFO is used)
-    @param expr expression to test
-    @param zexpr a string representation of exp
-    @param file source file name (__FILE__) from where the logger has been called
-    @param line source file line (__LINE__)
-    @param zfmt formatting
-    @param ... additional arguments
-*/
-// extern void log_logf(const char *const zfilename, enum LogLevel log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
-
 #endif // VITA_LOG_H
-
-
-
-
-
 
 
 
