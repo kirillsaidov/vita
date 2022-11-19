@@ -70,14 +70,14 @@ void test_path(void) {
         str_free(s);
 
         str_t *cwd = path_getcwd(); {
-            assert(str_equals(cstr(cwd), "/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
+            assert(str_equals(cstr(cwd), "/mnt/c/Users/kiril/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
         } str_free(cwd);
 
-        assert(path_exists("/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
-        assert(path_is_dir("/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
-        assert(path_is_file("/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/test_path.c"));
+        assert(path_exists("/mnt/c/Users/kiril/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
+        assert(path_is_dir("/mnt/c/Users/kiril/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
+        assert(path_is_file("/mnt/c/Users/kiril/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src/test_path.c"));
 
-        plist_t *pdir = path_listdir(NULL, "/home/kirill/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/", true); {
+        plist_t *pdir = path_listdir(NULL, "/mnt/c/Users/kiril/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src/", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
             plist_apply(pdir, free_str);
         } plist_destroy(pdir);
@@ -132,7 +132,7 @@ void test_expand_tilde(void) {
         #if defined(_WIN32) || defined(_WIN64)
             assert(str_equals(cstr(s_path_tilde1), "C:\\Users\\Kirill Saidov/hello"));
         #elif defined(__linux__)
-            assert(str_equals(cstr(s_path_tilde1), "/home/kirill/hello"));
+            assert(str_equals(cstr(s_path_tilde1), "/home/kiril/hello"));
         #else
             assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
         #endif
