@@ -475,7 +475,31 @@ str_t *path_expand_tilde(const char *const z) {
     return s_tilde;
 }
 
+str_t *path_get_this_exe_location(void) {
+    str_t *spath = strn_empty(PATH_MAX);
+    if (spath == NULL) {
+        DEBUG_ASSERT(spath != NULL, "Failed to allocate str_t instance!");
+        return NULL;
+    }
+    
+    // retrieve this exe path
+    int64_t pathLen = 0;
+    #if defined(_WIN32) || defined(_WIN64)
+        pathLen = GetModuleFileName(NULL, spath->ptr, PATH_MAX-1);
+    #else
+        pathLen = readlink("/proc/self/exe", spath->ptr, PATH_MAX-1);
+    #endif
 
+    // check for errors
+    if(pathLen <= 0) {
+        DEBUG_ASSERT(pathLen > 0, "Failed to retrieve this exe path!");
+        str_free(spath);
+        return NULL;
+    }
+    spath->len = pathLen;
+
+    return spath;
+}
 
 
 

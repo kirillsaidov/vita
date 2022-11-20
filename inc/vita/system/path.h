@@ -19,6 +19,7 @@
     - path_remove
     - path_rename
     - path_expand_tilde
+    - path_get_this_exe_location
 */
 
 #include "../core/core.h"
@@ -162,5 +163,10 @@ extern bool path_rename(const char *const z1, const char *const z2);
     @returns a newly allocated `str_t` path with the expanded tilde `~` upon success, `NULL` otherwise
 */
 extern str_t *path_expand_tilde(const char *const z);
+
+/** Returns executable path
+    @returns `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *path_get_this_exe_location(void);
 
 #endif // VITA_PATH_H

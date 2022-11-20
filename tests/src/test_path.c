@@ -9,6 +9,7 @@ void free_str(void *ptr, size_t i);
 // test functions
 void test_path(void);
 void test_expand_tilde(void);
+void test_selfpath(void);
 
 int main(void) {
     DEBUG_DEFAULT_INIT();
@@ -17,6 +18,7 @@ int main(void) {
     // tests
     test_path();    
     test_expand_tilde();
+    test_selfpath();
 
     DEBUG_DEFAULT_QUIT();
     return 0;
@@ -141,6 +143,13 @@ void test_expand_tilde(void) {
     }
     str_free(s_path_tilde1);
     str_free(s_path_tilde2);
+}
+
+void test_selfpath(void) {
+    str_t *selfpath = path_get_this_exe_location();
+    DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
+    DEBUG_PRINTF("this exe path: %s\n", cstr(selfpath));
+    str_free(selfpath);
 }
 
 
