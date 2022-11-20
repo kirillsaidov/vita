@@ -916,7 +916,7 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
         }
 
         // check for space
-        if(str_has_space(s) < len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
+        if(str_has_space(s) < (size_t)len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
             DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
             return s;
         }

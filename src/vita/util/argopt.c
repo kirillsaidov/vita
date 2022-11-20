@@ -96,8 +96,8 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
     int32_t olPadding = 6; // strlen("--help")
     int32_t osPadding = 2; // strlen("-h")
     for(size_t i = 0; i < optc; i++) {
-        olPadding = MAX(strlen(optv[i].optionLong), olPadding);
-        osPadding = MAX(strlen(optv[i].optionShort), osPadding);
+        olPadding = MAX((int32_t)strlen(optv[i].optionLong), olPadding);
+        osPadding = MAX((int32_t)strlen(optv[i].optionShort), osPadding);
     }
 
     // print header

@@ -65,7 +65,7 @@ str_t *file_readb(const char *const z_filename) {
     }
 
     // get file size
-    const size_t fsize = path_get_file_size(z_filename);
+    const int64_t fsize = path_get_file_size(z_filename);
     if(fsize < 0) {
         DEBUG_ASSERT(fsize >= 0, "Unable to fetch file size data!");
 
