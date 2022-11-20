@@ -8,20 +8,20 @@ static const char *const log_level_strings[] = {
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
 
 // log to file
-static const char *log_filenames[ll_count - 1] = {0}; 
+static char log_filenames[ll_count][PATH_MAX] = {0}; 
 
-void log_get_level(enum LogLevel log_level, const char *const cs_filename) {
+void log_get_level(enum LogLevel log_level, const char *const zfilename) {
     if(log_level >= ll_count) {
         log_level = ll_info;
     }
     
     // update log filenames
-    log_filenames[log_level] = cs_filename;
+    strncpy(log_filenames[log_level], zfilename, PATH_MAX-1);
 }
 
-void log_level_set_default(const char *const cs_filename) {
+void log_level_set_default(const char *const zfilename) {
     for(size_t i = 0; i < ll_count; i++) {
-        log_filenames[i] = cs_filename;
+        strncpy(log_filenames[i], zfilename, PATH_MAX-1);
     }
 }
 
@@ -48,9 +48,9 @@ void log_log(const char *const zfilename, enum LogLevel log_level, const bool ex
         va_list args; va_start(args, zfmt); 
         {
             // if `NULL` log to `stderr`, otherwise to a file
-            FILE *fp = (logger_filename == NULL) ? stderr : fopen(logger_filename, "a");
+            FILE *fp = (logger_filename[0] == '\0') ? stderr : fopen(logger_filename, "a");
             if(fp == NULL) {
-                DEBUG_PRINTF("Failed to open a file <%s>!\n", logger_filename);
+                DEBUG_PRINTF("%s:%i: Failed to open a file <%s>!\n", file, line, logger_filename);
                 return;
             }
 

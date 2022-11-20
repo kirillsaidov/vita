@@ -28,6 +28,10 @@
 #include "../core/core.h"
 #include "../system/fileio.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+    #define strncpy(d, s, n) strncpy_s(d, n, s, n)
+#endif
+
 // Log levels
 enum LogLevel {
     ll_info,    // write to file/stderr, move on
