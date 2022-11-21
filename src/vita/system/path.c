@@ -462,7 +462,13 @@ str_t *path_expand_tilde(const char *const z) {
     }
     
     // get HOME path
-    const char *const z_homepath = getenv("HOME");
+    const char *const z_homepath = 
+    #if defined(_WIN32) || defined(_WIN64)
+        getenv("USERPROFILE");
+    #else
+        getenv("HOME");
+    #endif
+
     if(z_homepath == NULL) {
         DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'HOME\' was not found, returning as-is!");
         return s_tilde;
