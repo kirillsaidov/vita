@@ -8,7 +8,7 @@ In this chapter we are going to discuss how to use `Vita` containers. Currently,
 * plist_t   // an array of pointers
 ```
 
-Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h) struct.
+Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h#L115) struct.
 
 ## Contents
 * [Using `str_t` strings](https://github.com/kirillsaidov/vita/blob/master/wiki/page2.md#using-str_t-strings)
