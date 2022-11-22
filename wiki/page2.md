@@ -2,10 +2,10 @@
 In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 4 container types:
 
 ```
-* str_t     // string
-* vec_t     // similar to std::string or array
-* mat_t     // similar to 2d array, but is meant to be used as a matrix
-* plist_t   // array of pointers
+* str_t     // similar to std::string
+* vec_t     // similar to std::vector or std::array
+* mat_t     // similar to 2d array or matrix
+* plist_t   // an array of pointers
 ```
 
 Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h) struct.
