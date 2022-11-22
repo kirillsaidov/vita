@@ -83,4 +83,4 @@ Check out the `tests/src` directory for usage examples or read more on [Vita Wik
 You can also closely follow the development process in Trello [board](https://trello.com/b/MFeDGO8u/vita).
 
 ## LICENSE
-All code is licensed under the MIT license.
+All code is licensed under the BSL license.
