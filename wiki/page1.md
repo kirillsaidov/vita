@@ -1,5 +1,5 @@
 # Building and using `Vita`
-To use `Vita` either copy and paste the source code into your project or link the `Vita` static library into your binary. You can [download](add a link) the precompiled static library or build it yourself. Usage examples can be found in [tests](../tests/src) folder.
+To use `Vita` either copy and paste the source code into your project or link the `Vita` static library into your binary. You can [download](https://github.com/kirillsaidov/vita/releases) the precompiled static library or build it yourself. Usage examples can be found in [tests](../tests/src) folder.
 
 ## Requirements
 * `CMake`
