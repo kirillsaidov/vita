@@ -28,14 +28,15 @@ str_t *msg = str("hello, world!");
 str_t *msg = strn(10);                      // 1. creates a string with length 10
 str_set(msg, "hello, world!");              // 2. sets its value to "hello, world!"
 
-// the same as above 
+// almost the same as above 
 str_t *msg = strn_empty(10);                // creates an empty string with length of 0 and capacity of 10
 str_append(msg, "hello, world!");           // appends "hello, world!"
 str_appendf(msg, "%s!", "hello, world");    // appends "hello, world!"
 
 // the same as above, but on one go with formatting 
 // passing NULL here will allocate a new string instance
-str_t *msg = str_fmt(NULL, "hello, %s", myVar);
+const char *myVar = "world";
+str_t *msg = str_fmt(NULL, "hello, %s!", myVar);
 
 // create a copy
 str_t *msg_copy = str_dup(msg);
@@ -94,5 +95,56 @@ str_strip_punct(",. \n hello, world!")  // strips leading and tailing punctuatio
 There are many more advanced functions available like `str_starts_with, str_index_of` and `str_capitalize`. For more details, please refer to [str.h](../inc/vita/container/str.h) or string [test_str.c](../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vec_t`
+
+```c
+// create/destroy a vector instance
+vec_t *v = vec_create(10, sizeof(int32_t));
+vec_destroy(v);
+
+// get vector info
+const size_t v_length = vec_len(v);
+const size_t v_capacity = vec_capacity(v);
+const size_t hasSpace = vec_has_space(v);
+const bool isEmpty = vec_is_empty(v);
+
+// push data
+const int32_t var = 33;
+vec_push(v, &var);
+vec_pushi32(v, 33);
+
+// set data
+vec_set(v, &var, 0);    // assign vector[0] = var
+vec_seti32(v, 33, 0);   // assign vector[0] = 33
+
+// get data
+const int32_t myVal = *(int32_t*)vec_get(v, 0);
+const int32_t myVal = vec_geti32(v, 0);
+
+// remove data
+const int32_t index = vec_contains(v, &myVal);
+if(index >= 0) { // index is -1 if element not found
+    vec_remove(v, index, rs_fast);
+    /**
+     * RemoveStrategy => rs
+     *  rs_fast     => order does not matter
+     *  rs_stable   => keep order
+    */
+}
+
+// pop value
+vec_pop(v);
+const int32_t popVal = *(int32_t*)vec_pop_get(v);
+
+// set length to 0
+vec_clear(v);
+
+// foreach looping
+vec_apply(v, func); // func(void *ptr, size_t index)
+```
+
+### Matrices and 2d arrays with `mat_t` types
+
+
+
 
 
