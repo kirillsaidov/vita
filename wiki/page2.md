@@ -11,10 +11,10 @@ In this chapter we are going to discuss how to use `Vita` containers. Currently,
 Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h#L115) struct.
 
 ## Contents
-* [Using `str_t` strings](https://github.com/kirillsaidov/vita/blob/master/wiki/page2.md#using-str_t-strings)
-* [Dynamic arrays with `vec_t`](https://github.com/kirillsaidov/vita/blob/master/wiki/page2.md#dynamic-arrays-with-vec_t)
-* [Matrices and 2d arrays with `mat_t` types](https://github.com/kirillsaidov/vita/blob/master/wiki/page2.md#matrices-and-2d-arrays-with-mat_t-types)
-* [A list of pointers with `plist_t`](https://github.com/kirillsaidov/vita/blob/master/wiki/page2.md#a-list-of-pointers-with-plist_t)
+* [Using `str_t` strings](page2.md#using-str_t-strings)
+* [Dynamic arrays with `vec_t`](page2.md#dynamic-arrays-with-vec_t)
+* [Matrices and 2d arrays with `mat_t` types](page2.md#matrices-and-2d-arrays-with-mat_t-types)
+* [A list of pointers with `plist_t`](page2.md#a-list-of-pointers-with-plist_t)
 
 ### Using `str_t` strings
 `Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [str_t](../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
@@ -142,9 +142,65 @@ vec_clear(v);
 vec_apply(v, func); // func(void *ptr, size_t index)
 ```
 
+For more details, please refer to [vec.h](../inc/vita/container/vec.h) or string [test_vec.c](../tests/src/test_vec.c) files.
+
 ### Matrices and 2d arrays with `mat_t` types
 
+```c
+const size_t rows = 3;
+const size_t cols = 4;
 
+// create/destroy a matrix instance
+mat_t *m = mat_create(rows, cols, sizeof(double));
+mat_destroy(m);
 
+// get matrix info
+const size_t m_rows = mat_rows(m);
+const size_t m_cols = mat_cols(m);
+const size_t m_size = mat_size(m); // rows * cols
 
+const size_t atRow = 2;
+const size_t atCol = 3;
+const double value = 25.3476;
 
+// set data
+mat_set(m, &value, atRow, atCol);
+mat_setd(m, 25.3476, atRow, atCol);
+
+// get data
+const double retValue = *(double*)mat_get(m, atRow, atCol);
+const double retValue = mat_getd(m, atRow, atCol);
+
+// manipulate data
+mat_t *mdup = mat_dup(m);   // copy
+mat_resize(m, 5, 5);        // mat_t*, rows, cols
+mat_apply(m, func);         // func(void *ptr, size_t row, size_t row)
+```
+
+For more details, please refer to [mat.h](../inc/vita/container/mat.h) or string [test_mat.c](../tests/src/test_mat.c) files.
+
+### A list of pointers with `plist_t`
+
+```c
+// create/destroy a pointer list instance
+plist_t *p = plist_create(5);   // allocate 5 elements
+plist_destroy(p);               // frees all elements with free()
+
+char *h = strdup("hello");
+char *w = strdup("world");
+
+// add/remove data
+plist_push(p, h);
+plist_push(p, w);
+plist_remove(p, 0, rs_fast);
+
+assert(plist_len(p) == 1);
+assert(plist_capacity(p) == 5);
+assert(plist_has_space(p) == 4);
+
+// basic operations
+plist_shrink(p);
+plist_reserve(p, 5);
+```
+
+For more details, please refer to [plist.h](../inc/vita/container/plist.h) or string [test_plist.c](../tests/src/test_plist.c) files.
