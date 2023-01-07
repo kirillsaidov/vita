@@ -77,7 +77,7 @@ Example: argopt --max 15 -s my/save/dir/ --verbose
 ```
 
 ## More examples
-Check out the [`tests/src`](tests/src) directory for usage examples or read more on [Vita Wiki](wiki/VITA.md).
+Check out the [`tests/src`](tests/src) directory for usage examples or read more on [Vita Wiki](docs/wiki/VITA.md).
 
 #### Dev-process
 You can also closely follow the development process in Trello [board](https://trello.com/b/MFeDGO8u/vita).
