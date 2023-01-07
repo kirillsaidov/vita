@@ -63,8 +63,8 @@ int32_t main(void) {
         { "--verbose", "-v", "verbose output", ARGOPT(verbose), dt_bool },
         { "--audio", "-a", "include audio", ARGOPT(audio), dt_bool },
 
-        { "--volume", "-vl", "volume level", ARGOPT(volume), dt_int },
-        { "--level", "-l", "output level", ARGOPT(level), dt_int },
+        { "--volume", "-vl", "volume level", ARGOPT(volume), dt_int32 },
+        { "--level", "-l", "output level", ARGOPT(level), dt_int32 },
 
         { "--update", "-ud", "update (y, n)", ARGOPT(update), dt_char },
         { "--upgrade", "-ug", "upgrade (y, n)", ARGOPT(upgrade), dt_char }

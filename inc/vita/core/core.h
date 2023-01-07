@@ -52,16 +52,6 @@
 
 // data types for internal usage
 enum DataType {
-    // system specific
-    dt_byte,    // will be treated the same as dt_int8
-    dt_ubyte,   // will be treated the same as dt_uint8
-    dt_short,   // will be treated the same as dt_int16
-    dt_ushort,  // will be treated the same as dt_uint16
-    dt_int,     // will be treated the same as dt_int32
-    dt_long,    // will be treated the same as dt_int64
-    dt_uint,    // will be treated the same as dt_uint32
-    dt_ulong,   // will be treated the same as dt_uint64
-
     // fixed size
     dt_int8,    // int8_t
     dt_uint8,   // uint8_t

@@ -127,37 +127,29 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     // save arg value
     switch(opt->optionType) {
         // int
-        case dt_byte:
         case dt_int8:
             *(int8_t*)(opt->optionValue) = (int8_t)conv_str_to_int64(value);
             break;
-        case dt_short:
         case dt_int16:
             *(int16_t*)(opt->optionValue) = (int16_t)conv_str_to_int64(value);
             break;
-        case dt_int:
         case dt_int32:
             *(int32_t*)(opt->optionValue) = (int32_t)conv_str_to_int64(value);
             break;
-        case dt_long:
         case dt_int64:
             *(int64_t*)(opt->optionValue) = conv_str_to_int64(value);
             break;
         
         // uint
-        case dt_ubyte:
         case dt_uint8:
             *(uint8_t*)(opt->optionValue) = (uint8_t)conv_str_to_uint64(value);
             break;
-        case dt_ushort:
         case dt_uint16:
             *(uint16_t*)(opt->optionValue) = (uint16_t)conv_str_to_uint64(value);
             break;
-        case dt_uint:
         case dt_uint32:
             *(uint32_t*)(opt->optionValue) = (uint32_t)conv_str_to_uint64(value);
             break;
-        case dt_ulong:
         case dt_uint64:
             *(uint64_t*)(opt->optionValue) = conv_str_to_uint64(value);
             break;
