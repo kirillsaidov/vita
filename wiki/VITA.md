@@ -3,11 +3,6 @@ Vita is a general purpose library for quick prototyping with C. It includes vari
 
 ## Contents
 1. [Building and using Vita](page1.md)
-
-Under construction:
-
 2. [Using Vita data structures](page2.md)
-3. [Working with paths and files](page3.md)
-4. [Logging](page4.md)
-5. [Parsing command line arguments](page5.md)
-6. [Debugging with Vita](page6.md)
+
+Read more on the [documentation page](../docs/html/index.html).
