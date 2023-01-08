@@ -18,7 +18,7 @@
     - path_rmdir_recurse
     - path_remove
     - path_rename
-    - path_expand_tilde
+    - path_expand_tilda
     - path_get_this_exe_location
 */
 
@@ -158,11 +158,11 @@ extern bool path_remove(const char *const z);
 */
 extern bool path_rename(const char *const z1, const char *const z2);
 
-/** Expands tilde `~` to HOMEPATH
+/** Expands tilda `~` to HOMEPATH
     @param z1 path
-    @returns a newly allocated `str_t` path with the expanded tilde `~` upon success, `NULL` otherwise
+    @returns a newly allocated `str_t` path with the expanded tilda `~` upon success, `NULL` otherwise
 */
-extern str_t *path_expand_tilde(const char *const z);
+extern str_t *path_expand_tilda(const char *const z);
 
 /** Returns executable path
     @returns `str_t*` upon success, `NULL` otherwise

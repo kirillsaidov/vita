@@ -1,14 +1,14 @@
 #include <assert.h>
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 12
+#define FILES_IN_DIR 11
 
 // helper functions
 void free_str(void *ptr, size_t i);
 
 // test functions
 void test_path(void);
-void test_expand_tilde(void);
+void test_expand_tilda(void);
 void test_selfpath(void);
 
 int main(void) {
@@ -17,7 +17,7 @@ int main(void) {
 
     // tests
     test_path();    
-    test_expand_tilde();
+    test_expand_tilda();
     test_selfpath();
 
     DEBUG_DEFAULT_QUIT();
@@ -43,18 +43,18 @@ void test_path(void) {
 
     #if defined(_WIN32) || defined(_WIN64)
         str_t *s = path_build(NULL, 4, "hello", "world", "media", "dev");
-        assert(str_equals(cstr(s), "hello\\world\\media\\dev\\"));
+        assert(str_equals(cstr(s), "hello\\world\\media\\dev"));
         str_free(s);
 
         str_t *cwd = path_getcwd(); {
-            assert(str_equals(cstr(cwd), "D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests"));
+            assert(str_equals(cstr(cwd), "D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests"));
         } str_free(cwd);
 
-        assert(path_exists("D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests"));
-        assert(path_is_dir("D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests\\src"));
-        assert(path_is_file("D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests\\src\\test_path.c"));
+        assert(path_exists("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests"));
+        assert(path_is_dir("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src"));
+        assert(path_is_file("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src\\test_path.c"));
 
-        plist_t *pdir = path_listdir(NULL, "D:\\myfiles\\media\\dev\\repos\\gitlab.kirill.saidov\\vita\\tests\\src", true); {
+        plist_t *pdir = path_listdir(NULL, "D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src", true); {
             assert(plist_len(pdir) == FILES_IN_DIR);
             plist_apply(pdir, free_str);
         } plist_destroy(pdir);
@@ -125,24 +125,24 @@ void test_path(void) {
     // assert(fs == 7077);
 }
 
-void test_expand_tilde(void) {
-    const char *z_path_tilde1 = "~/hello";
-    const char *z_path_tilde2 = "./~";
-    str_t *s_path_tilde1 = path_expand_tilde(z_path_tilde1);
-    str_t *s_path_tilde2 = path_expand_tilde(z_path_tilde2);    
+void test_expand_tilda(void) {
+    const char *z_path_tilda1 = "~/hello";
+    const char *z_path_tilda2 = "./~";
+    str_t *s_path_tilda1 = path_expand_tilda(z_path_tilda1);
+    str_t *s_path_tilda2 = path_expand_tilda(z_path_tilda2);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
-            assert(str_equals(cstr(s_path_tilde1), "C:\\Users\\Kirill Saidov/hello"));
+            assert(str_equals(cstr(s_path_tilda1), "C:\\Users\\Kirill Saidov/hello"));
         #elif defined(__linux__)
-            assert(str_equals(cstr(s_path_tilde1), "/home/kiril/hello"));
+            assert(str_equals(cstr(s_path_tilda1), "/home/kiril/hello"));
         #else
-            assert(str_equals(cstr(s_path_tilde1), "/Users/KS/hello"));
+            assert(str_equals(cstr(s_path_tilda1), "/Users/KS/hello"));
         #endif
 
-        assert(str_equals(cstr(s_path_tilde2), z_path_tilde2)); // since '~' does not start from [0] position, don't do anything
+        assert(str_equals(cstr(s_path_tilda2), z_path_tilda2)); // since '~' does not start from [0] position, don't do anything
     }
-    str_free(s_path_tilde1);
-    str_free(s_path_tilde2);
+    str_free(s_path_tilda1);
+    str_free(s_path_tilda2);
 }
 
 void test_selfpath(void) {

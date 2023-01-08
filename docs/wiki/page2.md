@@ -1,23 +1,22 @@
 # Using Vita containers
-In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 4 container types:
+In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 3 container types:
 
 ```
 * str_t     // similar to std::string
 * vec_t     // similar to std::vector or std::array
-* mat_t     // similar to 2d array or matrix
 * plist_t   // an array of pointers
 ```
 
-Every container is an alias of [`BaseContainerType`](../inc/vita/core/core.h#L115) struct.
+Every container is an alias of [`BaseContainerType`](../../inc/vita/core/core.h#L115) struct.
 
 ## Contents
 * [Using `str_t` strings](page2.md#using-str_t-strings)
 * [Dynamic arrays with `vec_t`](page2.md#dynamic-arrays-with-vec_t)
-* [Matrices and 2d arrays with `mat_t` types](page2.md#matrices-and-2d-arrays-with-mat_t-types)
+* [Using `vec_t` type as 2d array](page2.md#using-vec_t-type-as-2d-array)
 * [A list of pointers with `plist_t`](page2.md#a-list-of-pointers-with-plist_t)
 
 ### Using `str_t` strings
-`Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [str_t](../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
+`Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
 
 ### Creating strings
 ```c
@@ -92,7 +91,7 @@ str_strip("  hello, world\n   ");       // strips leading and tailing whitespace
 str_strip_punct(",. \n hello, world!")  // strips leading and tailing punctuation marks + whitespace and control symbols
 ```
 
-There are many more advanced functions available like `str_starts_with, str_index_of` and `str_capitalize`. For more details, please refer to [str.h](../inc/vita/container/str.h) or string [test_str.c](../tests/src/test_str.c) files.
+There are many more advanced functions available like `str_starts_with, str_index_of` and `str_capitalize`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or string [test_str.c](../../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vec_t`
 
@@ -142,42 +141,46 @@ vec_clear(v);
 vec_apply(v, func); // func(void *ptr, size_t index)
 ```
 
-For more details, please refer to [vec.h](../inc/vita/container/vec.h) or string [test_vec.c](../tests/src/test_vec.c) files.
+For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
 
-### Matrices and 2d arrays with `mat_t` types
+### Using `vec_t` type as 2d array
 
 ```c
-const size_t rows = 3;
-const size_t cols = 4;
+// rows and columns
+const size_t r = 5;
+const size_t c = 5;
 
-// create/destroy a matrix instance
-mat_t *m = mat_create(rows, cols, sizeof(double));
-mat_destroy(m);
+vec_t *vec2d = vec_create(r*c, sizeof(int32_t));
 
-// get matrix info
-const size_t m_rows = mat_rows(m);
-const size_t m_cols = mat_cols(m);
-const size_t m_size = mat_size(m); // rows * cols
+// right now it acts as a list, we need to set its length = r*c
+assert(vec_len(vec2d) == 0);
+assert(vec_capacity(vec2d) == r*c);
 
-const size_t atRow = 2;
-const size_t atCol = 3;
-const double value = 25.3476;
+// set vec2d length = r*c
+vec_resize(vec2d, r*c);
+assert(vec_len(vec2d) == r*c);
+assert(vec_capacity(vec2d) == r*c);
+assert(vec_has_space(vec2d) == 0);
 
-// set data
-mat_set(m, &value, atRow, atCol);
-mat_setd(m, 25.3476, atRow, atCol);
+// fill with 1s to create an Identity matrix
+vec_seti32(vec2d, 1, index_2d_to_1d(0, 0, w));
+vec_seti32(vec2d, 1, index_2d_to_1d(1, 1, w));
+vec_seti32(vec2d, 1, index_2d_to_1d(2, 2, w));
+vec_seti32(vec2d, 1, index_2d_to_1d(3, 3, w));
+vec_seti32(vec2d, 1, index_2d_to_1d(4, 4, w));
 
-// get data
-const double retValue = *(double*)mat_get(m, atRow, atCol);
-const double retValue = mat_getd(m, atRow, atCol);
+// check values along the diagonal of the Identity matrix
+assert(vec_geti32(vec2d, 0) == 1);
+assert(vec_geti32(vec2d, 6) == 1);
+assert(vec_geti32(vec2d, 12) == 1);
+assert(vec_geti32(vec2d, 18) == 1);
+assert(vec_geti32(vec2d, 24) == 1);
 
-// manipulate data
-mat_t *mdup = mat_dup(m);   // copy
-mat_resize(m, 5, 5);        // mat_t*, rows, cols
-mat_apply(m, func);         // func(void *ptr, size_t row, size_t row)
+// free resources
+vec_destroy(vec2d);
 ```
 
-For more details, please refer to [mat.h](../inc/vita/container/mat.h) or string [test_mat.c](../tests/src/test_mat.c) files.
+For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
 
 ### A list of pointers with `plist_t`
 
@@ -203,4 +206,4 @@ plist_shrink(p);
 plist_reserve(p, 5);
 ```
 
-For more details, please refer to [plist.h](../inc/vita/container/plist.h) or string [test_plist.c](../tests/src/test_plist.c) files.
+For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or string [test_plist.c](../../tests/src/test_plist.c) files.

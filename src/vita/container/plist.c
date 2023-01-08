@@ -82,7 +82,7 @@ void plist_destroy(plist_t *p) {
     plist_free(p);
 }
 
-plist_t *plist_from(const void *const ptr, const size_t n) {
+plist_t *plist_from(const void **const ptr, const size_t n) {
     plist_t *p = plist_create(n);
     if(p == NULL) {
         DEBUG_ASSERT(p != NULL, "Failed to create plit_t instance!");

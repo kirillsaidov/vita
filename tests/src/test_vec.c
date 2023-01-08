@@ -92,6 +92,31 @@ int main(void) {
         assert(vec_capacity(v) == 3);
         assert(vec_has_space(v) == 1);
     } vec_destroy(v);
+    
+    size_t w = 5, h = 5;
+    vec_t *vecmat = vec_create(w*h, sizeof(int32_t)); {
+        // right now it acts as a list, we need to set its length = w*h
+        assert(vec_len(vecmat) == 0);
+        assert(vec_capacity(vecmat) == w*h);
+
+        // set length to w*h
+        vec_resize(vecmat, w*h);
+        assert(vec_len(vecmat) == w*h);
+        assert(vec_capacity(vecmat) == w*h);
+        assert(vec_has_space(vecmat) == 0);
+
+        vec_seti32(vecmat, 1, index_2d_to_1d(0, 0, w));
+        vec_seti32(vecmat, 1, index_2d_to_1d(1, 1, w));
+        vec_seti32(vecmat, 1, index_2d_to_1d(2, 2, w));
+        vec_seti32(vecmat, 1, index_2d_to_1d(3, 3, w));
+        vec_seti32(vecmat, 1, index_2d_to_1d(4, 4, w));
+        
+        assert(vec_geti32(vecmat, 0) == 1);
+        assert(vec_geti32(vecmat, 6) == 1);
+        assert(vec_geti32(vecmat, 12) == 1);
+        assert(vec_geti32(vecmat, 18) == 1);
+        assert(vec_geti32(vecmat, 24) == 1);
+    } vec_destroy(vecmat);
 
     DEBUG_DEFAULT_QUIT();
     return 0;

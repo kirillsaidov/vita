@@ -18,7 +18,12 @@ str_t *path_build(str_t *const s, const size_t n, ...) {
         z = va_arg(args, char*);
         
         str_append(st, z);
-        str_append(st, PATH_SEPARATOR);
+
+        // do not append path separator at the very end,
+        // since the last element may be a file, not a directory
+        if(i < n-1) {
+            str_append(st, PATH_SEPARATOR);
+        }
     }
     va_end(args);
 
@@ -448,17 +453,17 @@ bool path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
-str_t *path_expand_tilde(const char *const z) {
+str_t *path_expand_tilda(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return NULL;
     }
 
-    // find tilde `~`
-    str_t *s_tilde = str(z);
-    const int64_t tilde_pos = str_index_of(s_tilde, '~');
-    if(str_len(s_tilde) < 1 || tilde_pos != 0) {
-        return s_tilde;
+    // find tilda `~`
+    str_t *s_tilda = str(z);
+    const int64_t tilda_pos = str_index_of(s_tilda, '~');
+    if(str_len(s_tilda) < 1 || tilda_pos != 0) {
+        return s_tilda;
     }
     
     // get HOME path
@@ -471,14 +476,14 @@ str_t *path_expand_tilde(const char *const z) {
 
     if(z_homepath == NULL) {
         DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'HOME\' was not found, returning as-is!");
-        return s_tilde;
+        return s_tilda;
     }
 
-    // expand tilde
-    str_remove(s_tilde, 0, 1);                  // remove tilde
-    str_insert(s_tilde, z_homepath, tilde_pos); // insert HOME path inplace of tilde
+    // expand tilda
+    str_remove(s_tilda, 0, 1);                  // remove tilda
+    str_insert(s_tilda, z_homepath, tilda_pos); // insert HOME path inplace of tilda
 
-    return s_tilde;
+    return s_tilda;
 }
 
 str_t *path_get_this_exe_location(void) {
