@@ -2,8 +2,8 @@
 This is a list of guidelines that I adhere to while developing Vita library.
 
 ## Naming
-#### Variables
-Use `camelCase` for mutable variables and UPPER_CASE for const.
+### Variables
+Use `camelCase` for variables. If needed, UPPER_CASE for const.
 
 ```C
 int helloWorld;                 // local
@@ -14,7 +14,7 @@ const int width/WIDTH = 320;    // const
 #define HEIGHT = 160;           // defines
 ```
 
-#### Structs and Enums
+### Structs and Enums
 Use `PascalCase` when naming structs and `camelCase` for struct members.
 
 ```C
@@ -24,7 +24,7 @@ struct BlackBox {
 };
 ```
 
-Use capital letters of an enum as a prefix for enum members.
+Use capital letters of an enum as a prefix for enum members. Enums may be `ALL_CAPS`, but I prefer `lower_underscore_case` style. 
 
 ```C
 enum WorldElements { // (W)orld (E)elements => we_enum_name
@@ -36,14 +36,16 @@ enum WorldElements { // (W)orld (E)elements => we_enum_name
 }
 ```
 
-#### Functions
-Module/File name should be prepended to functions.
+Don't `typedef` enums! 
+
+### Functions
+Project_Module/File name should be prepended to functions. The `project_` acts as a namespace to dissambiguate between other library functionality. 
 
 ```C
-void module_function_name(struct BlackBox* blackBox);
+void project_module_function_name(struct BlackBox* blackBox);
 ```
 
-#### Macros
+### Macros
 Use `UPPER_UNDERSCORE_CASE` for macros.
 
 ```C
@@ -51,8 +53,8 @@ Use `UPPER_UNDERSCORE_CASE` for macros.
 #define MAX(a, b) (((a)>(b)) ? (a) : (b))
 ```
 
-#### Typedefs
-If `struct` or an `enum` is `typedef`'ed, then `_t` must be appended at the end; if it's a pointer, then `_ptr` should be appended instead.
+### Typedefs
+`struct` should be `typedef`'ed with `_t` appended at the end.
 
 ```C
 typedef struct BlackBox {
@@ -60,17 +62,19 @@ typedef struct BlackBox {
 } bbox_t;
 ```
 
-#### Header guards
+### Header guards
 Always prepend project name to the header guard to avoid name collisions.
 
 ```C
-#ifndef BLACKBOX_HEADER_H
-#define BLACKBOX_HEADER_H
+#ifndef BLACKBOX_MYSTERY_H
+#define BLACKBOX_MYSTERY_H
 
-// In this case BLACKBOX is a project name
+// In this case BLACKBOX is a project name and MYSTERY is a module name
 
-#endif // BLACKBOX_HEADER_H
+#endif // BLACKBOX_MYSTERY_H
 ```
+
+---
 
 ## Separating code into .h and .c
 * private variables and functions should be marked as `static` and placed into `.c` file, in the same order
@@ -79,7 +83,7 @@ Always prepend project name to the header guard to avoid name collisions.
 
 ## Coding style
 
-#### Variable declaration
+### Variable declaration
 Always initialize variables upon declaration, even if you reinitialize them later;
 
 ```C
@@ -96,7 +100,7 @@ float d = 0;
 ```
 
 #### Braces
-Always use curly braces (explicit scope {} is better)
+Always use curly braces (explicit scope `{...}` is better)
 
 ```C
 // don't:
@@ -167,21 +171,21 @@ Use `#if` instead of `#ifdef`.
 #endif
 
 // do:
-#if DEBUG
+#if defined(DEBUG)
     // debug code
 #endif
 ```
 
-When setting a macro variable outside a program, `#if` will always pick it up, `#ifdef` won't.
+When setting a macro variable outside a program, `#if` will always pick it up, `#ifdef` won't. 
 
 ```C
 gcc ... -DEBUG=0
 ```
 
-To test whether a symbol is defined use `#if defined(...)`:
+More over, the former allows for compound confiditons, where as the latter accepts only one condition. To test whether a symbol is defined use `#if defined(...)`:
 
 ```C
-#if defined(WIN32)
+#if defined(_WIN32) || defined(_WIN64)
     // code
 #endif
 ```

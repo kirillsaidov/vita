@@ -2,153 +2,153 @@
 #define VITA_PLIST_H
 
 /** VITA_PLIST MODULE (dynamic array(list) of pointers)
-    - plist_new
-    - plist_ctor
-    - plist_dtor
-    - plist_free
-    - plist_create
-    - plist_destroy
-    - plist_len
-    - plist_capacity
-    - plist_has_space
-    - plist_is_empty
-    - plist_reserve
-    - plist_shrink
-    - plist_clear
-    - plist_set
-    - plist_get
-    - plist_push
-    - plist_pop
-    - plist_pop_get
-    - plist_remove
-    - plist_apply
+    - vt_plist_new
+    - vt_plist_ctor
+    - vt_plist_dtor
+    - vt_plist_free
+    - vt_plist_create
+    - vt_plist_destroy
+    - vt_plist_len
+    - vt_plist_capacity
+    - vt_plist_has_space
+    - vt_plist_is_empty
+    - vt_plist_reserve
+    - vt_plist_shrink
+    - vt_plist_clear
+    - vt_plist_set
+    - vt_plist_get
+    - vt_plist_push
+    - vt_plist_pop
+    - vt_plist_pop_get
+    - vt_plist_remove
+    - vt_plist_apply
 */
 
 #include "../core/core.h"
 #include "../util/debug.h"
 
 // new pointer list type
-typedef struct BaseContainerType plist_t;
+typedef struct BaseContainerType vt_plist_t;
 
-/** Allocates memory for plist_t
-    @returns `plist_t*` upon success, `NULL` upon failure
+/** Allocates memory for vt_plist_t
+    @returns `vt_plist_t*` upon success, `NULL` upon failure
 */
-extern plist_t *plist_new(void);
+extern vt_plist_t *vt_plist_new(void);
 
-/** Constructs plist_t
-    @param p plist_t instance
+/** Constructs vt_plist_t
+    @param p vt_plist_t instance
     @param n number of elements
 
     @returns enum VitaError
 */
-extern enum VitaError plist_ctor(plist_t *p, const size_t n);
+extern enum VitaError vt_plist_ctor(vt_plist_t *p, const size_t n);
 
-/** Destroys contents of plist_t
-    @param p plist_t instance
+/** Destroys contents of vt_plist_t
+    @param p vt_plist_t instance
     @returns enum VitaError
 */
-extern void plist_dtor(plist_t *p);
+extern void vt_plist_dtor(vt_plist_t *p);
 
-/** Frees the plist_t instance
-    @param p plist_t pointer
+/** Frees the vt_plist_t instance
+    @param p vt_plist_t pointer
 */
-extern void plist_free(plist_t *p);
+extern void vt_plist_free(vt_plist_t *p);
 
-/** Allocates and constructs plist_t
+/** Allocates and constructs vt_plist_t
     @param n number of elements
-    @returns `plist_t*` upon success, `NULL` otherwise
+    @returns `vt_plist_t*` upon success, `NULL` otherwise
 */
-extern plist_t *plist_create(const size_t n);
+extern vt_plist_t *vt_plist_create(const size_t n);
 
-/** Deallocates and destroys plist_t
-    @param p plist_t pointer
+/** Deallocates and destroys vt_plist_t
+    @param p vt_plist_t pointer
 */
-extern void plist_destroy(plist_t *p);
+extern void vt_plist_destroy(vt_plist_t *p);
 
-/** Allocates and constructs plist_t from an array
+/** Allocates and constructs vt_plist_t from an array
     @param ptr array 
     @param n number of elements
 
-    @returns `plist_t*` upon success, `NULL` otherwise
+    @returns `vt_plist_t*` upon success, `NULL` otherwise
 
     @note 
-        If ptr == NULL, returns an empty `plist_t` instance
+        If ptr == NULL, returns an empty `vt_plist_t` instance
 */
-extern plist_t *plist_from(const void **const ptr, const size_t n);
+extern vt_plist_t *vt_plist_from(const void **const ptr, const size_t n);
 
 /** Returns length, capacity, available space (capacity - length)
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @returns size_t (length, capacity, available space (capacity - length))
 */
-extern size_t plist_len(const plist_t *const p);
-extern size_t plist_capacity(const plist_t *const p);
-extern size_t plist_has_space(const plist_t *const p);
+extern size_t vt_plist_len(const vt_plist_t *const p);
+extern size_t vt_plist_capacity(const vt_plist_t *const p);
+extern size_t vt_plist_has_space(const vt_plist_t *const p);
 
 /** Checks if length == 0
     @param p vec_t instance
     @returns `true` if length == 0
 */
-extern bool plist_is_empty(const plist_t *const p);
+extern bool vt_plist_is_empty(const vt_plist_t *const p);
 
 /** Reserves additional memory of n elements
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @param n number of elements
 
     @returns enum VitaError
 */
-extern enum VitaError plist_reserve(plist_t *const p, const size_t n);
+extern enum VitaError vt_plist_reserve(vt_plist_t *const p, const size_t n);
 
-/** Shrinks plist_t capacity to its length
-    @param p plist_t pointer
+/** Shrinks vt_plist_t capacity to its length
+    @param p vt_plist_t pointer
     @returns enum VitaError
 */
-extern enum VitaError plist_shrink(plist_t *const p);
+extern enum VitaError vt_plist_shrink(vt_plist_t *const p);
 
-/** Sets plist_t length to 0
-    @param p plist_t pointer
+/** Sets vt_plist_t length to 0
+    @param p vt_plist_t pointer
     @returns enum VitaError
 */
-extern enum VitaError plist_clear(plist_t *const p);
+extern enum VitaError vt_plist_clear(vt_plist_t *const p);
 
 /** Assigns a new pointer at an index
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @param ptr pointer value
     @param at index
 
     @returns enum VitaError
 */
-extern enum VitaError plist_set(plist_t *const p, const void *const ptr, const size_t at);
+extern enum VitaError vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at);
 
 /** Returns a pointer at an index
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @param at index
 
     @returns void* pointer
 */
-extern void *plist_get(const plist_t *const p, const size_t at);
+extern void *vt_plist_get(const vt_plist_t *const p, const size_t at);
 
 /** Push value at the end
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @param ptr pointer value
 
     @returns enum VitaError
 */
-extern enum VitaError plist_push(plist_t *const p, const void *const ptr);
+extern enum VitaError vt_plist_push(vt_plist_t *const p, const void *const ptr);
 
 /** Pop the last value from the end
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @returns enum VitaError
 */
-extern enum VitaError plist_pop(plist_t *const p);
+extern enum VitaError vt_plist_pop(vt_plist_t *const p);
 
 /** Get and pop the last value from the end
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @returns void*
 */
-extern void *plist_pop_get(plist_t *const p);
+extern void *vt_plist_pop_get(vt_plist_t *const p);
 
 /** Removes a pointer from a plist
-    @param p plist_t pointer
+    @param p vt_plist_t pointer
     @param at index
 
     @returns enum VitaError
@@ -158,13 +158,13 @@ extern void *plist_pop_get(plist_t *const p);
         rs_stable: shifts all values by element size
           rs_fast: swaps the last value with the value of `at`
 */
-extern enum VitaError plist_remove(plist_t *const p, const size_t at, const enum RemoveStrategy rs);
+extern enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
 
 /** Calls the specified function on each element
-    @param p plist_t instance
+    @param p vt_plist_t instance
     @param func function to execute upon each element: func(pointer, for loop index)
 */
-extern void plist_apply(const plist_t *const p, void (*func)(void*, size_t));
+extern void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t));
 
 
 #endif // VITA_PLIST_H

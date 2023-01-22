@@ -1,6 +1,6 @@
 #include "vita/system/path.h"
 
-str_t *path_build(str_t *const s, const size_t n, ...) {
+str_t *vt_path_build(str_t *const s, const size_t n, ...) {
     // create a new str_t instance and append
     str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
@@ -30,7 +30,7 @@ str_t *path_build(str_t *const s, const size_t n, ...) {
     return st;
 }
 
-str_t *path_build_n(str_t *const s, const plist_t *const p) {
+str_t *vt_path_build_n(str_t *const s, const plist_t *const p) {
     if(p == NULL) {
         DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");
         return NULL;
@@ -68,11 +68,11 @@ str_t *path_build_n(str_t *const s, const plist_t *const p) {
     return st;
 }
 
-str_t *path_getcwd(void) {
+str_t *vt_path_getcwd(void) {
     return str_take_ownership(getcwd(NULL, 0));
 }
 
-bool path_exists(const char *const z) {
+bool vt_path_exists(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
@@ -82,7 +82,7 @@ bool path_exists(const char *const z) {
     return (stat(z, &info) == 0);
 }
 
-bool path_is_dir(const char *const z) {
+bool vt_path_is_dir(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
@@ -93,7 +93,7 @@ bool path_is_dir(const char *const z) {
     return (stat(z, &info) == 0 && S_ISDIR(info.st_mode));
 }
 
-bool path_is_file(const char *const z) {
+bool vt_path_is_file(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return false;
@@ -104,8 +104,8 @@ bool path_is_file(const char *const z) {
     return (stat(z, &info) == 0 && S_ISREG(info.st_mode));
 }
 
-int64_t path_get_file_size(const char *const z) {
-    if(z == NULL || !path_exists(z)) {
+int64_t vt_path_get_file_size(const char *const z) {
+    if(z == NULL || !vt_path_exists(z)) {
         return -1;
     }
     
@@ -133,9 +133,9 @@ int64_t path_get_file_size(const char *const z) {
     return file_size;
 }
 
-plist_t *path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
-    if(!path_exists(z)) {
-        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
+plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+    if(!vt_path_exists(z)) {
+        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return NULL;
     }
 
@@ -174,9 +174,9 @@ plist_t *path_listdir(plist_t *const p, const char *const z, const bool ignoreDo
     return pl;
 }
 
-plist_t *path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
-    if(!path_exists(z)) {
-        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
+plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+    if(!vt_path_exists(z)) {
+        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return NULL;
     }
     
@@ -215,8 +215,8 @@ plist_t *path_listdir_recurse(plist_t *const p, const char *const z, const bool 
         plist_push(pl, s);
 
         // check if current path is a directory
-        if(path_is_dir(cstr(s))) {
-            path_listdir_recurse(pl, cstr(s), ignoreDotFiles);
+        if(vt_path_is_dir(cstr(s))) {
+            vt_path_listdir_recurse(pl, cstr(s), ignoreDotFiles);
         }
     }
 
@@ -225,7 +225,7 @@ plist_t *path_listdir_recurse(plist_t *const p, const char *const z, const bool 
     return pl;
 }
 
-str_t *path_basename(str_t *const s, const char *const z) {
+str_t *vt_path_basename(str_t *const s, const char *const z) {
     if(z == NULL) {
         return NULL;
     }
@@ -258,14 +258,14 @@ str_t *path_basename(str_t *const s, const char *const z) {
     return st;
 }
 
-bool path_mkdir(const char *const z) {
+bool vt_path_mkdir(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
     // if directory exists, don't do anything
-    if(path_exists(z)) {
+    if(vt_path_exists(z)) {
         return true;
     }
 
@@ -284,14 +284,14 @@ bool path_mkdir(const char *const z) {
     #endif
 }
 
-bool path_mkdir_parents(const char *const z) {
+bool vt_path_mkdir_parents(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
     // if directory exists, don't do anything
-    if(path_exists(z)) {
+    if(vt_path_exists(z)) {
         return true;
     }
 
@@ -307,7 +307,7 @@ bool path_mkdir_parents(const char *const z) {
         DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
 
         status = false;
-        goto path_mkdir_parents_cleanup;
+        goto vt_path_mkdir_parents_cleanup;
     }
 
     // create a fullpath variable
@@ -316,7 +316,7 @@ bool path_mkdir_parents(const char *const z) {
         DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
 
         status = false;
-        goto path_mkdir_parents_cleanup;
+        goto vt_path_mkdir_parents_cleanup;
     }
 
     // set len to 0
@@ -326,7 +326,7 @@ bool path_mkdir_parents(const char *const z) {
     dir_list = str_split(NULL, s, PATH_SEPARATOR);
     if(dir_list == NULL) {
         status = false;
-        goto path_mkdir_parents_cleanup;
+        goto vt_path_mkdir_parents_cleanup;
     }
 
     // make directories with parents
@@ -340,10 +340,10 @@ bool path_mkdir_parents(const char *const z) {
         str_append(sfull, PATH_SEPARATOR);
         
         // make that directory
-        path_mkdir(cstr(sfull));
+        vt_path_mkdir(cstr(sfull));
     }
 
-path_mkdir_parents_cleanup:
+vt_path_mkdir_parents_cleanup:
     // free the strings
     str_free(s);
     str_free(sfull);
@@ -363,10 +363,10 @@ path_mkdir_parents_cleanup:
     return status;
 }
 
-bool path_rmdir(const char *const z) {
-    if(z == NULL || !path_exists(z)) {
+bool vt_path_rmdir(const char *const z) {
+    if(z == NULL || !vt_path_exists(z)) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
+        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -379,10 +379,10 @@ bool path_rmdir(const char *const z) {
     #endif
 }
 
-bool path_rmdir_recurse(const char *const z) {
-    if(z == NULL || !path_exists(z)) {
+bool vt_path_rmdir_recurse(const char *const z) {
+    if(z == NULL || !vt_path_exists(z)) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
+        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -391,10 +391,10 @@ bool path_rmdir_recurse(const char *const z) {
 
     // get all files in a directory
     // if none are found, delete the directory and return
-    plist_t *dir_list = path_listdir_recurse(NULL, z, false);
+    plist_t *dir_list = vt_path_listdir_recurse(NULL, z, false);
     if(dir_list == NULL || !plist_len(dir_list)) {
-        status = path_rmdir(z);
-        goto path_rmdir_recurse_cleanup;
+        status = vt_path_rmdir(z);
+        goto vt_path_rmdir_recurse_cleanup;
     }
     
     // iterate starting from the end and remove each element
@@ -402,17 +402,17 @@ bool path_rmdir_recurse(const char *const z) {
     str_t *s = NULL;
     while((s = (str_t*)(plist_pop_get(dir_list))) != NULL) {
         // remove file/directory
-        status = path_is_dir(cstr(s)) ? path_rmdir(cstr(s)) : path_remove(cstr(s));
+        status = vt_path_is_dir(cstr(s)) ? vt_path_rmdir(cstr(s)) : vt_path_remove(cstr(s));
         
         // free str_t instance
         str_free(s);
 
         if(!status) {
-            goto path_rmdir_recurse_cleanup;
+            goto vt_path_rmdir_recurse_cleanup;
         }  
     }
 
-path_rmdir_recurse_cleanup:
+vt_path_rmdir_recurse_cleanup:
     // free all strings in dir_list
     if(dir_list != NULL) {
         const size_t dirLen = plist_len(dir_list);
@@ -428,21 +428,21 @@ path_rmdir_recurse_cleanup:
     return status;
 }
 
-bool path_remove(const char *const z) {
-    if(z == NULL || !path_exists(z)) {
+bool vt_path_remove(const char *const z) {
+    if(z == NULL || !vt_path_exists(z)) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(path_exists(z), "Path does not exist %s!", z);
+        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
     return (remove(z) == 0);
 }
 
-bool path_rename(const char *const z1, const char *const z2) {
-    if(z1 == NULL || z2 == NULL || !path_exists(z1)) {
+bool vt_path_rename(const char *const z1, const char *const z2) {
+    if(z1 == NULL || z2 == NULL || !vt_path_exists(z1)) {
         DEBUG_ASSERT(z1 != NULL, "Path/File (z1) supplied is NULL!");
         DEBUG_ASSERT(z2 != NULL, "Path/File (z2) supplied is NULL!");
-        DEBUG_ASSERT(path_exists(z1), "Path/File does not exist %s!", z1);
+        DEBUG_ASSERT(vt_path_exists(z1), "Path/File does not exist %s!", z1);
         return false;
     }
 
@@ -453,7 +453,7 @@ bool path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
-str_t *path_expand_tilda(const char *const z) {
+str_t *vt_path_expand_tilda(const char *const z) {
     if(z == NULL) {
         DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return NULL;
@@ -486,7 +486,7 @@ str_t *path_expand_tilda(const char *const z) {
     return s_tilda;
 }
 
-str_t *path_get_this_exe_location(void) {
+str_t *vt_path_get_this_exe_location(void) {
     str_t *spath = strn_empty(PATH_MAX);
     if (spath == NULL) {
         DEBUG_ASSERT(spath != NULL, "Failed to allocate str_t instance!");

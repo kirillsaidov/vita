@@ -3,18 +3,18 @@
 
 /** VITA_CORE MODULE
  * Macros:
-    - STRINGOF
-    - AS
+    - VT_PCAT
+    - VT_STRINGOF
+    - VT_AS
 
  * Functions:
-    - bct_head
-    - bct_len
-    - bct_capacity
-    - bct_rows
-    - bct_cols
-    - bct_elsize
-    - gswap
-    - get_current_timestamp
+    - vt_bct_head
+    - vt_bct_len
+    - vt_bct_capacity
+    - vt_bct_elsize
+    - vt_gswap
+    - vt_get_current_timestamp
+    - vt_get_vita_error_str
 */
 
 #include <stdio.h>
@@ -40,87 +40,91 @@
 #endif
 
 // useful macros
-#define DEFAULT_INIT_ELEMENTS 10
-#define CONTAINER_GROWTH_RATE 2
+#define VT_DEFAULT_INIT_ELEMENTS 10
+#define VT_CONTAINER_GROWTH_RATE 2
 
-#define i_PCAT_NX(x, y) x ## y        // preprocessor concatenation
-#define i_STR_EXPAND(x) #x            // expands macros to its value
+// this is needed in order to properly expand macros if one macro is inserted into another
+#define VT_i_PCAT_NX(x, y) x ## y           // preprocessor concatenation
+#define VT_i_STR_EXPAND(x) #x               // expands macros to its value
 
-#define PCAT(x, y) i_PCAT_NX(x, y)    // preprocessor concatenation
-#define STRINGOF(x) i_STR_EXPAND(x)   // converts to string
-#define AS(type, x) ((type)(x))       // cast
+#define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
+#define VT_STRINGOF(x) VT_i_STR_EXPAND(x)   // converts to string
+#define VT_AS(type, x) ((type)(x))          // cast
 
 // data types for internal usage
-enum DataType {
+enum VitaDataType {
     // fixed size
-    dt_int8,    // int8_t
-    dt_uint8,   // uint8_t
-    dt_int16,   // int16_t
-    dt_uint16,  // uint16_t
-    dt_int32,   // int32_t
-    dt_uint32,  // uint32_t
-    dt_int64,   // int64_t
-    dt_uint64,  // uint64_t
+    vt_dt_int8,     // int8_t
+    vt_dt_uint8,    // uint8_t
+    vt_dt_int16,    // int16_t
+    vt_dt_uint16,   // uint16_t
+    vt_dt_int32,    // int32_t
+    vt_dt_uint32,   // uint32_t
+    vt_dt_int64,    // int64_t
+    vt_dt_uint64,   // uint64_t
 
     // floats
-    dt_float,   // float
-    dt_double,  // double
+    vt_dt_float,    // float
+    vt_dt_double,   // double
+    vt_dt_real,     // long double
 
     // other
-    dt_bool,    // bool
-    dt_char,    // char
-    dt_str,     // str_t
-    dt_cstr,    // char*
-    dt_unknown, // unknown data type
-    dt_count    // number of elements
+    vt_dt_bool,     // bool
+    vt_dt_char,     // char
+    vt_dt_zstr,     // char*
+
+    // vita
+    vt_dt_str,      // str_t
+    vt_dt_vec,      // vec_t
+    vt_dt_plist,    // plist_t
+
+    vt_dt_unknown,  // unknown data type
+    vt_dt_count     // number of elements
 };
 
+// float, double, real 
+typedef long double real;
+
 // removing elements from array
-enum RemoveStrategy {
-    rs_stable,  // keep ordering
-    rs_fast,    // ordering doesn't matter
-    rs_count    // number of elements
+enum VitaRemoveStrategy {
+    vt_rs_stable,  // keep ordering
+    vt_rs_fast,    // ordering doesn't matter
+    vt_rs_count    // number of elements
 };
 
 // define vita errors
-#define i_GENERATE_VITA_ERRORS(apply) \
-    apply(ve_error_is_null)                     /* element wasn't initialized or is NULL */ \
-    apply(ve_error_allocation)                  /* failed to allocate or reallocate memory */ \
-    apply(ve_error_incompatible_datatype)       /* working with different datatypes */ \
-    apply(ve_error_out_of_bounds_access)        /* accessing memory beyond allocated size */ \
-    apply(ve_error_invalid_size)                /* invalid container element size */ \
-    apply(ve_operation_failure)                 /* failed to perform an action */ \
-    apply(ve_operation_success)                 /* all good */ \
-    apply(ve_operation_element_not_found)       /* element was not found */ \
-    apply(ve_count)                             /* number of elements */
+#define VT_i_GENERATE_VITA_ERRORS(apply) \
+    apply(vt_ve_error_is_null)                      /* element wasn't initialized or is NULL */ \
+    apply(vt_ve_error_allocation)                   /* failed to allocate or reallocate memory */ \
+    apply(vt_ve_error_invalid_arguments)            /* invalid arguments supplied */ \
+    apply(vt_ve_error_out_of_memory)                /* not enough memory/space, allocate more */ \
+    apply(vt_ve_error_out_of_bounds_access)         /* accessing memory beyond allocated size */ \
+    apply(vt_ve_error_incompatible_datatype)        /* working with different datatypes */ \
+    apply(vt_ve_operation_failure)                  /* failed to perform an action */ \
+    apply(vt_ve_operation_success)                  /* all good */ \
+    apply(vt_ve_operation_element_not_found)        /* element was not found */ \
+    apply(vt_ve_count)                              /* number of elements */
 
 // generate vita errors enum
 #define X(a) a,
 enum VitaError {
-    i_GENERATE_VITA_ERRORS(X)
+    VT_i_GENERATE_VITA_ERRORS(X)
 };
 #undef X
 
 // base container type for all primitives
-struct BaseContainerType {
+struct VitaBaseContainerType {
+    // data pointers
     union {
         void *ptr;
         void **ptr2;
     };
 
-    union {
-        struct {
-            size_t len;
-            size_t capacity;
-        };
-
-        struct {
-            size_t rows;
-            size_t cols;
-        };
-    };
-
-    size_t elsize;
+    // data information
+    size_t len;         // container length
+    size_t capacity;    // container capacity
+    size_t elsize;      // container element size
+    size_t slider_idx;  // container slider that adjusts where ptr points to
 };
 
 /* ------------- BASE CONTAINER TYPE ------------- */
@@ -129,37 +133,25 @@ struct BaseContainerType {
     @param bct BaseContainerType ptr instance
     @returns `NULL` upon failure
 */
-extern void *bct_head(const struct BaseContainerType *const bct);
+extern void *vt_bct_head(const struct VitaBaseContainerType *const bct);
 
-/** Returns BaseContainerType's length
+/** Returns BaseContainerType's length    
     @param bct BaseContainerType ptr
     @returns length
 */
-extern size_t bct_len(const struct BaseContainerType *const bct);
+extern size_t vt_bct_len(const struct VitaBaseContainerType *const bct);
 
 /** Returns BaseContainerType's capacity
     @param bct BaseContainerType ptr
     @returns capacity
 */
-extern size_t bct_capacity(const struct BaseContainerType *const bct);
-
-/** Returns BaseContainerType's rows
-    @param bct BaseContainerType ptr
-    @returns rows
-*/
-extern size_t bct_rows(const struct BaseContainerType *const bct);
-
-/** Returns BaseContainerType's cols
-    @param bct BaseContainerType ptr
-    @returns cols
-*/
-extern size_t bct_cols(const struct BaseContainerType *const bct);
+extern size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct);
 
 /** Returns BaseContainerType's element size
     @param bct BaseContainerType ptr
     @returns element size
 */
-extern size_t bct_elsize(const struct BaseContainerType *const bct);
+extern size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct);
 
 /** Maps a 2d index to 1d index
     @param row row index
@@ -167,7 +159,7 @@ extern size_t bct_elsize(const struct BaseContainerType *const bct);
     @param ncols number of columns (horizontal width)
     @returns size_t 1d index
 */
-extern size_t index_2d_to_1d(const size_t row, const size_t col, const size_t ncols);
+extern size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t ncols);
 
 /** Maps a 1d index to 2d index
     @param row row index to save the value
@@ -175,7 +167,7 @@ extern size_t index_2d_to_1d(const size_t row, const size_t col, const size_t nc
     @param idx 1d index to convert to 2d
     @param ncols number of columns (horizontal width)
 */
-extern void index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
+extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
@@ -186,17 +178,20 @@ extern void index_1d_to_2d(size_t *const row, size_t *const col, const size_t id
 
     @returns `true` upon success
 */
-extern bool gswap(void* a, void* b, const size_t elsize);
+extern bool vt_gswap(void* a, void* b, const size_t elsize);
 
 /** Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
-    @param timebuf to store timestamp data with len 21 chars
+    @param timebuf to store timestamp data
+    @param len timebuf length
+
+    @note len must be >= 21 chars! Otherwise, it returns doing nothing.
 */
-extern void get_current_timestamp(char *timebuf, const size_t len);
+extern void vt_get_current_timestamp(char *timebuf, const size_t len);
 
 /** Returns a vita error string from vita error code
     @param e vita error code
     @returns c string upon success, `NULL` otherwise
 */
-extern const char *get_vita_error_str(const enum VitaError e);
+extern const char *vt_get_vita_error_str(const enum VitaError e);
 
 #endif // VITA_CORE_H
