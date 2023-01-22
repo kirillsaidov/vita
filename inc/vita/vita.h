@@ -10,7 +10,6 @@
 #include "core/version.h"
 
 #include "container/vec.h"
-#include "container/mat.h"
 #include "container/str.h"
 #include "container/plist.h"
 
