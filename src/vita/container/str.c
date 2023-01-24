@@ -1,10 +1,14 @@
 #include "vita/container/str.h"
 
 // static functions for internal usage
-static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args);
+static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args);
 
-str_t str_make_on_stack(const char *const z) {
-    str_t s = {
+vt_str_t vt_str_make_on_stack(const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // create vt_str_t instance
+    vt_str_t s = {
         .ptr = (void*)z,
         .len = strlen(z),
         .elsize = sizeof(char)
@@ -13,60 +17,67 @@ str_t str_make_on_stack(const char *const z) {
     return s;
 }
 
-str_t *str(const char *z) {
-    if(z == NULL) {
-        z = "";
-    }
+vt_str_t *vt_str(const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // create str
-    str_t *s = strn(strlen(z));
+    vt_str_t *s = vt_strn(strlen(z));
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "Failed to allocate str_t instance!");
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
     // set z to str
-    if(str_set(s, z) != ve_operation_success) {
-        DEBUG_ASSERT(0, "Failed to copy \"%s\" to str_t!", z);
-
-        str_free(s);
+    if(vt_str_set(s, z) != ve_operation_success) {
+        VT_DEBUG_PRINTF("Failed to copy \"%s\" to vt_str_t!", z);
+        vt_str_free(s);
         return NULL;
     }
 
     return s;
 }
 
-str_t *str_fmt(str_t *s, const char *const fmt, ...) {
-    if(fmt == NULL || (s == NULL && (s = strn(DEFAULT_INIT_ELEMENTS)) == NULL)) {
-        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+vt_str_t *vt_str_fmt(vt_str_t *s, const char *const fmt, ...) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // allocate s if s == NULL
+    if(s == NULL && (s = vt_strn(DEFAULT_INIT_ELEMENTS)) == NULL) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return s;
     }
 
-    // clear str_t
-    str_clear(s);
+    // clear vt_str_t
+    if(vt_str_clear(s) != vt_ve_operation_success) {
+        VT_DEBUG_PRINTF("Failed to clear out the string!\n");
+        return s;
+    }
 
     // append all data
     va_list args; va_start(args, fmt);
-    s = str_vfmt(s, fmt, args);
+    s = vt_str_vfmt(s, fmt, args);
     va_end(args);
 
     return s;
 }
 
-str_t *strn(const size_t n) {
-    // allocate memory for a str_t struct
-    str_t *s = DEBUG_CALLOC(sizeof(str_t));
+vt_str_t *vt_strn(const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // allocate memory for a vt_str_t struct
+    vt_str_t *s = VT_DEBUG_CALLOC(sizeof(vt_str_t));
 
     // check if s was allocated
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "Failed to allocate str_t instance!");
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
-    // str_t init
-    *s = (str_t) {
-        .ptr = DEBUG_CALLOC((n + 1) * sizeof(char)),
+    // vt_str_t init
+    *s = (vt_str_t) {
+        .ptr = VT_DEBUG_CALLOC((n + 1) * sizeof(char)),
         .len = n,
         .capacity = n,
         .elsize = sizeof(char),
@@ -74,46 +85,52 @@ str_t *strn(const size_t n) {
 
     // checking if s->ptr was allocated
     if(s->ptr == NULL) {
-        DEBUG_ASSERT(s->ptr != NULL, "Failed to allocate memory for str_t instance!");
-
-        DEBUG_FREE(s);
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_FREE(s);
         return NULL;
     }
 
-    // copy str data to str_t
+    // copy str data to vt_str_t
     memset(s->ptr, '\0', (n + 1) * s->elsize);
 
     return s;
 }
 
-str_t *strn_empty(const size_t n) {
-    str_t *s = strn(n);
-    str_clear(s);
+vt_str_t *vt_strn_empty(const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // create and clear vt_str_t
+    vt_str_t *s = vt_strn(n);
+    vt_str_clear(s);
+
     return s;
 }
 
-str_t *str_dup(const str_t *const s) {
-    return str(s->ptr);
+vt_str_t *vt_str_dup(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return vt_str(s->ptr);
 }
 
-str_t *str_take_ownership(const char *const z) {
-    if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "Supplied string is NULL!");
-        return NULL;
-    }
+vt_str_t *vt_str_take_ownership(const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
-    // allocate memory for a str_t struct
-    str_t *s = DEBUG_CALLOC(sizeof(str_t));
+    // allocate memory for a vt_str_t struct
+    vt_str_t *s = VT_DEBUG_CALLOC(sizeof(vt_str_t));
 
     // check if s was allocated
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "Failed to allocate str_t instance!");
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
-    // str_t init
+    // vt_str_t init
     const size_t zLen = strlen(z);
-    *s = (str_t) {
+    *s = (vt_str_t) {
         .ptr = (void*)(z),
         .len = zLen,
         .capacity = zLen,
@@ -123,48 +140,62 @@ str_t *str_take_ownership(const char *const z) {
     return s;
 }
 
-void str_free(str_t *s) {
-    // if NULL, exit
-    if(s == NULL) {
-        return;
-    }
+void vt_str_free(vt_str_t *s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
 
-    // free the str_t string and str_t struct
-    DEBUG_FREE(s->ptr);
-    DEBUG_FREE(s);
+    // free the vt_str_t string and vt_str_t struct
+    VT_DEBUG_FREE(s->ptr);
+    VT_DEBUG_FREE(s);
 
     // reset to NULL
     s = NULL;
 }
 
-const char *cstr(const str_t *const s) {
-    // DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? "NULL" : (const char*)(s->ptr);
+const char *vt_zvt_str(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (const char*)(s->ptr);
 }
 
-size_t str_len(const str_t *const s) {
-    DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? 0 : s->len;
+size_t vt_str_len(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return s->len;
 }
 
-size_t str_capacity(const str_t *const s) {
-    DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? 0 : s->capacity;
+size_t vt_str_capacity(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return s->capacity;
 }
 
-size_t str_has_space(const str_t *const s) {
-    DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? 0 : (s->capacity - s->len);
+size_t vt_str_has_space(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (s->capacity - s->len);
 }
 
-bool str_is_empty(const str_t *const s) {
-    DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-    return (s == NULL) ? true : !(s->len);
+bool vt_str_is_empty(const vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return !(s->len);
 }
 
-enum VitaError str_shrink(str_t *const s) {
+enum VitaError vt_str_shrink(vt_str_t *const s) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return ve_error_is_null;
     }
 
@@ -174,9 +205,9 @@ enum VitaError str_shrink(str_t *const s) {
     }
 
     // shrink the array capacity to length
-    void *newptr = DEBUG_REALLOC(s->ptr, (s->len + 1) * s->elsize);
+    void *newptr = VT_DEBUG_REALLOC(s->ptr, (s->len + 1) * s->elsize);
     if(newptr == NULL) {
-        DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory for str_t!");
+        VT_DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory for vt_str_t!");
         return ve_error_allocation;
     }
 
@@ -184,15 +215,15 @@ enum VitaError str_shrink(str_t *const s) {
     s->ptr = newptr;
     s->capacity = s->len;
 
-    // add '\0' terminator at the very end of str_t
+    // add '\0' terminator at the very end of vt_str_t
     ((char*)s->ptr)[s->capacity] = '\0';
 
     return ve_operation_success;
 }
 
-enum VitaError str_clear(str_t *const s) {
+enum VitaError vt_str_clear(vt_str_t *const s) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return ve_error_is_null;
     }
 
@@ -205,17 +236,17 @@ enum VitaError str_clear(str_t *const s) {
     return ve_operation_success;
 }
 
-enum VitaError str_reserve(str_t *const s, const size_t n) {
+enum VitaError vt_str_reserve(vt_str_t *const s, const size_t n) {
     if(s == NULL || !n) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(n, "Invalied reserve amount supplied: %zu!", n);
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(n, "Invalied reserve amount supplied: %zu!", n);
         return ve_error_is_null;
     }
 
     // reserve memory for additional n elements
-    void *newptr = DEBUG_REALLOC(s->ptr, (s->capacity + n + 1) * s->elsize);
+    void *newptr = VT_DEBUG_REALLOC(s->ptr, (s->capacity + n + 1) * s->elsize);
     if(newptr == NULL) {
-        DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory for str_t!");
+        VT_DEBUG_ASSERT(newptr != NULL, "Failed to reallocate memory for vt_str_t!");
         return ve_error_allocation;
     }
 
@@ -223,31 +254,31 @@ enum VitaError str_reserve(str_t *const s, const size_t n) {
     s->ptr = newptr;
     s->capacity += n;
 
-    // add '\0' terminator at the very end of str_t
+    // add '\0' terminator at the very end of vt_str_t
     ((char*)s->ptr)[s->capacity] = '\0';
 
     return ve_operation_success;
 }
 
-enum VitaError str_set(str_t *const s, const char *z) {
-    return str_set_n(s, z, strlen(z));
+enum VitaError vt_str_set(vt_str_t *const s, const char *z) {
+    return vt_str_set_n(s, z, strlen(z));
 }
 
-enum VitaError str_set_n(str_t *const s, const char *z, const size_t n) {
+enum VitaError vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     // error checking
     if(s == NULL || z == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return ve_error_is_null;
     }
 
     // check if it has enough space
     if(s->capacity < n) {
-        DEBUG_ASSERT(n < s->capacity, "Unable to set the string. String length is %zu, but str_t length is %zu!", n, s->len);
+        VT_DEBUG_ASSERT(n < s->capacity, "Unable to set the string. String length is %zu, but vt_str_t length is %zu!", n, s->len);
         return ve_error_out_of_bounds_access;
     }
 
-    // copy z data to str_t
+    // copy z data to vt_str_t
     memmove(s->ptr, z, (n * s->elsize));
 
     // add the '\0' terminator
@@ -259,39 +290,39 @@ enum VitaError str_set_n(str_t *const s, const char *z, const size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_append(str_t *const s, const char *z) {
-    return str_append_n(s, z, strlen(z));
+enum VitaError vt_str_append(vt_str_t *const s, const char *z) {
+    return vt_str_append_n(s, z, strlen(z));
 }
 
-enum VitaError str_appendf(str_t *const s, const char *const fmt, ...) {
+enum VitaError vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     if(s == NULL || fmt == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
         return ve_error_is_null;
     }
 
     // iterate over all arguments
     va_list args; va_start(args, fmt);
-    str_vfmt(s, fmt, args);
+    vt_str_vfmt(s, fmt, args);
     va_end(args);
 
     return ve_operation_success;
 }
 
-enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
+enum VitaError vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     if(s == NULL || z == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return ve_error_is_null;
     }
 
     // check if new memory needs to be allocated
-    if(str_has_space(s) < n && str_reserve(s, (n - str_has_space(s))) != ve_operation_success) {
-        DEBUG_ASSERT(0, "Failed to reserve memory for str_t!");
+    if(vt_str_has_space(s) < n && vt_str_reserve(s, (n - vt_str_has_space(s))) != ve_operation_success) {
+        VT_DEBUG_ASSERT(0, "Failed to reserve memory for vt_str_t!");
         return ve_error_allocation;
     }
 
-    // copy z to str_t
+    // copy z to vt_str_t
     memmove((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
 
     // set new length
@@ -303,23 +334,23 @@ enum VitaError str_append_n(str_t *const s, const char *z, const size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
+enum VitaError vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     if(s == NULL || z == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return ve_error_is_null;
     }
 
     // check if we have out of bounds access
     if(s->len <= at) {
-        DEBUG_ASSERT(at < s->len, "Unable to insert the string at %zu, because str_t length is %zu!", at, s->len);
+        VT_DEBUG_ASSERT(at < s->len, "Unable to insert the string at %zu, because vt_str_t length is %zu!", at, s->len);
         return ve_error_out_of_bounds_access;
     }
 
     // check if new memory needs to be allocated
     const size_t zLen = strlen(z);
-    if(str_has_space(s) < zLen && str_reserve(s, (zLen - str_has_space(s))) != ve_operation_success) {
-        DEBUG_ASSERT(0, "Failed to reserve memory for str_t!");
+    if(vt_str_has_space(s) < zLen && vt_str_reserve(s, (zLen - vt_str_has_space(s))) != ve_operation_success) {
+        VT_DEBUG_ASSERT(0, "Failed to reserve memory for vt_str_t!");
         return ve_error_allocation;
     }
 
@@ -338,15 +369,15 @@ enum VitaError str_insert(str_t *const s, const char *z, const size_t at) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
+enum VitaError vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return ve_error_is_null;
     }
 
     // check if we have out of bounds access
     if(s->len <= from) {
-        DEBUG_ASSERT(from < s->len, "Unable to remove the string from %zu, because str_t length is %zu!", from, s->len);
+        VT_DEBUG_ASSERT(from < s->len, "Unable to remove the string from %zu, because vt_str_t length is %zu!", from, s->len);
         return ve_error_out_of_bounds_access;
     }
 
@@ -367,17 +398,17 @@ enum VitaError str_remove(str_t *const s, const size_t from, size_t n) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_first(str_t *const s, const char *z) {
+enum VitaError vt_str_remove_first(vt_str_t *const s, const char *z) {
     const size_t zLen = strlen(z);
     if(s == NULL || z == NULL || !zLen) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        DEBUG_ASSERT(zLen, "Supplied string length is 0!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(zLen, "Supplied string length is 0!");
         return ve_error_is_null;
     }
 
     // find a substring in strbuf; if substring wasn't found, return
-    char* sub = strstr(s->ptr, z);
+    char* sub = strvt_str(s->ptr, z);
     if(sub == NULL) {
         return ve_operation_element_not_found;
     }
@@ -397,19 +428,19 @@ enum VitaError str_remove_first(str_t *const s, const char *z) {
     return ve_operation_success;
 }
 
-enum VitaError str_remove_last(str_t *s, const char *const z) {
+enum VitaError vt_str_remove_last(vt_str_t *s, const char *const z) {
     const size_t zLen = strlen(z);
     if(s == NULL || z == NULL || !zLen) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        DEBUG_ASSERT(zLen, "Supplied string length is 0!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(zLen, "Supplied string length is 0!");
         return ve_error_is_null;
     }
 
     // find the last instance of sep
-    char *p = strstr(s->ptr, z);
+    char *p = strvt_str(s->ptr, z);
     char *lastInstance = p;
-    while((p = strstr(p + zLen, z)) != NULL) {
+    while((p = strvt_str(p + zLen, z)) != NULL) {
         lastInstance = p;
     }
 
@@ -424,29 +455,29 @@ enum VitaError str_remove_last(str_t *s, const char *const z) {
     // set z to zero where it begins
     lastInstance[0]= '\0';
 
-    // update str_t
+    // update vt_str_t
     s->len -= diff - 1;
 
     return ve_operation_success;
 }
 
-enum VitaError str_remove_all(str_t *const s, const char *z) {
+enum VitaError vt_str_remove_all(vt_str_t *const s, const char *z) {
     if(s == NULL || z == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
         return ve_error_is_null;
     }
 
     // remove all instances of substring
-    while(str_remove_first(s, z) == ve_operation_success);
+    while(vt_str_remove_first(s, z) == ve_operation_success);
 
     return ve_operation_success;
 }
 
-enum VitaError str_remove_c(str_t *const s, const char *const c) {
+enum VitaError vt_str_remove_c(vt_str_t *const s, const char *const c) {
     if (s == NULL || c == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(c != NULL, "Tokens supplied string is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(c != NULL, "Tokens supplied string is NULL!");
         return ve_error_is_null;
     }
 
@@ -484,16 +515,16 @@ enum VitaError str_remove_c(str_t *const s, const char *const c) {
     *slen -= offset;
 
     // update ptr data
-    DEBUG_FREE(start);
+    VT_DEBUG_FREE(start);
     sdup[*slen] = '\0';
     s->ptr = sdup;
     
     return ve_operation_success;
 }
 
-enum VitaError str_strip(str_t *const s) {
+enum VitaError vt_str_strip(vt_str_t *const s) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return ve_error_is_null;
     }
 
@@ -528,9 +559,9 @@ enum VitaError str_strip(str_t *const s) {
     return ve_operation_success;
 }
 
-enum VitaError str_strip_punct(str_t *const s) {
+enum VitaError vt_str_strip_punct(vt_str_t *const s) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return ve_error_is_null;
     }
 
@@ -565,10 +596,10 @@ enum VitaError str_strip_punct(str_t *const s) {
     return ve_operation_success;
 }
 
-enum VitaError str_strip_c(str_t *const s, const char *const c) {
+enum VitaError vt_str_strip_c(vt_str_t *const s, const char *const c) {
     if(s == NULL || c == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(c != NULL, "Tokens supplied string is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(c != NULL, "Tokens supplied string is NULL!");
         return ve_error_is_null;
     }
 
@@ -628,20 +659,20 @@ enum VitaError str_strip_c(str_t *const s, const char *const c) {
     return ve_operation_success;
 }
 
-const char *str_find(const char *const z, const char *zsub) {
+const char *vt_str_find(const char *const z, const char *zsub) {
     if(z == NULL || zsub == NULL) {
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        DEBUG_ASSERT(zsub != NULL, "Substring supplied is NULL!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(zsub != NULL, "Substring supplied is NULL!");
         return NULL;
     }
 
-    return strstr(z, zsub);
+    return strvt_str(z, zsub);
 }
 
-size_t str_can_find(const str_t *const s, const char *z) {
-    if(s == NULL || z == NULL || !str_len(s)) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(z != NULL, "Substring supplied is NULL!");
+size_t vt_str_can_find(const vt_str_t *const s, const char *z) {
+    if(s == NULL || z == NULL || !vt_str_len(s)) {
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(z != NULL, "Substring supplied is NULL!");
         return 0;
     }
 
@@ -649,22 +680,22 @@ size_t str_can_find(const str_t *const s, const char *z) {
     size_t count = 0;
     const size_t zLen = strlen(z);
     const char *p = s->ptr;
-    while((p = strstr(p + zLen, z)) != NULL) {
+    while((p = strvt_str(p + zLen, z)) != NULL) {
         count++;
     }
 
     return count;
 }
 
-plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
+plist_t *vt_str_split(plist_t *ps, const vt_str_t *const s, const char *const sep) {
     if(s == NULL || sep == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
         return NULL;
     }
 
     // check if s contains sep substring
-    const size_t strInstances = str_can_find(s, sep);
+    const size_t strInstances = vt_str_can_find(s, sep);
     if(!strInstances) {
         return NULL;
     }
@@ -674,13 +705,13 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
     if(ps == NULL) {
         p = plist_create(strInstances + 1);
         if(p == NULL) {
-            DEBUG_ASSERT(p != NULL, "Failed to allocate plist_t instance!");
+            VT_DEBUG_ASSERT(p != NULL, "Failed to allocate plist_t instance!");
             return NULL;
         }
     } else {
         p = ps;
         if(plist_has_space(p) < strInstances + 1 && plist_reserve(p, (strInstances + 1) - plist_has_space(p)) != ve_operation_success) {
-            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
+            VT_DEBUG_ASSERT(0, "Failed to reserve more memory for vt_str_t!");
             return p;
         }
     }
@@ -692,7 +723,7 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
     const char *current = head;
     while(1) {
         // find sep
-        current = strstr(head, sep);
+        current = strvt_str(head, sep);
 
         // count copy length
         size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
@@ -700,9 +731,9 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
             head += sepLen;
             continue;
         } else {
-            // create a str_t instance and copy the values
-            str_t *tempStr = strn(copyLen);
-            str_set_n(tempStr, head, copyLen);
+            // create a vt_str_t instance and copy the values
+            vt_str_t *tempStr = vt_strn(copyLen);
+            vt_str_set_n(tempStr, head, copyLen);
             plist_push(p, tempStr);
 
             // update head
@@ -719,67 +750,67 @@ plist_t *str_split(plist_t *ps, const str_t *const s, const char *const sep) {
 }
 
 // CONTINUE FROM HERE
-str_t *str_pop_get_first(str_t *sr, str_t *const s, const char *const sep) {
+vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     if(s == NULL || sep == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
         return sr;
     }
 
-    if(!str_len(s) || !strlen(sep)) {
+    if(!vt_str_len(s) || !strlen(sep)) {
         return sr;
     }
 
     // check if s contains sep substring
-    const char *const tempStr = strstr(s->ptr, sep);
+    const char *const tempStr = strvt_str(s->ptr, sep);
     if(tempStr == NULL) {
         return sr;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
-    const size_t copyLen = str_len(s) - strlen(tempStr);
+    const size_t copyLen = vt_str_len(s) - strlen(tempStr);
     if(!copyLen) {
         return sr;
     }
 
-    // create str_t instance
-    str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
+    // create vt_str_t instance
+    vt_str_t *spop = ((sr == NULL) ? (vt_strn(copyLen)) : (sr));
     if(spop == NULL) {
-        DEBUG_ASSERT(spop != NULL, "Failed to allocate str_t instance!");
+        VT_DEBUG_ASSERT(spop != NULL, "Failed to allocate vt_str_t instance!");
         return sr;
     }
-    str_clear(spop);
+    vt_str_clear(spop);
 
     // if not enough space, reserve more
-    if(str_len(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_len(spop));
+    if(vt_str_len(spop) < copyLen) {
+        vt_str_reserve(spop, copyLen - vt_str_len(spop));
     }
 
     // // copy the string before the separator
-    str_set_n(spop, s->ptr, copyLen);
+    vt_str_set_n(spop, s->ptr, copyLen);
 
     // pop the part of the string with the separator
-    str_remove(s, 0, copyLen + strlen(sep));
+    vt_str_remove(s, 0, copyLen + strlen(sep));
 
     return spop;
 }
 
-str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
+vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     const size_t sepLen = strlen(sep);
     if(s == NULL || sep == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(sep != NULL, "Separator string supplied is NULL!");
         return sr;
     }
 
-    if(!str_len(s) || !sepLen) {
+    if(!vt_str_len(s) || !sepLen) {
         return sr;
     }
 
     // find the last instance of sep
-    const char *p = strstr(s->ptr, sep);
+    const char *p = strvt_str(s->ptr, sep);
     const char *lastInstance = p;
-    while((p = strstr(p + sepLen, sep)) != NULL) {
+    while((p = strvt_str(p + sepLen, sep)) != NULL) {
         lastInstance = p;
     }
 
@@ -794,76 +825,76 @@ str_t *str_pop_get_last(str_t *sr, str_t *const s, const char *const sep) {
         return sr;
     }
 
-    // create str_t instance
-    str_t *spop = ((sr == NULL) ? (strn(copyLen)) : (sr));
+    // create vt_str_t instance
+    vt_str_t *spop = ((sr == NULL) ? (vt_strn(copyLen)) : (sr));
     if(spop == NULL) {
         return sr;
     }
 
     // if not enough space, reserve more
-    if(str_len(spop) < copyLen) {
-        str_reserve(spop, copyLen - str_len(spop) + 1);
+    if(vt_str_len(spop) < copyLen) {
+        vt_str_reserve(spop, copyLen - vt_str_len(spop) + 1);
     }
 
     // copy the string after the separator
-    str_set_n(spop, lastInstance + sepLen, copyLen);
+    vt_str_set_n(spop, lastInstance + sepLen, copyLen);
 
     // pop the part of the string with the separator
-    str_remove(s, str_len(s) - copyLen - sepLen, copyLen + sepLen);
+    vt_str_remove(s, vt_str_len(s) - copyLen - sepLen, copyLen + sepLen);
 
     return spop;
 }
 
-bool str_equals(const char *const z1, const char *const z2) {
+bool vt_str_equals(const char *const z1, const char *const z2) {
     const size_t z1Len = strlen(z1);
     if(z1Len > strlen(z2)) {
         return false;
     }
 
-    return (!strncmp(z1, z2, z1Len));
+    return (!vt_strncmp(z1, z2, z1Len));
 }
 
-bool str_starts_with(const char *const z, const char *const sub) {
+bool vt_str_starts_with(const char *const z, const char *const sub) {
     const size_t subLen = strlen(sub);
     if(subLen > strlen(z)) {
         return false;
     }
 
-    return (!strncmp(z, sub, subLen));
+    return (!vt_strncmp(z, sub, subLen));
 }
 
-bool str_ends_with(const char *const z, const char *const sub) {
+bool vt_str_ends_with(const char *const z, const char *const sub) {
     const size_t zLen = strlen(z);
     const size_t subLen = strlen(sub);
     if(subLen > zLen) {
         return false;
     }
 
-    return (!strncmp(z + zLen - subLen, sub, subLen));
+    return (!vt_strncmp(z + zLen - subLen, sub, subLen));
 }
 
-void str_apply(const str_t *const s, void (*func)(char*, size_t)) {
+void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
     if(s == NULL || func == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(func != NULL, "Supplied func is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(func != NULL, "Supplied func is NULL!");
         return;
     }
 
-    const size_t len = str_len(s);
+    const size_t len = vt_str_len(s);
     for(size_t i = 0; i < len; i++) {
         func(&((char*)s->ptr)[i], i);
     }
 }
 
-bool str_is_numeric(const char *const z, const size_t max_len) {
+bool vt_str_is_numeric(const char *const z, const size_t max_len) {
     if(z == NULL || !max_len) {
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        DEBUG_ASSERT(max_len, "max_len cannot be 0!");
+        VT_DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
+        VT_DEBUG_ASSERT(max_len, "max_len cannot be 0!");
         return false;
     }
 
     // check if string is a number
-    const size_t zLen = strnlen(z, max_len);
+    const size_t zLen = vt_strnlen(z, max_len);
     for(size_t i = 0; i < zLen; i++) {
         if(!isdigit(z[i]) && z[i] != '.') {
             return false;
@@ -873,21 +904,21 @@ bool str_is_numeric(const char *const z, const size_t max_len) {
     return true;
 }
 
-void str_capitalize(str_t *const s) {
+void vt_str_capitalize(vt_str_t *const s) {
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
         return;
     }
 
     // check if string is a number
     char *const z = s->ptr;
-    const size_t zLen = str_len(s);
+    const size_t zLen = vt_str_len(s);
     for(size_t i = 0; i < zLen; i++) {
         z[i] = toupper(z[i]);
     }
 }
 
-int64_t str_index_of(const str_t *const s, const char z) {
+int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     const char *const ztmp = strchr(s->ptr, z);
     if(ztmp == NULL) {
         return -1;
@@ -898,10 +929,10 @@ int64_t str_index_of(const str_t *const s, const char z) {
 
 // -------------------------- PRIVATE -------------------------- //
 
-static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
+static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
     if(s == NULL || fmt == NULL) {
-        DEBUG_ASSERT(s != NULL, "str_t instance was not initialized!");
-        DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
+        VT_DEBUG_ASSERT(s != NULL, "vt_str_t instance was not initialized!");
+        VT_DEBUG_ASSERT(fmt != NULL, "Formatting supplied is NULL!");
         return s;
     }
 
@@ -911,13 +942,13 @@ static str_t *str_vfmt(str_t *s, const char *const fmt, va_list args) {
         // check if new memory needs to be allocated
         const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
         if(len < 0) {
-            DEBUG_ASSERT(0, "Encoding error occured!");
+            VT_DEBUG_ASSERT(0, "Encoding error occured!");
             return NULL;
         }
 
         // check for space
-        if(str_has_space(s) < (size_t)len && str_reserve(s, (len - str_has_space(s))) != ve_operation_success) {
-            DEBUG_ASSERT(0, "Failed to reserve more memory for str_t!");
+        if(vt_str_has_space(s) < (size_t)len && vt_str_reserve(s, (len - vt_str_has_space(s))) != ve_operation_success) {
+            VT_DEBUG_ASSERT(0, "Failed to reserve more memory for vt_str_t!");
             return s;
         }
 
