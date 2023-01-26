@@ -50,20 +50,20 @@
 
 /** Builds path from raw C strings
     @param s str_t instance (if `NULL` is passed, str_t is allocated)
+    @param p array of raw C strings
+
+    @returns `str_t*` upon success, `NULL` otherwise
+*/
+extern str_t *vt_path_build(str_t *const s, const plist_t *const p);
+
+/** Builds path from raw C strings
+    @param s str_t instance (if `NULL` is passed, str_t is allocated)
     @param n number of strings to concatenate into path
     @param ... c strings to combine into path
 
     @returns `str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_build(str_t *const s, const size_t n, ...);
-
-/** Builds path from raw C strings
-    @param s str_t instance (if `NULL` is passed, str_t is allocated)
-    @param p array of raw C strings
-
-    @returns `str_t*` upon success, `NULL` otherwise
-*/
-extern str_t *vt_path_build_n(str_t *const s, const plist_t *const p);
+extern str_t *vt_path_build_n(str_t *const s, const size_t n, ...);
 
 /** Get current working directory
     @returns `str_t*` upon success, `NULL` otherwise

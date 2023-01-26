@@ -22,10 +22,10 @@
 
 /** Reads contents of a file in 'r' and 'rb' mode (vt_file_read, vt_file_readb)
     @param z_filename file name
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_file_read(const char *const z_filename);
-extern str_t *vt_file_readb(const char *const z_filename);
+extern vt_str_t *vt_file_read(const char *const z_filename);
+extern vt_str_t *vt_file_readb(const char *const z_filename);
 
 /** Writes to a file in 'w' mode (vt_file_write, vt_file_writeln)
     @param z_filename file name

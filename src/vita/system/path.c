@@ -1,52 +1,24 @@
 #include "vita/system/path.h"
 
-str_t *vt_path_build(str_t *const s, const size_t n, ...) {
-    // create a new str_t instance and append
-    str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
+vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    // create vt_str_t if needed
+    vt_str_t *st = ((s == NULL) ? (vt_strn(DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
-        DEBUG_ASSERT(st != NULL, "Unable to allocate str_t buffer!");
-        return NULL;
-    }
-    str_clear(st);
-
-    // append
-    va_list args;
-    va_start(args, n);
-    const char* z = NULL;
-    for(size_t i = 0; i < n; i++) {
-        // get next item
-        z = va_arg(args, char*);
-        
-        str_append(st, z);
-
-        // do not append path separator at the very end,
-        // since the last element may be a file, not a directory
-        if(i < n-1) {
-            str_append(st, PATH_SEPARATOR);
-        }
-    }
-    va_end(args);
-
-    return st;
-}
-
-str_t *vt_path_build_n(str_t *const s, const plist_t *const p) {
-    if(p == NULL) {
-        DEBUG_ASSERT(p != NULL, "plist_t instance was not initialized!");
-        return NULL;
-    }
-
-    str_t *st = ((s == NULL) ? (strn(DEFAULT_INIT_ELEMENTS)) : (s));
-    if(st == NULL) {
-        DEBUG_ASSERT(st != NULL, "Unable to allocate str_t buffer!");
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
     // append the first part
-    if(str_append(st, plist_get(p, 0)) != ve_operation_success) {
+    if(vt_str_append(st, plist_get(p, 0)) != ve_operation_success) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+
         // if s is NULL, free st (this is done to avoid freeing user's s instance)
         if(s == NULL) {
-            str_free(st);
+            vt_str_free(st);
         }
 
         return NULL;
@@ -55,10 +27,12 @@ str_t *vt_path_build_n(str_t *const s, const plist_t *const p) {
     // continue appending
     const size_t pLen = plist_len(p);
     for(size_t i = 1; i < pLen; i++) {
-        if(str_append(st, PATH_SEPARATOR) != ve_operation_success && str_append(st, plist_get(p, i)) != ve_operation_success) {
+        if(vt_str_append(st, PATH_SEPARATOR) != ve_operation_success && vt_str_append(st, plist_get(p, i)) != ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+            
             // if s is NULL, free st (this is done to avoid freeing user's s instance)
             if(s == NULL) {
-                str_free(st);
+                vt_str_free(st);
             }
 
             return NULL;
@@ -68,25 +42,71 @@ str_t *vt_path_build_n(str_t *const s, const plist_t *const p) {
     return st;
 }
 
-str_t *vt_path_getcwd(void) {
-    return str_take_ownership(getcwd(NULL, 0));
+vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // create a new vt_str_t instance and append
+    vt_str_t *st = ((s == NULL) ? (vt_strn(DEFAULT_INIT_ELEMENTS)) : (s));
+    if(st == NULL) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        return NULL;
+    }
+    vt_str_clear(st);
+
+    // append
+    va_list args;
+    va_start(args, n);
+    const char* z = NULL;
+    for(size_t i = 0; i < n; i++) {
+        // get next item
+        z = va_arg(args, char*);
+        
+        // append
+        if(vt_str_append(st, z) != vt_ve_operation_success) { 
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+
+            // if s is NULL, free st (this is done to avoid freeing user's s instance)
+            if(s == NULL) {
+                vt_str_free(st);
+            }
+
+            return st; 
+        }
+
+        // do not append path separator at the very end,
+        // since the last element may be a file, not a directory
+        if(i < n-1 && vt_str_append(st, PATH_SEPARATOR) != vt_ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+            
+            // if s is NULL, free st (this is done to avoid freeing user's s instance)
+            if(s == NULL) {
+                vt_str_free(st);
+            }
+            
+            return st;
+        }
+    }
+    va_end(args);
+
+    return st;
+}
+
+vt_str_t *vt_path_getcwd(void) {
+    return vt_str_take_ownership(getcwd(NULL, 0));
 }
 
 bool vt_path_exists(const char *const z) {
-    if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        return false;
-    }
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     struct stat info;
     return (stat(z, &info) == 0);
 }
 
 bool vt_path_is_dir(const char *const z) {
-    if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        return false;
-    }
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // if given element exists and is a directory
     struct stat info;
@@ -94,10 +114,8 @@ bool vt_path_is_dir(const char *const z) {
 }
 
 bool vt_path_is_file(const char *const z) {
-    if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "String supplied is NULL!");
-        return false;
-    }
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // if given element exists and is a regular file
     struct stat info;
@@ -105,7 +123,10 @@ bool vt_path_is_file(const char *const z) {
 }
 
 int64_t vt_path_get_file_size(const char *const z) {
-    if(z == NULL || !vt_path_exists(z)) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    if(!vt_path_exists(z)) {
         return -1;
     }
     
@@ -133,23 +154,26 @@ int64_t vt_path_get_file_size(const char *const z) {
     return file_size;
 }
 
-plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
     if(!vt_path_exists(z)) {
-        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
+        VT_DEBUG_PRINTF("%s: Path does not exist <%s>!\n", vt_get_vita_error_str(vt_ve_operation_failure), z);
         return NULL;
     }
 
     // create plist instance
-    plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+    vt_plist_t *pl = (p == NULL ? (vt_plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
-        DEBUG_ASSERT(pl != NULL, "Failed to allocate plist_t instance!");
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
         return NULL;
     }
 
     // open directory
     DIR *dir = opendir(z);
     if(dir == NULL) {
-        DEBUG_ASSERT(dir != NULL, "Failed read the directory %s!", z);
+        VT_DEBUG_PRINTF("%s: Failed read the directory %s!\n", vt_get_vita_error_str(vt_ve_operation_failure), z);
         return pl;
     }
 
@@ -157,16 +181,18 @@ plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignor
     struct dirent *dirtree = NULL;
     while((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
-        if(
-            (ignoreDotFiles && dirtree->d_name[0] == '.') ||
-            str_equals(dirtree->d_name, ".") || 
-            str_equals(dirtree->d_name, "..")
-        ) {
+        if((ignoreDotFiles && dirtree->d_name[0] == '.') ||
+            vt_str_equals(dirtree->d_name, ".") || 
+            vt_str_equals(dirtree->d_name, "..")) 
+        {
             continue;
         }
         
-        // push directory name to plist_t
-        plist_push(pl, str(dirtree->d_name));
+        // push directory name to vt_plist_t
+        if(vt_plist_push(pl, vt_str(dirtree->d_name)) != vt_ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+            return st;
+        }
     }
 
     closedir(dir);
@@ -174,23 +200,24 @@ plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignor
     return pl;
 }
 
-plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+// TODO: CONTINUE FROM HERE
+vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     if(!vt_path_exists(z)) {
-        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
+        VT_DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return NULL;
     }
     
     // create plist instance
-    plist_t *pl = (p == NULL ? (plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+    vt_plist_t *pl = (p == NULL ? (vt_plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
-        DEBUG_ASSERT(pl != NULL, "Failed to allocate plist_t instance!");
+        VT_DEBUG_ASSERT(pl != NULL, "Failed to allocate vt_plist_t instance!");
         return NULL;
     }
 
     // open directory
     DIR *dir = opendir(z);
     if(dir == NULL) {
-        DEBUG_ASSERT(dir != NULL, "Failed read the directory: %s!", z);
+        VT_DEBUG_ASSERT(dir != NULL, "Failed read the directory: %s!", z);
         return pl;
     }
 
@@ -200,19 +227,19 @@ plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bo
         // ignore "." and ".." directories
         if(
             (ignoreDotFiles && dirtree->d_name[0] == '.') ||
-            str_equals(dirtree->d_name, ".") || 
-            str_equals(dirtree->d_name, "..")
+            vt_str_equals(dirtree->d_name, ".") || 
+            vt_str_equals(dirtree->d_name, "..")
         ) {
             continue;
         }
 
         // save full path
-        str_t *s = str(z);
-        str_append(s, PATH_SEPARATOR);
-        str_append(s, dirtree->d_name);
+        vt_str_t *s = vt_str(z);
+        vt_str_append(s, PATH_SEPARATOR);
+        vt_str_append(s, dirtree->d_name);
 
-        // push directory name to plist_t
-        plist_push(pl, s);
+        // push directory name to vt_plist_t
+        vt_plist_push(pl, s);
 
         // check if current path is a directory
         if(vt_path_is_dir(cstr(s))) {
@@ -225,13 +252,13 @@ plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bo
     return pl;
 }
 
-str_t *vt_path_basename(str_t *const s, const char *const z) {
+vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     if(z == NULL) {
         return NULL;
     }
 
-    // create a new str_t instance
-    str_t *st = ((s == NULL) ? (strn(strlen(z))) : (s));
+    // create a new vt_str_t instance
+    vt_str_t *st = ((s == NULL) ? (vt_strn(strlen(z))) : (s));
     if(st == NULL) {
         return NULL;
     }
@@ -260,7 +287,7 @@ str_t *vt_path_basename(str_t *const s, const char *const z) {
 
 bool vt_path_mkdir(const char *const z) {
     if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
@@ -286,7 +313,7 @@ bool vt_path_mkdir(const char *const z) {
 
 bool vt_path_mkdir_parents(const char *const z) {
     if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return false;
     }
 
@@ -297,30 +324,30 @@ bool vt_path_mkdir_parents(const char *const z) {
 
     // create variables
     bool status = true;
-    str_t *s = NULL;
-    str_t *sfull = NULL;
-    plist_t *dir_list = NULL;
+    vt_str_t *s = NULL;
+    vt_str_t *sfull = NULL;
+    vt_plist_t *dir_list = NULL;
     
-    // copy the raw C string into str_t for ease of use
-    s = str(z);
+    // copy the raw C string into vt_str_t for ease of use
+    s = vt_str(z);
     if(s == NULL) {
-        DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
+        VT_DEBUG_ASSERT(s != NULL, "Failed to allocate a vt_str_t buffer!");
 
         status = false;
         goto vt_path_mkdir_parents_cleanup;
     }
 
     // create a fullpath variable
-    sfull = strn(str_len(s) + 1);
+    sfull = vt_strn(str_len(s) + 1);
     if(sfull == NULL) {
-        DEBUG_ASSERT(s != NULL, "Failed to allocate a str_t buffer!");
+        VT_DEBUG_ASSERT(s != NULL, "Failed to allocate a vt_str_t buffer!");
 
         status = false;
         goto vt_path_mkdir_parents_cleanup;
     }
 
     // set len to 0
-    str_clear(sfull);
+    vt_str_clear(sfull);
 
     // split string into directories
     dir_list = str_split(NULL, s, PATH_SEPARATOR);
@@ -333,11 +360,11 @@ bool vt_path_mkdir_parents(const char *const z) {
     size_t dirLen = plist_len(dir_list);
     for(size_t i = 0; i < dirLen; i++) {
         // get the first directory in the directory tree that we need to make
-        str_t *sdir = (str_t*)(plist_get(dir_list, i));
+        vt_str_t *sdir = (vt_str_t*)(plist_get(dir_list, i));
         
         // append it to the full path
-        str_append(sfull, cstr(sdir));
-        str_append(sfull, PATH_SEPARATOR);
+        vt_str_append(sfull, cstr(sdir));
+        vt_str_append(sfull, PATH_SEPARATOR);
         
         // make that directory
         vt_path_mkdir(cstr(sfull));
@@ -345,15 +372,15 @@ bool vt_path_mkdir_parents(const char *const z) {
 
 vt_path_mkdir_parents_cleanup:
     // free the strings
-    str_free(s);
-    str_free(sfull);
+    vt_str_free(s);
+    vt_str_free(sfull);
     
     // free all strings in dir_list
     if(dir_list != NULL) {
         dirLen = plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
-            s = (str_t*)(plist_get(dir_list, i));
-            str_free(s);
+            s = (vt_str_t*)(plist_get(dir_list, i));
+            vt_str_free(s);
         }
     }
 
@@ -365,8 +392,8 @@ vt_path_mkdir_parents_cleanup:
 
 bool vt_path_rmdir(const char *const z) {
     if(z == NULL || !vt_path_exists(z)) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -381,8 +408,8 @@ bool vt_path_rmdir(const char *const z) {
 
 bool vt_path_rmdir_recurse(const char *const z) {
     if(z == NULL || !vt_path_exists(z)) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -391,7 +418,7 @@ bool vt_path_rmdir_recurse(const char *const z) {
 
     // get all files in a directory
     // if none are found, delete the directory and return
-    plist_t *dir_list = vt_path_listdir_recurse(NULL, z, false);
+    vt_plist_t *dir_list = vt_path_listdir_recurse(NULL, z, false);
     if(dir_list == NULL || !plist_len(dir_list)) {
         status = vt_path_rmdir(z);
         goto vt_path_rmdir_recurse_cleanup;
@@ -399,13 +426,13 @@ bool vt_path_rmdir_recurse(const char *const z) {
     
     // iterate starting from the end and remove each element
     // checking its type
-    str_t *s = NULL;
-    while((s = (str_t*)(plist_pop_get(dir_list))) != NULL) {
+    vt_str_t *s = NULL;
+    while((s = (vt_str_t*)(plist_pop_get(dir_list))) != NULL) {
         // remove file/directory
         status = vt_path_is_dir(cstr(s)) ? vt_path_rmdir(cstr(s)) : vt_path_remove(cstr(s));
         
-        // free str_t instance
-        str_free(s);
+        // free vt_str_t instance
+        vt_str_free(s);
 
         if(!status) {
             goto vt_path_rmdir_recurse_cleanup;
@@ -417,8 +444,8 @@ vt_path_rmdir_recurse_cleanup:
     if(dir_list != NULL) {
         const size_t dirLen = plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
-            s = (str_t*)(plist_get(dir_list, i));
-            str_free(s);
+            s = (vt_str_t*)(plist_get(dir_list, i));
+            vt_str_free(s);
         }
     }
 
@@ -430,8 +457,8 @@ vt_path_rmdir_recurse_cleanup:
 
 bool vt_path_remove(const char *const z) {
     if(z == NULL || !vt_path_exists(z)) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
-        DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(vt_path_exists(z), "Path does not exist %s!", z);
         return false;
     }
 
@@ -440,9 +467,9 @@ bool vt_path_remove(const char *const z) {
 
 bool vt_path_rename(const char *const z1, const char *const z2) {
     if(z1 == NULL || z2 == NULL || !vt_path_exists(z1)) {
-        DEBUG_ASSERT(z1 != NULL, "Path/File (z1) supplied is NULL!");
-        DEBUG_ASSERT(z2 != NULL, "Path/File (z2) supplied is NULL!");
-        DEBUG_ASSERT(vt_path_exists(z1), "Path/File does not exist %s!", z1);
+        VT_DEBUG_ASSERT(z1 != NULL, "Path/File (z1) supplied is NULL!");
+        VT_DEBUG_ASSERT(z2 != NULL, "Path/File (z2) supplied is NULL!");
+        VT_DEBUG_ASSERT(vt_path_exists(z1), "Path/File does not exist %s!", z1);
         return false;
     }
 
@@ -453,14 +480,14 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
-str_t *vt_path_expand_tilda(const char *const z) {
+vt_str_t *vt_path_expand_tilda(const char *const z) {
     if(z == NULL) {
-        DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
+        VT_DEBUG_ASSERT(z != NULL, "Path supplied is NULL!");
         return NULL;
     }
 
     // find tilda `~`
-    str_t *s_tilda = str(z);
+    vt_str_t *s_tilda = vt_str(z);
     const int64_t tilda_pos = str_index_of(s_tilda, '~');
     if(str_len(s_tilda) < 1 || tilda_pos != 0) {
         return s_tilda;
@@ -475,7 +502,7 @@ str_t *vt_path_expand_tilda(const char *const z) {
     #endif
 
     if(z_homepath == NULL) {
-        DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'HOME\' was not found, returning as-is!");
+        VT_DEBUG_ASSERT(z_homepath != NULL, "Environmental variable \'HOME\' was not found, returning as-is!");
         return s_tilda;
     }
 
@@ -486,10 +513,10 @@ str_t *vt_path_expand_tilda(const char *const z) {
     return s_tilda;
 }
 
-str_t *vt_path_get_this_exe_location(void) {
-    str_t *spath = strn_empty(PATH_MAX);
+vt_str_t *vt_path_get_this_exe_location(void) {
+    vt_str_t *spath = strn_empty(PATH_MAX);
     if (spath == NULL) {
-        DEBUG_ASSERT(spath != NULL, "Failed to allocate str_t instance!");
+        VT_DEBUG_ASSERT(spath != NULL, "Failed to allocate vt_str_t instance!");
         return NULL;
     }
     
@@ -503,8 +530,8 @@ str_t *vt_path_get_this_exe_location(void) {
 
     // check for errors
     if(pathLen <= 0) {
-        DEBUG_ASSERT(pathLen > 0, "Failed to retrieve this exe path!");
-        str_free(spath);
+        VT_DEBUG_ASSERT(pathLen > 0, "Failed to retrieve this exe path!");
+        vt_str_free(spath);
         return NULL;
     }
     spath->len = pathLen;

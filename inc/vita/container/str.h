@@ -280,7 +280,7 @@ enum VitaError vt_str_strip_c(vt_str_t *const s, const char *const c);
 
     @returns pointer to the begining of a substring in a string
 */
-extern const char *vt_str_find(const char *const z, const char *csub);
+extern const char *vt_str_find(const char *const z, const char *sub);
 
 /** Checks if vt_str_t contains a substring
     @param s vt_str_t instance
