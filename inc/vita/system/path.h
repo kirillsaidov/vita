@@ -100,6 +100,8 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @param ignoreDotFiles skip hidden .files
 
     @returns `plist_t*` of str_t upon success, `NULL` otherwise
+
+    @note returns immidiately if faces an error
 */
 extern plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
@@ -109,6 +111,8 @@ extern plist_t *vt_path_listdir(plist_t *const p, const char *const z, const boo
     @param ignoreDotFiles skip hidden .files
 
     @returns `plist_t*` of str_t upon success, `NULL` otherwise
+
+    @note returns immidiately if faces an error
 */
 extern plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
