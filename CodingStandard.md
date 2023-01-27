@@ -62,6 +62,14 @@ typedef struct BlackBox {
 } bbox_t;
 ```
 
+### Gotos
+Gotos should start with `label_` prefix and 2 underscores should be appended at the end.
+```C
+// this is a goto example:
+label_my_function_name_goto_label__:
+// do something ...
+```
+
 ### Header guards
 Always prepend project name to the header guard to avoid name collisions.
 
