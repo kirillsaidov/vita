@@ -10,7 +10,7 @@
     - vt_str_dup
     - vt_str_take_ownership
     - vt_str_free
-    - vt_zstr
+    - vt_cstr
     - vt_str_len
     - vt_str_capacity
     - vt_str_has_space
@@ -116,7 +116,7 @@ extern void vt_str_free(vt_str_t *s);
     @param s vt_str_t string
     @returns raw C string upon success, `NULL` otherwise
 */
-extern const char *vt_zstr(const vt_str_t *const s);
+extern const char *vt_cstr(const vt_str_t *const s);
 
 /** Returns vt_str_t length
     @param s vt_str_t instance

@@ -29,40 +29,40 @@ extern vt_str_t *vt_file_readb(const char *const z_filename);
 
 /** Writes to a file in 'w' mode (vt_file_write, vt_file_writeln)
     @param z_filename file name
-    @param zbuffer contents to write to file
+    @param z_buffer contents to write to file
 
     @returns `true` upon success
 */
-extern bool vt_file_write(const char *const z_filename, const char *const zbuffer);
-extern bool vt_file_writeln(const char *const z_filename, const char *const zbuffer);
+extern bool vt_file_write(const char *const z_filename, const char *const z_buffer);
+extern bool vt_file_writeln(const char *const z_filename, const char *const z_buffer);
 
 /** Writes to a file in binary 'wb' mode (vt_file_writeb, vt_file_writebln)
     @param z_filename file name
-    @param zbuffer contents to write to file
+    @param z_buffer contents to write to file
     @param add_ln add new line at the end
 
     @returns `true` upon success
 */
-extern bool vt_file_writeb(const char *const z_filename, const char *const zbuffer);
-extern bool vt_file_writebln(const char *const z_filename, const char *const zbuffer);
+extern bool vt_file_writeb(const char *const z_filename, const char *const z_buffer);
+extern bool vt_file_writebln(const char *const z_filename, const char *const z_buffer);
 
 /** Appends to a file in 'a' mode (vt_file_append, vt_file_appendln)
     @param z_filename file name
-    @param zbuffer contents to write to file
+    @param z_buffer contents to write to file
 
     @returns `true` upon success
 */
-extern bool vt_file_append(const char *const z_filename, const char *const zbuffer);
-extern bool vt_file_appendln(const char* const z_filename, const char *const zbuffer);
+extern bool vt_file_append(const char *const z_filename, const char *const z_buffer);
+extern bool vt_file_appendln(const char* const z_filename, const char *const z_buffer);
 
 /** Appends to a file in bnary 'ab' mode (vt_file_appendb, vt_file_appendbln)
     @param z_filename file name
-    @param zbuffer contents to write to file
+    @param z_buffer contents to write to file
 
     @returns `true` upon success
 */
-extern bool vt_file_appendb(const char *const z_filename, const char *const zbuffer);
-extern bool vt_file_appendbln(const char* const z_filename, const char *const zbuffer);
+extern bool vt_file_appendb(const char *const z_filename, const char *const z_buffer);
+extern bool vt_file_appendbln(const char* const z_filename, const char *const z_buffer);
 
 
 /** Writes to a file using a formatted string in 'w' mode

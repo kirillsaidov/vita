@@ -153,7 +153,7 @@ void vt_str_free(vt_str_t *s) {
     s = NULL;
 }
 
-const char *vt_zstr(const vt_str_t *const s) {
+const char *vt_cstr(const vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
