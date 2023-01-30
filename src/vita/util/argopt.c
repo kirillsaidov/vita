@@ -1,27 +1,27 @@
 #include "vita/util/argopt.h"
 
-static void argopt_assign_value(argopt_t *const opt, const char *const value);
+static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value);
 
-int8_t argopt_parse(const size_t argc, const char **const argv, const size_t optc, argopt_t *const optv) {
-    if(argc < 2 && optc < 1 && argv == NULL && optv == NULL) {
-        DEBUG_ASSERT(argc >= 2, "argc must be >= 2!");
-        DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
-        DEBUG_ASSERT(argv != NULL, "argv is NULL!");
-        DEBUG_ASSERT(optv != NULL, "optv is NULL!");
-        return false;
-    }
+int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(optv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // check for user error, if no input is provided
+    VT_DEBUG_ENFORCE(argv != NULL, "%s\n", "No arguments provided!");
+    VT_DEBUG_ENFORCE(argc > 1, "%s\n", "No arguments provided!");
 
     // parse status
-    int8_t parse_status = ARGOPT_PARSE_SUCCESS;
+    int8_t parse_status = VT_ARGOPT_PARSE_SUCCESS;
 
     // if help wanted
     if(argc == 2 && (argv[1][0] == '?' || str_equals(argv[1], "-h") || str_equals(argv[1], "--help"))) {
-        return ARGOPT_PARSE_HELP_WANTED;
+        return VT_ARGOPT_PARSE_HELP_WANTED;
     }
 
     // parse argument options (skipping the binary name)
-    str_t *s_arg_value = strn_empty(DEFAULT_INIT_ELEMENTS);
-    str_t *s_opt_split = strn_empty(DEFAULT_INIT_ELEMENTS);
+    str_t *s_arg_value = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
+    str_t *s_opt_split = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
     const char *unrecognized_option = NULL;
     for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
@@ -33,7 +33,7 @@ int8_t argopt_parse(const size_t argc, const char **const argv, const size_t opt
 
         // find the corresponding option in optv
         for(size_t j = 0; j < optc; j++) {
-            argopt_t *const opt = &optv[j];
+            vt_argopt_t *const opt = &optv[j];
 
             /* Check for 2 cases:
                 1. Parsing with "="     | 'option=value'
@@ -41,10 +41,10 @@ int8_t argopt_parse(const size_t argc, const char **const argv, const size_t opt
             */
 
             // Case 1
-            if(str_len(s_opt_split)) {
+            if(vt_str_len(s_opt_split)) {
                 // check if option is known
-                if(str_equals(cstr(s_opt_split), opt->optionLong) || str_equals(cstr(s_opt_split), opt->optionShort)) {
-                    argopt_assign_value(opt, cstr(s_arg_value));
+                if(str_equals(vt_cstr(s_opt_split), opt->optionLong) || str_equals(vt_cstr(s_opt_split), opt->optionShort)) {
+                    vt_argopt_assign_value(opt, vt_cstr(s_arg_value));
 
                     // reset to NULL, since it was recognized
                     unrecognized_option = NULL;
@@ -52,11 +52,11 @@ int8_t argopt_parse(const size_t argc, const char **const argv, const size_t opt
                 }
             } else { // Case 2:
                 // check if option is known
-                if(str_equals(cstr(s_arg_value), opt->optionLong) || str_equals(cstr(s_arg_value), opt->optionShort)) {
+                if(str_equals(vt_cstr(s_arg_value), opt->optionLong) || str_equals(vt_cstr(s_arg_value), opt->optionShort)) {
                     if(i + 1 < argc && argv[i+1][0] != '-') {
-                        argopt_assign_value(opt, argv[++i]);
+                        vt_argopt_assign_value(opt, argv[++i]);
                     } else {
-                        argopt_assign_value(opt, "1"); // if it's a boolean | '--verbose'
+                        vt_argopt_assign_value(opt, "1"); // if it's a boolean | '--verbose'
                     }
 
                     // reset to NULL, since it was recognized
@@ -69,26 +69,26 @@ int8_t argopt_parse(const size_t argc, const char **const argv, const size_t opt
         // if an option wasn't unrecognized, return
         if(unrecognized_option != NULL) {
             fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
-            parse_status = ARGOPT_PARSE_ERROR;
+            parse_status = VT_ARGOPT_PARSE_ERROR;
             break;
         }
 
         // reset to zero
-        str_clear(s_arg_value);
-        str_clear(s_opt_split);
+        vt_str_clear(s_arg_value);
+        vt_str_clear(s_opt_split);
     }
 
     // free resources
-    str_free(s_arg_value);
-    str_free(s_opt_split);
+    vt_str_free(s_arg_value);
+    vt_str_free(s_opt_split);
 
     return parse_status;
 }
 
-void argopt_print_help(const char *header, const char *footer, const size_t optc, const argopt_t *const optv) {
+void vt_argopt_print_help(const char *header, const char *footer, const size_t optc, const vt_argopt_t *const optv) {
     if(optc < 1 || optv == NULL) {
-        DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
-        DEBUG_ASSERT(optv != NULL, "optv is NULL!");
+        VT_DEBUG_ASSERT(optc >= 1, "optc must be >= 1!");
+        VT_DEBUG_ASSERT(optv != NULL, "optv is NULL!");
         return;
     }
     
@@ -119,7 +119,7 @@ void argopt_print_help(const char *header, const char *footer, const size_t optc
 
 /* ------------------------ PRIVATE ------------------------ */
 
-static void argopt_assign_value(argopt_t *const opt, const char *const value) {
+static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value) {
     if(opt == NULL || value == NULL) {
         return;
     }
@@ -127,49 +127,49 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
     // save arg value
     switch(opt->optionType) {
         // int
-        case dt_int8:
+        case vt_dt_int8:
             *(int8_t*)(opt->optionValue) = (int8_t)conv_str_to_int64(value);
             break;
-        case dt_int16:
+        case vt_dt_int16:
             *(int16_t*)(opt->optionValue) = (int16_t)conv_str_to_int64(value);
             break;
-        case dt_int32:
+        case vt_dt_int32:
             *(int32_t*)(opt->optionValue) = (int32_t)conv_str_to_int64(value);
             break;
-        case dt_int64:
+        case vt_dt_int64:
             *(int64_t*)(opt->optionValue) = conv_str_to_int64(value);
             break;
         
         // uint
-        case dt_uint8:
+        case vt_dt_uint8:
             *(uint8_t*)(opt->optionValue) = (uint8_t)conv_str_to_uint64(value);
             break;
-        case dt_uint16:
+        case vt_dt_uint16:
             *(uint16_t*)(opt->optionValue) = (uint16_t)conv_str_to_uint64(value);
             break;
-        case dt_uint32:
+        case vt_dt_uint32:
             *(uint32_t*)(opt->optionValue) = (uint32_t)conv_str_to_uint64(value);
             break;
-        case dt_uint64:
+        case vt_dt_uint64:
             *(uint64_t*)(opt->optionValue) = conv_str_to_uint64(value);
             break;
         
         // float
-        case dt_float:
+        case vt_dt_float:
             *(float*)(opt->optionValue) = (float)conv_str_to_double(value);
             break;
-        case dt_double:
+        case vt_dt_double:
             *(double*)(opt->optionValue) = conv_str_to_double(value);
             break;
         
-        // bool, char, str, cstr
-        case dt_bool:
+        // bool, char, str, vt_cstr
+        case vt_dt_bool:
             *(bool*)(opt->optionValue) = (value[0] == '1' || str_equals(value, "true") ? true : false);
             break;
-        case dt_char:
+        case vt_dt_char:
             *(char*)(opt->optionValue) = value[0];
             break;
-        case dt_str:
+        case vt_dt_str:
             {
                 str_t **svalue = (str_t**)opt->optionValue;
 
@@ -177,12 +177,12 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
                 if(*svalue == NULL) {
                     *svalue = str(value);
                 } else {
-                    str_clear(*svalue);
+                    vt_str_clear(*svalue);
                     str_append(*svalue, value);
                 }
             }
             break;
-        case dt_cstr:
+        case vt_dt_vt_cstr:
             {
                 char **zvalue = (char**)opt->optionValue;
 
@@ -197,7 +197,7 @@ static void argopt_assign_value(argopt_t *const opt, const char *const value) {
                     if(len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
                         if(ztmp == NULL) {
-                            DEBUG_PRINTF("Failed to reallocate cstr to assign a new value!\n");
+                            DEBUG_PRINTF("Failed to reallocate vt_cstr to assign a new value!\n");
                             return;
                         }
 
