@@ -3,16 +3,16 @@
 
 /** VITA_COMPARISON MODULE
  * Macros:
-    - MAX
-    - MIN
-    - CLAMP
+    - VT_MAX
+    - VT_MIN
+    - VT_CLAMP
 */
 
 #include <stdint.h>
 
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define CLAMP(x, l, h) (MAX(l, MIN(x, h)))
+#define VT_MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define VT_MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define VT_CLAMP(x, l, h) (VT_MAX(l, VT_MIN(x, h)))
 
 extern void cmp_test(void);
 

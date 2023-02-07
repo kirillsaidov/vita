@@ -2,7 +2,7 @@
 #define VITA_VERSION_H
 
 /** VITA_CORE MODULE
-    - vt_get_vita_version
+    - vt_get_version
 */
 
 #include "core.h"
@@ -21,6 +21,6 @@ typedef struct {
 /** Query Vita version
     @returns version_t struct containing major, minor, patch and full version str
 */
-extern vt_version_t vt_get_vita_version(void);
+extern vt_version_t vt_get_version(void);
 
 #endif // VITA_VERSION_H

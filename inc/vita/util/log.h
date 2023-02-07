@@ -19,10 +19,10 @@
     - VT_LOGF_ASSERT
 
  * Functions
-    - vt_log_level_set
-    - vt_log_level_set_default
-    - vt_get_log_level_str
-    - vt_log_log
+    - vt_log_set_level
+    - vt_log_set_level_default
+    - vt_log_get_level_str
+    - vt_log
 */
 
 #include "../core/core.h"
@@ -44,38 +44,38 @@ enum VitaLogLevel {
 };
 
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
-#define VT_LOG_INFO(...) vt_log_log(NULL, vt_ll_info, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOG_WARN(...) vt_log_log(NULL, vt_ll_warn, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOG_DEBUG(...) vt_log_log(NULL, vt_ll_debug, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOG_ERROR(...) vt_log_log(NULL, vt_ll_error, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOG_FATAL(...) vt_log_log(NULL, vt_ll_fatal, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOG_ASSERT(expr, ...) vt_log_log(NULL, vt_ll_assert, expr, STRINGOF(expr), __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_INFO(...) vt_log(NULL, vt_ll_info, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_WARN(...) vt_log(NULL, vt_ll_warn, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_DEBUG(...) vt_log(NULL, vt_ll_debug, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_ERROR(...) vt_log(NULL, vt_ll_error, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_FATAL(...) vt_log(NULL, vt_ll_fatal, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOG_ASSERT(expr, ...) vt_log(NULL, vt_ll_assert, expr, STRINGOF(expr), __FILE__, __LINE__, __VA_ARGS__)
 
 /* ------------- CUSTOM FILE LOGGER BASED ON LOG LEVEL ------------- */
-#define VT_LOGF_INFO(zfilename, ...) vt_log_log(zfilename, vt_ll_info, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_WARN(zfilename, ...) vt_log_log(zfilename, vt_ll_warn, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_DEBUG(zfilename, ...) vt_log_log(zfilename, vt_ll_debug, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_ERROR(zfilename, ...) vt_log_log(zfilename, vt_ll_error, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_FATAL(zfilename, ...) vt_log_log(zfilename, vt_ll_fatal, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_ASSERT(zfilename, expr, ...) vt_log_log(zfilename, vt_ll_assert, expr, STRINGOF(expr), __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_INFO(zfilename, ...) vt_log(zfilename, vt_ll_info, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_WARN(zfilename, ...) vt_log(zfilename, vt_ll_warn, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_DEBUG(zfilename, ...) vt_log(zfilename, vt_ll_debug, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_ERROR(zfilename, ...) vt_log(zfilename, vt_ll_error, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_FATAL(zfilename, ...) vt_log(zfilename, vt_ll_fatal, false, NULL, __FILE__, __LINE__, __VA_ARGS__)
+#define VT_LOGF_ASSERT(zfilename, expr, ...) vt_log(zfilename, vt_ll_assert, expr, STRINGOF(expr), __FILE__, __LINE__, __VA_ARGS__)
 
 /** Sets custom log level
     @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 */
-extern void vt_log_level_set(enum LogLevel vt_log_level, const char *const filename);
+extern void vt_log_set_level(enum LogLevel vt_log_level, const char *const filename);
 
 /** Sets default log level for all levels
     @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 */
-extern void vt_log_level_set_default(const char *const filename);
+extern void vt_log_set_level_default(const char *const filename);
 
 /** Returns log level string
     @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @returns const char*
 */
-extern const char *vt_get_log_level_str(enum LogLevel vt_log_level);
+extern const char *vt_log_get_level_str(enum LogLevel vt_log_level);
 
 /** Global logger
     @param zfilename filename to log info to; if `NULL` is passed, uses `stderr`
@@ -87,7 +87,7 @@ extern const char *vt_get_log_level_str(enum LogLevel vt_log_level);
     @param zfmt formatting
     @param ... additional arguments
 */
-extern void vt_log_log(const char *const zfilename, enum LogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
+extern void vt_log(const char *const zfilename, enum LogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
 
 #endif // VITA_VT_LOG_H
 
