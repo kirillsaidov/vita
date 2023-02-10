@@ -52,7 +52,7 @@
 #include "../container/plist.h"
 
 // see core/core.h for definition
-typedef struct BaseContainerType vt_str_t;
+typedef struct VitaBaseContainerType vt_str_t;
 
 /** Creates a static string with length
     @param z raw C string
@@ -291,13 +291,13 @@ extern const char *vt_str_find(const char *const z, const char *sub);
 extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
 
 /** Splits a string given a separator into substrings
-    @param p plist_t instance, if `NULL` allocates
+    @param p vt_plist_t instance, if `NULL` allocates
     @param s vt_str_t instance
     @param sep seperator string
 
-    @returns plist_t of vt_str_t, `NULL` upon failure
+    @returns vt_plist_t of vt_str_t, `NULL` upon failure
 */
-extern plist_t *vt_str_split(plist_t *ps, const vt_str_t *const s, const char *const sep);
+extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep);
 
 /** Pops off the first part of the string before the separator
     @param sr vt_str_t instance where the result will be saved, if NULL is passed, it's allocated

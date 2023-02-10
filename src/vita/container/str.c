@@ -43,7 +43,7 @@ vt_str_t *vt_str_fmt(vt_str_t *s, const char *const fmt, ...) {
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // allocate s if s == NULL
-    if(s == NULL && (s = vt_strn(DEFAULT_INIT_ELEMENTS)) == NULL) {
+    if(s == NULL && (s = vt_strn(VT_DEFAULT_INIT_ELEMENTS)) == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return s;
     }
@@ -876,7 +876,7 @@ bool vt_str_equals(const char *const z1, const char *const z2) {
         return false;
     }
 
-    return !vt_strncmp(z1, z2, z1Len);
+    return !strncmp(z1, z2, z1Len);
 }
 
 bool vt_str_starts_with(const char *const z, const char *const sub) {
@@ -889,7 +889,7 @@ bool vt_str_starts_with(const char *const z, const char *const sub) {
         return false;
     }
 
-    return !vt_strncmp(z, sub, subLen);
+    return !strncmp(z, sub, subLen);
 }
 
 bool vt_str_ends_with(const char *const z, const char *const sub) {
@@ -903,7 +903,7 @@ bool vt_str_ends_with(const char *const z, const char *const sub) {
         return false;
     }
 
-    return !vt_strncmp(z + zLen - subLen, sub, subLen);
+    return !strncmp(z + zLen - subLen, sub, subLen);
 }
 
 void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {

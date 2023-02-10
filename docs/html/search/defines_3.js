@@ -14,7 +14,7 @@ var searchData=
   ['debug_5fdefault_5finit_11',['DEBUG_DEFAULT_INIT',['../debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2',1,'debug.h']]],
   ['debug_5fdefault_5fquit_12',['DEBUG_DEFAULT_QUIT',['../debug_8h.html#aaf814f248819f8edb576f08b8a27df0d',1,'debug.h']]],
   ['debug_5fdestroy_5fmh_13',['DEBUG_DESTROY_MH',['../debug_8h.html#a033511e0e52524028625459c2dbe6a52',1,'debug.h']]],
-  ['debug_5ffree_14',['DEBUG_FREE',['../debug_8h.html#aaa3c9af822d9f0273b115eafd23120f9',1,'debug.h']]],
+  ['debug_5ffree_14',['VT_DEBUG_FREE',['../debug_8h.html#aaa3c9af822d9f0273b115eafd23120f9',1,'debug.h']]],
   ['debug_5ffree_5fmh_15',['DEBUG_FREE_MH',['../debug_8h.html#acdc546f5a7a13c11717d53da9389aa5d',1,'debug.h']]],
   ['debug_5fmalloc_16',['DEBUG_MALLOC',['../debug_8h.html#a48e4282c36e828d6908e9342eb0e506c',1,'debug.h']]],
   ['debug_5fmalloc_5fmh_17',['DEBUG_MALLOC_MH',['../debug_8h.html#ab4268dc2e5708a8518c573e8f69ed422',1,'debug.h']]],
@@ -24,9 +24,9 @@ var searchData=
   ['debug_5fnfrees_5fmh_21',['DEBUG_NFREES_MH',['../debug_8h.html#accd6776ce62fc8734d7d369d8e186bbd',1,'debug.h']]],
   ['debug_5fnreallocs_22',['DEBUG_NREALLOCS',['../debug_8h.html#a8a20a95c60951a6617a742c2def8710b',1,'debug.h']]],
   ['debug_5fnreallocs_5fmh_23',['DEBUG_NREALLOCS_MH',['../debug_8h.html#a68b6f7ff26597fde5903dba5a69f006f',1,'debug.h']]],
-  ['debug_5fprintf_24',['DEBUG_PRINTF',['../debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b',1,'debug.h']]],
+  ['debug_5fprintf_24',['VT_DEBUG_PRINTF',['../debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b',1,'debug.h']]],
   ['debug_5frealloc_25',['DEBUG_REALLOC',['../debug_8h.html#a28155db231aa3a6c09fe5efacb0a71f3',1,'debug.h']]],
   ['debug_5frealloc_5fmh_26',['DEBUG_REALLOC_MH',['../debug_8h.html#afc445f3ed91d907f54d6c567383e5bd7',1,'debug.h']]],
-  ['default_5finit_5felements_27',['DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
+  ['default_5finit_5felements_27',['VT_DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
   ['dir_5fpermissions_28',['DIR_PERMISSIONS',['../path_8h.html#ace53e1ffc36d796816f33e0fef80afc0',1,'path.h']]]
 ];

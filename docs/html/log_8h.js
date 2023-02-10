@@ -12,7 +12,7 @@ var log_8h =
     [ "LOGF_FATAL", "log_8h.html#a3db97499e3a3948e72f3ee511f02abd8", null ],
     [ "LOGF_INFO", "log_8h.html#a34b61d2cebfb157184e4b5e55e548567", null ],
     [ "LOGF_WARN", "log_8h.html#a585d30cb63b2d853c1116c2397755e7e", null ],
-    [ "LogLevel", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9", [
+    [ "VitaLogLevel", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9", [
       [ "ll_info", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a502b5c39e950e6334ae044c6fae20185", null ],
       [ "ll_warn", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a77c3d7b2141c4afb7ae37866b796b293", null ],
       [ "ll_debug", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a0069c27ffa71b88361515f9f6a72ef7d", null ],

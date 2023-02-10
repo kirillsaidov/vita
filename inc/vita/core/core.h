@@ -24,6 +24,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <assert.h>
 #include <time.h>
 
 // getting file name
@@ -74,9 +75,9 @@ enum VitaDataType {
     vt_dt_cstr,     // char*
 
     // vita
-    vt_dt_str,      // str_t
+    vt_dt_str,      // vt_str_t
     vt_dt_vec,      // vec_t
-    vt_dt_plist,    // plist_t
+    vt_dt_plist,    // vt_plist_t
 
     vt_dt_unknown,  // unknown data type
     vt_dt_count     // number of elements
@@ -140,26 +141,26 @@ extern struct VitaBaseContainerType *vt_bct_new(void);
 */
 extern void vt_bct_free(struct VitaBaseContainerType *bct);
 
-/** Returns BaseContainerType's ptr head
-    @param bct BaseContainerType ptr instance
+/** Returns VitaBaseContainerType's ptr head
+    @param bct VitaBaseContainerType ptr instance
     @returns `NULL` upon failure
 */
 extern void *vt_bct_head(const struct VitaBaseContainerType *const bct);
 
-/** Returns BaseContainerType's length    
-    @param bct BaseContainerType ptr
+/** Returns VitaBaseContainerType's length    
+    @param bct VitaBaseContainerType ptr
     @returns length
 */
 extern size_t vt_bct_len(const struct VitaBaseContainerType *const bct);
 
-/** Returns BaseContainerType's capacity
-    @param bct BaseContainerType ptr
+/** Returns VitaBaseContainerType's capacity
+    @param bct VitaBaseContainerType ptr
     @returns capacity
 */
 extern size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct);
 
-/** Returns BaseContainerType's element size
-    @param bct BaseContainerType ptr
+/** Returns VitaBaseContainerType's element size
+    @param bct VitaBaseContainerType ptr
     @returns element size
 */
 extern size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct);

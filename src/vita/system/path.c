@@ -6,14 +6,14 @@ vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
 
     // create vt_str_t if needed
-    vt_str_t *st = ((s == NULL) ? (vt_strn(DEFAULT_INIT_ELEMENTS)) : (s));
+    vt_str_t *st = ((s == NULL) ? (vt_strn(VT_DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
     // append the first part
-    if(vt_str_append(st, plist_get(p, 0)) != ve_operation_success) {
+    if(vt_str_append(st, vt_plist_get(p, 0)) != vt_ve_operation_success) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
 
         // if s is NULL, free st (this is done to avoid freeing user's s instance)
@@ -27,7 +27,7 @@ vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
     // continue appending
     const size_t pLen = vt_plist_len(p);
     for(size_t i = 1; i < pLen; i++) {
-        if(vt_str_append(st, PATH_SEPARATOR) != ve_operation_success && vt_str_append(st, plist_get(p, i)) != ve_operation_success) {
+        if(vt_str_append(st, PATH_SEPARATOR) != vt_ve_operation_success && vt_str_append(st, vt_plist_get(p, i)) != vt_ve_operation_success) {
             VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
             
             // if s is NULL, free st (this is done to avoid freeing user's s instance)
@@ -47,7 +47,7 @@ vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // create a new vt_str_t instance and append
-    vt_str_t *st = ((s == NULL) ? (vt_strn(DEFAULT_INIT_ELEMENTS)) : (s));
+    vt_str_t *st = ((s == NULL) ? (vt_strn(VT_DEFAULT_INIT_ELEMENTS)) : (s));
     if(st == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
@@ -165,7 +165,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
     }
 
     // create plist instance
-    vt_plist_t *pl = (p == NULL ? (vt_plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+    vt_plist_t *pl = (p == NULL ? (vt_plist_create(VT_DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
@@ -196,7 +196,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         }
         
         // save directory
-        vt_str *s = vt_str(dirtree->d_name);
+        vt_str_t *s = vt_str(dirtree->d_name);
         if(s == NULL) {
             VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
             break;
@@ -228,7 +228,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     }
 
     // create plist instance
-    vt_plist_t *pl = (p == NULL ? (vt_plist_create(DEFAULT_INIT_ELEMENTS)) : (p));
+    vt_plist_t *pl = (p == NULL ? (vt_plist_create(VT_DEFAULT_INIT_ELEMENTS)) : (p));
     if(pl == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
@@ -278,8 +278,8 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         }
 
         // check if current path is a directory
-        if(vt_path_is_dir(cstr(s)) && vt_path_listdir_recurse(pl, cstr(s), ignoreDotFiles) == NULL) {
-            // vt_path_listdir_recurse(pl, cstr(s), ignoreDotFiles); // NOTE: do I need to check for return value here?
+        if(vt_path_is_dir(vt_cstr(s)) && vt_path_listdir_recurse(pl, vt_cstr(s), ignoreDotFiles) == NULL) {
+            // vt_path_listdir_recurse(pl, vt_cstr(s), ignoreDotFiles); // NOTE: do I need to check for return value here?
             break;
         }
     }
@@ -306,8 +306,8 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     const char *ptr = NULL;
     const size_t sLen = vt_str_len(st);
     for(size_t i = sLen - 1; i > 0; i--) {
-        if(cstr(st)[i] == PATH_SEPARATOR[0] && i != sLen - 1) {
-            ptr = &cstr(st)[i+1];
+        if(vt_cstr(st)[i] == PATH_SEPARATOR[0] && i != sLen - 1) {
+            ptr = &vt_cstr(st)[i+1];
             break;
         }
     }
@@ -397,14 +397,14 @@ bool vt_path_mkdir_parents(const char *const z) {
     size_t dirLen = vt_plist_len(dir_list);
     for(size_t i = 0; i < dirLen; i++) {
         // get the first directory in the directory tree that we need to make
-        vt_str_t *sdir = (vt_str_t*)(plist_get(dir_list, i));
+        vt_str_t *sdir = (vt_str_t*)(vt_plist_get(dir_list, i));
         
         // append it to the full path
-        vt_str_append(sfull, cstr(sdir));
+        vt_str_append(sfull, vt_cstr(sdir));
         vt_str_append(sfull, PATH_SEPARATOR);
         
         // make that directory
-        vt_path_mkdir(cstr(sfull));
+        vt_path_mkdir(vt_cstr(sfull));
     }
 
 label_vt_path_mkdir_parents_cleanup__:
@@ -416,7 +416,7 @@ label_vt_path_mkdir_parents_cleanup__:
     if(dir_list != NULL) {
         dirLen = vt_plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
-            s = (vt_str_t*)(plist_get(dir_list, i));
+            s = (vt_str_t*)(vt_plist_get(dir_list, i));
             vt_str_free(s);
         }
     }
@@ -470,9 +470,9 @@ bool vt_path_rmdir_recurse(const char *const z) {
     // iterate starting from the end and remove each element
     // checking its type
     vt_str_t *s = NULL;
-    while((s = (vt_str_t*)(plist_pop_get(dir_list))) != NULL) {
+    while((s = (vt_str_t*)(vt_plist_pop_get(dir_list))) != NULL) {
         // remove file/directory
-        const char *const ztmp = cstr(s);
+        const char *const ztmp = vt_cstr(s);
         status = vt_path_is_dir(ztmp) ? vt_path_rmdir(ztmp) : vt_path_remove(ztmp);
 
         // check status
@@ -486,7 +486,7 @@ vt_path_rmdir_recurse_cleanup:
     if(dir_list != NULL) {
         const size_t dirLen = vt_plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
-            s = (vt_str_t*)(plist_get(dir_list, i));
+            s = (vt_str_t*)(vt_plist_get(dir_list, i));
             vt_str_free(s);
         }
 
@@ -517,7 +517,7 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
 
     // check if path exists
     if(!vt_path_exists(z1)) {
-        VT_DEBUG_PRINTF("%s: Path does not exist <%s>\n", vt_get_vita_error_str(vt_ve_operation_failure), z);
+        VT_DEBUG_PRINTF("%s: Path does not exist <%s>\n", vt_get_vita_error_str(vt_ve_operation_failure), z1);
         return false;
     }
 
@@ -561,7 +561,7 @@ vt_str_t *vt_path_expand_tilda(const char *const z) {
 }
 
 vt_str_t *vt_path_get_this_exe_location(void) {
-    vt_str_t *spath = strn_empty(PATH_MAX);
+    vt_str_t *spath = vt_strn_empty(PATH_MAX);
     if (spath == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;

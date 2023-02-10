@@ -57,10 +57,10 @@ uint64_t vt_math_random_u64(void) {
 }
 
 float vt_math_random_f32(const uint32_t bound) {
-    return ((float)random_u64()/(float)UINT64_MAX) * bound;
+    return ((float)vt_math_random_u64()/(float)UINT64_MAX) * bound;
 }
 
 float vt_math_random_f32_uniform(float lbound, float ubound) {
-    float randval = sin(random_u64() * random_u64());
+    float randval = sin(vt_math_random_u64() * vt_math_random_u64());
     return lbound + (ubound - lbound) * fabs(randval);
 }

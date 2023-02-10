@@ -18,8 +18,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     }
 
     // parse argument options (skipping the binary name)
-    str_t *s_arg_value = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
-    str_t *s_opt_split = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *s_arg_value = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *s_opt_split = vt_strn_empty(VT_DEFAULT_INIT_ELEMENTS);
     const char *unrecognized_option = NULL;
     for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
@@ -27,7 +27,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
 
         // split 'option=value' by '='
         vt_str_append(s_arg_value, argv[i]);
-        s_opt_split = str_pop_get_first(s_opt_split, s_arg_value, "=");
+        s_opt_split = vt_str_pop_get_first(s_opt_split, s_arg_value, "=");
 
         // find the corresponding option in optv
         for(size_t j = 0; j < optc; j++) {
@@ -170,7 +170,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
             break;
         case vt_dt_str:
             {
-                str_t **svalue = (str_t**)opt->optionValue;
+                vt_str_t **svalue = (vt_str_t**)opt->optionValue;
 
                 // check if we need to allocate
                 if(*svalue == NULL) {
@@ -181,7 +181,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                 }
             }
             break;
-        case vt_dt_vt_cstr:
+        case vt_dt_cstr:
             {
                 char **zvalue = (char**)opt->optionValue;
 
@@ -196,7 +196,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                     if(len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
                         if(ztmp == NULL) {
-                            DEBUG_PRINTF("Failed to reallocate vt_cstr to assign a new value!\n");
+                            VT_DEBUG_PRINTF("Failed to reallocate vt_cstr to assign a new value!\n");
                             return;
                         }
 

@@ -8,10 +8,10 @@ In this chapter we are going to discuss how to read and write to files with `Vit
 ### Reading from files on one line of code
 ```c
 // read plain data
-str_t *s = file_read("other/myfile.txt");
+vt_str_t *s = file_read("other/myfile.txt");
 
 // read in binary mode
-str_t *s = file_readb("other/myfile.txt");
+vt_str_t *s = file_readb("other/myfile.txt");
 
 // do you thing ...
 

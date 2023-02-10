@@ -10,20 +10,20 @@
 ### Path manipulation
 ```c
 // path concatenation
-str_t *my_path = path_build(NULL, 2, "photos", "mountains.jpg");
-assert(str_equals(cstr(my_path), "photos/mountains.jpg"));
+vt_str_t *my_path = path_build(NULL, 2, "photos", "mountains.jpg");
+assert(str_equals(vt_cstr(my_path), "photos/mountains.jpg"));
 
 // extracting basename from path
 my_path = path_basename(my_path, "photos/mountains.jpg");
-assert(str_equals(cstr(my_path), "mountains.jpg"));
+assert(str_equals(vt_cstr(my_path), "mountains.jpg"));
 
 // expands tilda `~` to HOMEPATH both on Unix and Windows
-str_t *s_expanded = path_expand_tilda("~/media/dev");
-assert(str_equals(cstr(s_expanded), "/home/userX/media/dev"));
+vt_str_t *s_expanded = path_expand_tilda("~/media/dev");
+assert(str_equals(vt_cstr(s_expanded), "/home/userX/media/dev"));
 
 // get your EXE path
-str_t *selfpath = path_get_this_exe_location();
-printf("%s\n", cstr(selfpath)); // prints "/home/userX/media/Vita/tests/bin/test_path"
+vt_str_t *selfpath = path_get_this_exe_location();
+printf("%s\n", vt_cstr(selfpath)); // prints "/home/userX/media/Vita/tests/bin/test_path"
 
 // free resources
 str_free(my_path); 
@@ -58,7 +58,7 @@ path_rmdir_recurse(mypath);
 
 ### Listing directory contents
 ```c
-plist_t *pdir = path_listdir(NULL, "media/dev", true); // `true` here is for ignoring dot.files: .vim, .gitignore, etc...
+vt_plist_t *pdir = path_listdir(NULL, "media/dev", true); // `true` here is for ignoring dot.files: .vim, .gitignore, etc...
 assert(plist_len(pdir) == FILES_IN_DIR);
 
 // do something
@@ -67,15 +67,15 @@ plist_apply(pdir, your_func);
 // or this
 const size_t len = plist_len(pdir);
 for(size_t i = 0; i < len; i++) {
-    str_t *s = plist_get(pdir, i);
+    vt_str_t *s = vt_plist_get(pdir, i);
 
     // do something with "s"
     // ...
 }
 
 // free resources
-plist_apply(pdir, free_str);    // free `str_t` inside `plist_t`
-plist_destroy(pdir);            // free `plist_t` itself
+plist_apply(pdir, free_str);    // free `vt_str_t` inside `vt_plist_t`
+plist_destroy(pdir);            // free `vt_plist_t` itself
 ```
 
 ### Checking directory info

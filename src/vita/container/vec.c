@@ -58,7 +58,7 @@ void vt_vec_dtor(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
 
     // free vt_vec_t contents
-    DEBUG_FREE(v->ptr);
+    VT_DEBUG_FREE(v->ptr);
 
     // default-init
     *v = (vt_vec_t) {0};
@@ -244,7 +244,7 @@ enum VitaError vt_vec_resize(vt_vec_t *const v, const size_t n) {
 
     // cannot resize to 0, it's not an error, thus, do nothing
     if(n == 0) {
-        return ve_operation_failure;
+        return vt_ve_operation_failure;
     }
 
     if(n == v->capacity) {
@@ -413,7 +413,7 @@ enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t
         v->len
     );
 
-    // copy val data to str_t
+    // copy val data to vt_str_t
     memcpy(((char*)(v->ptr) + at * v->elsize), val, v->elsize);
 
     return vt_ve_operation_success;
@@ -665,7 +665,7 @@ enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const siz
     return vt_ve_operation_success;
 }
 
-enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum RemoveStrategy rs) {
+enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
@@ -678,10 +678,10 @@ enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum Remo
     );
 
     // check remove strategy
-    if(rs == rs_stable) {
+    if(rs == vt_rs_stable) {
         memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at) * v->elsize);
     } else {
-        gswap((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (v->len - 1) * v->elsize, v->elsize);
+        vt_gswap((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (v->len - 1) * v->elsize, v->elsize);
     }
 
     // set new length

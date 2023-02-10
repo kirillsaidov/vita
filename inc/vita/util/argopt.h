@@ -28,7 +28,7 @@ typedef struct VitaArgOpt {
     
     // value
     void **optionValue;
-    const enum DataType optionType;
+    const enum VitaDataType optionType;
 } vt_argopt_t;
 
 /** Parses command line arguments
@@ -40,7 +40,7 @@ typedef struct VitaArgOpt {
     @returns `1` if help wanted, `0` upon sucess and `-1` upon error
 
     @note
-        Strings must be heap-allocated be it char* or str_t!
+        Strings must be heap-allocated be it char* or vt_str_t!
 */
 extern int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv);
 

@@ -60,26 +60,26 @@ enum VitaLogLevel {
 #define VT_LOGF_ASSERT(zfilename, expr, ...) vt_log(zfilename, vt_ll_assert, expr, STRINGOF(expr), __FILE__, __LINE__, __VA_ARGS__)
 
 /** Sets custom log level
-    @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
+    @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 */
-extern void vt_log_set_level(enum LogLevel vt_log_level, const char *const filename);
+extern void vt_log_set_level(enum VitaLogLevel vt_log_level, const char *const filename);
 
 /** Sets default log level for all levels
-    @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
+    @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 */
 extern void vt_log_set_level_default(const char *const filename);
 
 /** Returns log level string
-    @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
+    @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @returns const char*
 */
-extern const char *vt_log_get_level_str(enum LogLevel vt_log_level);
+extern const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level);
 
 /** Global logger
     @param zfilename filename to log info to; if `NULL` is passed, uses `stderr`
-    @param vt_log_level enum LogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
+    @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param expr expression to test
     @param zexpr a string representation of exp
     @param file source file name (__FILE__) from where the logger has been called
@@ -87,7 +87,7 @@ extern const char *vt_log_get_level_str(enum LogLevel vt_log_level);
     @param zfmt formatting
     @param ... additional arguments
 */
-extern void vt_log(const char *const zfilename, enum LogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
+extern void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
 
 #endif // VITA_VT_LOG_H
 

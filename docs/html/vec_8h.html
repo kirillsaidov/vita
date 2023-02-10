@@ -114,7 +114,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a13f336a24907d53f8b0fe8889280601d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_base_container_type.html">BaseContainerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a></td></tr>
+<tr class="memitem:a13f336a24907d53f8b0fe8889280601d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_base_container_type.html">VitaBaseContainerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a></td></tr>
 <tr class="separator:a13f336a24907d53f8b0fe8889280601d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -243,7 +243,7 @@ Functions</h2></td></tr>
 <tr class="separator:ac51553e073cf7a14e61cb30dcc763543"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a016a99486a6aba2f2a2084428ce522dc"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a016a99486a6aba2f2a2084428ce522dc">vec_insert</a> (<a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a> *const v, const void *const val, const size_t at)</td></tr>
 <tr class="separator:a016a99486a6aba2f2a2084428ce522dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a012967fb47b43b9cf3316f279eabe131"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a012967fb47b43b9cf3316f279eabe131">vec_remove</a> (<a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a> *const v, const size_t at, const enum <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">RemoveStrategy</a> rs)</td></tr>
+<tr class="memitem:a012967fb47b43b9cf3316f279eabe131"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a012967fb47b43b9cf3316f279eabe131">vec_remove</a> (<a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a> *const v, const size_t at, const enum <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">VitaRemoveStrategy</a> rs)</td></tr>
 <tr class="separator:a012967fb47b43b9cf3316f279eabe131"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397a3e8a1049f2bb084a024dcf4a363f"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a397a3e8a1049f2bb084a024dcf4a363f">vec_contains</a> (const <a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a> *const v, const void *const val)</td></tr>
 <tr class="separator:a397a3e8a1049f2bb084a024dcf4a363f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,7 +258,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef struct <a class="el" href="struct_base_container_type.html">BaseContainerType</a> <a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a></td>
+          <td class="memname">typedef struct <a class="el" href="struct_base_container_type.html">VitaBaseContainerType</a> <a class="el" href="vec_8h.html#a13f336a24907d53f8b0fe8889280601d">vec_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1756,7 +1756,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const enum <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">RemoveStrategy</a>&#160;</td>
+          <td class="paramtype">const enum <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">VitaRemoveStrategy</a>&#160;</td>
           <td class="paramname"><em>rs</em>&#160;</td>
         </tr>
         <tr>
@@ -1770,12 +1770,12 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">v</td><td>vec_t instance </td></tr>
     <tr><td class="paramname">at</td><td>index of the value </td></tr>
-    <tr><td class="paramname">rs</td><td>choose a RemoveStrategy (see Notes)</td></tr>
+    <tr><td class="paramname">rs</td><td>choose a VitaRemoveStrategy (see Notes)</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>enum VitaError code</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>enum RemoveStrategy { rs_stable = ordered removal, rs_fast = unordered removal } rs_stable: shifts all values by element size rs_fast: swaps the last value with the value of <code>at</code> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>enum VitaRemoveStrategy { vt_rs_stable = ordered removal, rs_fast = unordered removal } vt_rs_stable: shifts all values by element size rs_fast: swaps the last value with the value of <code>at</code> </dd></dl>
 
 </div>
 </div>

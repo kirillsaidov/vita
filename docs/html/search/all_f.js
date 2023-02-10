@@ -23,10 +23,10 @@ var searchData=
   ['str_5findex_5fof_20',['str_index_of',['../str_8h.html#ac42a894abbe35bc23bc5992991e72729',1,'str.h']]],
   ['str_5finsert_21',['str_insert',['../str_8h.html#a7201c409aa6d70264b53dd96073387f7',1,'str.h']]],
   ['str_5fis_5fempty_22',['str_is_empty',['../str_8h.html#a3a682970b56151d6f279fa991d3470f3',1,'str.h']]],
-  ['str_5fis_5fnumeric_23',['str_is_numeric',['../str_8h.html#afc36e11108b41d6556f7cd6468919741',1,'str.h']]],
+  ['str_5fis_5fnumeric_23',['vt_str_is_numeric',['../str_8h.html#afc36e11108b41d6556f7cd6468919741',1,'str.h']]],
   ['str_5flen_24',['str_len',['../str_8h.html#a1329972fd65d2b74420a7496ddbd3837',1,'str.h']]],
   ['str_5fmake_5fon_5fstack_25',['str_make_on_stack',['../str_8h.html#ac74c27e44c9d7a847c0f0b4f57e2b0bb',1,'str.h']]],
-  ['str_5fpop_5fget_5ffirst_26',['str_pop_get_first',['../str_8h.html#a88e74e460d43fdc45aacd06afffdd3c4',1,'str.h']]],
+  ['str_5fpop_5fget_5ffirst_26',['vt_str_pop_get_first',['../str_8h.html#a88e74e460d43fdc45aacd06afffdd3c4',1,'str.h']]],
   ['str_5fpop_5fget_5flast_27',['str_pop_get_last',['../str_8h.html#ad48cdb361ce01a2be4247358963177b1',1,'str.h']]],
   ['str_5fremove_28',['str_remove',['../str_8h.html#ab74d4ee3b83510ae535d8ec8ea1ceac6',1,'str.h']]],
   ['str_5fremove_5fall_29',['str_remove_all',['../str_8h.html#a13bd77eff8e17f73eb14fb32c45fb4d2',1,'str.h']]],
@@ -42,9 +42,9 @@ var searchData=
   ['str_5fstrip_39',['str_strip',['../str_8h.html#af9c4da1e293c8d4b4afad0ff2a4ead8e',1,'str.h']]],
   ['str_5fstrip_5fc_40',['str_strip_c',['../str_8h.html#aef115ec57d72b439cc821d93c2e8af58',1,'str.h']]],
   ['str_5fstrip_5fpunct_41',['str_strip_punct',['../str_8h.html#a76494866d34437251d3ae115fdcadfd4',1,'str.h']]],
-  ['str_5ft_42',['str_t',['../str_8h.html#a097061cf8c4384da3a81e7a34b86bc80',1,'str.h']]],
+  ['str_5ft_42',['vt_str_t',['../str_8h.html#a097061cf8c4384da3a81e7a34b86bc80',1,'str.h']]],
   ['str_5ftake_5fownership_43',['str_take_ownership',['../str_8h.html#a99418d608b3138b17a7531a945ec1e36',1,'str.h']]],
   ['stringof_44',['STRINGOF',['../core_8h.html#ac7f15aa0d7092f9d27ff3f0a5c90cbfd',1,'core.h']]],
   ['strn_45',['strn',['../str_8h.html#afa6f09470fd53d16d4ab0289c8365ff2',1,'str.h']]],
-  ['strn_5fempty_46',['strn_empty',['../str_8h.html#ad1f66a08b9c3cadc247873c87219dce6',1,'str.h']]]
+  ['strn_5fempty_46',['vt_strn_empty',['../str_8h.html#ad1f66a08b9c3cadc247873c87219dce6',1,'str.h']]]
 ];

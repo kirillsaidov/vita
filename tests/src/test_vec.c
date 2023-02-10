@@ -51,7 +51,7 @@ int main(void) {
             assert(vec_getd(vcopy, 5) == 3.125);
         } vec_destroy(vcopy);
 
-        vec_remove(v, vec_contains(v, &dt), rs_stable);
+        vec_remove(v, vec_contains(v, &dt), vt_rs_stable);
         assert(vec_getd(v, 5) == 24.5);
 
         vec_shrink(v);

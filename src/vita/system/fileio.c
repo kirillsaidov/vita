@@ -1,6 +1,6 @@
 #include "vita/system/fileio.h"
 
-str_t *vt_file_read(const char *const z_filename) {
+vt_str_t *vt_file_read(const char *const z_filename) {
     // check for invalid input
     VT_DEBUG_ASSERT(z_filename != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
@@ -26,7 +26,7 @@ str_t *vt_file_read(const char *const z_filename) {
     }
 
     // create data buffer
-    str_t *sbuffer = vt_strn(fsize);
+    vt_str_t *sbuffer = vt_strn(fsize);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
 
@@ -53,7 +53,7 @@ str_t *vt_file_read(const char *const z_filename) {
     return sbuffer;
 }
 
-str_t *vt_file_readb(const char *const z_filename) {
+vt_str_t *vt_file_readb(const char *const z_filename) {
     // check for invalid input
     VT_DEBUG_ASSERT(z_filename != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
@@ -74,7 +74,7 @@ str_t *vt_file_readb(const char *const z_filename) {
     }
 
     // create data buffer
-    str_t *sbuffer = vt_strn(fsize);
+    vt_str_t *sbuffer = vt_strn(fsize);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
 

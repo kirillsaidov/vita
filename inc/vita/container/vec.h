@@ -231,16 +231,16 @@ extern enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, co
 /** Removes an element from vt_vec_t
     @param v vt_vec_t instance
     @param at index of the value
-    @param rs choose a RemoveStrategy (see Notes)
+    @param rs choose a VitaRemoveStrategy (see Notes)
 
     @returns enum VitaError code
 
     @note
-        enum RemoveStrategy { rs_stable = ordered removal, rs_fast = unordered removal }
-        rs_stable: shifts all values by element size
+        enum VitaRemoveStrategy { vt_rs_stable = ordered removal, rs_fast = unordered removal }
+        vt_rs_stable: shifts all values by element size
           rs_fast: swaps the last value with the value of `at`
 */
-extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum RemoveStrategy rs);
+extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs);
 
 /** Checks if vt_vec_t contains the specified element
     @param v vt_vec_t instance

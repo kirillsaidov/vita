@@ -6,8 +6,8 @@ int32_t main(void) {
     DEBUG_DEFAULT_INIT();
 
     // strings
-    str_t *rpath = str("my/temp/folder/default/initialized");
-    str_t *wpath = NULL;
+    vt_str_t *rpath = str("my/temp/folder/default/initialized");
+    vt_str_t *wpath = NULL;
 
     // floats
     float intensity = 0.1;
@@ -76,8 +76,8 @@ int32_t main(void) {
     
     // check
     assert(parse_status == ARGOPT_PARSE_ERROR);
-    assert(str_equals(cstr(rpath), "../temp"));
-    assert(str_equals(cstr(wpath), "./docs/dw/data/"));
+    assert(str_equals(vt_cstr(rpath), "../temp"));
+    assert(str_equals(vt_cstr(wpath), "./docs/dw/data/"));
     assert(intensity == (float)0.7);
     assert(polarity == (float)0.35);
     assert(volume == 83);

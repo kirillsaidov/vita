@@ -154,8 +154,8 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
     @returns enum VitaError
 
     @note
-        enum RemoveStrategy { rs_stable = ordered removal, rs_fast = unordered removal }
-        rs_stable: shifts all values by element size
+        enum VitaRemoveStrategy { vt_rs_stable = ordered removal, rs_fast = unordered removal }
+        vt_rs_stable: shifts all values by element size
           rs_fast: swaps the last value with the value of `at`
 */
 extern enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);

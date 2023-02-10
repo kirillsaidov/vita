@@ -119,7 +119,7 @@ Macros</h2></td></tr>
 <tr class="separator:a7828cd0c0196482516103f2170a4449c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4131f203e82700411eb10c893f6619d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#ad4131f203e82700411eb10c893f6619d">DEBUG_ASSERTC</a>(expr,  file,  func,  line, ...)&#160;&#160;&#160;<a class="el" href="debug_8h.html#aabdd141ad460a64bea639e91c0c81b89">debug_assert</a>(expr, <a class="el" href="core_8h.html#ac7f15aa0d7092f9d27ff3f0a5c90cbfd">STRINGOF</a>(expr), file, func, line, __VA_ARGS__)</td></tr>
 <tr class="separator:ad4131f203e82700411eb10c893f6619d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c8ef3c24dad2c469a42784a9a39403b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b">DEBUG_PRINTF</a>(...)&#160;&#160;&#160;<a class="el" href="debug_8h.html#a4393c0cea72030d63357c01256ae9431">debug_printf</a>(__VA_ARGS__)</td></tr>
+<tr class="memitem:a5c8ef3c24dad2c469a42784a9a39403b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b">VT_DEBUG_PRINTF</a>(...)&#160;&#160;&#160;<a class="el" href="debug_8h.html#a4393c0cea72030d63357c01256ae9431">debug_printf</a>(__VA_ARGS__)</td></tr>
 <tr class="separator:a5c8ef3c24dad2c469a42784a9a39403b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad64cc66bc57a9d97562ed64d663178a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2">DEBUG_DEFAULT_INIT</a>()&#160;&#160;&#160;<a class="el" href="debug_8h.html#aed9def9f0543645d1ce34c4262797d97">debug_handler_default_init</a>()</td></tr>
 <tr class="separator:ad64cc66bc57a9d97562ed64d663178a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,7 +131,7 @@ Macros</h2></td></tr>
 <tr class="separator:ac5f397e07c87f17065e440d1bb9162ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28155db231aa3a6c09fe5efacb0a71f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a28155db231aa3a6c09fe5efacb0a71f3">DEBUG_REALLOC</a>(ptr,  bytes)&#160;&#160;&#160;<a class="el" href="debug_8h.html#a746cd9a46e368b0f4cf74164226af2ec">debug_handler_realloc</a>(<a class="el" href="debug_8h.html#a4c1bc82e19743fe3324cc33ae13b3d70">debug_handler_default_get_handler</a>(), ptr, bytes, <a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>, __func__, __LINE__)</td></tr>
 <tr class="separator:a28155db231aa3a6c09fe5efacb0a71f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa3c9af822d9f0273b115eafd23120f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#aaa3c9af822d9f0273b115eafd23120f9">DEBUG_FREE</a>(ptr)&#160;&#160;&#160;<a class="el" href="debug_8h.html#aad1e15cd770023d1aa5b18fb3f28a72f">debug_handler_free</a>(<a class="el" href="debug_8h.html#a4c1bc82e19743fe3324cc33ae13b3d70">debug_handler_default_get_handler</a>(), ptr, <a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>, __func__, __LINE__)</td></tr>
+<tr class="memitem:aaa3c9af822d9f0273b115eafd23120f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#aaa3c9af822d9f0273b115eafd23120f9">VT_DEBUG_FREE</a>(ptr)&#160;&#160;&#160;<a class="el" href="debug_8h.html#aad1e15cd770023d1aa5b18fb3f28a72f">debug_handler_free</a>(<a class="el" href="debug_8h.html#a4c1bc82e19743fe3324cc33ae13b3d70">debug_handler_default_get_handler</a>(), ptr, <a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>, __func__, __LINE__)</td></tr>
 <tr class="separator:aaa3c9af822d9f0273b115eafd23120f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cdde5dc117dcf339974f91010f9c901"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a7cdde5dc117dcf339974f91010f9c901">DEBUG_NALLOCS</a>&#160;&#160;&#160;<a class="el" href="debug_8h.html#a2d73199a91be911df1ae24e83f82b65c">debug_handler_get_nallocs</a>(<a class="el" href="debug_8h.html#a4c1bc82e19743fe3324cc33ae13b3d70">debug_handler_default_get_handler</a>())</td></tr>
 <tr class="separator:a7cdde5dc117dcf339974f91010f9c901"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -541,13 +541,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="aaa3c9af822d9f0273b115eafd23120f9" name="aaa3c9af822d9f0273b115eafd23120f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa3c9af822d9f0273b115eafd23120f9">&#9670;&#160;</a></span>DEBUG_FREE</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa3c9af822d9f0273b115eafd23120f9">&#9670;&#160;</a></span>VT_DEBUG_FREE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEBUG_FREE</td>
+          <td class="memname">#define VT_DEBUG_FREE</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">ptr</td><td>)</td>
@@ -749,13 +749,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a5c8ef3c24dad2c469a42784a9a39403b" name="a5c8ef3c24dad2c469a42784a9a39403b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c8ef3c24dad2c469a42784a9a39403b">&#9670;&#160;</a></span>DEBUG_PRINTF</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c8ef3c24dad2c469a42784a9a39403b">&#9670;&#160;</a></span>VT_DEBUG_PRINTF</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEBUG_PRINTF</td>
+          <td class="memname">#define VT_DEBUG_PRINTF</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>...</em></td><td>)</td>
@@ -849,7 +849,7 @@ Functions</h2></td></tr>
 <p>VITA_DEBUG MODULE Macros</p><ul>
 <li>DEBUG_ASSERT</li>
 <li>DEBUG_ASSERTC</li>
-<li>DEBUG_PRINTF</li>
+<li>VT_DEBUG_PRINTF</li>
 <li>DEBUG_MALLOC</li>
 <li>DEBUG_CALLOC</li>
 <li>DEBUG_REALLOC</li>

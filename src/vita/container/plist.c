@@ -46,14 +46,14 @@ vt_plist_t *vt_plist_create(const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
-    // allocate a new plist_t instance
+    // allocate a new vt_plist_t instance
     vt_plist_t *p = vt_plist_new();
     if(p == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
     
-    // construct plist_t instance
+    // construct vt_plist_t instance
     if(vt_plist_ctor(p, n) != vt_ve_operation_success) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
 
@@ -77,7 +77,7 @@ void vt_plist_destroy(vt_plist_t *p) {
 vt_plist_t *vt_plist_from(const void **const ptr, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     vt_plist_t *p = vt_plist_create(n);
     if(p == NULL) {
@@ -194,7 +194,7 @@ enum VitaError vt_plist_set(vt_plist_t *const p, const void *const ptr, const si
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
         vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
         at, 
-        s->len
+        p->len
     );
 
     // add ptr to vt_plist_t
@@ -212,7 +212,7 @@ void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
         vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
         at, 
-        s->len
+        p->len
     );
 
     return p->ptr2[at];
@@ -225,7 +225,7 @@ enum VitaError vt_plist_push(vt_plist_t *const p, const void *ptr) {
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     
     // check if new memory needs to be allocated
-    if(!vt_plist_has_space(p) && vt_plist_reserve(p, p->capacity * CONTAINER_GROWTH_RATE) != vt_ve_operation_success) {
+    if(!vt_plist_has_space(p) && vt_plist_reserve(p, p->capacity * VT_CONTAINER_GROWTH_RATE) != vt_ve_operation_success) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return vt_ve_error_allocation;
     }
@@ -262,7 +262,7 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
     return p->ptr2;
 }
 
-enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum RemoveStrategy rs) {
+enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
@@ -272,11 +272,11 @@ enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum 
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
         vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
         at, 
-        s->len
+        p->len
     );
 
     // check remove strategy
-    if(rs == rs_stable) {
+    if(rs == vt_rs_stable) {
         memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         vt_gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
@@ -297,6 +297,6 @@ void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {
     // iterate
     const size_t len = vt_plist_len(p);
     for(size_t i = 0; i < len; i++) {
-        func(((char*)p->ptr2)[i], i);
+        func(((char**)p->ptr2)[i], i);
     }
 }

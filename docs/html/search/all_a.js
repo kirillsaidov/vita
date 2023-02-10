@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['len_0',['len',['../struct_base_container_type.html#a7360b55975153b822efc5217b7734e6a',1,'BaseContainerType']]],
+  ['len_0',['len',['../struct_base_container_type.html#a7360b55975153b822efc5217b7734e6a',1,'VitaBaseContainerType']]],
   ['ll_5fassert_1',['ll_assert',['../log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9ad617f30674e212958df8de44b5da1dd2',1,'log.h']]],
   ['ll_5fcount_2',['ll_count',['../log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a70567eb5469f047c31bd736742d71a7b',1,'log.h']]],
   ['ll_5fdebug_3',['ll_debug',['../log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a0069c27ffa71b88361515f9f6a72ef7d',1,'log.h']]],
@@ -25,5 +25,5 @@ var searchData=
   ['logf_5ffatal_22',['LOGF_FATAL',['../log_8h.html#a3db97499e3a3948e72f3ee511f02abd8',1,'log.h']]],
   ['logf_5finfo_23',['LOGF_INFO',['../log_8h.html#a34b61d2cebfb157184e4b5e55e548567',1,'log.h']]],
   ['logf_5fwarn_24',['LOGF_WARN',['../log_8h.html#a585d30cb63b2d853c1116c2397755e7e',1,'log.h']]],
-  ['loglevel_25',['LogLevel',['../log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9',1,'log.h']]]
+  ['loglevel_25',['VitaLogLevel',['../log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9',1,'log.h']]]
 ];

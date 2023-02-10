@@ -23,7 +23,7 @@ int32_t main(void) {
         #endif
         
         a = DEBUG_REALLOC(a, 30);
-        DEBUG_FREE(a);
+        VT_DEBUG_FREE(a);
         
         #ifndef NDEBUG
             assert(DEBUG_BYTES_CURRENTLY_ALOCATED == 0);

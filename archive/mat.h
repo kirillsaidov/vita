@@ -35,7 +35,7 @@
 #include "../container/vec.h"
 
 // see core/core.h for definition
-typedef struct BaseContainerType mat_t;
+typedef struct VitaBaseContainerType mat_t;
 
 /** Allocates memory for mat_t
     @returns `mat_t*` upon success, `NULL` otherwise

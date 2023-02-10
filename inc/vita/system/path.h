@@ -49,26 +49,26 @@
 #endif
 
 /** Builds path from raw C strings
-    @param s str_t instance (if `NULL` is passed, str_t is allocated)
+    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param p array of raw C strings
 
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_build(str_t *const s, const plist_t *const p);
+extern vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p);
 
 /** Builds path from raw C strings
-    @param s str_t instance (if `NULL` is passed, str_t is allocated)
+    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param n number of strings to concatenate into path
     @param ... c strings to combine into path
 
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_build_n(str_t *const s, const size_t n, ...);
+extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
 
 /** Get current working directory
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_getcwd(void);
+extern vt_str_t *vt_path_getcwd(void);
 
 /** Checks if path exists
     @param z path
@@ -99,30 +99,30 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns `plist_t*` of str_t upon success, `NULL` otherwise
+    @returns `vt_plist_t*` of vt_str_t upon success, `NULL` otherwise
 
     @note returns immidiately if faces an error
 */
-extern plist_t *vt_path_listdir(plist_t *const p, const char *const z, const bool ignoreDotFiles);
+extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /** Get all files and sub-directories recursively
     @param p container where to save the data; if NULL is passed, it is allocated
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns `plist_t*` of str_t upon success, `NULL` otherwise
+    @returns `vt_plist_t*` of vt_str_t upon success, `NULL` otherwise
 
     @note returns immidiately if faces an error
 */
-extern plist_t *vt_path_listdir_recurse(plist_t *const p, const char *const z, const bool ignoreDotFiles);
+extern vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /** Get path basename
-    @param s str_t instance (if `NULL` is passed, str_t is allocated)
+    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param z path
 
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_basename(str_t *const s, const char *const z);
+extern vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z);
 
 /** Creates a directory
     @param z a raw C string
@@ -164,13 +164,13 @@ extern bool vt_path_rename(const char *const z1, const char *const z2);
 
 /** Expands tilda `~` to HOMEPATH
     @param z1 path
-    @returns a newly allocated `str_t` path with the expanded tilda `~` upon success, `NULL` otherwise
+    @returns a newly allocated `vt_str_t` path with the expanded tilda `~` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_expand_tilda(const char *const z);
+extern vt_str_t *vt_path_expand_tilda(const char *const z);
 
 /** Returns executable path
-    @returns `str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern str_t *vt_path_get_this_exe_location(void);
+extern vt_str_t *vt_path_get_this_exe_location(void);
 
 #endif // VITA_PATH_H

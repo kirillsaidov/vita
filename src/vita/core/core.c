@@ -8,9 +8,8 @@ static const char *const vita_error_str[] = {
 /* ------------- BASE CONTAINER TYPE ------------- */
 
 struct VitaBaseContainerType *vt_bct_new(void) {
-    struct VitaBaseContainerType *bct = VT_DEBUG_CALLOC(sizeof(struct VitaBaseContainerType));
+    struct VitaBaseContainerType *bct = calloc(1, sizeof(struct VitaBaseContainerType));
     if(bct == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
@@ -19,10 +18,10 @@ struct VitaBaseContainerType *vt_bct_new(void) {
 
 void vt_bct_free(struct VitaBaseContainerType *bct) {
     // check for invalid input
-    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    assert(bct != NULL);
 
     // free the VitaBaseContainerType
-    DEBUG_FREE(bct);
+    free(bct);
 
     // reset to NULL
     bct = NULL;
@@ -30,25 +29,25 @@ void vt_bct_free(struct VitaBaseContainerType *bct) {
 
 void *vt_bct_head(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
-    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    assert(bct != NULL);
     return bct->ptr;
 }
 
 size_t vt_bct_len(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
-    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    assert(bct != NULL);
     return bct->len;
 }
 
 size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
-    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    assert(bct != NULL);
     return bct->capacity;
 }
 
 size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
-    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    assert(bct != NULL);
     return bct->elsize;
 }
 

@@ -5,7 +5,7 @@
 int main(void) {
     DEBUG_DEFAULT_INIT();
     
-    plist_t *p = plist_create(5); {
+    vt_plist_t *p = plist_create(5); {
         assert(plist_len(p) == 0);
         assert(plist_capacity(p) == 5);
 
@@ -23,7 +23,7 @@ int main(void) {
         plist_reserve(p, 5);
         assert(plist_capacity(p) == 7);
 
-        assert(strncmp(plist_pop_get(p), w, strlen(w)) == 0);
+        assert(strncmp(vt_plist_pop_get(p), w, strlen(w)) == 0);
         assert(plist_len(p) == 1);
         assert(plist_capacity(p) == 7);
 

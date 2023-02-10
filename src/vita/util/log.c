@@ -10,7 +10,7 @@ static const char *const vt_log_level_strings[] = {
 // log to file
 static char vt_log_filenames[vt_ll_count][PATH_MAX] = {0}; 
 
-void vt_log_get_level(enum LogLevel vt_log_level, const char *const zfilename) {
+void vt_log_get_level(enum VitaLogLevel vt_log_level, const char *const zfilename) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     
@@ -24,14 +24,14 @@ void vt_log_set_level_default(const char *const zfilename) {
     }
 }
 
-const char *vt_log_get_level_str(enum LogLevel vt_log_level) {
+const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     return vt_log_level_strings[vt_log_level];
 }
 
-void vt_log(const char *const zfilename, enum LogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...) {
+void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
@@ -47,7 +47,7 @@ void vt_log(const char *const zfilename, enum LogLevel vt_log_level, const bool 
             // if `NULL` log to `stderr`, otherwise to a file
             FILE *fp = (logger_filename[0] == '\0') ? stderr : fopen(logger_filename, "a");
             if(fp == NULL) {
-                DEBUG_PRINTF("%s:%i: Failed to open a file <%s>!\n", file, line, logger_filename);
+                VT_DEBUG_PRINTF("%s:%i: Failed to open a file <%s>!\n", file, line, logger_filename);
                 return;
             }
 

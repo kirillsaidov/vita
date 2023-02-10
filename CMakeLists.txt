@@ -8,7 +8,7 @@ project(vita
 
 # setting default build type
 set(DEFAULT_BUILD_TYPE "Debug")
-set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused") # -Werror -Weverything
+set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 # finding all headers and sources 

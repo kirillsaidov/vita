@@ -12,12 +12,12 @@ mat_t *mat_new(void) {
 
 enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
     if(m == NULL) {
-        DEBUG_PRINTF("%s", "mat_t instance was not allocated!");
+        VT_DEBUG_PRINTF("%s", "mat_t instance was not allocated!");
         return ve_error_is_null;
     }
 
     if(!rows || !cols) {
-        DEBUG_PRINTF("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
+        VT_DEBUG_PRINTF("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
         return ve_error_invalid_size;
     }
 
@@ -31,11 +31,11 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
 
     // error checking
     if(m->ptr == NULL) {
-        DEBUG_PRINTF("%s", "Unable to construct mat_t instance!");
+        VT_DEBUG_PRINTF("%s", "Unable to construct mat_t instance!");
         return ve_error_allocation;
     }
 
-    return ve_operation_success;
+    return vt_ve_operation_success;
 }
 
 mat_t *mat_dup(const mat_t *const m) {
@@ -47,7 +47,7 @@ mat_t *mat_dup(const mat_t *const m) {
     // allocate a new mat_t instance
     mat_t *mdup = mat_from(m->ptr, m->rows, m->cols, m->elsize);
     if(mdup == NULL) {
-        DEBUG_PRINTF("%s", "Failed to create a mat_t copy!");
+        VT_DEBUG_PRINTF("%s", "Failed to create a mat_t copy!");
         return NULL;
     }
 
@@ -62,7 +62,7 @@ void mat_dtor(mat_t *const m) {
     }
 
     // free mat_t contents
-    DEBUG_FREE(m->ptr);
+    VT_DEBUG_FREE(m->ptr);
 
     // default-init
     *m = (mat_t) {0};
@@ -73,18 +73,18 @@ void mat_free(mat_t *m) {
         return;
     }
 
-    DEBUG_FREE(m);
+    VT_DEBUG_FREE(m);
 }
 
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     mat_t *m = mat_new(); // allocate mem for mat_t
     if(m == NULL) {
-        DEBUG_PRINTF("%s", "Unable to allocate memory for mat_t instance!");
+        VT_DEBUG_PRINTF("%s", "Unable to allocate memory for mat_t instance!");
         return NULL;
     }
 
     // construct mat_t
-    if(mat_ctor(m, rows, cols, elsize) != ve_operation_success) {
+    if(mat_ctor(m, rows, cols, elsize) != vt_ve_operation_success) {
         DEBUG_ASSERT(0, "Failed to construct mat_t instance!");
 
         mat_free(m);
@@ -183,7 +183,7 @@ enum VitaError mat_clear(mat_t *const m) {
     // set values to 0
     memset(m->ptr, 0, m->rows * m->cols * m->elsize);
 
-    return ve_operation_success;
+    return vt_ve_operation_success;
 }
 
 enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
@@ -198,7 +198,7 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     }
 
     if(m->rows == rows && m->cols == cols) {
-        return ve_operation_success;
+        return vt_ve_operation_success;
     }
 
     // allocate memory for rows*cols number of elements
@@ -213,7 +213,7 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     m->rows = rows;
     m->cols = cols;
 
-    return ve_operation_success;
+    return vt_ve_operation_success;
 }
 
 enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
@@ -231,7 +231,7 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     // set the value
     memcpy((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
-    return ve_operation_success;
+    return vt_ve_operation_success;
 }
 
 enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {

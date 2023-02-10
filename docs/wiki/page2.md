@@ -2,46 +2,46 @@
 In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 3 container types:
 
 ```
-* str_t     // similar to std::string
+* vt_str_t     // similar to std::string
 * vec_t     // similar to std::vector or std::array
-* plist_t   // an array of pointers
+* vt_plist_t   // an array of pointers
 ```
 
-Every container is an alias of [`BaseContainerType`](../../inc/vita/core/core.h#L115) struct.
+Every container is an alias of [`VitaBaseContainerType`](../../inc/vita/core/core.h#L115) struct.
 
 ## Contents
-* [Using `str_t` strings](page2.md#using-str_t-strings)
+* [Using `vt_str_t` strings](page2.md#using-vt_str_t-strings)
 * [Dynamic arrays with `vec_t`](page2.md#dynamic-arrays-with-vec_t)
 * [Using `vec_t` type as 2d array](page2.md#using-vec_t-type-as-2d-array)
-* [A list of pointers with `plist_t`](page2.md#a-list-of-pointers-with-plist_t)
+* [A list of pointers with `vt_plist_t`](page2.md#a-list-of-pointers-with-vt_plist_t)
 
-### Using `str_t` strings
-`Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
+### Using `vt_str_t` strings
+`Vita` has a lot of string functions available to the user. `str_fmt, str_split, str_strip` just to name a few. To read more about available functions, check out the [vt_str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
 
 ### Creating strings
 ```c
 // creates a string and sets its value to "hello, world!"
-str_t *msg = str("hello, world!");
+vt_str_t *msg = str("hello, world!");
 
 // the same as above, but in 2 steps:
-str_t *msg = strn(10);                      // 1. creates a string with length 10
+vt_str_t *msg = strn(10);                      // 1. creates a string with length 10
 str_set(msg, "hello, world!");              // 2. sets its value to "hello, world!"
 
 // almost the same as above 
-str_t *msg = strn_empty(10);                // creates an empty string with length of 0 and capacity of 10
+vt_str_t *msg = vt_strn_empty(10);                // creates an empty string with length of 0 and capacity of 10
 str_append(msg, "hello, world!");           // appends "hello, world!"
 str_appendf(msg, "%s!", "hello, world");    // appends "hello, world!"
 
 // the same as above, but on one go with formatting 
 // passing NULL here will allocate a new string instance
 const char *myVar = "world";
-str_t *msg = str_fmt(NULL, "hello, %s!", myVar);
+vt_str_t *msg = str_fmt(NULL, "hello, %s!", myVar);
 
 // create a copy
-str_t *msg_copy = str_dup(msg);
+vt_str_t *msg_copy = str_dup(msg);
 
 // creating a string from heap allocated memory
-str_t *msg_heap_alloced = str_take_ownership(strdup("hello, world"));
+vt_str_t *msg_heap_alloced = str_take_ownership(strdup("hello, world"));
 
 // get string info
 const size_t s_length = str_len(msg);
@@ -50,7 +50,7 @@ const size_t freeSpace = str_has_space(msg);
 const bool isEmpty = str_is_empty(msg);
 
 // accessing the raw string pointer
-const char *z_str = cstr(msg); // !!! don't free it
+const char *z_str = vt_cstr(msg); // !!! don't free it
 
 // free memory
 str_free(msg);
@@ -61,14 +61,14 @@ str_free(msg_heap_alloced);
 ### String operations
 ```c
 // comparing strings
-assert(str_equals(cstr(msg), "hello, world"));
+assert(str_equals(vt_cstr(msg), "hello, world"));
 
 // checking if string is a numeric value
 const size_t max_check_len = 256;
-assert(str_is_numeric("123", max_check_len) == true);
-assert(str_is_numeric("99.3", max_check_len) == true);
-assert(str_is_numeric("15,7", max_check_len) == false);
-assert(str_is_numeric("this is a str 123", max_check_len) == false);
+assert(vt_str_is_numeric("123", max_check_len) == true);
+assert(vt_str_is_numeric("99.3", max_check_len) == true);
+assert(vt_str_is_numeric("15,7", max_check_len) == false);
+assert(vt_str_is_numeric("this is a str 123", max_check_len) == false);
 
 // basic operations
 str_reserve(msg, 100);              // reserve 100 chars
@@ -124,9 +124,9 @@ const int32_t index = vec_contains(v, &myVal);
 if(index >= 0) { // index is -1 if element not found
     vec_remove(v, index, rs_fast);
     /**
-     * RemoveStrategy => rs
+     * VitaRemoveStrategy => rs
      *  rs_fast     => order does not matter
-     *  rs_stable   => keep order
+     *  vt_rs_stable   => keep order
     */
 }
 
@@ -182,11 +182,11 @@ vec_destroy(vec2d);
 
 For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
 
-### A list of pointers with `plist_t`
+### A list of pointers with `vt_plist_t`
 
 ```c
 // create/destroy a pointer list instance
-plist_t *p = plist_create(5);   // allocate 5 elements
+vt_plist_t *p = plist_create(5);   // allocate 5 elements
 plist_destroy(p);               // frees all elements with free()
 
 char *h = strdup("hello");

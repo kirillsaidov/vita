@@ -142,7 +142,7 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:aca1fd1d8935433e6ba2e3918214e07f9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a> { <br />
+<tr class="memitem:aca1fd1d8935433e6ba2e3918214e07f9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a> { <br />
 &#160;&#160;<a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a502b5c39e950e6334ae044c6fae20185">ll_info</a>
 , <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a77c3d7b2141c4afb7ae37866b796b293">ll_warn</a>
 , <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a0069c27ffa71b88361515f9f6a72ef7d">ll_debug</a>
@@ -157,13 +157,13 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2d63d4bc955176207c397feb6ad5012c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a2d63d4bc955176207c397feb6ad5012c">log_level_set</a> (enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a> log_level, const char *const filename)</td></tr>
+<tr class="memitem:a2d63d4bc955176207c397feb6ad5012c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a2d63d4bc955176207c397feb6ad5012c">log_level_set</a> (enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a> log_level, const char *const filename)</td></tr>
 <tr class="separator:a2d63d4bc955176207c397feb6ad5012c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd09e40d3471cfd203ba5b74ba0f1274"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#acd09e40d3471cfd203ba5b74ba0f1274">log_level_set_default</a> (const char *const filename)</td></tr>
 <tr class="separator:acd09e40d3471cfd203ba5b74ba0f1274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a124889b046eb7d204c90aaf8e7a969f0"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a124889b046eb7d204c90aaf8e7a969f0">log_level_get_str</a> (enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a> log_level)</td></tr>
+<tr class="memitem:a124889b046eb7d204c90aaf8e7a969f0"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a124889b046eb7d204c90aaf8e7a969f0">log_level_get_str</a> (enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a> log_level)</td></tr>
 <tr class="separator:a124889b046eb7d204c90aaf8e7a969f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d29d5d13f35d371b2a5ac26b816f12d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a2d29d5d13f35d371b2a5ac26b816f12d">log_log</a> (const char *const zfilename, enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a> log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt,...)</td></tr>
+<tr class="memitem:a2d29d5d13f35d371b2a5ac26b816f12d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a2d29d5d13f35d371b2a5ac26b816f12d">log_log</a> (const char *const zfilename, enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a> log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt,...)</td></tr>
 <tr class="separator:a2d29d5d13f35d371b2a5ac26b816f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -485,13 +485,13 @@ Functions</h2></td></tr>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="aca1fd1d8935433e6ba2e3918214e07f9" name="aca1fd1d8935433e6ba2e3918214e07f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca1fd1d8935433e6ba2e3918214e07f9">&#9670;&#160;</a></span>LogLevel</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1fd1d8935433e6ba2e3918214e07f9">&#9670;&#160;</a></span>VitaLogLevel</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a></td>
+          <td class="memname">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -541,7 +541,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">const char * log_level_get_str </td>
           <td>(</td>
-          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a>&#160;</td>
+          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a>&#160;</td>
           <td class="paramname"><em>log_level</em></td><td>)</td>
           <td></td>
         </tr>
@@ -549,7 +549,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns log level string </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">log_level</td><td>enum LogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
+    <tr><td class="paramname">log_level</td><td>enum VitaLogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
   </table>
   </dd>
 </dl>
@@ -566,7 +566,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void log_level_set </td>
           <td>(</td>
-          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a>&#160;</td>
+          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a>&#160;</td>
           <td class="paramname"><em>log_level</em>, </td>
         </tr>
         <tr>
@@ -584,7 +584,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Sets custom log level </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">log_level</td><td>enum LogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
+    <tr><td class="paramname">log_level</td><td>enum VitaLogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
     <tr><td class="paramname">filename</td><td>file name to log to </td></tr>
   </table>
   </dd>
@@ -609,7 +609,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Sets default log level for all levels </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">log_level</td><td>enum LogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
+    <tr><td class="paramname">log_level</td><td>enum VitaLogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
     <tr><td class="paramname">filename</td><td>file name to log to </td></tr>
   </table>
   </dd>
@@ -632,7 +632,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">LogLevel</a>&#160;</td>
+          <td class="paramtype">enum <a class="el" href="log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9">VitaLogLevel</a>&#160;</td>
           <td class="paramname"><em>log_level</em>, </td>
         </tr>
         <tr>
@@ -681,7 +681,7 @@ Functions</h2></td></tr>
 <p>Global logger </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">zfilename</td><td>filename to log info to; if <code>NULL</code> is passed, uses <code>stderr</code> </td></tr>
-    <tr><td class="paramname">log_level</td><td>enum LogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
+    <tr><td class="paramname">log_level</td><td>enum VitaLogLevel (if invalid log_level is specified, LOG_INFO is used) </td></tr>
     <tr><td class="paramname">expr</td><td>expression to test </td></tr>
     <tr><td class="paramname">zexpr</td><td>a string representation of exp </td></tr>
     <tr><td class="paramname">file</td><td>source file name (<b>FILE</b>) from where the logger has been called </td></tr>

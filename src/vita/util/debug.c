@@ -168,7 +168,7 @@ void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, 
     // allocate memory
     void *ptr = malloc(bytes);
     if(ptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation))
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
@@ -194,7 +194,7 @@ void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, 
     // allocate memory
     void *ptr = calloc(1, bytes);
     if(ptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation))
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
         return NULL;
     }
 
@@ -224,7 +224,7 @@ void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const si
     // allocate memory
     void *ptr_new = realloc(ptr, bytes);
     if(ptr_new == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation))
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
 
         // roll back
         vt_debug_handler_add(mh, ptr, bytes_old);
@@ -465,7 +465,7 @@ void vt_debug_handler_print_stats(const vt_debug_handler_t *const mh) {
 
     // get stats
     char z_stats[VT_DEBUG_STATS_BUFFER_SIZE] = {0};
-    z_stats = vt_debug_handler_get_stats_str(mh, z_stats, VT_DEBUG_STATS_BUFFER_SIZE);
+    vt_debug_handler_get_stats_str(mh, z_stats, VT_DEBUG_STATS_BUFFER_SIZE);
 
     // print to stderr
     fprintf(stderr, "%s\n", z_stats);
