@@ -162,6 +162,10 @@ vt_vec_t *vt_vec_fromd(const double *const ptr, const size_t n) {
     return vt_vec_from(ptr, n, sizeof(double));
 }
 
+vt_vec_t *vt_vec_fromr(const real *const ptr, const size_t n) {
+    return vt_vec_from(ptr, n, sizeof(real));
+}
+
 size_t vt_vec_len(const vt_vec_t *const v) {
     return vt_bct_len(v);
 }
@@ -171,7 +175,7 @@ size_t vt_vec_capacity(const vt_vec_t *const v) {
 }
 
 size_t vt_vec_has_space(const vt_vec_t *const v) {
-    return vt_bct_capacity(v) - vt_bct_len(v);
+    return vt_bct_has_space(v);
 }
 
 bool vt_vec_is_empty(const vt_vec_t *const v) {
@@ -366,6 +370,15 @@ enum VitaError vt_vec_pushf(vt_vec_t *const v, const float val) {
 }
 
 enum VitaError vt_vec_pushd(vt_vec_t *const v, const double val) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
+
+    return vt_vec_push(v, &val);
+}
+
+enum VitaError vt_vec_pushr(vt_vec_t *const v, const real val) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
@@ -579,6 +592,22 @@ enum VitaError vt_vec_setd(vt_vec_t *const v, const double val, const size_t at)
     return vt_vec_set(v, &val, at);
 }
 
+enum VitaError vt_vec_setr(vt_vec_t *const v, const real val, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
+    VT_DEBUG_ASSERT(
+        at < v->len,
+        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
+        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
+        at, 
+        v->len
+    );
+
+    return vt_vec_set(v, &val, at);
+}
+
 void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
@@ -632,6 +661,10 @@ float vt_vec_getf(const vt_vec_t *const v, const size_t at) {
 
 double vt_vec_getd(const vt_vec_t *const v, const size_t at) {
     return *(double*)(vt_vec_get(v, at));
+}
+
+real vt_vec_getr(const vt_vec_t *const v, const size_t at) {
+    return *(real*)(vt_vec_get(v, at));
 }
 
 enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {

@@ -99,6 +99,7 @@ extern vt_vec_t *vt_vec_fromi64(const int64_t *const ptr, const size_t n);
 extern vt_vec_t *vt_vec_fromu64(const uint64_t *const ptr, const size_t n);
 extern vt_vec_t *vt_vec_fromf(const float *const ptr, const size_t n);
 extern vt_vec_t *vt_vec_fromd(const double *const ptr, const size_t n);
+extern vt_vec_t *vt_vec_fromr(const real *const ptr, const size_t n);
 
 /** Returns vt_vec_t length
     @param v vt_vec_t instance
@@ -169,6 +170,7 @@ extern enum VitaError vt_vec_pushi64(vt_vec_t *const v, const int64_t val);
 extern enum VitaError vt_vec_pushu64(vt_vec_t *const v, const uint64_t val);
 extern enum VitaError vt_vec_pushf(vt_vec_t *const v, const float val);
 extern enum VitaError vt_vec_pushd(vt_vec_t *const v, const double val);
+extern enum VitaError vt_vec_pushr(vt_vec_t *const v, const real val);
 
 /** Pops off the last element
     @param v vt_vec_t instance
@@ -200,6 +202,7 @@ extern enum VitaError vt_vec_seti64(vt_vec_t *const v, const int64_t val, const 
 extern enum VitaError vt_vec_setu64(vt_vec_t *const v, const uint64_t val, const size_t at);
 extern enum VitaError vt_vec_setf(vt_vec_t *const v, const float val, const size_t at);
 extern enum VitaError vt_vec_setd(vt_vec_t *const v, const double val, const size_t at);
+extern enum VitaError vt_vec_setr(vt_vec_t *const v, const real val, const size_t at);
 
 /** Returns value at index
     @param v vt_vec_t instance
@@ -218,6 +221,7 @@ extern int64_t vt_vec_geti64(const vt_vec_t *const v, const size_t at);
 extern uint64_t vt_vec_getu64(const vt_vec_t *const v, const size_t at);
 extern float vt_vec_getf(const vt_vec_t *const v, const size_t at);
 extern double vt_vec_getd(const vt_vec_t *const v, const size_t at);
+extern real vt_vec_getr(const vt_vec_t *const v, const size_t at);
 
 /** Inserts a new value at an index
     @param v vt_vec_t instance

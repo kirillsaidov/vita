@@ -30,24 +30,40 @@ void vt_bct_free(struct VitaBaseContainerType *bct) {
 void *vt_bct_head(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
     assert(bct != NULL);
+    assert(bct->ptr != NULL);
+    
     return bct->ptr;
 }
 
 size_t vt_bct_len(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
     assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
     return bct->len;
 }
 
 size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
     assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
     return bct->capacity;
+}
+
+size_t vt_bct_has_space(const struct VitaBaseContainerType *const bct) {
+    // check for invalid input
+    assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
+    return bct->capacity - bct->len;
 }
 
 size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
     // check for invalid input
     assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
     return bct->elsize;
 }
 
@@ -86,7 +102,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 }
 
 void vt_get_current_timestamp(char *timebuf, const size_t len) {
-    const size_t timestamp_size = 21;
+    const size_t timestamp_size = VT_TIME_BUFFER_SIZE;
     if(len < timestamp_size) {
         return;
     }

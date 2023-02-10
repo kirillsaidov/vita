@@ -11,6 +11,7 @@
     - vt_bct_head
     - vt_bct_len
     - vt_bct_capacity
+    - vt_bct_has_space
     - vt_bct_elsize
     - vt_gswap
     - vt_get_current_timestamp
@@ -43,6 +44,7 @@
 // useful macros
 #define VT_DEFAULT_INIT_ELEMENTS 10
 #define VT_CONTAINER_GROWTH_RATE 2
+#define VT_TIME_BUFFER_SIZE 21
 
 // this is needed in order to properly expand macros if one macro is inserted into another
 #define VT_i_PCAT_NX(x, y) x ## y           // preprocessor concatenation
@@ -158,6 +160,12 @@ extern size_t vt_bct_len(const struct VitaBaseContainerType *const bct);
     @returns capacity
 */
 extern size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct);
+
+/** Returns available space before new allocation is required
+    @param bct VitaBaseContainerType ptr
+    @returns free space (capacity - length)
+*/
+extern size_t vt_bct_has_space(const struct VitaBaseContainerType *const bct);
 
 /** Returns VitaBaseContainerType's element size
     @param bct VitaBaseContainerType ptr

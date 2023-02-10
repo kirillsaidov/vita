@@ -162,35 +162,19 @@ const char *vt_cstr(const vt_str_t *const s) {
 }
 
 size_t vt_str_len(const vt_str_t *const s) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-
-    return s->len;
+    return vt_bct_len(s);
 }
 
 size_t vt_str_capacity(const vt_str_t *const s) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-
-    return s->capacity;
+    return vt_bct_capacity(s);
 }
 
 size_t vt_str_has_space(const vt_str_t *const s) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-
-    return (s->capacity - s->len);
+    return vt_bct_has_space(s);
 }
 
 bool vt_str_is_empty(const vt_str_t *const s) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-
-    return !(s->len);
+    return !vt_bct_len(s);
 }
 
 enum VitaError vt_str_shrink(vt_str_t *const s) {
