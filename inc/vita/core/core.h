@@ -92,7 +92,7 @@ enum VitaRemoveStrategy {
     vt_rs_count    // number of elements
 };
 
-// define vita errors
+// define all vita errors
 #define VT_i_GENERATE_VITA_ERRORS(apply) \
     apply(vt_ve_error_is_null)                      /* element wasn't initialized or is NULL */ \
     apply(vt_ve_error_allocation)                   /* failed to allocate or reallocate memory */ \
@@ -100,9 +100,10 @@ enum VitaRemoveStrategy {
     apply(vt_ve_error_out_of_memory)                /* not enough memory/space, allocate more */ \
     apply(vt_ve_error_out_of_bounds_access)         /* accessing memory beyond allocated size */ \
     apply(vt_ve_error_incompatible_datatype)        /* working with different datatypes */ \
+    apply(vt_ve_error_type_conversion)              /* failed to convert one type to another */ \
+    apply(vt_ve_operation_element_not_found)        /* element was not found */ \
     apply(vt_ve_operation_failure)                  /* failed to perform an action */ \
     apply(vt_ve_operation_success)                  /* all good */ \
-    apply(vt_ve_operation_element_not_found)        /* element was not found */ \
     apply(vt_ve_count)                              /* number of elements */
 
 // generate vita errors enum
