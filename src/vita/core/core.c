@@ -8,22 +8,26 @@ static const char *const vita_error_str[] = {
 /* ------------- BASE CONTAINER TYPE ------------- */
 
 void *vt_bct_head(const struct VitaBaseContainerType *const bct) {
-    assert(bct != NULL);
+    // check for invalid input
+    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     return bct->ptr;
 }
 
 size_t vt_bct_len(const struct VitaBaseContainerType *const bct) {
-    assert(bct != NULL);
+    // check for invalid input
+    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     return bct->len;
 }
 
 size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct) {
-    assert(bct != NULL);
+    // check for invalid input
+    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     return bct->capacity;
 }
 
 size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
-    assert(bct != NULL);
+    // check for invalid input
+    VT_DEBUG_ASSERT(bct != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     return bct->elsize;
 }
 

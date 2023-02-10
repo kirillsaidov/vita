@@ -143,6 +143,11 @@ enum VitaError vt_plist_reserve(vt_plist_t *const p, const size_t n) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
+    // if n == 0, do nothing
+    if(!n) {
+        return vt_ve_operation_success;
+    }
+
     // reserve memory for additional n elements
     void **newptr = VT_DEBUG_REALLOC(p->ptr2, (p->capacity + n) * p->elsize);
     if(newptr == NULL) {
