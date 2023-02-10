@@ -1,13 +1,7 @@
 #include "vita/container/plist.h"
 
 vt_plist_t *vt_plist_new(void) {
-    vt_plist_t *p = VT_DEBUG_CALLOC(sizeof(vt_plist_t));
-    if(p == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return NULL;
-    }
-
-    return p;
+    return vt_bct_new();
 }
 
 enum VitaError vt_plist_ctor(vt_plist_t *p, const size_t n) {
@@ -45,14 +39,7 @@ void vt_plist_dtor(vt_plist_t *p) {
 }
 
 void vt_plist_free(vt_plist_t *p) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-
-    // free the vt_plist_t itself
-    VT_DEBUG_FREE(p);
-
-    // reset to NULL
-    p = NULL;
+    vt_bct_free(p);
 }
 
 vt_plist_t *vt_plist_create(const size_t n) {

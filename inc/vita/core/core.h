@@ -71,7 +71,7 @@ enum VitaDataType {
     // other
     vt_dt_bool,     // bool
     vt_dt_char,     // char
-    vt_dt_zstr,     // char*
+    vt_dt_cstr,     // char*
 
     // vita
     vt_dt_str,      // str_t
@@ -82,7 +82,7 @@ enum VitaDataType {
     vt_dt_count     // number of elements
 };
 
-// float, double, real 
+// float, double, real (long double alias)
 typedef long double real;
 
 // removing elements from array
@@ -129,6 +129,16 @@ struct VitaBaseContainerType {
 };
 
 /* ------------- BASE CONTAINER TYPE ------------- */
+
+/** Allocates memory for VitaBaseContainerType structure
+    @returns `VitaBaseContainerType*` upon success, `NULL` otherwise
+*/
+extern struct VitaBaseContainerType *vt_bct_new(void);
+
+/** Frees the VitaBaseContainerType instance
+    @param bct VitaBaseContainerType pointer
+*/
+extern void vt_bct_free(struct VitaBaseContainerType *bct);
 
 /** Returns BaseContainerType's ptr head
     @param bct BaseContainerType ptr instance

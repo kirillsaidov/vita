@@ -1,6 +1,6 @@
 #include "vita/math/math.h"
 
-bool vt_is_palindrome(const uint64_t num) {
+bool vt_math_is_palindrome(const uint64_t num) {
     uint64_t tempNum = num;
     uint64_t reversed = 0;
 
@@ -12,11 +12,11 @@ bool vt_is_palindrome(const uint64_t num) {
     return (reversed == num);
 }
 
-double vt_map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax) {
+double vt_math_map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax) {
     return (x - xMin) * (outMax - outMin) / (xMax - xMin) + outMin;
 }
 
-float vt_sqrt_carmack(float v) {
+float vt_math_sqrt_carmack(float v) {
     union {
         float f;
         uint32_t i;
@@ -30,7 +30,7 @@ float vt_sqrt_carmack(float v) {
     return v*conv.f;
 }
 
-float vt_isqrt_carmack(float v) {
+float vt_math_isqrt_carmack(float v) {
     union {
         float f;
         uint32_t i;
@@ -44,7 +44,7 @@ float vt_isqrt_carmack(float v) {
     return conv.f;
 }
 
-uint64_t vt_random_u64(void) {
+uint64_t vt_math_random_u64(void) {
     static int8_t random_func_is_init = 0;
     static uint64_t random_func_x = 0;
     if (!random_func_is_init) {
@@ -56,11 +56,11 @@ uint64_t vt_random_u64(void) {
     return (random_func_x & 0x3FFF8000) >> 15;
 }
 
-float vt_random_f32(const uint32_t bound) {
+float vt_math_random_f32(const uint32_t bound) {
     return ((float)random_u64()/(float)UINT64_MAX) * bound;
 }
 
-float vt_random_f32_uniform(float lbound, float ubound) {
+float vt_math_random_f32_uniform(float lbound, float ubound) {
     float randval = sin(random_u64() * random_u64());
     return lbound + (ubound - lbound) * fabs(randval);
 }

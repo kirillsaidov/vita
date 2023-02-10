@@ -1,13 +1,7 @@
 #include "vita/container/vec.h"
 
 vt_vec_t *vt_vec_new(void) {
-    vt_vec_t *v = VT_DEBUG_CALLOC(sizeof(vt_vec_t));
-    if(v == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return NULL;
-    }
-
-    return v;
+    return vt_bct_new();
 }
 
 enum VitaError vt_vec_ctor(vt_vec_t *const v, const size_t n, const size_t elsize) {
@@ -71,14 +65,7 @@ void vt_vec_dtor(vt_vec_t *const v) {
 }
 
 void vt_vec_free(vt_vec_t *v) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-
-    // free the vt_vec_t
-    DEBUG_FREE(v);
-
-    // reset to NULL
-    v = NULL;
+    vt_bct_free(v);
 }
 
 vt_vec_t *vt_vec_create(const size_t n, const size_t elsize) {

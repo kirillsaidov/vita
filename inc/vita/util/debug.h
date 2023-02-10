@@ -109,6 +109,9 @@ typedef struct VitaDebugMemoryHandler vt_debug_handler_t;
 // the same as assert, but isn't removed in release builds
 #define VT_DEBUG_ENFORCE(expr, ...) vt_debug_assert(expr, VT_STRINGOF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
+// required stats buffer size
+#define VT_DEBUG_STATS_BUFFER_SIZE 256
+
 /** Asserts an expression and exits upon its evaluation to false
     @param zfilename filename to redirect the output to; if `NULL` is passed, `stderr` is used
     @param expr expression to test
@@ -150,12 +153,6 @@ extern vt_debug_handler_t *vt_debug_handler_create(void);
     @param mh memory handler instance
 */
 extern void vt_debug_handler_destroy(vt_debug_handler_t *mh);
-
-/** Checks if mh was initialized
-    @param mh memory handler instance
-    @returns true if it was initialized
-*/
-extern bool vt_debug_handler_is_init(const vt_debug_handler_t *const mh);
 
 /** Creates the default internal mh handler
 */

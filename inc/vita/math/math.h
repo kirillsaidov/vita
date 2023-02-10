@@ -2,13 +2,13 @@
 #define VITA_MATH_H
 
 /** VITA_MATH MODULE
-    - vt_is_palindrome
-    - vt_map_to
-    - vt_sqrt_carmack
-    - vt_isqrt_carmack
-    - vt_random_u64
-    - vt_random_f32
-    - vt_random_f32_uniform
+    - vt_math_is_palindrome
+    - vt_math_map_to
+    - vt_math_sqrt_carmack
+    - vt_math_isqrt_carmack
+    - vt_math_random_u64
+    - vt_math_random_f32
+    - vt_math_random_f32_uniform
 */
 
 #include <math.h>
@@ -18,7 +18,7 @@
     @param num input number
     @returns `true` if num is palindrome
 */
-extern bool vt_is_palindrome(const uint64_t num);
+extern bool vt_math_is_palindrome(const uint64_t num);
 
 /** Linear mapping: x in [xMin, xMax] -> y in [outMin, outMax]
     @param x value
@@ -29,30 +29,30 @@ extern bool vt_is_palindrome(const uint64_t num);
 
     @returns double value mapped between [outMin, outMax]
 */
-extern double vt_map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax);
+extern double vt_math_map_to(const double x, const double xMin, const double xMax, const double outMin, const double outMax);
 
 /** Carmack fast sqrt
     @param v value
     @returns random float value
 */
-extern float vt_sqrt_carmack(float v);
+extern float vt_math_sqrt_carmack(float v);
 
 /** Carmack fast inverse sqrt
     @param v value
     @returns random float value
 */
-extern float vt_isqrt_carmack(float v);
+extern float vt_math_isqrt_carmack(float v);
 
 /** Behaves like rand() library function producing random number in [0, uint64_t.max - 1) range
     @returns  uint64_t
 */
-extern uint64_t vt_random_u64(void);
+extern uint64_t vt_math_random_u64(void);
 
 /** Generates a random float value in range [0; ubound)
     @param ubound upper bound
     @returns random float value
 */
-extern float vt_random_f32(const uint32_t ubound);
+extern float vt_math_random_f32(const uint32_t ubound);
 
 /** Generates a random float value in range [lbound; ubound); approximately 'uniformely distributed' 
     @param lbound lower bound
@@ -60,6 +60,6 @@ extern float vt_random_f32(const uint32_t ubound);
 
     @returns random float value
 */
-extern float vt_random_f32_uniform(float lbound, float ubound);
+extern float vt_math_random_f32_uniform(float lbound, float ubound);
 
 #endif // VITA_MATH_H
