@@ -3,11 +3,11 @@
 #include "../../inc/vita/util/argopt.h"
 
 int32_t main(void) {
-    DEBUG_DEFAULT_INIT();
+    VT_DEBUG_DEFAULT_INIT();
 
     // strings
-    vt_str_t *rpath = str("my/temp/folder/default/initialized");
-    vt_str_t *wpath = NULL;
+    vt_vt_str_t *rpath = vt_str("my/temp/folder/default/initialized");
+    vt_vt_str_t *wpath = NULL;
 
     // floats
     float intensity = 0.1;
@@ -53,31 +53,31 @@ int32_t main(void) {
     // const size_t argc = 7;
 
     // options
-    argopt_t optv[] = {
-        { "--rpath", "-r", "read path", ARGOPT(rpath), dt_str },
-        { "--wpath", "-w", "save path", ARGOPT(wpath), dt_str },
+    vt_argopt_t optv[] = {
+        { "--rpath", "-r", "read path", VT_ARGOPT(rpath), vt_dt_str },
+        { "--wpath", "-w", "save path", VT_ARGOPT(wpath), vt_dt_str },
 
-        { "--intensity", "-i", "level of intensity between [0; 1]", ARGOPT(intensity), dt_float },
-        { "--polarity", "-p", "level of polarity between [0; 1]", ARGOPT(polarity), dt_float },
+        { "--intensity", "-i", "level of intensity between [0; 1]", VT_ARGOPT(intensity), vt_dt_float },
+        { "--polarity", "-p", "level of polarity between [0; 1]", VT_ARGOPT(polarity), vt_dt_float },
 
-        { "--verbose", "-v", "verbose output", ARGOPT(verbose), dt_bool },
-        { "--audio", "-a", "include audio", ARGOPT(audio), dt_bool },
+        { "--verbose", "-v", "verbose output", VT_ARGOPT(verbose), vt_dt_bool },
+        { "--audio", "-a", "include audio", VT_ARGOPT(audio), vt_dt_bool },
 
-        { "--volume", "-vl", "volume level", ARGOPT(volume), dt_int32 },
-        { "--level", "-l", "output level", ARGOPT(level), dt_int32 },
+        { "--volume", "-vl", "volume level", VT_ARGOPT(volume), vt_dt_int32 },
+        { "--level", "-l", "output level", VT_ARGOPT(level), vt_dt_int32 },
 
-        { "--update", "-ud", "update (y, n)", ARGOPT(update), dt_char },
-        { "--upgrade", "-ug", "upgrade (y, n)", ARGOPT(upgrade), dt_char }
+        { "--update", "-ud", "update (y, n)", VT_ARGOPT(update), vt_dt_char },
+        { "--upgrade", "-ug", "upgrade (y, n)", VT_ARGOPT(upgrade), vt_dt_char }
     };
     const size_t optc = sizeof(optv)/sizeof(argopt_t);
 
     // parse args and opts
-    const int8_t parse_status = argopt_parse(argc, argv, optc, optv);
+    const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);
     
     // check
-    assert(parse_status == ARGOPT_PARSE_ERROR);
-    assert(str_equals(vt_cstr(rpath), "../temp"));
-    assert(str_equals(vt_cstr(wpath), "./docs/dw/data/"));
+    assert(parse_status == VT_ARGOPT_PARSE_ERROR);
+    assert(vt_str_equals(vt_cstr(rpath), "../temp"));
+    assert(vt_str_equals(vt_cstr(wpath), "./docs/dw/data/"));
     assert(intensity == (float)0.7);
     assert(polarity == (float)0.35);
     assert(volume == 83);
@@ -86,9 +86,9 @@ int32_t main(void) {
     assert(upgrade == 'y');
 
     // free resources
-    str_free(rpath);
-    str_free(wpath);
+    vt_str_free(rpath);
+    vt_str_free(wpath);
 
-    DEBUG_DEFAULT_QUIT();
+    VT_DEBUG_DEFAULT_QUIT();
     return 0;
 }

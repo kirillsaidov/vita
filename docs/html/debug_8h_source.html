@@ -110,8 +110,8 @@ $(document).ready(function(){initNavTree('debug_8h_source.html',''); initResizab
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b">   53</a></span><span class="preprocessor">    #define VT_DEBUG_PRINTF(...) debug_printf(__VA_ARGS__)</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">    /************ DEFAULT MEMORY HANDLER ************/</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2">   56</a></span><span class="preprocessor">    #define DEBUG_DEFAULT_INIT() debug_handler_default_init()</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="debug_8h.html#aaf814f248819f8edb576f08b8a27df0d">   57</a></span><span class="preprocessor">    #define DEBUG_DEFAULT_QUIT() debug_handler_default_quit()</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2">   56</a></span><span class="preprocessor">    #define VT_DEBUG_DEFAULT_INIT() debug_handler_default_init()</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="debug_8h.html#aaf814f248819f8edb576f08b8a27df0d">   57</a></span><span class="preprocessor">    #define VT_DEBUG_DEFAULT_QUIT() debug_handler_default_quit()</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="debug_8h.html#a48e4282c36e828d6908e9342eb0e506c">   58</a></span><span class="preprocessor">    #define DEBUG_MALLOC(bytes) debug_handler_malloc(debug_handler_default_get_handler(), bytes, __SOURCE_FILENAME__, __func__, __LINE__)</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="debug_8h.html#ac5f397e07c87f17065e440d1bb9162ab">   59</a></span><span class="preprocessor">    #define DEBUG_CALLOC(bytes) debug_handler_calloc(debug_handler_default_get_handler(), bytes, __SOURCE_FILENAME__, __func__, __LINE__)</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="debug_8h.html#a28155db231aa3a6c09fe5efacb0a71f3">   60</a></span><span class="preprocessor">    #define DEBUG_REALLOC(ptr, bytes) debug_handler_realloc(debug_handler_default_get_handler(), ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)</span></div>
@@ -147,8 +147,8 @@ $(document).ready(function(){initNavTree('debug_8h_source.html',''); initResizab
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">    #define VT_DEBUG_PRINTF(...)</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// memory management</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">    #define DEBUG_DEFAULT_INIT()</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">    #define DEBUG_DEFAULT_QUIT()</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">    #define VT_DEBUG_DEFAULT_INIT()</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">    #define VT_DEBUG_DEFAULT_QUIT()</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">    #define DEBUG_MALLOC(bytes) malloc(bytes)</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">    #define DEBUG_CALLOC(bytes) calloc(1, bytes)</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">    #define DEBUG_REALLOC(ptr, bytes) realloc(ptr, bytes)</span></div>

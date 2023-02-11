@@ -121,9 +121,9 @@ Macros</h2></td></tr>
 <tr class="separator:ad4131f203e82700411eb10c893f6619d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c8ef3c24dad2c469a42784a9a39403b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b">VT_DEBUG_PRINTF</a>(...)&#160;&#160;&#160;<a class="el" href="debug_8h.html#a4393c0cea72030d63357c01256ae9431">debug_printf</a>(__VA_ARGS__)</td></tr>
 <tr class="separator:a5c8ef3c24dad2c469a42784a9a39403b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad64cc66bc57a9d97562ed64d663178a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2">DEBUG_DEFAULT_INIT</a>()&#160;&#160;&#160;<a class="el" href="debug_8h.html#aed9def9f0543645d1ce34c4262797d97">debug_handler_default_init</a>()</td></tr>
+<tr class="memitem:ad64cc66bc57a9d97562ed64d663178a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#ad64cc66bc57a9d97562ed64d663178a2">VT_DEBUG_DEFAULT_INIT</a>()&#160;&#160;&#160;<a class="el" href="debug_8h.html#aed9def9f0543645d1ce34c4262797d97">debug_handler_default_init</a>()</td></tr>
 <tr class="separator:ad64cc66bc57a9d97562ed64d663178a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf814f248819f8edb576f08b8a27df0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#aaf814f248819f8edb576f08b8a27df0d">DEBUG_DEFAULT_QUIT</a>()&#160;&#160;&#160;<a class="el" href="debug_8h.html#a020316713aff8b4b3479129cc6e9dffb">debug_handler_default_quit</a>()</td></tr>
+<tr class="memitem:aaf814f248819f8edb576f08b8a27df0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#aaf814f248819f8edb576f08b8a27df0d">VT_DEBUG_DEFAULT_QUIT</a>()&#160;&#160;&#160;<a class="el" href="debug_8h.html#a020316713aff8b4b3479129cc6e9dffb">debug_handler_default_quit</a>()</td></tr>
 <tr class="separator:aaf814f248819f8edb576f08b8a27df0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48e4282c36e828d6908e9342eb0e506c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="debug_8h.html#a48e4282c36e828d6908e9342eb0e506c">DEBUG_MALLOC</a>(bytes)&#160;&#160;&#160;<a class="el" href="debug_8h.html#a4d829c14b4946b19fdb63e0111275ce2">debug_handler_malloc</a>(<a class="el" href="debug_8h.html#a4c1bc82e19743fe3324cc33ae13b3d70">debug_handler_default_get_handler</a>(), bytes, <a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>, __func__, __LINE__)</td></tr>
 <tr class="separator:a48e4282c36e828d6908e9342eb0e506c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -483,13 +483,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="ad64cc66bc57a9d97562ed64d663178a2" name="ad64cc66bc57a9d97562ed64d663178a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad64cc66bc57a9d97562ed64d663178a2">&#9670;&#160;</a></span>DEBUG_DEFAULT_INIT</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64cc66bc57a9d97562ed64d663178a2">&#9670;&#160;</a></span>VT_DEBUG_DEFAULT_INIT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEBUG_DEFAULT_INIT</td>
+          <td class="memname">#define VT_DEBUG_DEFAULT_INIT</td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td>&#160;&#160;&#160;<a class="el" href="debug_8h.html#aed9def9f0543645d1ce34c4262797d97">debug_handler_default_init</a>()</td>
@@ -502,13 +502,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="aaf814f248819f8edb576f08b8a27df0d" name="aaf814f248819f8edb576f08b8a27df0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf814f248819f8edb576f08b8a27df0d">&#9670;&#160;</a></span>DEBUG_DEFAULT_QUIT</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf814f248819f8edb576f08b8a27df0d">&#9670;&#160;</a></span>VT_DEBUG_DEFAULT_QUIT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEBUG_DEFAULT_QUIT</td>
+          <td class="memname">#define VT_DEBUG_DEFAULT_QUIT</td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td>&#160;&#160;&#160;<a class="el" href="debug_8h.html#a020316713aff8b4b3479129cc6e9dffb">debug_handler_default_quit</a>()</td>

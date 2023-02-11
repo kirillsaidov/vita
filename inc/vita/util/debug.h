@@ -48,8 +48,8 @@ typedef struct VitaDebugMemoryHandler vt_debug_handler_t;
 
 #if !defined(NDEBUG)
     /**************** ERROR HANDLING ****************/
-    #define VT_DEBUG_ASSERT(expr, ...) vt_debug_assert(expr, VT_STRINGOF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
-    #define VT_DEBUG_ASSERTC(expr, file, func, line, ...) vt_debug_assert(expr, VT_STRINGOF(expr), file, func, line, __VA_ARGS__)
+    #define VT_DEBUG_ASSERT(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
+    #define VT_DEBUG_ASSERTC(expr, file, func, line, ...) vt_debug_assert(expr, VT_STRING_OF(expr), file, func, line, __VA_ARGS__)
     #define VT_DEBUG_PRINTF(...) vt_debug_printf(__VA_ARGS__)
 
     /************ DEFAULT MEMORY HANDLER ************/
@@ -107,7 +107,7 @@ typedef struct VitaDebugMemoryHandler vt_debug_handler_t;
 #endif
 
 // the same as assert, but isn't removed in release builds
-#define VT_DEBUG_ENFORCE(expr, ...) vt_debug_assert(expr, VT_STRINGOF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
+#define VT_DEBUG_ENFORCE(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
 // required stats buffer size
 #define VT_DEBUG_STATS_BUFFER_SIZE 256

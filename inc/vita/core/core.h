@@ -4,7 +4,7 @@
 /** VITA_CORE MODULE
  * Macros:
     - VT_PCAT
-    - VT_STRINGOF
+    - VT_STRING_OF
     - VT_AS
 
  * Functions:
@@ -51,7 +51,7 @@
 #define VT_i_STR_EXPAND(x) #x               // expands macros to its value
 
 #define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
-#define VT_STRINGOF(x) VT_i_STR_EXPAND(x)   // converts to string
+#define VT_STRING_OF(x) VT_i_STR_EXPAND(x)   // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
 
 // data types for internal usage

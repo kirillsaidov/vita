@@ -337,7 +337,7 @@ enum VitaError vt_str_insert(vt_str_t *const s, const char *z, const size_t at) 
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(
-        s->len <= at,
+        at <= s->len,
         "%s: Inserts at %zu, but vt_str_t length is %zu!\n", 
         vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
         at, 
@@ -373,7 +373,7 @@ enum VitaError vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(
-        s->len <= from,
+        from <= s->len,
         "%s: Start from %zu, but vt_str_t length is %zu!\n", 
         vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
         from, 

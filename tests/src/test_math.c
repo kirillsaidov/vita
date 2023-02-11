@@ -4,8 +4,8 @@
 #include "../../inc/vita/math/math.h"
 
 int main(void) {
-	// assert((int)(isqrt(9)) == 3); // fails: isqrt does not work (have no idea why)
-	assert(is_palindrome(9009));
+	assert((int)(vt_math_isqrt_carmack(9)) == 3); // fails: isqrt does not work (have no idea why)
+	assert(vt_math_is_palindrome(9009));
 
 	return 0;
 }

@@ -11,7 +11,7 @@ void print(void *ptr, size_t i, size_t j) {
 }
 
 int32_t main(void) {
-    DEBUG_DEFAULT_INIT();
+    VT_DEBUG_DEFAULT_INIT();
 
     mat_t *m = mat_create(15, 15, sizeof(double)); 
     {
@@ -65,7 +65,7 @@ int32_t main(void) {
     } 
     mat_destroy(m);
 
-    DEBUG_DEFAULT_QUIT();
+    VT_DEBUG_DEFAULT_QUIT();
     return 0;
 }
 

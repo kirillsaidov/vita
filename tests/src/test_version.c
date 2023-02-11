@@ -3,8 +3,8 @@
 #include "../../inc/vita/container/str.h"
 
 int32_t main(void) {    
-    const version_t v = get_vita_version();
-    assert(str_equals(v.str, "0.3.0"));
+    const vt_version_t v = vt_version_get();
+    assert(vt_str_equals(v.str, "0.3.0"));
 
     return 0;
 }

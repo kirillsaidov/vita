@@ -1,9 +1,11 @@
 #include "vita/core/core.h"
 
 // generate vita error strings
+#define X(a) VT_STRING_OF(a),
 static const char *const vita_error_str[] = {
-    VT_i_GENERATE_VITA_ERRORS(VT_STRINGOF)
+    VT_i_GENERATE_VITA_ERRORS(X)
 };
+#undef X
 
 /* ------------- BASE CONTAINER TYPE ------------- */
 
