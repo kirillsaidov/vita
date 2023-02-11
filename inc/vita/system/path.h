@@ -99,7 +99,7 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns `vt_plist_t*` of vt_str_t upon success, `NULL` otherwise
+    @returns `vt_plist_t*` of C string upon success, `NULL` otherwise
 
     @note returns immidiately if faces an error
 */
@@ -110,7 +110,7 @@ extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, con
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns `vt_plist_t*` of vt_str_t upon success, `NULL` otherwise
+    @returns `vt_plist_t*` of C string upon success, `NULL` otherwise
 
     @note returns immidiately if faces an error
 */

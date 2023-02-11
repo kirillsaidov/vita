@@ -301,7 +301,7 @@ extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const c
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates
-    @param sep c string separator that will be used to join strings together
+    @param sep C string separator that will be used to join strings together
     @param p list of strings
 
     @returns `vt_str_t` joined string, `NULL` upon failure
@@ -310,7 +310,7 @@ extern vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates
-    @param sep c string separator that will be used to join strings together
+    @param sep C string separator that will be used to join strings together
     @param n number of strings to join
     @param ... strings to join
 
@@ -367,7 +367,7 @@ extern bool vt_str_ends_with(const char *const z, const char *const sub);
 extern void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t));
 
 /** Checks if the entire string is a number
-    @param z raw c string
+    @param z raw C string
     @param max_len max len to top checking (internally it uses strnlen)
 
     @returns true upon z being a number

@@ -210,7 +210,7 @@ extern void vt_get_current_timestamp(char *timebuf, const size_t len);
 
 /** Returns a vita error string from vita error code
     @param e vita error code
-    @returns c string upon success, `NULL` otherwise
+    @returns C string upon success, `NULL` otherwise
 */
 extern const char *vt_get_vita_error_str(const enum VitaError e);
 
