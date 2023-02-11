@@ -99,7 +99,6 @@ int32_t main(void) {
         vt_str_clear(sto);
         vt_str_append(sto, ";My name is Kirillos;How are you?;let's play;");
         vt_plist_t *p = vt_str_split(NULL, sto, ";"); {
-            printf("%zu\n\n\n\n", vt_plist_len(p));
             assert(vt_plist_len(p) == 3);
 
             // free each vt_str_t in vt_plist_t

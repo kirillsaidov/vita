@@ -4,7 +4,7 @@
 
 int32_t main(void) {    
     const vt_version_t v = vt_version_get();
-    assert(vt_str_equals(v.str, "0.3.0"));
+    assert(vt_str_equals(v.str, "0.3.1"));
 
     return 0;
 }

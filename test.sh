@@ -8,11 +8,11 @@ declare -a tests=(
     "test_core" \
     "test_str" \
     "test_vec" \
-#    "test_mat" \
     "test_plist" \
     "test_path" \
     "test_fileio" \
     "test_log" \
+    "test_conv" \
     "test_argopt" \
     "test_math" \
     "test_debug" \

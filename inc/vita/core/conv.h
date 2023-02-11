@@ -8,7 +8,7 @@
 #include "../core/core.h"
 #include "../container/str.h"
 
-#define VT_MAX_PRECISION 64
+#define VT_MAX_PRECISION 48
 
 /** Convert to int64_t
     @param z C string

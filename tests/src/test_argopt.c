@@ -6,8 +6,8 @@ int32_t main(void) {
     VT_DEBUG_DEFAULT_INIT();
 
     // strings
-    vt_vt_str_t *rpath = vt_str("my/temp/folder/default/initialized");
-    vt_vt_str_t *wpath = NULL;
+    vt_str_t *rpath = vt_str("my/temp/folder/default/initialized");
+    vt_str_t *wpath = NULL;
 
     // floats
     float intensity = 0.1;
@@ -69,7 +69,7 @@ int32_t main(void) {
         { "--update", "-ud", "update (y, n)", VT_ARGOPT(update), vt_dt_char },
         { "--upgrade", "-ug", "upgrade (y, n)", VT_ARGOPT(upgrade), vt_dt_char }
     };
-    const size_t optc = sizeof(optv)/sizeof(argopt_t);
+    const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 
     // parse args and opts
     const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);

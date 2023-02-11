@@ -726,7 +726,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
         current = strstr(head, sep);
 
         // count copy length
-        size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
+        const size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
         if(copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
             head += sepLen;
             continue;
@@ -735,7 +735,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
             vt_str_t *tempStr = vt_strn(copyLen);
 
             // set the value and push it to the list
-            if(vt_str_set_n(tempStr, head, copyLen) != vt_ve_operation_success && vt_plist_push(p, tempStr) != vt_ve_operation_success) {
+            if(vt_str_set_n(tempStr, head, copyLen) != vt_ve_operation_success || vt_plist_push(p, tempStr) != vt_ve_operation_success) {
                 VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
                 return p;
             }
@@ -755,8 +755,6 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
 vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
@@ -800,8 +798,6 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
 
 vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 

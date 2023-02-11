@@ -5,9 +5,21 @@ vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
 }
 
 vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
-    va_list args; va_start(args, n); 
-    vt_str_t *st = vt_str_join_n(s, PATH_SEPARATOR, n, args);
+    // save args to list
+    vt_plist_t *const p = vt_plist_create(n);
+    va_list args; va_start(args, n);
+    for (size_t i = 0; i < n; i++) {
+        // get next item
+        char *z = va_arg(args, char*);
+        vt_plist_push(p, z);
+    }
     va_end(args);
+    
+    // join
+    vt_str_t *st = vt_str_join(s, PATH_SEPARATOR, p);
+
+    // cleanup
+    vt_plist_destroy(p);
     
     return st;
 }

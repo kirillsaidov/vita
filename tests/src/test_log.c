@@ -5,9 +5,9 @@
 int32_t main(void) {
     const char *const logger_filename = "other/test_logger.log";
 
-    assert(vt_str_equals(vt_log_level_get_str(ll_fatal), "FATAL"));
-    assert(vt_str_equals(vt_log_level_get_str(-1), "INFO") && vt_str_equals(vt_log_level_get_str(ll_count), "INFO"));
-    
+    assert(vt_str_equals(vt_log_get_level_str(vt_ll_fatal), "FATAL"));
+    // vt_log_get_level_str(vt_ll_count) // fails constraint [ arg < vt_ll_count ] 
+
     // --- outputs to stderr
     VT_LOG_INFO("[s] This is an info test. 12345 qwerty.");
     VT_LOG_WARN("[s] Testing %s formatter.", "LOG");
@@ -16,7 +16,7 @@ int32_t main(void) {
 
     // -- outputs to 'logger' file
     // FIXME: fails to log to a file after setting all lob_levels to that file
-    vt_log_level_set_default(logger_filename);
+    vt_log_set_level_default(logger_filename);
     VT_LOG_INFO("[f] This is an info test.");
     VT_LOG_WARN("[f] Testing %s formatter.", "LOG");
     VT_LOG_DEBUG("[f] Testing: debugging = %s, %s", "debug msg", "debug2");

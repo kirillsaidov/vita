@@ -7,6 +7,8 @@ void func(void *ptr, size_t i) {
 }
 
 int main(void) {
+    VT_DEBUG_DEFAULT_INIT();
+
     vt_vec_t *v = vt_vec_create(10, sizeof(double)); {
         assert(vt_vec_len(v) == 0);
         assert(vt_vec_capacity(v) == 10);
@@ -47,7 +49,7 @@ int main(void) {
         vt_vec_t *vcopy = vt_vec_dup(v); {
             assert(vt_vec_getd(vcopy, 5) == dt);
 
-            vt_vec_remove(vcopy, vt_vec_contains(v, &dt), rs_fast);
+            vt_vec_remove(vcopy, vt_vec_contains(v, &dt), vt_rs_fast);
             assert(vt_vec_getd(vcopy, 5) == 3.125);
         } vt_vec_destroy(vcopy);
 
@@ -105,11 +107,11 @@ int main(void) {
         assert(vt_vec_capacity(vecmat) == w*h);
         assert(vt_vec_has_space(vecmat) == 0);
 
-        vt_vec_seti32(vecmat, 1, index_2d_to_1d(0, 0, w));
-        vt_vec_seti32(vecmat, 1, index_2d_to_1d(1, 1, w));
-        vt_vec_seti32(vecmat, 1, index_2d_to_1d(2, 2, w));
-        vt_vec_seti32(vecmat, 1, index_2d_to_1d(3, 3, w));
-        vt_vec_seti32(vecmat, 1, index_2d_to_1d(4, 4, w));
+        vt_vec_seti32(vecmat, 1, vt_index_2d_to_1d(0, 0, w));
+        vt_vec_seti32(vecmat, 1, vt_index_2d_to_1d(1, 1, w));
+        vt_vec_seti32(vecmat, 1, vt_index_2d_to_1d(2, 2, w));
+        vt_vec_seti32(vecmat, 1, vt_index_2d_to_1d(3, 3, w));
+        vt_vec_seti32(vecmat, 1, vt_index_2d_to_1d(4, 4, w));
         
         assert(vt_vec_geti32(vecmat, 0) == 1);
         assert(vt_vec_geti32(vecmat, 6) == 1);

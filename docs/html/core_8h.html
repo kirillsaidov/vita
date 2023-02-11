@@ -127,7 +127,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ac4f592ab3fdc267d152345d8e4cc1313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>&#160;&#160;&#160;(strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)</td></tr>
+<tr class="memitem:ac4f592ab3fdc267d152345d8e4cc1313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>&#160;&#160;&#160;(strrchr(__SOURCE_FILENAME__, '/') ? strrchr(__SOURCE_FILENAME__, '/') + 1 : __SOURCE_FILENAME__)</td></tr>
 <tr class="separator:ac4f592ab3fdc267d152345d8e4cc1313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1174b92a5b1015951057004889cdd91"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#aa1174b92a5b1015951057004889cdd91">VT_DEFAULT_INIT_ELEMENTS</a>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:aa1174b92a5b1015951057004889cdd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,7 +225,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define __SOURCE_FILENAME__&#160;&#160;&#160;(strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)</td>
+          <td class="memname">#define __SOURCE_FILENAME__&#160;&#160;&#160;(strrchr(__SOURCE_FILENAME__, '/') ? strrchr(__SOURCE_FILENAME__, '/') + 1 : __SOURCE_FILENAME__)</td>
         </tr>
       </table>
 </div><div class="memdoc">

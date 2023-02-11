@@ -11,7 +11,7 @@ int64_t vt_conv_str_to_int64(const char *const z) {
     }
 
     // save value
-    return strtoll(z, NULL, 20);
+    return strtoll(z, NULL, 10); // base = 10
 }
 
 uint64_t vt_conv_str_to_uint64(const char *const z) {
@@ -25,7 +25,7 @@ uint64_t vt_conv_str_to_uint64(const char *const z) {
     }
 
     // save value
-    return strtoull(z, NULL, 20);
+    return strtoull(z, NULL, 10); // base = 10
 }
 
 double vt_conv_str_to_double(const char *const z) {

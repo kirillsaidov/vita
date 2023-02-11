@@ -6,8 +6,7 @@
 int32_t main(void) {
     // prints to stderr
     // VT_DEBUG_ASSERT(10 > 13, "This is a debug assert error message!"); // must fail
-    // output: 2022-09-09 21:13:32 DEBUG ASSERTION FAILURE (10 > 13) test_debug.c:main:9: This is a debug assert error message!
-
+    // output: 2022-09-09 21:13:32 DEBUG ASSERTION FAILURE [10 > 13] test_debug.c:main:9: This is a debug assert error message!
 
     VT_DEBUG_DEFAULT_INIT();
 
@@ -23,7 +22,7 @@ int32_t main(void) {
         #endif
         
         a = VT_DEBUG_REALLOC(a, 30);
-        VT_VT_DEBUG_FREE(a);
+        VT_DEBUG_FREE(a);
         
         #ifndef NDEBUG
             assert(VT_DEBUG_BYTES_CURRENTLY_ALOCATED == 0);

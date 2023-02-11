@@ -23,11 +23,11 @@ int main(void) {
         vt_plist_reserve(p, 5);
         assert(vt_plist_capacity(p) == 7);
 
-        assert(strncmp(vt_vt_plist_pop_get(p), w, strlen(w)) == 0);
+        assert(strncmp(vt_plist_pop_get(p), w, strlen(w)) == 0);
         assert(vt_plist_len(p) == 1);
         assert(vt_plist_capacity(p) == 7);
 
-        vt_plist_remove(p, 0, rs_fast);
+        vt_plist_remove(p, 0, vt_rs_fast);
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 7);
     } vt_plist_destroy(p);
