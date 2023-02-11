@@ -753,6 +753,103 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
     return p;
 }
 
+vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // create vt_str_t if needed
+    vt_str_t *st = ((s == NULL) ? (vt_strn(VT_DEFAULT_INIT_ELEMENTS)) : (s));
+    if(st == NULL) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        return NULL;
+    }
+
+    // append the first part
+    if(vt_str_append(st, vt_plist_get(p, 0)) != vt_ve_operation_success) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+
+        // if s is NULL, free st (this is done to avoid freeing user's s instance)
+        if(s == NULL) {
+            vt_str_free(st);
+        }
+
+        return NULL;
+    }
+
+    // continue appending
+    const size_t pLen = vt_plist_len(p);
+    for(size_t i = 1; i < pLen; i++) {
+        if(vt_str_append(st, sep) != vt_ve_operation_success && vt_str_append(st, vt_plist_get(p, i)) != vt_ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+            
+            // if s is NULL, free st (this is done to avoid freeing user's s instance)
+            if(s == NULL) {
+                vt_str_free(st);
+            }
+
+            return NULL;
+        }
+    }
+
+    return st;
+}
+
+vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // create a new vt_str_t instance and append
+    vt_str_t *st = ((s == NULL) ? (vt_strn(VT_DEFAULT_INIT_ELEMENTS)) : (s));
+    if(st == NULL) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        return NULL;
+    }
+    vt_str_clear(st);
+
+    // append
+    va_list args;
+    va_start(args, n);
+    const char* z = NULL;
+    for(size_t i = 0; i < n; i++) {
+        // get next item
+        z = va_arg(args, char*);
+        
+        // append
+        if(vt_str_append(st, z) != vt_ve_operation_success) { 
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+
+            // if s is NULL, free st (this is done to avoid freeing user's s instance)
+            if(s == NULL) {
+                vt_str_free(st);
+            }
+
+            return st; 
+        }
+
+        // do not append path separator at the very end
+        if(i < n-1 && vt_str_append(st, sep) != vt_ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+            
+            // if s is NULL, free st (this is done to avoid freeing user's s instance)
+            if(s == NULL) {
+                vt_str_free(st);
+            }
+            
+            return st;
+        }
+    }
+    va_end(args);
+
+    return st;
+}
+
 vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));

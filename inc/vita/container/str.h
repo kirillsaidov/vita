@@ -286,7 +286,7 @@ extern const char *vt_str_find(const char *const z, const char *sub);
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns number of substring instances in vt_str_t
+    @returns number of substring instances in `vt_str_t`
 */
 extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
 
@@ -295,9 +295,28 @@ extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
     @param s vt_str_t instance
     @param sep seperator string
 
-    @returns vt_plist_t of vt_str_t, `NULL` upon failure
+    @returns `vt_plist_t` of `vt_str_t`, `NULL` upon failure
 */
 extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep);
+
+/** Joins strings by separator
+    @param s vt_str_t instance where the result will be saved, if `NULL` allocates
+    @param sep c string separator that will be used to join strings together
+    @param p list of strings
+
+    @returns `vt_str_t` joined string, `NULL` upon failure
+*/
+extern vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p);
+
+/** Joins strings by separator
+    @param s vt_str_t instance where the result will be saved, if `NULL` allocates
+    @param sep c string separator that will be used to join strings together
+    @param n number of strings to join
+    @param ... strings to join
+
+    @returns `vt_str_t` joined string, `NULL` upon failure
+*/
+extern vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...);
 
 /** Pops off the first part of the string before the separator
     @param sr vt_str_t instance where the result will be saved, if NULL is passed, it's allocated
