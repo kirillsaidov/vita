@@ -272,6 +272,30 @@ enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum 
     return vt_ve_operation_success;
 }
 
+void **vt_plist_slide_front(vt_plist_t *const p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (void**)vt_bct_slide_front(p);
+}
+
+void **vt_plist_slide_back(vt_plist_t *const p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (void**)vt_bct_slide_back(p);
+}
+
+void vt_plist_slide_reset(vt_plist_t *const p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    vt_bct_slide_reset(p);
+}
+
 void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));

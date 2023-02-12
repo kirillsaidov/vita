@@ -30,6 +30,18 @@ int main(void) {
         vt_plist_remove(p, 0, vt_rs_fast);
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 7);
+
+        vt_plist_push(p, h);
+        vt_plist_push(p, w);
+        vt_plist_push(p, h);
+        vt_plist_push(p, w);
+        vt_plist_push(p, h);
+        vt_plist_push(p, w);
+
+        void *i = NULL;
+        while((i = vt_bct_slide_front(p)) != NULL) {
+            // printf("%s\n", *((char**)(i)));
+        }
     } vt_plist_destroy(p);
 
     VT_DEBUG_DEFAULT_QUIT();

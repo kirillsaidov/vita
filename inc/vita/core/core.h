@@ -173,6 +173,27 @@ extern size_t vt_bct_has_space(const struct VitaBaseContainerType *const bct);
 */
 extern size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct);
 
+/** Slides through the container elements one by one
+    @param bct VitaBaseContainerType ptr
+    @returns container ptr head pointing to next element from the start
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void *vt_bct_slide_front(struct VitaBaseContainerType *const bct);
+
+/** Slides through the container elements one by one
+    @param bct VitaBaseContainerType ptr
+    @returns container ptr head pointing to next element from the end
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void *vt_bct_slide_back(struct VitaBaseContainerType *const bct);
+
+/** Resets the slider
+    @param bct VitaBaseContainerType ptr
+*/
+extern void vt_bct_slide_reset(struct VitaBaseContainerType *const bct);
+
 /** Maps a 2d index to 1d index
     @param row row index
     @param col col index

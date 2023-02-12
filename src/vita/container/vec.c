@@ -739,6 +739,31 @@ int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val) {
     return -1;
 }
 
+void *vt_vec_slide_front(vt_vec_t *const v) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return vt_bct_slide_front(v);
+}
+
+void *vt_vec_slide_back(vt_vec_t *const v) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return vt_bct_slide_back(v);
+}
+
+void vt_vec_slide_reset(vt_vec_t *const v) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    
+    vt_bct_slide_reset(v);
+}
+
+
 void vt_vec_apply(const vt_vec_t *const v, void (*func)(void*, size_t)) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));

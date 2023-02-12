@@ -1037,6 +1037,30 @@ int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     return (int64_t)(ztmp - (char*)(s->ptr));
 }
 
+char *vt_str_slide_front(vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (char*)vt_bct_slide_front(s);
+}
+
+char *vt_str_slide_back(vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    return (char*)vt_bct_slide_back(s);
+}
+
+void vt_str_slide_reset(vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    vt_bct_slide_reset(s);
+}
+
 // -------------------------- PRIVATE -------------------------- //
 
 /** Prints a formatted string into a vt_str_t

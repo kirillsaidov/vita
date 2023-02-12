@@ -387,4 +387,25 @@ extern void vt_str_capitalize(vt_str_t *const s);
 */
 extern int64_t vt_str_index_of(const vt_str_t *const s, const char z);
 
+/** Slides through the container elements one by one
+    @param s vt_str_t pointer
+    @returns container ptr head pointing to next element from the start
+
+    @note returns `NULL` upon reaching the end
+*/
+extern char *vt_str_slide_front(vt_str_t *const s);
+
+/** Slides through the container elements one by one
+    @param s vt_str_t pointer
+    @returns container ptr head pointing to next element from the end
+
+    @note returns `NULL` upon reaching the end
+*/
+extern char *vt_str_slide_back(vt_str_t *const s);
+
+/** Resets the slider
+    @param s vt_str_t pointer
+*/
+extern void vt_str_slide_reset(vt_str_t *const s);
+
 #endif // VITA_STR_H

@@ -160,6 +160,27 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
 */
 extern enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
 
+/** Slides through the container elements one by one
+    @param p vt_plist_t pointer
+    @returns container ptr head pointing to next element from the start
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void **vt_plist_slide_front(vt_plist_t *const p);
+
+/** Slides through the container elements one by one
+    @param p vt_plist_t pointer
+    @returns container ptr head pointing to next element from the end
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void **vt_plist_slide_back(vt_plist_t *const p);
+
+/** Resets the slider
+    @param p vt_plist_t pointer
+*/
+extern void vt_plist_slide_reset(vt_plist_t *const p);
+
 /** Calls the specified function on each element
     @param p vt_plist_t instance
     @param func function to execute upon each element: func(pointer, for loop index)

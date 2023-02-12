@@ -118,6 +118,11 @@ int main(void) {
         assert(vt_vec_geti32(vecmat, 12) == 1);
         assert(vt_vec_geti32(vecmat, 18) == 1);
         assert(vt_vec_geti32(vecmat, 24) == 1);
+
+        void *i = NULL;
+        while((i = vt_bct_slide_front(vecmat)) != NULL) {
+            // printf("%d\n", *VT_AS(int32_t*, i));
+        }
     } vt_vec_destroy(vecmat);
 
     VT_DEBUG_DEFAULT_QUIT();

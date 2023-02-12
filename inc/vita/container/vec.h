@@ -254,6 +254,27 @@ extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const en
 */
 extern int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val);
 
+/** Slides through the container elements one by one
+    @param v vt_vec_t instance
+    @returns container ptr head pointing to next element from the start
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void *vt_vec_slide_front(vt_vec_t *const v);
+
+/** Slides through the container elements one by one
+    @param v vt_vec_t instance
+    @returns container ptr head pointing to next element from the end
+
+    @note returns `NULL` upon reaching the end
+*/
+extern void *vt_vec_slide_back(vt_vec_t *const v);
+
+/** Resets the slider
+    @param v vt_vec_t instance
+*/
+extern void vt_vec_slide_reset(vt_vec_t *const v);
+
 /** Calls the specified function on each element
     @param v vt_vec_t instance
     @param func function to execute action on each element: func(pointer, for loop index)

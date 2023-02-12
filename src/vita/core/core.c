@@ -69,6 +69,48 @@ size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
     return bct->elsize;
 }
 
+void *vt_bct_slide_front(struct VitaBaseContainerType *const bct) {
+    // check for invalid input
+    assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
+    // check bounds
+    if(bct->slider_idx < bct->len) {
+        bct->slider_idx++;
+        return (char*)bct->ptr + (bct->slider_idx - 1) * bct->elsize;
+    }
+
+    // reset the slider
+    vt_bct_slide_reset(bct);
+
+    return NULL;
+}
+
+void *vt_bct_slide_back(struct VitaBaseContainerType *const bct) {
+    // check for invalid input
+    assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
+    // check bounds
+    if(bct->slider_idx < bct->len) {
+        bct->slider_idx++;
+        return (char*)bct->ptr + (bct->len - bct->slider_idx - 2) * bct->elsize;
+    }
+
+    // reset the slider
+    vt_bct_slide_reset(bct);
+
+    return NULL;
+}
+
+void vt_bct_slide_reset(struct VitaBaseContainerType *const bct) {
+    // check for invalid input
+    assert(bct != NULL);
+    assert(bct->ptr != NULL);
+
+    bct->slider_idx = 0;
+}
+
 size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t ncols) {
     return (ncols * row + col);
 }
