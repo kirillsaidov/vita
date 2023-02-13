@@ -8,14 +8,14 @@ In this chapter we are going to discuss how to read and write to files with `Vit
 ### Reading from files on one line of code
 ```c
 // read plain data
-vt_str_t *s = file_read("other/myfile.txt");
+vt_str_t *s = vt_file_read("other/myfile.txt");
 
 // read in binary mode
-vt_str_t *s = file_readb("other/myfile.txt");
+vt_str_t *s = vt_file_readb("other/myfile.txt");
 
 // do you thing ...
 
-str_free(s); // free data
+vt_str_free(s); // free data
 ```
 
 ### Writing to files
@@ -26,13 +26,13 @@ const char *filename = "myfile.txt";
 const char *data_buffer = "hello, world\n";
 
 // write to file
-file_write(filename, data_buffer);
-file_writeln(filename, data_buffer);
+vt_file_write(filename, data_buffer);
+vt_file_writeln(filename, data_buffer);
 
 // append at the end of a file
-file_append(filename, data_buffer);
-file_appendln(filename, data_buffer);
+vt_file_append(filename, data_buffer);
+vt_file_appendln(filename, data_buffer);
 
 // free resources
-str_free(sbuf);
+vt_str_free(sbuf);
 ```

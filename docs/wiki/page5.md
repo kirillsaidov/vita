@@ -14,22 +14,22 @@ int32_t     opt_video_quality   = 720;
 bool        opt_verbose         = false;
 ```
 
-Secondly, we need to create an `argopt_t` array type and describe our variables so it knows what to parse:
+Secondly, we need to create an `vt_argopt_t` array type and describe our variables so it knows what to parse:
 ```c
-argopt_t optv[] = {
-      // long      short  description            argument              type
-    { "--link",    "-l", "youtube link",   ARGOPT(opt_youtube_link),  dt_cstr },
-    { "--quality", "-q", "video quality",  ARGOPT(opt_video_quality), dt_int32 },
-    { "--verbose", "-v", "verbose output", ARGOPT(opt_verbose),       dt_bool },
+vt_argopt_t optv[] = {
+      // long      short  description            argument                  type
+    { "--link",    "-l", "youtube link",   VT_ARGOPT(opt_youtube_link),  dt_cstr },
+    { "--quality", "-q", "video quality",  VT_ARGOPT(opt_video_quality), dt_int32 },
+    { "--verbose", "-v", "verbose output", VT_ARGOPT(opt_verbose),       dt_bool },
 };
-const size_t optc = sizeof(optv)/sizeof(argopt_t);
+const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 ```
 
 ### Parsing command line arguments
-The next step is to parse command line options and check the return value returned by `argopt_parse`:
+The next step is to parse command line options and check the return value returned by `vt_argopt_parse`:
 ```c
 // parse args and opts
-const int8_t parse_status = argopt_parse(argc, argv, optc, optv);
+const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);
 if(parse_status < 0) { // or (parse_status == ARGOPT_PARSE_ERROR)
     printf("See 'argopt -h' for more info!\n");
     goto cleanup;
@@ -41,7 +41,7 @@ Finally, we can print the help manual in case it is needed:
 ```c
 // display help manual
 if(parse_status == ARGOPT_PARSE_HELP_WANTED) {
-    argopt_print_help(
+    vt_argopt_print_help(
         "argopt v0.3.0 -- Testing argopt parser",                   // header
         "Example: argopt --link my_youtube_link -q 1080 --verbose", // footer
         optc, optv
