@@ -19,7 +19,7 @@ typedef struct {
 } vt_version_t;
 
 /** Query Vita version
-    @returns version_t struct containing major, minor, patch and full version str
+    @returns vt_version_t struct containing major, minor, patch and full version str
 */
 extern vt_version_t vt_version_get(void);
 
