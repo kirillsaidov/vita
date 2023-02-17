@@ -16,9 +16,8 @@ int32_t main(void) {
 void test_filewrite(void) {
     #if defined(_WIN32) || defined(_WIN64)
         vt_str_t *s = vt_file_read("other\\test_file.txt"); {
-            if(s != NULL) {
-                assert(vt_str_len(s) == 21);
-            }
+            assert(s != NULL);
+            assert(vt_str_len(s) == 18);
         } vt_str_free(s);
 
         const vt_str_t sbuf = vt_str_make_on_stack("hello, world\nthis is a new day\n12345 test");
@@ -36,9 +35,8 @@ void test_filewrite(void) {
         vt_file_writef("other\\test_file4.txt", "%s, %s\n", "hello", "world");
     #else
         vt_str_t *s = vt_file_read("other/test_file.txt"); {
-            if(s != NULL) {
-                assert(vt_str_len(s) == 18);
-            }
+            assert(s != NULL);
+            assert(vt_str_len(s) == 18);
         } vt_str_free(s);
 
         const vt_str_t sbuf = vt_str_make_on_stack("hello, world\nthis is a new day\n12345 test");
