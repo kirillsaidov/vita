@@ -92,8 +92,8 @@ void vt_argopt_print_help(const char *header, const char *footer, const size_t o
     int32_t olPadding = 6; // strlen("--help")
     int32_t osPadding = 2; // strlen("-h")
     for(size_t i = 0; i < optc; i++) {
-        olPadding = VT_MAX((int32_t)strlen(optv[i].optionLong), olPadding);
-        osPadding = VT_MAX((int32_t)strlen(optv[i].optionShort), osPadding);
+        olPadding = VT_CMP_MAX((int32_t)strlen(optv[i].optionLong), olPadding);
+        osPadding = VT_CMP_MAX((int32_t)strlen(optv[i].optionShort), osPadding);
     }
 
     // print header
