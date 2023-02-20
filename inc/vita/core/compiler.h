@@ -26,7 +26,7 @@
 
 #define VT_COMPILER_VERSION VT_STRING_OF(VT_PCAT(VT_PCAT(VT_PCAT(VT_PCAT(VT_COMPILER_VERSION_MAJOR, .), VT_COMPILER_VERSION_MINOR), .), VT_COMPILER_VERSION_PATCH))
 
-/** Query Vita version
+/** Query compiler version (currently supports GCC and CLANG only)
     @returns vt_version_t struct containing major, minor, patch and full version str
 */
 extern vt_version_t vt_compiler_version_get(void);
