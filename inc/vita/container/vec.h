@@ -89,17 +89,29 @@ extern void vt_vec_destroy(vt_vec_t *v);
         If ptr == NULL, returns an empty `vt_vec_t` instance
 */
 extern vt_vec_t *vt_vec_from(const void *const ptr, const size_t n, const size_t elsize);
-extern vt_vec_t *vt_vec_fromi8(const int8_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromu8(const uint8_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromi16(const int16_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromu16(const uint16_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromi32(const int32_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromu32(const uint32_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromi64(const int64_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromu64(const uint64_t *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromf(const float *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromd(const double *const ptr, const size_t n);
-extern vt_vec_t *vt_vec_fromr(const real *const ptr, const size_t n);
+
+/** Allocates and constructs vt_vec_t from an array
+    @param ptr array 
+    @param n number of elements
+
+    @returns `vt_vec_t*` upon success, `NULL` otherwise
+
+    @note 
+        If ptr == NULL, returns an empty `vt_vec_t` instance
+*/
+#define VT_PROTOTYPE_VEC_FROM(T, t) extern vt_vec_t *vt_vec_from##t(const T *const ptr, const size_t n)
+VT_PROTOTYPE_VEC_FROM(int8_t, i8);
+VT_PROTOTYPE_VEC_FROM(uint8_t, u8);
+VT_PROTOTYPE_VEC_FROM(int16_t, i16);
+VT_PROTOTYPE_VEC_FROM(uint16_t, u16);
+VT_PROTOTYPE_VEC_FROM(int32_t, i32);
+VT_PROTOTYPE_VEC_FROM(uint32_t, u32);
+VT_PROTOTYPE_VEC_FROM(int64_t, i64);
+VT_PROTOTYPE_VEC_FROM(uint64_t, u64);
+VT_PROTOTYPE_VEC_FROM(float, f);
+VT_PROTOTYPE_VEC_FROM(double, d);
+VT_PROTOTYPE_VEC_FROM(real, r);
+#undef VT_PROTOTYPE_VEC_FROM
 
 /** Returns vt_vec_t length
     @param v vt_vec_t instance
@@ -160,17 +172,26 @@ extern enum VitaError vt_vec_resize(vt_vec_t *const v, const size_t n);
     @returns enum VitaError code
 */
 extern enum VitaError vt_vec_push(vt_vec_t *const v, const void *const val);
-extern enum VitaError vt_vec_pushi8(vt_vec_t *const v, const int8_t val);
-extern enum VitaError vt_vec_pushu8(vt_vec_t *const v, const uint8_t val);
-extern enum VitaError vt_vec_pushi16(vt_vec_t *const v, const int16_t val);
-extern enum VitaError vt_vec_pushu16(vt_vec_t *const v, const uint16_t val);
-extern enum VitaError vt_vec_pushi32(vt_vec_t *const v, const int32_t val);
-extern enum VitaError vt_vec_pushu32(vt_vec_t *const v, const uint32_t val);
-extern enum VitaError vt_vec_pushi64(vt_vec_t *const v, const int64_t val);
-extern enum VitaError vt_vec_pushu64(vt_vec_t *const v, const uint64_t val);
-extern enum VitaError vt_vec_pushf(vt_vec_t *const v, const float val);
-extern enum VitaError vt_vec_pushd(vt_vec_t *const v, const double val);
-extern enum VitaError vt_vec_pushr(vt_vec_t *const v, const real val);
+
+/** Push an element at the end of vt_vec_t
+    @param v vt_vec_t instance
+    @param val value to push
+
+    @returns enum VitaError code
+*/
+#define VT_PROTOTYPE_VEC_PUSH(T, t) extern enum VitaError vt_vec_push##t(vt_vec_t *const v, const T val)
+VT_PROTOTYPE_VEC_PUSH(int8_t, i8);
+VT_PROTOTYPE_VEC_PUSH(uint8_t, u8);
+VT_PROTOTYPE_VEC_PUSH(int16_t, i16);
+VT_PROTOTYPE_VEC_PUSH(uint16_t, u16);
+VT_PROTOTYPE_VEC_PUSH(int32_t, i32);
+VT_PROTOTYPE_VEC_PUSH(uint32_t, u32);
+VT_PROTOTYPE_VEC_PUSH(int64_t, i64);
+VT_PROTOTYPE_VEC_PUSH(uint64_t, u64);
+VT_PROTOTYPE_VEC_PUSH(float, f);
+VT_PROTOTYPE_VEC_PUSH(double, d);
+VT_PROTOTYPE_VEC_PUSH(real, r);
+#undef VT_PROTOTYPE_VEC_PUSH
 
 /** Pops off the last element
     @param v vt_vec_t instance

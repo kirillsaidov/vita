@@ -8,8 +8,8 @@
     - VT_CMP_CLAMP
 
  * Functions:
-    - vt_cmp_minX (X = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
-    - vt_cmp_maxX (X = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_cmp_minT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_cmp_maxT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
 */
 
 #include "../core/core.h"
@@ -62,17 +62,19 @@
 
     @returns the minimum value
 */
-extern int8_t vt_cmp_mini8(const int8_t x, const int8_t y);
-extern uint8_t vt_cmp_minu8(const uint8_t x, const uint8_t y);
-extern int16_t vt_cmp_mini16(const int16_t x, const int16_t y);
-extern uint16_t vt_cmp_minu16(const uint16_t x, const uint16_t y);
-extern int32_t vt_cmp_mini32(const int32_t x, const int32_t y);
-extern uint32_t vt_cmp_minu32(const uint32_t x, const uint32_t y);
-extern int64_t vt_cmp_mini64(const int64_t x, const int64_t y);
-extern uint64_t vt_cmp_minu64(const uint64_t x, const uint64_t y);
-extern float vt_cmp_minf(const float x, const float y);
-extern double vt_cmp_mind(const double x, const double y);
-extern real vt_cmp_minr(const real x, const real y);
+#define VT_PROTOTYPE_CMP_MIN(T, t) extern T vt_cmp_min##t(const T x, const T y)
+VT_PROTOTYPE_CMP_MIN(int8_t, i8);
+VT_PROTOTYPE_CMP_MIN(uint8_t, u8);
+VT_PROTOTYPE_CMP_MIN(int16_t, i16);
+VT_PROTOTYPE_CMP_MIN(uint16_t, u16);
+VT_PROTOTYPE_CMP_MIN(int32_t, i32);
+VT_PROTOTYPE_CMP_MIN(uint32_t, u32);
+VT_PROTOTYPE_CMP_MIN(int64_t, i64);
+VT_PROTOTYPE_CMP_MIN(uint64_t, u64);
+VT_PROTOTYPE_CMP_MIN(float, f);
+VT_PROTOTYPE_CMP_MIN(double, d);
+VT_PROTOTYPE_CMP_MIN(real, r);
+#undef VT_PROTOTYPE_CMP_MIN
 
 /** Compares 2 values and returns the maximum value
     @param x fist value
@@ -80,16 +82,18 @@ extern real vt_cmp_minr(const real x, const real y);
 
     @returns the maximum value
 */
-extern int8_t vt_cmp_maxi8(const int8_t x, const int8_t y);
-extern uint8_t vt_cmp_maxu8(const uint8_t x, const uint8_t y);
-extern int16_t vt_cmp_maxi16(const int16_t x, const int16_t y);
-extern uint16_t vt_cmp_maxu16(const uint16_t x, const uint16_t y);
-extern int32_t vt_cmp_maxi32(const int32_t x, const int32_t y);
-extern uint32_t vt_cmp_maxu32(const uint32_t x, const uint32_t y);
-extern int64_t vt_cmp_maxi64(const int64_t x, const int64_t y);
-extern uint64_t vt_cmp_maxu64(const uint64_t x, const uint64_t y);
-extern float vt_cmp_maxf(const float x, const float y);
-extern double vt_cmp_maxd(const double x, const double y);
-extern real vt_cmp_maxr(const real x, const real y);
+#define VT_PROTOTYPE_CMP_MAX(T, t) extern T vt_cmp_max##t(const T x, const T y)
+VT_PROTOTYPE_CMP_MAX(int8_t, i8);
+VT_PROTOTYPE_CMP_MAX(uint8_t, u8);
+VT_PROTOTYPE_CMP_MAX(int16_t, i16);
+VT_PROTOTYPE_CMP_MAX(uint16_t, u16);
+VT_PROTOTYPE_CMP_MAX(int32_t, i32);
+VT_PROTOTYPE_CMP_MAX(uint32_t, u32);
+VT_PROTOTYPE_CMP_MAX(int64_t, i64);
+VT_PROTOTYPE_CMP_MAX(uint64_t, u64);
+VT_PROTOTYPE_CMP_MAX(float, f);
+VT_PROTOTYPE_CMP_MAX(double, d);
+VT_PROTOTYPE_CMP_MAX(real, r);
+#undef VT_PROTOTYPE_CMP_MAX
 
 #endif // VITA_COMPARISON_H

@@ -2,7 +2,7 @@
 #define VITA_COMPILER_H
 
 /** VITA_CORE MODULE
-    - vt_compiler_version_get
+    - vt_compiler_get_version
 */
 
 #include "version.h"
@@ -29,6 +29,6 @@
 /** Query compiler version (currently supports GCC and CLANG only)
     @returns vt_version_t struct containing major, minor, patch and full version str
 */
-extern vt_version_t vt_compiler_version_get(void);
+extern vt_version_t vt_compiler_get_version(void);
 
 #endif // VITA_COMPILER_H
