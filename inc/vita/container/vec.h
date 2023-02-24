@@ -9,7 +9,8 @@
     - vt_vec_free
     - vt_vec_create
     - vt_vec_destroy
-    - vt_vec_from ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
+    - vt_vec_from
+    - vt_vec_fromT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_len
     - vt_vec_capacity
     - vt_vec_has_space
@@ -18,11 +19,15 @@
     - vt_vec_clear
     - vt_vec_reserve
     - vt_vec_resize
-    - vt_vec_push ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
+    - vt_vec_push
+    - vt_vec_pushT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_pop
     - vt_vec_pop_get
-    - vt_vec_set ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
-    - vt_vec_get ((u)i8, (u)i16, (u)i32, (u)i64, f, d versions as well)
+    - vt_vec_pop_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_set
+    - vt_vec_setT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_get
+    - vt_vec_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_insert
     - vt_vec_remove
     - vt_vec_contains
@@ -205,6 +210,24 @@ extern enum VitaError vt_vec_pop(vt_vec_t *const v);
 */
 extern void *vt_vec_pop_get(vt_vec_t *const v);
 
+/** Pops off and returns the last element
+    @param v vt_vec_t instance
+    @returns element of type T
+*/
+#define VT_PROTOTYPE_VEC_POP_GET(T, t) extern T vt_vec_pop_get##t(vt_vec_t *const v)
+VT_PROTOTYPE_VEC_POP_GET(int8_t, i8);
+VT_PROTOTYPE_VEC_POP_GET(uint8_t, u8);
+VT_PROTOTYPE_VEC_POP_GET(int16_t, i16);
+VT_PROTOTYPE_VEC_POP_GET(uint16_t, u16);
+VT_PROTOTYPE_VEC_POP_GET(int32_t, i32);
+VT_PROTOTYPE_VEC_POP_GET(uint32_t, u32);
+VT_PROTOTYPE_VEC_POP_GET(int64_t, i64);
+VT_PROTOTYPE_VEC_POP_GET(uint64_t, u64);
+VT_PROTOTYPE_VEC_POP_GET(float, f);
+VT_PROTOTYPE_VEC_POP_GET(double, d);
+VT_PROTOTYPE_VEC_POP_GET(real, r);
+#undef VT_PROTOTYPE_VEC_POP_GET
+
 /** Assigns a new value at an index
     @param v vt_vec_t instance
     @param val value
@@ -213,17 +236,27 @@ extern void *vt_vec_pop_get(vt_vec_t *const v);
     @returns enum VitaError code
 */
 extern enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at);
-extern enum VitaError vt_vec_seti8(vt_vec_t *const v, const int8_t val, const size_t at);
-extern enum VitaError vt_vec_setu8(vt_vec_t *const v, const uint8_t val, const size_t at);
-extern enum VitaError vt_vec_seti16(vt_vec_t *const v, const int16_t val, const size_t at);
-extern enum VitaError vt_vec_setu16(vt_vec_t *const v, const uint16_t val, const size_t at);
-extern enum VitaError vt_vec_seti32(vt_vec_t *const v, const int32_t val, const size_t at);
-extern enum VitaError vt_vec_setu32(vt_vec_t *const v, const uint32_t val, const size_t at);
-extern enum VitaError vt_vec_seti64(vt_vec_t *const v, const int64_t val, const size_t at);
-extern enum VitaError vt_vec_setu64(vt_vec_t *const v, const uint64_t val, const size_t at);
-extern enum VitaError vt_vec_setf(vt_vec_t *const v, const float val, const size_t at);
-extern enum VitaError vt_vec_setd(vt_vec_t *const v, const double val, const size_t at);
-extern enum VitaError vt_vec_setr(vt_vec_t *const v, const real val, const size_t at);
+
+/** Assigns a new value at an index
+    @param v vt_vec_t instance
+    @param val value
+    @param at index to set the value
+
+    @returns enum VitaError code
+*/
+#define VT_PROTOTYPE_VEC_SET(T, t) extern enum VitaError vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at)
+VT_PROTOTYPE_VEC_SET(int8_t, i8);
+VT_PROTOTYPE_VEC_SET(uint8_t, u8);
+VT_PROTOTYPE_VEC_SET(int16_t, i16);
+VT_PROTOTYPE_VEC_SET(uint16_t, u16);
+VT_PROTOTYPE_VEC_SET(int32_t, i32);
+VT_PROTOTYPE_VEC_SET(uint32_t, u32);
+VT_PROTOTYPE_VEC_SET(int64_t, i64);
+VT_PROTOTYPE_VEC_SET(uint64_t, u64);
+VT_PROTOTYPE_VEC_SET(float, f);
+VT_PROTOTYPE_VEC_SET(double, d);
+VT_PROTOTYPE_VEC_SET(real, r);
+#undef VT_PROTOTYPE_VEC_SET
 
 /** Returns value at index
     @param v vt_vec_t instance

@@ -307,6 +307,23 @@ void *vt_vec_pop_get(vt_vec_t *const v) {
     return v->ptr;
 }
 
+#define VT_INSTANTIATE_VEC_POP_GET(T, t)        \
+    T vt_vec_pop_get##t(vt_vec_t *const v) {    \
+        return *(T*)vt_vec_pop_get(v);          \
+    }
+VT_INSTANTIATE_VEC_POP_GET(int8_t, i8)
+VT_INSTANTIATE_VEC_POP_GET(uint8_t, u8)
+VT_INSTANTIATE_VEC_POP_GET(int16_t, i16)
+VT_INSTANTIATE_VEC_POP_GET(uint16_t, u16)
+VT_INSTANTIATE_VEC_POP_GET(int32_t, i32)
+VT_INSTANTIATE_VEC_POP_GET(uint32_t, u32)
+VT_INSTANTIATE_VEC_POP_GET(int64_t, i64)
+VT_INSTANTIATE_VEC_POP_GET(uint64_t, u64)
+VT_INSTANTIATE_VEC_POP_GET(float, f)
+VT_INSTANTIATE_VEC_POP_GET(double, d)
+VT_INSTANTIATE_VEC_POP_GET(real, r)
+#undef VT_INSTANTIATE_VEC_POP_GET
+
 enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
@@ -326,181 +343,32 @@ enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t
     return vt_ve_operation_success;
 }
 
-enum VitaError vt_vec_seti8(vt_vec_t *const v, const int8_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
+#define VT_INSTANTIATE_VEC_SET(T, t)                                                                            \
+enum VitaError vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) {                                 \
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));                   \
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));                        \
+    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));\
+    VT_DEBUG_ASSERT(                                                                                            \
+        at < v->len,                                                                                            \
+        "%s: Out of bounds memory access at %zu, but length is %zu!\n",                                         \
+        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access),                                                \
+        at,                                                                                                     \
+        v->len                                                                                                  \
+    );                                                                                                          \
+    return vt_vec_set(v, &val, at);                                                                             \
 }
-
-enum VitaError vt_vec_setu8(vt_vec_t *const v, const uint8_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_seti16(vt_vec_t *const v, const int16_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setu16(vt_vec_t *const v, const uint16_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_seti32(vt_vec_t *const v, const int32_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setu32(vt_vec_t *const v, const uint32_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_seti64(vt_vec_t *const v, const int64_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setu64(vt_vec_t *const v, const uint64_t val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setf(vt_vec_t *const v, const float val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setd(vt_vec_t *const v, const double val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
-
-enum VitaError vt_vec_setr(vt_vec_t *const v, const real val, const size_t at) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));
-    VT_DEBUG_ASSERT(
-        at < v->len,
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
-        at, 
-        v->len
-    );
-
-    return vt_vec_set(v, &val, at);
-}
+VT_INSTANTIATE_VEC_SET(int8_t, i8)
+VT_INSTANTIATE_VEC_SET(uint8_t, u8)
+VT_INSTANTIATE_VEC_SET(int16_t, i16)
+VT_INSTANTIATE_VEC_SET(uint16_t, u16)
+VT_INSTANTIATE_VEC_SET(int32_t, i32)
+VT_INSTANTIATE_VEC_SET(uint32_t, u32)
+VT_INSTANTIATE_VEC_SET(int64_t, i64)
+VT_INSTANTIATE_VEC_SET(uint64_t, u64)
+VT_INSTANTIATE_VEC_SET(float, f)
+VT_INSTANTIATE_VEC_SET(double, d)
+VT_INSTANTIATE_VEC_SET(real, r)
+#undef VT_INSTANTIATE_VEC_SET
 
 void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
     // check for invalid input
