@@ -1,8 +1,9 @@
 #!/bin/bash
 
+mkdir build;
 cd build;
 
-cmake -S .. -B .; 
+cmake -S .. -B .;
 
 make
 
