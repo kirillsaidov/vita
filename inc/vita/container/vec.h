@@ -265,17 +265,26 @@ VT_PROTOTYPE_VEC_SET(real, r);
     @returns value (depends on data type)
 */
 extern void* vt_vec_get(const vt_vec_t *const v, const size_t at);
-extern int8_t vt_vec_geti8(const vt_vec_t *const v, const size_t at);
-extern uint8_t vt_vec_getu8(const vt_vec_t *const v, const size_t at);
-extern int16_t vt_vec_geti16(const vt_vec_t *const v, const size_t at);
-extern uint16_t vt_vec_getu16(const vt_vec_t *const v, const size_t at);
-extern int32_t vt_vec_geti32(const vt_vec_t *const v, const size_t at);
-extern uint32_t vt_vec_getu32(const vt_vec_t *const v, const size_t at);
-extern int64_t vt_vec_geti64(const vt_vec_t *const v, const size_t at);
-extern uint64_t vt_vec_getu64(const vt_vec_t *const v, const size_t at);
-extern float vt_vec_getf(const vt_vec_t *const v, const size_t at);
-extern double vt_vec_getd(const vt_vec_t *const v, const size_t at);
-extern real vt_vec_getr(const vt_vec_t *const v, const size_t at);
+
+/** Returns value at index
+    @param v vt_vec_t instance
+    @param at index
+
+    @returns value
+*/
+#define VT_PROTOTYPE_VEC_GET(T, t) extern T vt_vec_get##t(const vt_vec_t *const v, const size_t at)
+VT_PROTOTYPE_VEC_GET(int8_t, i8);
+VT_PROTOTYPE_VEC_GET(uint8_t, u8);
+VT_PROTOTYPE_VEC_GET(int16_t, i16);
+VT_PROTOTYPE_VEC_GET(uint16_t, u16);
+VT_PROTOTYPE_VEC_GET(int32_t, i32);
+VT_PROTOTYPE_VEC_GET(uint32_t, u32);
+VT_PROTOTYPE_VEC_GET(int64_t, i64);
+VT_PROTOTYPE_VEC_GET(uint64_t, u64);
+VT_PROTOTYPE_VEC_GET(float, f);
+VT_PROTOTYPE_VEC_GET(double, d);
+VT_PROTOTYPE_VEC_GET(real, r);
+#undef VT_PROTOTYPE_VEC_GET
 
 /** Inserts a new value at an index
     @param v vt_vec_t instance

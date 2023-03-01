@@ -385,49 +385,22 @@ void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
     return ((char*)(v->ptr) + at * v->elsize);
 }
 
-int8_t vt_vec_geti8(const vt_vec_t *const v, const size_t at) {
-    return *(int8_t*)(vt_vec_get(v, at));
+#define VT_INSTANTIATE_VEC_GET(T, t)                        \
+T vt_vec_get##t(const vt_vec_t *const v, const size_t at) { \
+    return *(T*)(vt_vec_get(v, at));                        \
 }
-
-uint8_t vt_vec_getu8(const vt_vec_t *const v, const size_t at) {
-    return *(uint8_t*)(vt_vec_get(v, at));
-}
-
-int16_t vt_vec_geti16(const vt_vec_t *const v, const size_t at) {
-    return *(int16_t*)(vt_vec_get(v, at));
-}
-
-uint16_t vt_vec_getu16(const vt_vec_t *const v, const size_t at) {
-    return *(uint16_t*)(vt_vec_get(v, at));
-}
-
-int32_t vt_vec_geti32(const vt_vec_t *const v, const size_t at) {
-    return *(int32_t*)(vt_vec_get(v, at));
-}
-
-uint32_t vt_vec_getu32(const vt_vec_t *const v, const size_t at) {
-    return *(uint32_t*)(vt_vec_get(v, at));
-}
-
-int64_t vt_vec_geti64(const vt_vec_t *const v, const size_t at) {
-    return *(int64_t*)(vt_vec_get(v, at));
-}
-
-uint64_t vt_vec_getu64(const vt_vec_t *const v, const size_t at) {
-    return *(uint64_t*)(vt_vec_get(v, at));
-}
-
-float vt_vec_getf(const vt_vec_t *const v, const size_t at) {
-    return *(float*)(vt_vec_get(v, at));
-}
-
-double vt_vec_getd(const vt_vec_t *const v, const size_t at) {
-    return *(double*)(vt_vec_get(v, at));
-}
-
-real vt_vec_getr(const vt_vec_t *const v, const size_t at) {
-    return *(real*)(vt_vec_get(v, at));
-}
+VT_INSTANTIATE_VEC_GET(int8_t, i8)
+VT_INSTANTIATE_VEC_GET(uint8_t, u8)
+VT_INSTANTIATE_VEC_GET(int16_t, i16)
+VT_INSTANTIATE_VEC_GET(uint16_t, u16)
+VT_INSTANTIATE_VEC_GET(int32_t, i32)
+VT_INSTANTIATE_VEC_GET(uint32_t, u32)
+VT_INSTANTIATE_VEC_GET(int64_t, i64)
+VT_INSTANTIATE_VEC_GET(uint64_t, u64)
+VT_INSTANTIATE_VEC_GET(float, f)
+VT_INSTANTIATE_VEC_GET(double, d)
+VT_INSTANTIATE_VEC_GET(real, r)
+#undef VT_INSTANTIATE_VEC_GET
 
 enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
     // check for invalid input
