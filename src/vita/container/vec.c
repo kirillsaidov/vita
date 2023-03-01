@@ -261,12 +261,9 @@ enum VitaError vt_vec_push(vt_vec_t *const v, const void *const val) {
     return vt_ve_operation_success;
 }
 
-#define VT_INSTANTIATE_VEC_PUSH(T, t)                                                                                   \
-    enum VitaError vt_vec_push##t(vt_vec_t *const v, const T val) {                                                     \
-        VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));                       \
-        VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));                            \
-        VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));    \
-        return vt_vec_push(v, &val);                                                                                    \
+#define VT_INSTANTIATE_VEC_PUSH(T, t)                               \
+    enum VitaError vt_vec_push##t(vt_vec_t *const v, const T val) { \
+        return vt_vec_push(v, &val);                                \
     }
 VT_INSTANTIATE_VEC_PUSH(int8_t, i8)
 VT_INSTANTIATE_VEC_PUSH(uint8_t, u8)
@@ -343,20 +340,10 @@ enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t
     return vt_ve_operation_success;
 }
 
-#define VT_INSTANTIATE_VEC_SET(T, t)                                                                            \
-enum VitaError vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) {                                 \
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));                   \
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));                        \
-    VT_DEBUG_ASSERT(v->elsize == sizeof(val), "%s\n", vt_get_vita_error_str(vt_ve_error_incompatible_datatype));\
-    VT_DEBUG_ASSERT(                                                                                            \
-        at < v->len,                                                                                            \
-        "%s: Out of bounds memory access at %zu, but length is %zu!\n",                                         \
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access),                                                \
-        at,                                                                                                     \
-        v->len                                                                                                  \
-    );                                                                                                          \
-    return vt_vec_set(v, &val, at);                                                                             \
-}
+#define VT_INSTANTIATE_VEC_SET(T, t)                                                \
+    enum VitaError vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) { \
+        return vt_vec_set(v, &val, at);                                             \
+    }
 VT_INSTANTIATE_VEC_SET(int8_t, i8)
 VT_INSTANTIATE_VEC_SET(uint8_t, u8)
 VT_INSTANTIATE_VEC_SET(int16_t, i16)
@@ -385,10 +372,10 @@ void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
     return ((char*)(v->ptr) + at * v->elsize);
 }
 
-#define VT_INSTANTIATE_VEC_GET(T, t)                        \
-T vt_vec_get##t(const vt_vec_t *const v, const size_t at) { \
-    return *(T*)(vt_vec_get(v, at));                        \
-}
+#define VT_INSTANTIATE_VEC_GET(T, t)                            \
+    T vt_vec_get##t(const vt_vec_t *const v, const size_t at) { \
+        return *(T*)(vt_vec_get(v, at));                        \
+    }
 VT_INSTANTIATE_VEC_GET(int8_t, i8)
 VT_INSTANTIATE_VEC_GET(uint8_t, u8)
 VT_INSTANTIATE_VEC_GET(int16_t, i16)
@@ -433,6 +420,23 @@ enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const siz
     return vt_ve_operation_success;
 }
 
+#define VT_INSTANTIATE_VEC_INSERT(T, t)                                                 \
+    enum VitaError vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at) {  \
+        return vt_vec_insert(v, &val, at);                                              \
+    }
+VT_INSTANTIATE_VEC_INSERT(int8_t, i8)
+VT_INSTANTIATE_VEC_INSERT(uint8_t, u8)
+VT_INSTANTIATE_VEC_INSERT(int16_t, i16)
+VT_INSTANTIATE_VEC_INSERT(uint16_t, u16)
+VT_INSTANTIATE_VEC_INSERT(int32_t, i32)
+VT_INSTANTIATE_VEC_INSERT(uint32_t, u32)
+VT_INSTANTIATE_VEC_INSERT(int64_t, i64)
+VT_INSTANTIATE_VEC_INSERT(uint64_t, u64)
+VT_INSTANTIATE_VEC_INSERT(float, f)
+VT_INSTANTIATE_VEC_INSERT(double, d)
+VT_INSTANTIATE_VEC_INSERT(real, r)
+#undef VT_INSTANTIATE_VEC_INSERT
+
 enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
@@ -473,6 +477,23 @@ int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val) {
 
     return -1;
 }
+
+#define VT_INSTANTIATE_VEC_CONTAINS(T, t)                               \
+    int64_t vt_vec_contains##t(const vt_vec_t *const v, const T val) {  \
+        return vt_vec_contains(v, &val);                                \
+    }
+VT_INSTANTIATE_VEC_CONTAINS(int8_t, i8)
+VT_INSTANTIATE_VEC_CONTAINS(uint8_t, u8)
+VT_INSTANTIATE_VEC_CONTAINS(int16_t, i16)
+VT_INSTANTIATE_VEC_CONTAINS(uint16_t, u16)
+VT_INSTANTIATE_VEC_CONTAINS(int32_t, i32)
+VT_INSTANTIATE_VEC_CONTAINS(uint32_t, u32)
+VT_INSTANTIATE_VEC_CONTAINS(int64_t, i64)
+VT_INSTANTIATE_VEC_CONTAINS(uint64_t, u64)
+VT_INSTANTIATE_VEC_CONTAINS(float, f)
+VT_INSTANTIATE_VEC_CONTAINS(double, d)
+VT_INSTANTIATE_VEC_CONTAINS(real, r)
+#undef VT_INSTANTIATE_VEC_CONTAINS
 
 void *vt_vec_slide_front(vt_vec_t *const v) {
     // check for invalid input

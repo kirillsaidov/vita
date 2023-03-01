@@ -29,8 +29,10 @@
     - vt_vec_get
     - vt_vec_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_insert
+    - vt_vec_insertT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_remove
     - vt_vec_contains
+    - vt_vec_containsT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_apply
 */
 
@@ -295,6 +297,27 @@ VT_PROTOTYPE_VEC_GET(real, r);
 */
 extern enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at);
 
+/** Inserts a new value at an index
+    @param v vt_vec_t instance
+    @param val value to insert
+    @param at index to set the value
+
+    @returns enum VitaError code
+*/
+#define VT_PROTOTYPE_VEC_INSERT(T, t) extern enum VitaError vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at)
+VT_PROTOTYPE_VEC_INSERT(int8_t, i8);
+VT_PROTOTYPE_VEC_INSERT(uint8_t, u8);
+VT_PROTOTYPE_VEC_INSERT(int16_t, i16);
+VT_PROTOTYPE_VEC_INSERT(uint16_t, u16);
+VT_PROTOTYPE_VEC_INSERT(int32_t, i32);
+VT_PROTOTYPE_VEC_INSERT(uint32_t, u32);
+VT_PROTOTYPE_VEC_INSERT(int64_t, i64);
+VT_PROTOTYPE_VEC_INSERT(uint64_t, u64);
+VT_PROTOTYPE_VEC_INSERT(float, f);
+VT_PROTOTYPE_VEC_INSERT(double, d);
+VT_PROTOTYPE_VEC_INSERT(real, r);
+#undef VT_PROTOTYPE_VEC_INSERT
+
 /** Removes an element from vt_vec_t
     @param v vt_vec_t instance
     @param at index of the value
@@ -316,6 +339,26 @@ extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const en
     @returns index to first val instance, `-1` upon failure
 */
 extern int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val);
+
+/** Checks if vt_vec_t contains the specified element
+    @param v vt_vec_t instance
+    @param val value to check
+
+    @returns index to first val instance, `-1` upon failure
+*/
+#define VT_PROTOTYPE_VEC_CONTAINS(T, t) extern int64_t vt_vec_contains##t(const vt_vec_t *const v, const T val)
+VT_PROTOTYPE_VEC_CONTAINS(int8_t, i8);
+VT_PROTOTYPE_VEC_CONTAINS(uint8_t, u8);
+VT_PROTOTYPE_VEC_CONTAINS(int16_t, i16);
+VT_PROTOTYPE_VEC_CONTAINS(uint16_t, u16);
+VT_PROTOTYPE_VEC_CONTAINS(int32_t, i32);
+VT_PROTOTYPE_VEC_CONTAINS(uint32_t, u32);
+VT_PROTOTYPE_VEC_CONTAINS(int64_t, i64);
+VT_PROTOTYPE_VEC_CONTAINS(uint64_t, u64);
+VT_PROTOTYPE_VEC_CONTAINS(float, f);
+VT_PROTOTYPE_VEC_CONTAINS(double, d);
+VT_PROTOTYPE_VEC_CONTAINS(real, r);
+#undef VT_PROTOTYPE_VEC_CONTAINS
 
 /** Slides through the container elements one by one
     @param v vt_vec_t instance
