@@ -44,16 +44,16 @@ int main(void) {
         assert(vt_vec_len(v) == 12);
         assert(vt_vec_capacity(v) == 62);
         assert(vt_vec_has_space(v) == 50);
-        assert(vt_vec_contains(v, &dt) == 5);
+        assert(vt_vec_can_find(v, &dt) == 5);
 
         vt_vec_t *vcopy = vt_vec_dup(v); {
             assert(vt_vec_getd(vcopy, 5) == dt);
 
-            vt_vec_remove(vcopy, vt_vec_contains(v, &dt), vt_rs_fast);
+            vt_vec_remove(vcopy, vt_vec_can_find(v, &dt), vt_rs_fast);
             assert(vt_vec_getd(vcopy, 5) == 3.125);
         } vt_vec_destroy(vcopy);
 
-        vt_vec_remove(v, vt_vec_contains(v, &dt), vt_rs_stable);
+        vt_vec_remove(v, vt_vec_can_find(v, &dt), vt_rs_stable);
         assert(vt_vec_getd(v, 5) == 24.5);
 
         vt_vec_shrink(v);

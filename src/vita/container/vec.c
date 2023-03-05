@@ -462,7 +462,7 @@ enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum Vita
     return vt_ve_operation_success;
 }
 
-int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val) {
+int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
@@ -479,8 +479,8 @@ int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val) {
 }
 
 #define VT_INSTANTIATE_VEC_CONTAINS(T, t)                               \
-    int64_t vt_vec_contains##t(const vt_vec_t *const v, const T val) {  \
-        return vt_vec_contains(v, &val);                                \
+    int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val) {  \
+        return vt_vec_can_find(v, &val);                                \
     }
 VT_INSTANTIATE_VEC_CONTAINS(int8_t, i8)
 VT_INSTANTIATE_VEC_CONTAINS(uint8_t, u8)

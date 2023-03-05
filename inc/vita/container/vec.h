@@ -31,7 +31,7 @@
     - vt_vec_insert
     - vt_vec_insertT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_remove
-    - vt_vec_contains
+    - vt_vec_can_find
     - vt_vec_containsT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_apply
 */
@@ -338,7 +338,7 @@ extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const en
 
     @returns index to first val instance, `-1` upon failure
 */
-extern int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val);
+extern int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val);
 
 /** Checks if vt_vec_t contains the specified element
     @param v vt_vec_t instance
@@ -346,7 +346,7 @@ extern int64_t vt_vec_contains(const vt_vec_t *const v, const void *const val);
 
     @returns index to first val instance, `-1` upon failure
 */
-#define VT_PROTOTYPE_VEC_CONTAINS(T, t) extern int64_t vt_vec_contains##t(const vt_vec_t *const v, const T val)
+#define VT_PROTOTYPE_VEC_CONTAINS(T, t) extern int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val)
 VT_PROTOTYPE_VEC_CONTAINS(int8_t, i8);
 VT_PROTOTYPE_VEC_CONTAINS(uint8_t, u8);
 VT_PROTOTYPE_VEC_CONTAINS(int16_t, i16);
