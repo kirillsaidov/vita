@@ -1,5 +1,6 @@
 #include "vita/util/argopt.h"
 
+static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv);
 static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value);
 
 int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv) {
@@ -8,6 +9,11 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     VT_DEBUG_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ENFORCE(argv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ENFORCE(argc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // validate artopt
+    if(!vt_argopt_validate(optc, optv)) {
+        return VT_ARGOPT_PARSE_ERROR;
+    }
 
     // parse status
     int8_t parse_status = VT_ARGOPT_PARSE_SUCCESS;
@@ -114,6 +120,22 @@ void vt_argopt_print_help(const char *header, const char *footer, const size_t o
 }
 
 /* ------------------------ PRIVATE ------------------------ */
+
+static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv) {
+    // check if options are valid
+    for (size_t i = 0; i < optc; i++) {
+        const vt_argopt_t *opt = &optv[i];
+
+        // validate
+        if(opt->optionLong == NULL)  { fprintf(stderr, "optionLong cannot be NULL!\n"); return false; }
+        if(opt->optionShort == NULL) { fprintf(stderr, "optionShort cannot be NULL!\n"); return false; }
+        if(opt->optionValue == NULL) { fprintf(stderr, "optionValue cannot be NULL!\n"); return false; }
+        if(strnlen(opt->optionShort, 4) > 3) { fprintf(stderr, "optionShort=<%s> cannot be longer than 3 characters!\n", opt->optionShort); return false; }
+        if(opt->optionType >= vt_dt_count) { fprintf(stderr, "optionType specified is invalid!\n"); return false; }
+    }
+    
+    return true;
+}
 
 static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value) {
     if(opt == NULL || value == NULL) {
