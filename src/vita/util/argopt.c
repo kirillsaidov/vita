@@ -5,10 +5,10 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
 int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv) {
     // check for invalid input
-    VT_DEBUG_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ENFORCE(argv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ENFORCE(argc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(argv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(argc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
     // validate artopt
     if(!vt_argopt_validate(optc, optv)) {
@@ -91,8 +91,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
 
 void vt_argopt_print_help(const char *header, const char *footer, const size_t optc, const vt_argopt_t *const optv) {
     // check for invalid input
-    VT_DEBUG_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     
     // calculate optionLong and optionShort padding
     int32_t olPadding = 6; // strlen("--help")

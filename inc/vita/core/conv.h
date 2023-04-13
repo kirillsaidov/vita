@@ -34,5 +34,17 @@ extern double vt_conv_str_to_double(const char *const z);
 */
 extern real vt_conv_str_to_real(const char *const z);
 
+/** Convert to str
+    @param buf C string
+    @param buf_len buffer length
+    @param val value to convert
+*/
+#define VT_PROTOTYPE_CONV_TO_STR(T, t) extern void vt_conv_##t##_to_str(char *const buf, const size_t buf_len, const T val)
+VT_PROTOTYPE_CONV_TO_STR(int64_t, int64);
+VT_PROTOTYPE_CONV_TO_STR(uint64_t, uint64);
+VT_PROTOTYPE_CONV_TO_STR(double, double);
+VT_PROTOTYPE_CONV_TO_STR(real, real);
+#undef VT_PROTOTYPE_CONV_TO_STR
+
 
 #endif // VITA_CONV_H

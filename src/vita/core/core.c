@@ -146,14 +146,13 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 }
 
 void vt_get_current_timestamp(char *timebuf, const size_t len) {
-    const size_t timestamp_size = VT_TIME_BUFFER_SIZE;
-    if(len < timestamp_size) {
+    if(len < VT_TIME_BUFFER_SIZE) {
         return;
     }
 
     const time_t t = time(NULL);
     const struct tm *stm = localtime(&t);
-    timebuf[strftime(timebuf, timestamp_size, "%Y-%m-%d %H:%M:%S", stm)] = '\0';
+    timebuf[strftime(timebuf, VT_TIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", stm)] = '\0';
 }
 
 const char *vt_get_vita_error_str(const enum VitaError e) {
