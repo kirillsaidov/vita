@@ -2,7 +2,14 @@
 #define VITA_CONV_H
 
 /** VITA_CONV MODULE
-    - 
+    - vt_conv_str_to_int64
+    - vt_conv_str_to_uint64
+    - vt_conv_str_to_double
+    - vt_conv_str_to_real
+    - vt_conv_int64_to_str
+    - vt_conv_uint64_to_str
+    - vt_conv_double_to_str
+    - vt_conv_real_to_str
 */
 
 #include "../core/core.h"
@@ -45,6 +52,5 @@ VT_PROTOTYPE_CONV_TO_STR(uint64_t, uint64);
 VT_PROTOTYPE_CONV_TO_STR(double, double);
 VT_PROTOTYPE_CONV_TO_STR(real, real);
 #undef VT_PROTOTYPE_CONV_TO_STR
-
 
 #endif // VITA_CONV_H

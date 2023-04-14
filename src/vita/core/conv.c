@@ -1,6 +1,6 @@
 #include "vita/core/conv.h"
 
-int64_t vt_conv_str_to_i64(const char *const z) {
+int64_t vt_conv_str_to_int64(const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
@@ -14,7 +14,7 @@ int64_t vt_conv_str_to_i64(const char *const z) {
     return strtoll(z, NULL, 10); // base = 10
 }
 
-uint64_t vt_conv_str_to_u64(const char *const z) {
+uint64_t vt_conv_str_to_uint64(const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
