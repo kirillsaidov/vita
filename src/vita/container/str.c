@@ -753,6 +753,48 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
     return p;
 }
 
+vt_str_t *vt_str_split_between(const char *const z, const char *const zl, const char *const zr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(zl != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(zr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // find zl - left substring
+    const char *const lsub = vt_str_find(z, zl);
+    if(lsub == NULL) {
+        return NULL;
+    }
+
+    // find r - right substring
+    const char *const rsub = vt_str_find(z, zr);
+    if(rsub == NULL) {
+        return NULL;
+    }
+
+    // check if lsub < rsub
+    if(lsub < rsub) {
+        ptrdiff_t sub_len = rsub - lsub - strlen(zl);
+        vt_str_t *st = vt_strn_empty(sub_len);
+        if(st == NULL) {
+            return NULL;
+        }
+
+        // append sub
+        if(vt_str_append_n(st, rsub - sub_len, sub_len) != vt_ve_operation_success) {
+            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_operation_failure));
+
+            vt_str_free(st);
+            st = NULL;
+
+            return NULL;
+        }
+
+        return st;
+    }
+
+    return NULL;
+}
+
 vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));

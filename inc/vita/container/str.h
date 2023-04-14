@@ -34,6 +34,7 @@
     - vt_str_find
     - vt_str_can_find
     - vt_str_split
+    - vt_str_split_between
     - vt_str_pop_get_first
     - vt_str_pop_get_last
     - vt_str_equals
@@ -298,6 +299,15 @@ extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
     @returns `vt_plist_t` of `vt_str_t`, `NULL` upon failure
 */
 extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep);
+
+/** Splits a string between two substrings
+    @param z raw C string
+    @param zl left substring
+    @param zr right substring
+
+    @returns `vt_str_t` upon success, `NULL` upon failure
+*/
+extern vt_str_t *vt_str_split_between(const char *const z, const char *const zl, const char *const zr);
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates

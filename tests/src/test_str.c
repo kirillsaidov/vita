@@ -190,6 +190,10 @@ int32_t main(void) {
     assert(vt_str_is_numeric(vt_cstr(s_strip), 256));
     vt_str_free(s_strip);
 
+    vt_str_t *sbetween = vt_str_split_between("https :1.8.8.8@ world", ":", "@");
+    assert(vt_str_equals(vt_cstr(sbetween), "1.8.8.8"));
+    vt_str_free(sbetween);
+
     VT_DEBUG_DEFAULT_QUIT();
     return 0;
 }
