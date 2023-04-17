@@ -177,6 +177,21 @@ bool vt_str_is_empty(const vt_str_t *const s) {
     return !vt_bct_len(s);
 }
 
+size_t vt_str_validate_len(vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+
+    // calculate valid length
+    const size_t s_len = strnlen(s->ptr, s->capacity);
+
+    // reset
+    ((char*)s->ptr)[s_len] = '\0';
+    s->len = s_len;
+
+    return s_len;
+}
+
 enum VitaError vt_str_shrink(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));

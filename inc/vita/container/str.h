@@ -143,6 +143,14 @@ extern size_t vt_str_has_space(const vt_str_t *const s);
 */
 extern bool vt_str_is_empty(const vt_str_t *const s);
 
+/** Validates string length
+    @param s vt_str_t instance
+    @returns valid string length
+
+    @note calculates the correct length, resets if neccessary
+*/
+extern size_t vt_str_validate_len(vt_str_t *const s);
+
 /** Shrinks vt_str_t capacity to its length
     @param s vt_str_t instance
     @returns enum VitaError
