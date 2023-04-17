@@ -523,7 +523,58 @@ vt_str_t *vt_path_get_this_exe_location(void) {
     return spath;
 }
 
+void vt_path_pop(char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
 
+    // calculate length
+    size_t zlen = strlen(z);
+    
+    // check if path ends with path separator
+    if(z[zlen-1] == PATH_SEPARATOR[0]) {
+        z[zlen-1] = '\0';
+        return;
+    }
+
+    // check if path contains path separator, if it does not, return
+    if(vt_str_find(z, PATH_SEPARATOR) == NULL) {
+        return;
+    }
+
+    // pop dir entry, step back the dir tree
+    while(zlen > 0) {
+        if(z[zlen-1] == PATH_SEPARATOR[0]) {
+            z[zlen-1] = '\0';
+            return;
+        }
+
+        zlen--;
+    }
+}
+
+void vt_path_validate(char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // calculate length
+    size_t zlen = strlen(z);
+
+    // define the path separator we need to fix
+    const char need_fix_path_sep = 
+    #if defined(_WIN32) || defined(_WIN64)
+        '/';
+    #else
+        '\\';
+    #endif
+
+    while(zlen > 0) {
+        if(z[zlen-1] == need_fix_path_sep) {
+            z[zlen-1] = PATH_SEPARATOR[0];
+        }
+
+        zlen--;
+    }
+}
 
 
 

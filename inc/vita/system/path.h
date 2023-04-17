@@ -20,6 +20,8 @@
     - vt_path_rename
     - vt_path_expand_tilda
     - vt_path_get_this_exe_location
+    - vt_path_pop
+    - vt_path_validate
 */
 
 #include "../core/core.h"
@@ -172,5 +174,15 @@ extern vt_str_t *vt_path_expand_tilda(const char *const z);
     @returns `vt_str_t*` upon success, `NULL` otherwise
 */
 extern vt_str_t *vt_path_get_this_exe_location(void);
+
+/** Pops off directory / steps back up the directory tree
+    @param z path
+*/
+extern void vt_path_pop(char *const z);
+
+/** Validates the path and attempts to fix it if neccessary
+    @param z path
+*/
+extern void vt_path_validate(char *const z);
 
 #endif // VITA_PATH_H
