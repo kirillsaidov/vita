@@ -60,16 +60,16 @@ real vt_conv_str_to_real(const char *const z) {
     void vt_conv_##t##_to_str(char *const buf, const size_t buf_len, const T val) {                 \
         VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments)); \
                                                                                                     \
-        const size_t required_len = snprintf(NULL, 0, fmt, val);                                    \
+        const size_t required_len = snprintf(NULL, 0, "%" fmt, val);                                    \
         VT_ENFORCE(buf_len >= required_len + 1, "%s\n", "Buffer size is too small!");               \
                                                                                                     \
-        const size_t ret_len = snprintf(buf, required_len, fmt, val);                               \
+        const size_t ret_len = snprintf(buf, required_len, "%" fmt, val);                               \
         VT_ENFORCE(ret_len == required_len, "%s\n", "Conversion failed!");                          \
     }
-VT_INSTANTIATE_CONV_TO_STR(int64_t, int64, "%ld")
-VT_INSTANTIATE_CONV_TO_STR(uint64_t, uint64, "%zu")
-VT_INSTANTIATE_CONV_TO_STR(double, double, "%lf")
-VT_INSTANTIATE_CONV_TO_STR(real, real, "%Lf")
+VT_INSTANTIATE_CONV_TO_STR(int64_t, int64, PRId64)
+VT_INSTANTIATE_CONV_TO_STR(uint64_t, uint64, PRIu64)
+VT_INSTANTIATE_CONV_TO_STR(double, double, "lf")
+VT_INSTANTIATE_CONV_TO_STR(real, real, "Lf")
 #undef VT_INSTANTIATE_CONV_TO_STR
 
 

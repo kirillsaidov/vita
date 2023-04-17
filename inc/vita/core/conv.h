@@ -12,6 +12,7 @@
     - vt_conv_real_to_str
 */
 
+#include <inttypes.h>
 #include "../core/core.h"
 #include "../container/str.h"
 
