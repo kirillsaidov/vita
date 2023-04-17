@@ -15,6 +15,7 @@
     - vt_str_capacity
     - vt_str_has_space
     - vt_str_is_empty
+    - vt_str_validate_len
     - vt_str_shrink
     - vt_str_clear
     - vt_str_reserve
@@ -287,7 +288,7 @@ enum VitaError vt_str_strip_c(vt_str_t *const s, const char *const c);
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns pointer to the begining of a substring in a string
+    @returns pointer to the begining of a substring in a string, or `NULL` upon failure
 */
 extern const char *vt_str_find(const char *const z, const char *sub);
 
