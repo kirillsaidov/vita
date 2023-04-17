@@ -10,6 +10,7 @@ void free_str(void *ptr, size_t i);
 void test_path(void);
 void test_expand_tilda(void);
 void test_selfpath(void);
+void test_path_pop(void);
 
 int main(void) {
     VT_DEBUG_DEFAULT_INIT();
@@ -17,8 +18,9 @@ int main(void) {
 
     // tests
     test_path();    
-    // test_expand_tilda();
-    // test_selfpath();
+    test_expand_tilda();
+    test_selfpath();
+    test_path_pop();
 
     VT_DEBUG_DEFAULT_QUIT();
     return 0;
@@ -132,7 +134,7 @@ void test_expand_tilda(void) {
     vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
-            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "C:\\Users\\Kirill Saidov/hello"));
+            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
         #elif defined(__linux__)
             assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/home/kiril/hello"));
         #else
@@ -148,8 +150,52 @@ void test_expand_tilda(void) {
 void test_selfpath(void) {
     vt_str_t *selfpath = vt_path_get_this_exe_location();
     VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
+
+    #if defined(_WIN32) || defined(_WIN64)
+        assert(vt_str_equals(vt_cstr(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\bin\\test_path.exe"));
+    #elif defined(__linux__)
+        assert(vt_str_equals(vt_cstr(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
+    #else
+        // ...
+    #endif
+    
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_cstr(selfpath));
     vt_str_free(selfpath);
+}
+
+void test_path_pop(void) {
+    vt_str_t *path = vt_str("./hello/world/bin");
+
+    #if defined(_WIN32) || defined(_WIN64)
+        vt_path_validate((char *const)vt_cstr(path));
+        assert(vt_str_equals(vt_cstr(path), ".\\hello\\world\\bin"));
+
+        vt_path_pop((char *const)vt_cstr(path));
+        assert(vt_str_equals(vt_cstr(path), ".\\hello\\world"));
+        assert(vt_str_validate_len(path) == 13);
+
+        vt_path_pop((char *const)vt_cstr(path));
+        assert(vt_str_equals(vt_cstr(path), ".\\hello"));
+        assert(vt_str_validate_len(path) == 7);
+    #else
+        vt_path_pop((char *const)vt_cstr(path));
+        assert(vt_str_equals(vt_cstr(path), "./hello/world"));
+        assert(vt_str_validate_len(path) == 13);
+
+        vt_path_pop((char *const)vt_cstr(path));
+        assert(vt_str_equals(vt_cstr(path), "./hello"));
+        assert(vt_str_validate_len(path) == 7);
+    #endif
+
+    vt_path_pop((char *const)vt_cstr(path));
+    assert(vt_str_equals(vt_cstr(path), "."));
+    assert(vt_str_validate_len(path) == 1);
+
+    vt_path_pop((char *const)vt_cstr(path));
+    assert(vt_str_equals(vt_cstr(path), "."));
+    assert(vt_str_validate_len(path) == 1);
+
+    vt_str_free(path);
 }
 
 
