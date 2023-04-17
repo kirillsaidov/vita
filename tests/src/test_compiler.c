@@ -4,7 +4,14 @@
 
 int32_t main(void) {    
     const vt_version_t v = vt_compiler_get_version();
-    assert(vt_str_equals(v.str, "11.3.0"));
 
+    #if defined(_WIN32) || defined(_WIN64)
+        assert(vt_str_equals(v.str, "12.2.0"));
+    #elif defined(__linux__)
+        assert(vt_str_equals(v.str, "11.3.0"));
+    #else
+        //...
+    #endif
+    
     return 0;
 }

@@ -194,6 +194,18 @@ int32_t main(void) {
     assert(vt_str_equals(vt_cstr(sbetween), "1.8.8.8"));
     vt_str_free(sbetween);
 
+    vt_str_t *s_val_test = vt_str("123456789"); {
+        assert(vt_str_len(s_val_test) == 9);
+        assert(vt_str_capacity(s_val_test) == 9);
+
+        ((char*)s_val_test->ptr)[4] = '\0';
+        assert(vt_str_validate_len(s_val_test) == 4);
+
+        assert(vt_str_len(s_val_test) == 4);
+        assert(vt_str_capacity(s_val_test) == 9);
+
+    } vt_str_free(s_val_test);
+
     VT_DEBUG_DEFAULT_QUIT();
     return 0;
 }

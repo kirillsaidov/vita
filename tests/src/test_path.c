@@ -47,14 +47,14 @@ void test_path(void) {
         vt_str_free(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            assert(vt_str_equals(vt_cstr(cwd), "D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests"));
+            assert(vt_str_equals(vt_cstr(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
         } vt_str_free(cwd);
 
-        assert(vt_path_exists("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests"));
-        assert(vt_path_is_dir("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src"));
-        assert(vt_path_is_file("D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src\\test_path.c"));
+        assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
+        assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src"));
+        assert(vt_path_is_file("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src\\test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "D:\\myfiles\\media\\devrepos\\gitlab.kirill.saidov\\vita\\tests\\src", true); {
+        vt_plist_t *pdir = vt_path_listdir(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
