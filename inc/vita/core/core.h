@@ -78,7 +78,7 @@ enum VitaDataType {
 
     // vita
     vt_dt_str,      // vt_str_t
-    vt_dt_vec,      // vec_t
+    vt_dt_vec,      // vt_vec_t
     vt_dt_plist,    // vt_plist_t
 
     vt_dt_unknown,  // unknown data type

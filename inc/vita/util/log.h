@@ -39,7 +39,7 @@ enum VitaLogLevel {
     vt_ll_debug,   // write to file/stderr, move on
     vt_ll_error,   // write to file/stderr, move on
     vt_ll_fatal,   // write to file/stderr, exit program
-    vt_ll_assert,  // write to file/stderr upon expression being evaluated to false
+    vt_ll_assert,  // write to file/stderr if assertion fails, move on
     vt_ll_count    // number of elements
 };
 
