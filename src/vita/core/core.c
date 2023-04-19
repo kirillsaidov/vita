@@ -10,12 +10,7 @@ static const char *const vita_error_str[] = {
 /* ------------- BASE CONTAINER TYPE ------------- */
 
 struct VitaBaseContainerType *vt_bct_new(void) {
-    struct VitaBaseContainerType *bct = calloc(1, sizeof(struct VitaBaseContainerType));
-    if(bct == NULL) {
-        return NULL;
-    }
-
-    return bct;
+    return (struct VitaBaseContainerType*)calloc(1, sizeof(struct VitaBaseContainerType));
 }
 
 void vt_bct_free(struct VitaBaseContainerType *bct) {
