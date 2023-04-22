@@ -36,7 +36,7 @@
 enum VitaLogLevel {
     vt_ll_info,    // write to file/stderr, move on
     vt_ll_warn,    // write to file/stderr, move on
-    vt_ll_debug,   // write to file/stderr, move on
+    vt_ll_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
     vt_ll_error,   // write to file/stderr, move on
     vt_ll_fatal,   // write to file/stderr, exit program
     vt_ll_assert,  // write to file/stderr if assertion fails, move on
@@ -44,17 +44,27 @@ enum VitaLogLevel {
 };
 
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
+
 #define VT_LOG_INFO(...) vt_log(NULL, vt_ll_info, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOG_WARN(...) vt_log(NULL, vt_ll_warn, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
-#define VT_LOG_DEBUG(...) vt_log(NULL, vt_ll_debug, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
+
+#if !defined(NDEBUG)
+    #define VT_LOG_DEBUG(...) vt_log(NULL, vt_ll_debug, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
+#endif
+
 #define VT_LOG_ERROR(...) vt_log(NULL, vt_ll_error, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOG_FATAL(...) vt_log(NULL, vt_ll_fatal, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOG_ASSERT(expr, ...) vt_log(NULL, vt_ll_assert, expr, VT_STRING_OF(expr), __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 
 /* ------------- CUSTOM FILE LOGGER BASED ON LOG LEVEL ------------- */
+
 #define VT_LOGF_INFO(zfilename, ...) vt_log(zfilename, vt_ll_info, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOGF_WARN(zfilename, ...) vt_log(zfilename, vt_ll_warn, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
-#define VT_LOGF_DEBUG(zfilename, ...) vt_log(zfilename, vt_ll_debug, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
+
+#if !defined(NDEBUG)
+    #define VT_LOGF_DEBUG(zfilename, ...) vt_log(zfilename, vt_ll_debug, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
+#endif
+
 #define VT_LOGF_ERROR(zfilename, ...) vt_log(zfilename, vt_ll_error, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOGF_FATAL(zfilename, ...) vt_log(zfilename, vt_ll_fatal, false, NULL, __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
 #define VT_LOGF_ASSERT(zfilename, expr, ...) vt_log(zfilename, vt_ll_assert, expr, VT_STRING_OF(expr), __SOURCE_FILENAME__, __LINE__, __VA_ARGS__)
