@@ -65,7 +65,7 @@ VT_LOGF_ASSERT(logger_filename, val == 2, "ditto");
 ### Custom logger
 ```c
 // customize
-vt_log(
+void vt_log(
     const char *const zfilename, 
     enum VitaLogLevel vt_log_level, 
     const bool expr, 
