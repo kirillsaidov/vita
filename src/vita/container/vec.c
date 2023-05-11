@@ -60,8 +60,8 @@ void vt_vec_dtor(vt_vec_t *const v) {
     // free vt_vec_t contents
     VT_DEBUG_FREE(v->ptr);
 
-    // default-init
-    *v = (vt_vec_t) {0};
+    // reset to zero
+    memset(v, 0, sizeof(vt_vec_t));
 }
 
 void vt_vec_free(vt_vec_t *v) {

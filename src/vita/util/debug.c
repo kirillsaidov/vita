@@ -134,8 +134,8 @@ void vt_debug_handler_destroy(vt_debug_handler_t *mh) {
     free(mh->cache);
     mh->cache = NULL;
 
-    // reset mh to zero
-    *mh = (vt_debug_handler_t) {0};
+    // reset to zero
+    memset(mh, 0, sizeof(vt_debug_handler_t));
 
     // free mh
     free(mh);

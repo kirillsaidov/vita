@@ -8,7 +8,7 @@ static const char *const vt_log_level_strings[] = {
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
 
 // log to file
-static char vt_log_filenames[vt_ll_count][PATH_MAX] = {0}; 
+static char vt_log_filenames[vt_ll_count][PATH_MAX]; 
 
 void vt_log_get_level(enum VitaLogLevel vt_log_level, const char *const zfilename) {
     // check for invalid input

@@ -26,11 +26,12 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <limits.h>
 #include <time.h>
 
 // getting file name
 #if defined(__clang__)
-    #define __SOURCE_FILENAME__ __FILE_NAME__
+    #define __SOURCE_FILENAME__ __FILE__
 #elif defined(__GNUC__) || defined(__GNUG__)
     #define __SOURCE_FILENAME__ __BASE_FILE__
 #else

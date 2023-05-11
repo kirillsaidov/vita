@@ -496,6 +496,7 @@ vt_str_t *vt_path_expand_tilda(const char *const z) {
     return s_tilda;
 }
 
+// FIXME
 vt_str_t *vt_path_get_this_exe_location(void) {
     vt_str_t *spath = vt_strn_empty(PATH_MAX);
     if (spath == NULL) {
