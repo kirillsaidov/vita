@@ -49,10 +49,9 @@
 #define VT_REALLOC(ptr, bytes) vt_memory_realloc(ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
 #define VT_FREE(ptr) vt_memory_free(ptr)
 
-// useful macros
+// constants
 #define VT_DEFAULT_INIT_ELEMENTS 10
 #define VT_CONTAINER_GROWTH_RATE 2
-#define VT_TIME_BUFFER_SIZE 21
 
 // this is needed in order to properly expand macros if one macro is inserted into another
 #define VT_i_PCAT_NX(x, y) x ## y           // preprocessor concatenation
@@ -228,14 +227,6 @@ extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t
     @returns `true` upon success
 */
 extern bool vt_gswap(void* a, void* b, const size_t elsize);
-
-/** Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
-    @param timebuf to store timestamp data
-    @param len timebuf length
-
-    @note len must be >= 21 chars! Otherwise, it returns doing nothing.
-*/
-extern void vt_get_current_timestamp(char *timebuf, const size_t len);
 
 /** Returns a vita error string from vita error code
     @param e vita error code

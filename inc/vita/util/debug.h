@@ -42,6 +42,7 @@
 
 #include <math.h>
 #include "../core/core.h"
+#include "../datetime/time.h"
 
 // memory handler instance
 typedef struct VitaDebugMemoryHandler vt_debug_handler_t;
