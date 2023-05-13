@@ -2,7 +2,13 @@
 #define VITA_CORE_H
 
 /** VITA_CORE MODULE
+ * This module is a collection of all common definitions and code needed by the rest of the library.
+
  * Macros:
+    - VT_MALLOC
+    - VT_CALLOC
+    - VT_REALLOC
+    - VT_FREE
     - VT_PCAT
     - VT_STRING_OF
     - VT_AS
@@ -28,19 +34,20 @@
 #include <assert.h>
 #include <limits.h>
 #include <time.h>
+#include "memory.h"
 
 // getting file name
-#if defined(__clang__)
-    #define __SOURCE_FILENAME__ __FILE__
-#elif defined(__GNUC__) || defined(__GNUG__)
-    #define __SOURCE_FILENAME__ __BASE_FILE__
+#if defined(_WIN32) || defined(_WIN64)
+    #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #else
-    #if defined(_WIN32) || defined(_WIN64)
-        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
-    #else
-        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-    #endif
+    #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
+
+// memory management macros
+#define VT_MALLOC(bytes) vt_memory_malloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_CALLOC(bytes) vt_memory_calloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_REALLOC(ptr, bytes) vt_memory_realloc(ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_FREE(ptr) vt_memory_free(ptr)
 
 // useful macros
 #define VT_DEFAULT_INIT_ELEMENTS 10
