@@ -198,6 +198,18 @@ More over, the former allows for compound confiditons, where as the latter accep
 #endif
 ```
 
+## Error checking
+Remember to always use `assert` when checking for programmer errors. Otherwise, a control flow or user error should be handled accordingly with return codes (or a different method).
+
+```C
+void validate(const char *z) {
+    assert(z != NULL); // programmer is responsible for passing a valid string
+    
+    // now do your thing
+    // ...
+}
+```
+
 ---
 
 ### References
