@@ -99,7 +99,6 @@ void test_path(void) {
         vt_str_free(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            printf("----------:::::::: [%s]\n", vt_cstr(cwd));
             assert(vt_str_equals(vt_cstr(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_free(cwd);
 
@@ -157,7 +156,7 @@ void test_selfpath(void) {
     #elif defined(__linux__)
         assert(vt_str_equals(vt_cstr(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
     #else
-        assert(vt_str_equals(vt_cstr(selfpath), "/Users/kirillos/vita/tests/bin/test_path"));
+        assert(vt_str_equals(vt_cstr(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
     
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_cstr(selfpath));

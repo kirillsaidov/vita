@@ -507,9 +507,11 @@ vt_str_t *vt_path_get_this_exe_location(void) {
     // retrieve this exe path
     int64_t pathLen = 0;
     #if defined(_WIN32) || defined(_WIN64)
-        pathLen = GetModuleFileName(NULL, spath->ptr, PATH_MAX-1);
+        pathLen = GetModuleFileName(NULL, spath->ptr, PATH_MAX);
+    #elif defined(__APPLE__) || defined(__MACH__)
+        pathLen = proc_pidpath(getpid(), spath->ptr, PATH_MAX);
     #else
-        pathLen = readlink("/proc/self/exe", spath->ptr, PATH_MAX-1);
+        pathLen = readlink("/proc/self/exe", spath->ptr, PATH_MAX);
     #endif
 
     // check for errors
