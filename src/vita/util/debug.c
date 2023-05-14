@@ -29,8 +29,8 @@ static size_t vt_debug_handler_handler_realloc(vt_debug_handler_t *const mh, con
 void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const int32_t line, const char *const zfmt, ...) {
     if(!expr) {
         // get time
-        char tbuf[VT_TIME_BUFFER_SIZE] = {0};
-        vt_time_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+        char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+        vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
         va_list args; va_start(args, zfmt); 
@@ -61,8 +61,8 @@ void vt_debug_printf(const char *const zfmt, ...) {
     assert(zfmt != NULL);
 
     // get time
-    char tbuf[VT_TIME_BUFFER_SIZE] = {0};
-    vt_time_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+    char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+    vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
     
     // getting arguments
     va_list args; va_start(args, zfmt); 

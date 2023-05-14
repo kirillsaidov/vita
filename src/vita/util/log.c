@@ -37,8 +37,8 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
 
     if(!expr) {
         // get time
-        char tbuf[VT_TIME_BUFFER_SIZE] = {0};
-        vt_time_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+        char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+        vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
         const char *const logger_filename = (zfilename == NULL) ? vt_log_filenames[vt_log_level] : zfilename;
