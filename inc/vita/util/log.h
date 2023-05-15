@@ -27,6 +27,7 @@
 
 #include "../core/core.h"
 #include "../system/fileio.h"
+#include "../time/datetime.h"
 
 #if defined(_WIN32) || defined(_WIN64)
     #define strncpy(d, s, n) strncpy_s(d, n, s, n)

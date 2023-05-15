@@ -81,7 +81,7 @@ extern vt_str_t *vt_str_fmt(vt_str_t *s, const char *const fmt, ...);
     @param n number of elements
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note:
+    @note
         Its length is n, thus, appending to it, will add a string to the end (after n elements). 
         It won't start appending from the begining. Use `vt_str_set` for that. 
 */
@@ -91,7 +91,7 @@ extern vt_str_t *vt_strn(const size_t n);
     @param n number of elements
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note:
+    @note
         Its length is 0, capacity is n. Appending to it will start from the begining. 
         `vt_str_set` won't work this time, because not enough space (length 0).
 */

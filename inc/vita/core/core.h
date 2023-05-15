@@ -2,7 +2,13 @@
 #define VITA_CORE_H
 
 /** VITA_CORE MODULE
+ * This module is a collection of all common definitions and code needed by the rest of the library.
+
  * Macros:
+    - VT_MALLOC
+    - VT_CALLOC
+    - VT_REALLOC
+    - VT_FREE
     - VT_PCAT
     - VT_STRING_OF
     - VT_AS
@@ -26,32 +32,33 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <limits.h>
 #include <time.h>
+#include "memory.h"
 
 // getting file name
-#if defined(__clang__)
-    #define __SOURCE_FILENAME__ __FILE_NAME__
-#elif defined(__GNUC__) || defined(__GNUG__)
-    #define __SOURCE_FILENAME__ __BASE_FILE__
+#if defined(_WIN32) || defined(_WIN64)
+    #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #else
-    #if defined(_WIN32) || defined(_WIN64)
-        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
-    #else
-        #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-    #endif
+    #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #endif
 
-// useful macros
+// memory management macros
+#define VT_MALLOC(bytes) vt_memory_malloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_CALLOC(bytes) vt_memory_calloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_REALLOC(ptr, bytes) vt_memory_realloc(ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_FREE(ptr) vt_memory_free(ptr)
+
+// constants
 #define VT_DEFAULT_INIT_ELEMENTS 10
 #define VT_CONTAINER_GROWTH_RATE 2
-#define VT_TIME_BUFFER_SIZE 21
 
 // this is needed in order to properly expand macros if one macro is inserted into another
 #define VT_i_PCAT_NX(x, y) x ## y           // preprocessor concatenation
 #define VT_i_STR_EXPAND(x) #x               // expands macros to its value
 
 #define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
-#define VT_STRING_OF(x) VT_i_STR_EXPAND(x)   // converts to string
+#define VT_STRING_OF(x) VT_i_STR_EXPAND(x)  // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
 
 // data types for internal usage
@@ -220,14 +227,6 @@ extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t
     @returns `true` upon success
 */
 extern bool vt_gswap(void* a, void* b, const size_t elsize);
-
-/** Sets a timestamp "year-month-day hour-minute-seconds" to timebuf
-    @param timebuf to store timestamp data
-    @param len timebuf length
-
-    @note len must be >= 21 chars! Otherwise, it returns doing nothing.
-*/
-extern void vt_get_current_timestamp(char *timebuf, const size_t len);
 
 /** Returns a vita error string from vita error code
     @param e vita error code

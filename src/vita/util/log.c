@@ -8,7 +8,7 @@ static const char *const vt_log_level_strings[] = {
 /* ---------------- GLOBAL LOGGER BASED ON LOG LEVEL ---------------- */
 
 // log to file
-static char vt_log_filenames[vt_ll_count][PATH_MAX] = {0}; 
+static char vt_log_filenames[vt_ll_count][PATH_MAX]; 
 
 void vt_log_get_level(enum VitaLogLevel vt_log_level, const char *const zfilename) {
     // check for invalid input
@@ -37,8 +37,8 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
 
     if(!expr) {
         // get time
-        char tbuf[21] = {0};
-        vt_get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+        char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+        vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
         const char *const logger_filename = (zfilename == NULL) ? vt_log_filenames[vt_log_level] : zfilename;

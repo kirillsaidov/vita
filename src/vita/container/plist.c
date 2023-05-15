@@ -34,8 +34,8 @@ void vt_plist_dtor(vt_plist_t *p) {
     // free vt_plist_t contents
     VT_DEBUG_FREE(p->ptr2);
 
-    // default-init
-    *p = (vt_plist_t) {0};
+    // reset to zero
+    memset(p, 0, sizeof(vt_plist_t));
 }
 
 void vt_plist_free(vt_plist_t *p) {

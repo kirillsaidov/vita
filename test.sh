@@ -4,7 +4,7 @@ cd tests;
 rm -rf bin;
 
 # declare an array variable
-declare -a tests=(
+declare -a tests=( \
     "test_core" \
     "test_str" \
     "test_vec" \
@@ -18,6 +18,7 @@ declare -a tests=(
     "test_debug" \
     "test_version" \
     "test_compiler" \
+    "test_time" \
 )
 
 # colored output

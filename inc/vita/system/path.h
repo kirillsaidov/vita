@@ -46,6 +46,7 @@
     #include <unistd.h>
     #include <dirent.h>
     #include <libgen.h>
+    #include <libproc.h>
     #define PATH_SEPARATOR "/"
     #define DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif

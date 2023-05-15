@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 13
+#define FILES_IN_DIR 14
 
 // helper functions
 void free_str(void *ptr, size_t i);
@@ -94,19 +94,19 @@ void test_path(void) {
         // vt_path_mkdir("hello_test_dir"); // works
         // vt_path_mkdir_parents("/hello/world/of/my/"); // works
     #else
-        vt_str_t *s = vt_path_build(NULL, 4, "hello", "world", "media", "dev");
+        vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         assert(vt_str_equals(vt_cstr(s), "hello/world/media/dev/"));
         vt_str_free(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            assert(vt_str_equals(vt_cstr(cwd), "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
+            assert(vt_str_equals(vt_cstr(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_free(cwd);
 
-        assert(vt_path_exists("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
-        assert(vt_path_is_dir("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src"));
-        assert(vt_path_is_file("/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/test_path.c"));
+        assert(vt_path_exists("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_dir("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_file("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/KS/Desktop/myfiles/media/dev/repos/gitlab.kirill.saidov/vita/tests/src/", true); {
+        vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
@@ -138,7 +138,7 @@ void test_expand_tilda(void) {
         #elif defined(__linux__)
             assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/home/kiril/hello"));
         #else
-            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/Users/KS/hello"));
+            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/Users/kirillos/hello"));
         #endif
 
         assert(vt_str_equals(vt_cstr(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
@@ -156,7 +156,7 @@ void test_selfpath(void) {
     #elif defined(__linux__)
         assert(vt_str_equals(vt_cstr(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
     #else
-        // ...
+        assert(vt_str_equals(vt_cstr(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
     
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_cstr(selfpath));

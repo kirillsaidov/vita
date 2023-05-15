@@ -29,8 +29,8 @@ static size_t vt_debug_handler_handler_realloc(vt_debug_handler_t *const mh, con
 void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const int32_t line, const char *const zfmt, ...) {
     if(!expr) {
         // get time
-        char tbuf[21] = {0};
-        vt_get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+        char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+        vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
         
         // getting arguments
         va_list args; va_start(args, zfmt); 
@@ -61,8 +61,8 @@ void vt_debug_printf(const char *const zfmt, ...) {
     assert(zfmt != NULL);
 
     // get time
-    char tbuf[21] = {0};
-    vt_get_current_timestamp(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
+    char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
+    vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
     
     // getting arguments
     va_list args; va_start(args, zfmt); 
@@ -134,8 +134,8 @@ void vt_debug_handler_destroy(vt_debug_handler_t *mh) {
     free(mh->cache);
     mh->cache = NULL;
 
-    // reset mh to zero
-    *mh = (vt_debug_handler_t) {0};
+    // reset to zero
+    memset(mh, 0, sizeof(vt_debug_handler_t));
 
     // free mh
     free(mh);
