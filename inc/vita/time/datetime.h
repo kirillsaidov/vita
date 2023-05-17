@@ -45,7 +45,7 @@ extern struct VitaDateTime vt_datetime_get_now(void);
 */
 extern void vt_datetime_get_now_as_text(char *timebuf, const size_t len);
 
-/** Sets a textual representation of timestamp "year-month-day hour-minute-seconds" to timebuf
+/** Sets a prettyfied text representation of timestamp "year-month-day hour-minute-seconds" to timebuf
     @param timebuf to store timestamp data
     @param len timebuf length
 
@@ -74,9 +74,25 @@ extern struct VitaDateTime vt_datetime_create(
     const int16_t week_day, const int16_t year_day
 );
 
+/** Converts VitaDateTime to text "yyyy-mm-dd hour-minute-seconds" and saves to timebuf
+    @param timebuf to store the data
+    @param len timebuf length
+
+    @note len must be at least VT_DATETIME_BUFFER_SIZE!
+*/
+extern void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, const size_t len);
+
+/** Converts VitaDateTime to prettyfied text format "year-month-day hour-minute-seconds" to timebuf
+    @param timebuf to store timestamp data
+    @param len timebuf length
+
+    @note len must be at least VT_DATETIME_BUFFER_SIZE!
+*/
+extern void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len);
+
 /** Calculates year day from a date
     @param vdt VitaDateTime struct
-    @returns day of year
+    @returns day of year [1; 365/366]
 
     @note returns -1 upon failure (invalid datetime format)
 */
@@ -84,7 +100,7 @@ extern int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt);
 
 /** Calculates week day from a date
     @param vdt VitaDateTime struct
-    @returns day of week
+    @returns day of week [1; 7]
 
     @note returns -1 upon failure (invalid datetime format)
 */

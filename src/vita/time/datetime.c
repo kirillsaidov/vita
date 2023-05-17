@@ -73,6 +73,26 @@ struct VitaDateTime vt_datetime_create(
     return vdt;
 }
 
+void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // get time
+    const struct tm stm = vt_datetime_vdt_to_tm(vdt);
+    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", &stm)] = '\0';
+}
+
+void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // get time
+    const struct tm stm = vt_datetime_vdt_to_tm(vdt);
+    asctime_r(&stm, timebuf);
+}
+
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
     struct tm stm = vt_datetime_vdt_to_tm(vdt);
     time_t ret = mktime(&stm);
@@ -81,7 +101,7 @@ int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
         return -1;
     }
 
-    return stm.tm_yday;
+    return stm.tm_yday + 1;
 }
 
 int16_t vt_datetime_find_week_day(const struct VitaDateTime vdt) {
@@ -92,7 +112,7 @@ int16_t vt_datetime_find_week_day(const struct VitaDateTime vdt) {
         return -1;
     }
 
-    return stm.tm_wday;
+    return stm.tm_wday == 0 ? 7 : stm.tm_wday;
 }
 
 int16_t vt_datetime_find_days_in_month(const struct VitaDateTime vdt) {
@@ -148,7 +168,7 @@ static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm) {
         .hour = stm.tm_hour,
         .minute = stm.tm_min,
         .second = stm.tm_sec,
-        .week_day = stm.tm_wday + 1,
+        .week_day = (stm.tm_wday == 0) ? 7 : stm.tm_wday,
         .year_day = stm.tm_yday + 1
     };
 }
@@ -161,7 +181,7 @@ static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
         .tm_hour = vdt.hour, 
         .tm_min = vdt.minute,
         .tm_sec = vdt.second,
-        .tm_wday = vdt.week_day - 1,
+        .tm_wday = (vdt.week_day == 7) ? 0 : vdt.week_day,
         .tm_yday = vdt.year_day - 1,
         .tm_isdst = -1
     };
