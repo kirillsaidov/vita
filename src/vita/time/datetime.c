@@ -1,16 +1,9 @@
 #include "vita/time/datetime.h"
 
-/* Converts from `tm` to `VitaDateTime` datetime format
-    @param stm tm struct
-    @returns struct VitaDateTime
-*/
 static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm);
-
-/* Converts from `VitaDateTime` to `tm` datetime format
-    @param vdt VitaDateTime struct
-    @returns struct tm
-*/
 static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt);
+static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf, const size_t len, const char *fmt);
+static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const char *fmt);
 
 struct VitaDateTime vt_datetime_get_now(void) {
     const time_t t = time(NULL);
@@ -75,10 +68,21 @@ void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, const siz
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
     VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y-%m-%d %H:%M:%S");
+}
 
-    // get time
-    const struct tm stm = vt_datetime_vdt_to_tm(vdt);
-    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", &stm)] = '\0';
+void vt_datetime_to_text_iso(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y%m%dT%H%M%S");
+}
+
+void vt_datetime_to_text_iso_ext(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y-%m-%dT%H:%M:%S");
 }
 
 void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
@@ -89,39 +93,27 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
     asctime_r(&stm, timebuf);
+
+    // remove '\n' that's appended at the end
+    timebuf[VT_DATETIME_BUFFER_SIZE-2] = '\0'; 
 }
 
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-
-    // convert to tm
-    struct tm stm = {0};
-    strptime(timebuf, "%Y-%m-%d %H:%M:%S", &stm);
-
-    return vt_datetime_tm_to_vdt(stm);
+    return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%d %H:%M:%S");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-
-    // convert to tm
-    struct tm stm = {0};
-    strptime(timebuf, "%Y%m%dT%H%M%S", &stm);
-
-    return vt_datetime_tm_to_vdt(stm);
+    return vt_datetime_from_text_fmt(timebuf, "%Y%m%dT%H%M%S");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-
-    // convert to tm
-    struct tm stm = {0};
-    strptime(timebuf, "%Y-%m-%dT%H:%M:%S", &stm);
-
-    return vt_datetime_tm_to_vdt(stm);
+    return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%dT%H:%M:%S");
 }
 
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
@@ -179,6 +171,10 @@ bool vt_datetime_is_leap_year(const struct VitaDateTime vdt) {
 
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
 
+/** Converts from `tm` to `VitaDateTime` datetime format
+    @param stm tm struct
+    @returns struct VitaDateTime
+*/
 static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm) {
     /** struct tm variables range:
         year        years passed since VT_DATETIME_MIN_YEAR_RANGE | + VT_DATETIME_MIN_YEAR_RANGE = YYYY
@@ -204,6 +200,10 @@ static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm) {
     };
 }
 
+/** Converts from `VitaDateTime` to `tm` datetime format
+    @param vdt VitaDateTime struct
+    @returns struct tm
+*/
 static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
     return (struct tm) {
         .tm_year = vdt.year - VT_DATETIME_MIN_YEAR_RANGE,
@@ -216,6 +216,43 @@ static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
         .tm_yday = vdt.year_day - 1,
         .tm_isdst = -1
     };
+}
+
+/** Converts VitaDateTime to text
+    @param vdt VitaDateTime struct
+    @param timebuf to store the data
+    @param len timebuf length
+    @param fmt timestamp format
+
+    @note len must be at least VT_DATETIME_BUFFER_SIZE!
+*/
+static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf, const size_t len, const char *fmt) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // get time
+    const struct tm stm = vt_datetime_vdt_to_tm(vdt);
+    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, fmt, &stm)] = '\0';
+}
+
+/** Reads timestamp text
+    @param timebuf to store the data
+    @param fmt timestamp format
+
+    @returns struct VitaDateTime
+*/
+static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const char *fmt) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // convert to tm
+    struct tm stm = {0};
+    strptime(timebuf, fmt, &stm);
+
+    return vt_datetime_tm_to_vdt(stm);
 }
 
 

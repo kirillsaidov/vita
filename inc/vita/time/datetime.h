@@ -4,7 +4,21 @@
 /** VITA_DATETIME MODULE 
  * This is a datetime handling module. By defaut it will always return the VitaDateTime struct.
  * If a function has `text` in its name, then it returns data in textual format.
+    - vt_datetime_get_now
     - vt_datetime_get_now_as_text
+    - vt_datetime_get_now_as_text_pretty
+    - vt_datetime_create
+    - vt_datetime_to_text
+    - vt_datetime_to_text_iso
+    - vt_datetime_to_text_iso_ext
+    - vt_datetime_from_text
+    - vt_datetime_from_text_iso
+    - vt_datetime_from_text_iso_ext
+    - vt_datetime_find_year_day
+    - vt_datetime_find_week_day
+    - vt_datetime_find_days_in_month
+    - vt_datetime_find_days_in_year
+    - vt_datetime_is_leap_year
 */
 
 #include "../core/core.h"
@@ -74,13 +88,29 @@ extern struct VitaDateTime vt_datetime_create(
     const int16_t week_day, const int16_t year_day
 );
 
-/** Converts VitaDateTime to text "yyyy-mm-dd hour-minute-seconds" and saves to timebuf
+/** Converts VitaDateTime to simple text format "YYYY-MM-DD HH:MM:SS" and saves to timebuf
     @param timebuf to store the data
     @param len timebuf length
 
     @note len must be at least VT_DATETIME_BUFFER_SIZE!
 */
 extern void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, const size_t len);
+
+/** Converts VitaDateTime to ISO text format "YYYYMMDDTHHMMSS" and saves to timebuf
+    @param timebuf to store the data
+    @param len timebuf length
+
+    @note len must be at least VT_DATETIME_BUFFER_SIZE!
+*/
+extern void vt_datetime_to_text_iso(const struct VitaDateTime vdt, char *timebuf, const size_t len);
+
+/** Converts VitaDateTime to ISO Ext text format "YYYY-MM-DDTHH:MM:SS" and saves to timebuf
+    @param timebuf to store the data
+    @param len timebuf length
+
+    @note len must be at least VT_DATETIME_BUFFER_SIZE!
+*/
+extern void vt_datetime_to_text_iso_ext(const struct VitaDateTime vdt, char *timebuf, const size_t len);
 
 /** Converts VitaDateTime to prettyfied text format "year-month-day hour-minute-seconds" to timebuf
     @param timebuf to store timestamp data
@@ -90,7 +120,7 @@ extern void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, co
 */
 extern void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len);
 
-/** Read simple timestamp format "YYYY-Mon-DD HH:MM:SS" to VitaDateTime structure
+/** Read simple timestamp format "YYYY-MM-DD HH:MM:SS" to VitaDateTime structure
     @param timebuf timestamp
     @returns struct VitaDateTime
 */
