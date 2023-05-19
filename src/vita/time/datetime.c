@@ -54,10 +54,8 @@ struct VitaDateTime vt_datetime_create(
         .hour = hour < 0 ? 0 : (hour > 23 ? 23 : hour),
         .minute = minute < 0 ? 0 : (minute > 59 ? 59 : minute),
         .second = second < 0 ? 0 : (second > 60 ? 60 : second),
-        .week_day = week_day < 1 ? 1 : (week_day > 7 ? 7 : week_day),
-        .year_day = year_day < 1 ? 1 : (year_day > 366 ? vt_datetime_find_days_in_year(
-            (struct VitaDateTime) {.year = year}
-        ) : year_day)
+        .week_day = (week_day < 1 || week_day > 7) ? -1 : week_day,
+        .year_day = (year_day < 1 || year_day > 366) ? -1 : year_day
     };
 
     // calculate wday
@@ -91,6 +89,39 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
     asctime_r(&stm, timebuf);
+}
+
+struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // convert to tm
+    struct tm stm = {0};
+    strptime(timebuf, "%Y-%m-%d %H:%M:%S", &stm);
+
+    return vt_datetime_tm_to_vdt(stm);
+}
+
+struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // convert to tm
+    struct tm stm = {0};
+    strptime(timebuf, "%Y%m%dT%H%M%S", &stm);
+
+    return vt_datetime_tm_to_vdt(stm);
+}
+
+struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+
+    // convert to tm
+    struct tm stm = {0};
+    strptime(timebuf, "%Y-%m-%dT%H:%M:%S", &stm);
+
+    return vt_datetime_tm_to_vdt(stm);
 }
 
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {

@@ -90,6 +90,25 @@ extern void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, co
 */
 extern void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len);
 
+/** Read simple timestamp format "YYYY-Mon-DD HH:MM:SS" to VitaDateTime structure
+    @param timebuf timestamp
+    @returns struct VitaDateTime
+*/
+extern struct VitaDateTime vt_datetime_from_text(const char *timebuf);
+
+/** Read ISO timestamp format "YYYYMMDDTHHMMSS" to VitaDateTime structure
+    @param timebuf timestamp
+    @returns struct VitaDateTime
+*/
+extern struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf);
+
+/** Read ISO Ext timestamp format "YYYY-MM-DDTHH:MM:SS" to VitaDateTime structure
+    @param timebuf timestamp
+    @returns struct VitaDateTime
+*/
+extern struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf);
+
+
 /** Calculates year day from a date
     @param vdt VitaDateTime struct
     @returns day of year [1; 365/366]
