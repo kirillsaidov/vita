@@ -36,3 +36,22 @@ VT_INSTANTIATE_CMP_MAX(double, d)
 VT_INSTANTIATE_CMP_MAX(real, r)
 #undef VT_INSTANTIATE_CMP_MAX
 
+/// instantiate vt_cmp_min functions
+#define VT_INSTANTIATE_CMP_CLAMP(T, t)                   \
+    T vt_cmp_clamp##t(const T x, const T l, const T h) { \
+        return vt_cmp_max##t(l, vt_cmp_min##t(x, h));    \
+    }
+VT_INSTANTIATE_CMP_CLAMP(int8_t, i8)
+VT_INSTANTIATE_CMP_CLAMP(uint8_t, u8)
+VT_INSTANTIATE_CMP_CLAMP(int16_t, i16)
+VT_INSTANTIATE_CMP_CLAMP(uint16_t, u16)
+VT_INSTANTIATE_CMP_CLAMP(int32_t, i32)
+VT_INSTANTIATE_CMP_CLAMP(uint32_t, u32)
+VT_INSTANTIATE_CMP_CLAMP(int64_t, i64)
+VT_INSTANTIATE_CMP_CLAMP(uint64_t, u64)
+VT_INSTANTIATE_CMP_CLAMP(float, f)
+VT_INSTANTIATE_CMP_CLAMP(double, d)
+VT_INSTANTIATE_CMP_CLAMP(real, r)
+#undef VT_INSTANTIATE_CMP_CLAMP
+
+
