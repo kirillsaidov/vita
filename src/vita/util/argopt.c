@@ -98,8 +98,8 @@ void vt_argopt_print_help(const char *header, const char *footer, const size_t o
     int32_t olPadding = 6; // strlen("--help")
     int32_t osPadding = 2; // strlen("-h")
     for(size_t i = 0; i < optc; i++) {
-        olPadding = VT_CMP_MAX((int32_t)strlen(optv[i].optionLong), olPadding);
-        osPadding = VT_CMP_MAX((int32_t)strlen(optv[i].optionShort), osPadding);
+        olPadding = vt_cmp_maxi32((int32_t)strlen(optv[i].optionLong), olPadding);
+        osPadding = vt_cmp_maxi32((int32_t)strlen(optv[i].optionShort), osPadding);
     }
 
     // print header
@@ -146,41 +146,41 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
     switch(opt->optionType) {
         // int
         case vt_dt_int8:
-            *(int8_t*)(opt->optionValue) = (int8_t)vt_conv_str_to_int64(value);
+            *(int8_t*)(opt->optionValue) = vt_conv_str_to_i8(value);
             break;
         case vt_dt_int16:
-            *(int16_t*)(opt->optionValue) = (int16_t)vt_conv_str_to_int64(value);
+            *(int16_t*)(opt->optionValue) = vt_conv_str_to_i16(value);
             break;
         case vt_dt_int32:
-            *(int32_t*)(opt->optionValue) = (int32_t)vt_conv_str_to_int64(value);
+            *(int32_t*)(opt->optionValue) = vt_conv_str_to_i32(value);
             break;
         case vt_dt_int64:
-            *(int64_t*)(opt->optionValue) = vt_conv_str_to_int64(value);
+            *(int64_t*)(opt->optionValue) = vt_conv_str_to_i64(value);
             break;
         
         // uint
         case vt_dt_uint8:
-            *(uint8_t*)(opt->optionValue) = (uint8_t)vt_conv_str_to_uint64(value);
+            *(uint8_t*)(opt->optionValue) = vt_conv_str_to_u8(value);
             break;
         case vt_dt_uint16:
-            *(uint16_t*)(opt->optionValue) = (uint16_t)vt_conv_str_to_uint64(value);
+            *(uint16_t*)(opt->optionValue) = vt_conv_str_to_u16(value);
             break;
         case vt_dt_uint32:
-            *(uint32_t*)(opt->optionValue) = (uint32_t)vt_conv_str_to_uint64(value);
+            *(uint32_t*)(opt->optionValue) = vt_conv_str_to_u32(value);
             break;
         case vt_dt_uint64:
-            *(uint64_t*)(opt->optionValue) = vt_conv_str_to_uint64(value);
+            *(uint64_t*)(opt->optionValue) = vt_conv_str_to_u64(value);
             break;
         
         // floating point variables
         case vt_dt_float:
-            *(float*)(opt->optionValue) = (float)vt_conv_str_to_double(value);
+            *(float*)(opt->optionValue) = (float)vt_conv_str_to_f(value);
             break;
         case vt_dt_double:
-            *(double*)(opt->optionValue) = vt_conv_str_to_double(value);
+            *(double*)(opt->optionValue) = vt_conv_str_to_d(value);
             break;
         case vt_dt_real:
-            *(real*)(opt->optionValue) = vt_conv_str_to_real(value);
+            *(real*)(opt->optionValue) = vt_conv_str_to_r(value);
             break;
         
         // bool, char, vt_str, vt_cstr
