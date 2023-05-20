@@ -33,7 +33,7 @@ int32_t main(void) {
     memset(timebuf, '\0', VT_DATETIME_BUFFER_SIZE);
 
     vt_datetime_to_text_pretty(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
-    VT_DEBUG_PRINTF("<%s>\n", timebuf);
+    VT_DEBUG_PRINTF("%s\n", timebuf);
     assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
 
     // check week day

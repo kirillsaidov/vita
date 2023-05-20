@@ -7,8 +7,8 @@ static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const 
 
 struct VitaDateTime vt_datetime_get_now(void) {
     const time_t t = time(NULL);
-    const struct tm *stm = localtime(&t);
-    return vt_datetime_tm_to_vdt(*stm);
+    const struct tm stm = *localtime(&t);
+    return vt_datetime_tm_to_vdt(stm);
 }
 
 void vt_datetime_get_now_as_text(char *timebuf, const size_t len) {
@@ -18,8 +18,8 @@ void vt_datetime_get_now_as_text(char *timebuf, const size_t len) {
 
     // get time
     const time_t t = time(NULL);
-    const struct tm *stm = localtime(&t);
-    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", stm)] = '\0';
+    const struct tm stm = *localtime(&t);
+    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", &stm)] = '\0';
 }
 
 void vt_datetime_get_now_as_text_pretty(char *timebuf, const size_t len) {
@@ -29,8 +29,9 @@ void vt_datetime_get_now_as_text_pretty(char *timebuf, const size_t len) {
 
     // get time
     const time_t t = time(NULL);
-    const struct tm *stm = localtime(&t);
-    asctime_r(stm, timebuf);
+    const struct tm stm = *localtime(&t);
+    const struct VitaDateTime vdt = vt_datetime_tm_to_vdt(stm);
+    vt_datetime_to_text_pretty(vdt, timebuf, len);
 }
 
 struct VitaDateTime vt_datetime_create(
@@ -95,7 +96,11 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
     asctime_r(&stm, timebuf);
 
     // remove '\n' that's appended at the end
-    timebuf[VT_DATETIME_BUFFER_SIZE-2] = '\0'; 
+    if(timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
+        timebuf[VT_DATETIME_BUFFER_SIZE-1] = '\0';
+    } else {
+        timebuf[VT_DATETIME_BUFFER_SIZE-2] = '\0'; 
+    }
 }
 
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
