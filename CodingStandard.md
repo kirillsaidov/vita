@@ -1,6 +1,12 @@
 # C coding standard (subjective)
 This is a list of guidelines that I adhere to while developing Vita library.
 
+## A few notes for future revision
+* Don't use a MACRO if a function can be used instead
+* Avoid ambiguity
+
+---
+
 ## Naming
 ### Variables
 Use `camelCase` for variables. If needed, UPPER_CASE for const.
