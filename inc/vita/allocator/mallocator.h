@@ -7,7 +7,7 @@
 
 #include "../core/core.h"
 
-struct VitaAllocator {
+struct VitaBaseAllocatorType {
 
     // 
     void *(*alloc)(size_t);
