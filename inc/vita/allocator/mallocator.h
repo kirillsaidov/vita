@@ -2,6 +2,7 @@
 #define VITA_MALLOCATOR_H
 
 /** VITA_MALLOCATOR MODULE 
+    - vt_mallocator instance
     - vt_mallocator_alloc
     - vt_mallocator_relloc
     - vt_mallocator_free
