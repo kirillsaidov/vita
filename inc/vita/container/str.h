@@ -54,7 +54,7 @@
 #include "../container/plist.h"
 
 // see core/core.h for definition
-typedef struct VitaBaseContainerType vt_str_t;
+typedef struct VitaBaseArrayType vt_str_t;
 
 /** Creates a static string with length
     @param z raw C string

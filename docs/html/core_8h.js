@@ -1,6 +1,6 @@
 var core_8h =
 [
-    [ "VitaBaseContainerType", "struct_base_container_type.html", "struct_base_container_type" ],
+    [ "VitaBaseArrayType", "struct_base_container_type.html", "struct_base_container_type" ],
     [ "__SOURCE_FILENAME__", "core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313", null ],
     [ "AS", "core_8h.html#a77f85dcdce0a00e67901cfaf4da3fed4", null ],
     [ "VT_CONTAINER_GROWTH_RATE", "core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc", null ],

@@ -9,22 +9,22 @@ static const char *const vita_error_str[] = {
 
 /* ------------- BASE CONTAINER TYPE ------------- */
 
-struct VitaBaseContainerType *vt_bct_new(void) {
-    return (struct VitaBaseContainerType*)VT_CALLOC(sizeof(struct VitaBaseContainerType));
+struct VitaBaseArrayType *vt_bct_new(void) {
+    return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
 }
 
-void vt_bct_free(struct VitaBaseContainerType *bct) {
+void vt_bct_free(struct VitaBaseArrayType *bct) {
     // check for invalid input
     assert(bct != NULL);
 
-    // free the VitaBaseContainerType
+    // free the VitaBaseArrayType
     VT_FREE(bct);
 
     // reset to NULL
     bct = NULL;
 }
 
-void *vt_bct_head(const struct VitaBaseContainerType *const bct) {
+void *vt_bct_head(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -32,7 +32,7 @@ void *vt_bct_head(const struct VitaBaseContainerType *const bct) {
     return bct->ptr;
 }
 
-size_t vt_bct_len(const struct VitaBaseContainerType *const bct) {
+size_t vt_bct_len(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -40,7 +40,7 @@ size_t vt_bct_len(const struct VitaBaseContainerType *const bct) {
     return bct->len;
 }
 
-size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct) {
+size_t vt_bct_capacity(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -48,7 +48,7 @@ size_t vt_bct_capacity(const struct VitaBaseContainerType *const bct) {
     return bct->capacity;
 }
 
-size_t vt_bct_has_space(const struct VitaBaseContainerType *const bct) {
+size_t vt_bct_has_space(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -56,7 +56,7 @@ size_t vt_bct_has_space(const struct VitaBaseContainerType *const bct) {
     return bct->capacity - bct->len;
 }
 
-size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
+size_t vt_bct_elsize(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -64,7 +64,7 @@ size_t vt_bct_elsize(const struct VitaBaseContainerType *const bct) {
     return bct->elsize;
 }
 
-void *vt_bct_slide_front(struct VitaBaseContainerType *const bct) {
+void *vt_bct_slide_front(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -81,7 +81,7 @@ void *vt_bct_slide_front(struct VitaBaseContainerType *const bct) {
     return NULL;
 }
 
-void *vt_bct_slide_back(struct VitaBaseContainerType *const bct) {
+void *vt_bct_slide_back(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -98,7 +98,7 @@ void *vt_bct_slide_back(struct VitaBaseContainerType *const bct) {
     return NULL;
 }
 
-void vt_bct_slide_reset(struct VitaBaseContainerType *const bct) {
+void vt_bct_slide_reset(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);

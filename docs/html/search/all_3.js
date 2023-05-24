@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['capacity_0',['capacity',['../struct_base_container_type.html#ad721fc6ca6a3d6ba3bc506576622aab0',1,'VitaBaseContainerType']]],
+  ['capacity_0',['capacity',['../struct_base_container_type.html#ad721fc6ca6a3d6ba3bc506576622aab0',1,'VitaBaseArrayType']]],
   ['clamp_1',['CLAMP',['../comparison_8h.html#abcafdb4a998e1c8769328c1f7f570484',1,'comparison.h']]],
   ['cmp_5ftest_2',['cmp_test',['../comparison_8h.html#afcdde416feb9241b9415fc4bdb76d10f',1,'comparison.h']]],
-  ['cols_3',['cols',['../struct_base_container_type.html#a8bc05371b3a4013263f68932ba1b6452',1,'VitaBaseContainerType']]],
+  ['cols_3',['cols',['../struct_base_container_type.html#a8bc05371b3a4013263f68932ba1b6452',1,'VitaBaseArrayType']]],
   ['comparison_2eh_4',['comparison.h',['../comparison_8h.html',1,'']]],
   ['container_5fgrowth_5frate_5',['VT_CONTAINER_GROWTH_RATE',['../core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc',1,'core.h']]],
   ['conv_2eh_6',['conv.h',['../conv_8h.html',1,'']]],

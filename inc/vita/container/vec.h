@@ -40,7 +40,7 @@
 #include "../util/debug.h"
 
 // see core/core.h for definition
-typedef struct VitaBaseContainerType vt_vec_t;
+typedef struct VitaBaseArrayType vt_vec_t;
 
 /** Allocates memory for vt_vec_t
     @returns `vt_vec_t*` upon success, `NULL` otherwise

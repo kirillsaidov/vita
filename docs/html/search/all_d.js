@@ -45,6 +45,6 @@ var searchData=
   ['plist_5fset_42',['plist_set',['../plist_8h.html#a93c728684a186a0da28ad0fac8020a80',1,'plist.h']]],
   ['plist_5fshrink_43',['plist_shrink',['../plist_8h.html#a8830d4dc5ec396d1cc86c570653174af',1,'plist.h']]],
   ['plist_5ft_44',['vt_plist_t',['../plist_8h.html#af76f84f834935627a66489535a0ef6e8',1,'plist.h']]],
-  ['ptr_45',['ptr',['../struct_base_container_type.html#add9af9569af79ec26dd741fb226b38ba',1,'VitaBaseContainerType']]],
-  ['ptr2_46',['ptr2',['../struct_base_container_type.html#a114ed00d0c8fce60a8d04345d8539f54',1,'VitaBaseContainerType']]]
+  ['ptr_45',['ptr',['../struct_base_container_type.html#add9af9569af79ec26dd741fb226b38ba',1,'VitaBaseArrayType']]],
+  ['ptr2_46',['ptr2',['../struct_base_container_type.html#a114ed00d0c8fce60a8d04345d8539f54',1,'VitaBaseArrayType']]]
 ];

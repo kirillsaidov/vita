@@ -5,10 +5,14 @@
     - .
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+#include "../core/core.h"
 
-//
+struct VitaAllocator {
+
+    // 
+    void *(*alloc)(size_t);
+    void *(*realloc)(void*, size_t);
+    void  (*free)(void*);
+};
 
 #endif // VITA_MALLOCATOR_H

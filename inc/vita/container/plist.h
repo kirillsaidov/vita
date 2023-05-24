@@ -28,7 +28,7 @@
 #include "../util/debug.h"
 
 // new pointer list type
-typedef struct VitaBaseContainerType vt_plist_t;
+typedef struct VitaBaseArrayType vt_plist_t;
 
 /** Allocates memory for vt_plist_t
     @returns `vt_plist_t*` upon success, `NULL` upon failure
