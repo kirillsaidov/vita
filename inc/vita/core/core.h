@@ -19,6 +19,10 @@
     - vt_bct_capacity
     - vt_bct_has_space
     - vt_bct_elsize
+    - vt_malloc
+    - vt_calloc
+    - vt_realloc
+    - vt_free
     - vt_gswap
     - vt_get_current_timestamp
     - vt_get_vita_error_str
@@ -34,7 +38,6 @@
 #include <assert.h>
 #include <limits.h>
 #include <time.h>
-#include "../allocator/mallocator.h"
 
 // getting file name
 #if defined(_WIN32) || defined(_WIN64)
@@ -216,6 +219,58 @@ extern size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t
     @param ncols number of columns (horizontal width)
 */
 extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
+
+/* -------------- MEMORY MANAGEMENT -------------- */
+/**
+ * This module is meant as a safe replacement for stdc alloc functions that can never fail. 
+ * In theory, memory should never fail on your computer. And if it does fail, then there is
+ * probably an issue with your device. 
+*/
+
+/** Allocates memory
+    @param bytes amount to allocate
+    @param file `__SOURCE_FILENAME__`
+    @param func `__func__`
+    @param line `__LINE__`
+
+    @returns ptr to allocated memory
+
+    @note exits upon failure
+*/
+extern void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+
+/** Allocates memory and initiazes to zero
+    @param bytes amount to allocate
+    @param file `__SOURCE_FILENAME__`
+    @param func `__func__`
+    @param line `__LINE__`
+
+    @returns ptr to allocated memory
+
+    @note exits upon failure
+*/
+extern void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+
+/** Reallocates memory
+    @param ptr pointer to memory address
+    @param bytes amount to allocate
+    @param file `__SOURCE_FILENAME__`
+    @param func `__func__`
+    @param line `__LINE__`
+
+    @returns ptr to allocated memory
+
+    @note exits upon failure
+*/
+extern void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
+
+/** Frees memory
+    @param bytes amount to allocate
+    @returns ptr to allocated memory
+
+    @note returns upon ptr being NULL
+*/
+extern void vt_free(void *ptr);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
