@@ -1,14 +1,14 @@
-#ifndef VITA_MEMORY_H
-#define VITA_MEMORY_H
+#ifndef VITA_MALLOCATOR_H
+#define VITA_MALLOCATOR_H
 
 /** VITA_MEMORY MODULE 
  * This module is meant as a safe replacement for stdc alloc functions that can never fail. 
  * In theory, memory should never fail on your computer. And if it does fail, then there is
  * probably an issue with your device. 
-    - vt_memory_malloc
-    - vt_memory_calloc
-    - vt_memory_realloc
-    - vt_memory_free
+    - vt_malloc
+    - vt_calloc
+    - vt_realloc
+    - vt_free
 */
 
 #include <stdio.h>
@@ -25,7 +25,7 @@
 
     @note exits upon failure
 */
-extern void *vt_memory_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
 
 /** Allocates memory and initiazes to zero
     @param bytes amount to allocate
@@ -37,7 +37,7 @@ extern void *vt_memory_malloc(const size_t bytes, const char *const file, const 
 
     @note exits upon failure
 */
-extern void *vt_memory_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
 
 /** Reallocates memory
     @param ptr pointer to memory address
@@ -50,7 +50,7 @@ extern void *vt_memory_calloc(const size_t bytes, const char *const file, const 
 
     @note exits upon failure
 */
-extern void *vt_memory_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
 
 /** Frees memory
     @param bytes amount to allocate
@@ -58,6 +58,6 @@ extern void *vt_memory_realloc(void *ptr, const size_t bytes, const char *const 
 
     @note returns upon ptr being NULL
 */
-extern void vt_memory_free(void *ptr);
+extern void vt_free(void *ptr);
 
-#endif // VITA_MEMORY_H
+#endif // VITA_MALLOCATOR_H

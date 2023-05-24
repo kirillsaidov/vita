@@ -10,7 +10,7 @@ static const char *const vita_error_str[] = {
 /* ------------- BASE CONTAINER TYPE ------------- */
 
 struct VitaBaseContainerType *vt_bct_new(void) {
-    return (struct VitaBaseContainerType*)calloc(1, sizeof(struct VitaBaseContainerType));
+    return (struct VitaBaseContainerType*)VT_CALLOC(sizeof(struct VitaBaseContainerType));
 }
 
 void vt_bct_free(struct VitaBaseContainerType *bct) {
@@ -18,7 +18,7 @@ void vt_bct_free(struct VitaBaseContainerType *bct) {
     assert(bct != NULL);
 
     // free the VitaBaseContainerType
-    free(bct);
+    VT_FREE(bct);
 
     // reset to NULL
     bct = NULL;
@@ -124,7 +124,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
     assert(elsize != 0);
 
     // allocate a temporary variable
-    void* temp = calloc(1, elsize);
+    void* temp = VT_CALLOC(elsize);
     if(temp == NULL) {
         return false;
     }
@@ -135,7 +135,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
     memcpy(b, temp, elsize);    // copy temp(a) to b
 
     // free temporary variable
-    free(temp);
+    VT_FREE(temp);
 
     return true;
 }

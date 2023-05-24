@@ -1,6 +1,6 @@
-#include "vita/core/memory.h"
+#include "vita/allocator/mallocator.h"
 
-void *vt_memory_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
@@ -13,7 +13,7 @@ void *vt_memory_malloc(const size_t bytes, const char *const file, const char *c
     return ptr;
 }
 
-void *vt_memory_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
@@ -26,7 +26,7 @@ void *vt_memory_calloc(const size_t bytes, const char *const file, const char *c
     return ptr;
 }
 
-void *vt_memory_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
@@ -39,7 +39,7 @@ void *vt_memory_realloc(void *ptr, const size_t bytes, const char *const file, c
     return ptr_new;
 }
 
-void vt_memory_free(void *ptr) {
+void vt_free(void *ptr) {
     if(ptr == NULL) {
         return;
     }

@@ -34,7 +34,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <time.h>
-#include "memory.h"
+#include "../allocator/mallocator.h"
 
 // getting file name
 #if defined(_WIN32) || defined(_WIN64)
@@ -44,10 +44,10 @@
 #endif
 
 // memory management macros
-#define VT_MALLOC(bytes) vt_memory_malloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
-#define VT_CALLOC(bytes) vt_memory_calloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
-#define VT_REALLOC(ptr, bytes) vt_memory_realloc(ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
-#define VT_FREE(ptr) vt_memory_free(ptr)
+#define VT_MALLOC(bytes) vt_malloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_CALLOC(bytes) vt_calloc(bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_REALLOC(ptr, bytes) vt_realloc(ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_FREE(ptr) vt_free(ptr)
 
 // constants
 #define VT_DEFAULT_INIT_ELEMENTS 10
