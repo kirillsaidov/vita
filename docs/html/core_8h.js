@@ -3,15 +3,15 @@ var core_8h =
     [ "VitaBaseArrayType", "struct_base_container_type.html", "struct_base_container_type" ],
     [ "__SOURCE_FILENAME__", "core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313", null ],
     [ "AS", "core_8h.html#a77f85dcdce0a00e67901cfaf4da3fed4", null ],
-    [ "VT_CONTAINER_GROWTH_RATE", "core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc", null ],
-    [ "VT_DEFAULT_INIT_ELEMENTS", "core_8h.html#aa1174b92a5b1015951057004889cdd91", null ],
+    [ "VT_ARRAY_DEFAULT_GROWTH_RATE", "core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc", null ],
+    [ "VT_ARRAY_DEFAULT_INIT_ELEMENTS", "core_8h.html#aa1174b92a5b1015951057004889cdd91", null ],
     [ "i_GENERATE_VITA_ERRORS", "core_8h.html#abfa3092bc99f15e6dbe77f19defbc725", null ],
     [ "i_PCAT_NX", "core_8h.html#a82eb70e201a6742f6a46de9c085fdd18", null ],
     [ "i_STR_EXPAND", "core_8h.html#a3fe2eab3be86a11a4690c69dd98fe8e8", null ],
     [ "PCAT", "core_8h.html#a56b3d8356ce9431087fc24f59c59254c", null ],
     [ "STRINGOF", "core_8h.html#ac7f15aa0d7092f9d27ff3f0a5c90cbfd", null ],
     [ "X", "core_8h.html#add48b1ce38c3ada11068889d7fa0fad0", null ],
-    [ "VitaDataType", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6", [
+    [ "VitaTypeInfo", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6", [
       [ "dt_byte", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a047bd5818cde2a732dc989071b9eef3e", null ],
       [ "dt_ubyte", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a61efe44e31ada19a7be188ad2b45c86a", null ],
       [ "dt_short", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6ae1cf169dde15b881727bdb274a3858a8", null ],
@@ -38,11 +38,11 @@ var core_8h =
       [ "dt_count", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a90a26eb32dd5824a44f5b5c9d81e1866", null ]
     ] ],
     [ "VitaRemoveStrategy", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faa", [
-      [ "vt_rs_stable", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed", null ],
+      [ "vt_remove_stategy_stable", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed", null ],
       [ "rs_fast", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab2730ef3c355c101d3a74e8b372dac4c", null ],
       [ "rs_count", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab604f94da4c101dfa7ea25a7a59fcfcd", null ]
     ] ],
-    [ "VitaError", "core_8h.html#afc98bc24a89cab10e29fe33f07fc105b", [
+    [ "VitaStatus", "core_8h.html#afc98bc24a89cab10e29fe33f07fc105b", [
       [ "i_GENERATE_VITA_ERRORS", "core_8h.html#afc98bc24a89cab10e29fe33f07fc105ba82005e20a28829dbb17a7822db4c2ddf", null ]
     ] ],
     [ "bct_capacity", "core_8h.html#ac69442743ce11d0484e4ebd54c5e2d2c", null ],

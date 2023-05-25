@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['datatype_0',['VitaDataType',['../core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6',1,'core.h']]],
+  ['datatype_0',['VitaTypeInfo',['../core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6',1,'core.h']]],
   ['debug_2eh_1',['debug.h',['../debug_8h.html',1,'']]],
   ['debug_5fassert_2',['debug_assert',['../debug_8h.html#aabdd141ad460a64bea639e91c0c81b89',1,'debug.h']]],
   ['debug_5fassert_3',['DEBUG_ASSERT',['../debug_8h.html#a7828cd0c0196482516103f2170a4449c',1,'debug.h']]],
@@ -54,7 +54,7 @@ var searchData=
   ['debug_5frealloc_51',['DEBUG_REALLOC',['../debug_8h.html#a28155db231aa3a6c09fe5efacb0a71f3',1,'debug.h']]],
   ['debug_5frealloc_5fmh_52',['DEBUG_REALLOC_MH',['../debug_8h.html#afc445f3ed91d907f54d6c567383e5bd7',1,'debug.h']]],
   ['debug_5fredirect_5foutput_53',['debug_redirect_output',['../debug_8h.html#aa39e4b5e43de3a6c0c9af4103b472820',1,'debug.h']]],
-  ['default_5finit_5felements_54',['VT_DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
+  ['default_5finit_5felements_54',['VT_ARRAY_DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
   ['dir_5fpermissions_55',['DIR_PERMISSIONS',['../path_8h.html#ace53e1ffc36d796816f33e0fef80afc0',1,'path.h']]],
   ['dt_5fbool_56',['dt_bool',['../core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6add40c2b34fab5bc4427927eec9e5f77f',1,'core.h']]],
   ['dt_5fbyte_57',['dt_byte',['../core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a047bd5818cde2a732dc989071b9eef3e',1,'core.h']]],

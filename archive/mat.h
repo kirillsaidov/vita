@@ -48,9 +48,9 @@ extern mat_t *mat_new(void);
     @param cols number of cols
     @param elsize element size
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
+extern enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize);
 
 /** Duplicates and returns a new dynamic 2D array
     @param m mat_t instance
@@ -117,7 +117,7 @@ extern size_t mat_size(const mat_t *const m);
     @param m mat_t instance
     @returns `true` upon success
 */
-extern enum VitaError mat_clear(mat_t *const m);
+extern enum VitaStatus mat_clear(mat_t *const m);
 
 /** Resizes mat_t rows and cols
     @param m mat_t instance
@@ -126,7 +126,7 @@ extern enum VitaError mat_clear(mat_t *const m);
 
     @returns `true` upon success
 */
-extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols);
+extern enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols);
 
 /** Assigns a new value at an index
     @param m mat_t instance
@@ -136,17 +136,17 @@ extern enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t
 
     @returns `true` upon success
 */
-extern enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
-extern enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol);
+extern enum VitaStatus mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol);
 
 /** Returns value at index
     @param m mat_t instance
@@ -173,12 +173,12 @@ extern double mat_getd(const mat_t *const m, const size_t atRow, const size_t at
 */
 extern void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t));
 
-// extern enum VitaError mat_add(mat_t *const m1, const mat_t *const m2);
-// extern enum VitaError mat_mult(mat_t *const m1, const mat_t *const m2);
-// extern enum VitaError mat_scale(mat_t *const m, const double value, const int8_t axis);
-// extern enum VitaError mat_transpose(void);
-// extern enum VitaError mat_inverse(void);
-// extern enum VitaError mat_round(const mat_t *const m, const int8_t axis);
+// extern enum VitaStatus mat_add(mat_t *const m1, const mat_t *const m2);
+// extern enum VitaStatus mat_mult(mat_t *const m1, const mat_t *const m2);
+// extern enum VitaStatus mat_scale(mat_t *const m, const double value, const int8_t axis);
+// extern enum VitaStatus mat_transpose(void);
+// extern enum VitaStatus mat_inverse(void);
+// extern enum VitaStatus mat_round(const mat_t *const m, const int8_t axis);
 // extern vec_t *mat_elmax(const mat_t *const m, const int8_t axis);
 // extern vec_t *mat_elmin(const mat_t *const m, const int8_t axis);
 // extern double mat_sum(const mat_t *const m, const int8_t axis);

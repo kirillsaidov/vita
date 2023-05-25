@@ -154,135 +154,135 @@ extern size_t vt_str_validate_len(vt_str_t *const s);
 
 /** Shrinks vt_str_t capacity to its length
     @param s vt_str_t instance
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_shrink(vt_str_t *const s);
+extern enum VitaStatus vt_str_shrink(vt_str_t *const s);
 
 /** Clears the vt_str_t (sets length to 0)
     @param s vt_str_t instance
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_clear(vt_str_t *const s);
+extern enum VitaStatus vt_str_clear(vt_str_t *const s);
 
 /** Reserves memory for vt_str_t
     @param s vt_str_t instance
     @param n how many elements to reserve
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_reserve(vt_str_t *const s, const size_t n);
+extern enum VitaStatus vt_str_reserve(vt_str_t *const s, const size_t n);
 
 /** Assigns a new raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_set(vt_str_t *const s, const char *z);
+extern enum VitaStatus vt_str_set(vt_str_t *const s, const char *z);
 
 /** Assigns n characters of raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
     @param n number of characters
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_set_n(vt_str_t *const s, const char *z, const size_t n);
+extern enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n);
 
 /** Appends a raw C string at the end of vt_str_t
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_append(vt_str_t *const s, const char *z);
+extern enum VitaStatus vt_str_append(vt_str_t *const s, const char *z);
 
 /** Appends a formatted raw C string at the end of vt_str_t
     @param s vt_str_t instance
     @param fmt format
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_appendf(vt_str_t *const s, const char *const fmt, ...);
+extern enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...);
 
 /** Appends n characters of raw C string at the end of vt_str_t
     @param s vt_str_t instance
     @param z raw C string
     @param n number of characters
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_append_n(vt_str_t *const s, const char *z, const size_t n);
+extern enum VitaStatus vt_str_append_n(vt_str_t *const s, const char *z, const size_t n);
 
 /** Inserts a raw C string into vt_str_t starting at the specified index
     @param s vt_str_t instance
     @param z raw C string
     @param at start at index (including `at`)
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
+extern enum VitaStatus vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
 
 /** Removes n chars from vt_str_t, starting from the specified index
     @param s vt_str_t instance
     @param from start from index
     @param n number of elements to remove after `from`
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_remove(vt_str_t *const s, const size_t from, size_t n);
+extern enum VitaStatus vt_str_remove(vt_str_t *const s, const size_t from, size_t n);
 
 /** Removes the first encountered substring from vt_str_t
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_remove_first(vt_str_t *const s, const char *z);
+extern enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z);
 
 /** Removes the last encountered substring from vt_str_t
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_remove_last(vt_str_t *s, const char *const z);
+extern enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z);
 
 /** Removes all instances of encountered substring from vt_str_t
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_remove_all(vt_str_t *const s, const char *z);
+extern enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z);
 
 /** Removes all encountered characters specified by the user from vt_str_t
     @param s vt_str_t instance
     @param c characters to remove one after another: "\\n ," => remove new line, whitespace, comma
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_remove_c(vt_str_t *const s, const char *const c);
+extern enum VitaStatus vt_str_remove_c(vt_str_t *const s, const char *const c);
 
 /** Strips leading and tailing whitespace and control symbols
     @param s vt_str_t instance
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_str_strip(vt_str_t *const s);
+extern enum VitaStatus vt_str_strip(vt_str_t *const s);
 
 /** Strips leading and tailing punctuation marks + whitespace and control symbols
     @param s vt_str_t instance
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-enum VitaError vt_str_strip_punct(vt_str_t *const s);
+enum VitaStatus vt_str_strip_punct(vt_str_t *const s);
 
 /** Strips leading and tailing characters specified by the user
     @param s vt_str_t instance
     @param c characters to strip one after another: "\n ," => strip new line, whitespace, comma
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-enum VitaError vt_str_strip_c(vt_str_t *const s, const char *const c);
+enum VitaStatus vt_str_strip_c(vt_str_t *const s, const char *const c);
 
 /** Find a substring
     @param s vt_str_t instance

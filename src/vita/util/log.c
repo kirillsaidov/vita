@@ -12,7 +12,7 @@ static char vt_log_filenames[vt_ll_count][PATH_MAX];
 
 void vt_log_get_level(enum VitaLogLevel vt_log_level, const char *const zfilename) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     
     // update log filenames
     strncpy(vt_log_filenames[vt_log_level], zfilename, PATH_MAX-1);
@@ -26,14 +26,14 @@ void vt_log_set_level_default(const char *const zfilename) {
 
 const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     return vt_log_level_strings[vt_log_level];
 }
 
 void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(vt_log_level < vt_ll_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     if(!expr) {
         // get time

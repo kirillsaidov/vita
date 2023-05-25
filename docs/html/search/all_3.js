@@ -5,7 +5,7 @@ var searchData=
   ['cmp_5ftest_2',['cmp_test',['../comparison_8h.html#afcdde416feb9241b9415fc4bdb76d10f',1,'comparison.h']]],
   ['cols_3',['cols',['../struct_base_container_type.html#a8bc05371b3a4013263f68932ba1b6452',1,'VitaBaseArrayType']]],
   ['comparison_2eh_4',['comparison.h',['../comparison_8h.html',1,'']]],
-  ['container_5fgrowth_5frate_5',['VT_CONTAINER_GROWTH_RATE',['../core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc',1,'core.h']]],
+  ['container_5fgrowth_5frate_5',['VT_ARRAY_DEFAULT_GROWTH_RATE',['../core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc',1,'core.h']]],
   ['conv_2eh_6',['conv.h',['../conv_8h.html',1,'']]],
   ['conv_5fstr_5fto_5fdouble_7',['conv_str_to_double',['../conv_8h.html#af04568d574efed2a911f06ed299254c5',1,'conv.h']]],
   ['conv_5fstr_5fto_5fint64_8',['conv_str_to_int64',['../conv_8h.html#ad5af5a8eedf7140fb27894547bbfa0d7',1,'conv.h']]],

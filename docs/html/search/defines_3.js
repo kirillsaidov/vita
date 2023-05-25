@@ -27,6 +27,6 @@ var searchData=
   ['debug_5fprintf_24',['VT_DEBUG_PRINTF',['../debug_8h.html#a5c8ef3c24dad2c469a42784a9a39403b',1,'debug.h']]],
   ['debug_5frealloc_25',['DEBUG_REALLOC',['../debug_8h.html#a28155db231aa3a6c09fe5efacb0a71f3',1,'debug.h']]],
   ['debug_5frealloc_5fmh_26',['DEBUG_REALLOC_MH',['../debug_8h.html#afc445f3ed91d907f54d6c567383e5bd7',1,'debug.h']]],
-  ['default_5finit_5felements_27',['VT_DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
+  ['default_5finit_5felements_27',['VT_ARRAY_DEFAULT_INIT_ELEMENTS',['../core_8h.html#aa1174b92a5b1015951057004889cdd91',1,'core.h']]],
   ['dir_5fpermissions_28',['DIR_PERMISSIONS',['../path_8h.html#ace53e1ffc36d796816f33e0fef80afc0',1,'path.h']]]
 ];

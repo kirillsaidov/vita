@@ -10,7 +10,7 @@ mat_t *mat_new(void) {
     return m;
 }
 
-enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
+enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
     if(m == NULL) {
         VT_DEBUG_PRINTF("%s", "mat_t instance was not allocated!");
         return ve_error_is_null;
@@ -35,7 +35,7 @@ enum VitaError mat_ctor(mat_t *const m, const size_t rows, const size_t cols, co
         return ve_error_allocation;
     }
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
 mat_t *mat_dup(const mat_t *const m) {
@@ -84,7 +84,7 @@ mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     }
 
     // construct mat_t
-    if(mat_ctor(m, rows, cols, elsize) != vt_ve_operation_success) {
+    if(mat_ctor(m, rows, cols, elsize) != vt_status_operation_success) {
         DEBUG_ASSERT(0, "Failed to construct mat_t instance!");
 
         mat_free(m);
@@ -174,7 +174,7 @@ size_t mat_size(const mat_t *const m) {
     return (m == NULL) ? 0 : (m->rows * m->cols);
 }
 
-enum VitaError mat_clear(mat_t *const m) {
+enum VitaStatus mat_clear(mat_t *const m) {
     if(m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return ve_error_is_null;
@@ -183,10 +183,10 @@ enum VitaError mat_clear(mat_t *const m) {
     // set values to 0
     memset(m->ptr, 0, m->rows * m->cols * m->elsize);
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
+enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
     if(m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return ve_error_is_null;
@@ -198,7 +198,7 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     }
 
     if(m->rows == rows && m->cols == cols) {
-        return vt_ve_operation_success;
+        return vt_status_operation_success;
     }
 
     // allocate memory for rows*cols number of elements
@@ -213,10 +213,10 @@ enum VitaError mat_resize(mat_t *const m, const size_t rows, const size_t cols) 
     m->rows = rows;
     m->cols = cols;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
     if(m == NULL || val == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         DEBUG_ASSERT(val != NULL, "value supplied is NULL!");
@@ -231,10 +231,10 @@ enum VitaError mat_set(mat_t *const m, const void *val, const size_t atRow, cons
     // set the value
     memcpy((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -243,7 +243,7 @@ enum VitaError mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, c
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -252,7 +252,7 @@ enum VitaError mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, 
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -261,7 +261,7 @@ enum VitaError mat_seti16(mat_t *const m, const int16_t val, const size_t atRow,
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -270,7 +270,7 @@ enum VitaError mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -279,7 +279,7 @@ enum VitaError mat_seti32(mat_t *const m, const int32_t val, const size_t atRow,
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -288,7 +288,7 @@ enum VitaError mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -297,7 +297,7 @@ enum VitaError mat_seti64(mat_t *const m, const int64_t val, const size_t atRow,
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -306,7 +306,7 @@ enum VitaError mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
@@ -315,7 +315,7 @@ enum VitaError mat_setf(mat_t *const m, const float val, const size_t atRow, con
     return mat_set(m, &val, atRow, atCol);
 }
 
-enum VitaError mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
+enum VitaStatus mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
     if(m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;

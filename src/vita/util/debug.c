@@ -97,20 +97,20 @@ vt_debug_handler_t *vt_debug_handler_create(void) {
     // create a mh handler instance
     vt_debug_handler_t *mh = malloc(sizeof(vt_debug_handler_t));
     if(mh == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
 
     // initialize mh container
     *mh = (vt_debug_handler_t) {
-        .cache = calloc(1, VT_DEFAULT_INIT_ELEMENTS * sizeof(vt_cache_t)), // each cache is a single instance, we need an array of them
-        .cache_capacity = VT_DEFAULT_INIT_ELEMENTS,
+        .cache = calloc(1, VT_ARRAY_DEFAULT_INIT_ELEMENTS * sizeof(vt_cache_t)), // each cache is a single instance, we need an array of them
+        .cache_capacity = VT_ARRAY_DEFAULT_INIT_ELEMENTS,
         .cache_elsize = sizeof(char*)
     };
 
     // allocate memory for cache
     if(mh->cache == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
         free(mh);
         return NULL;
@@ -121,8 +121,8 @@ vt_debug_handler_t *vt_debug_handler_create(void) {
 
 void vt_debug_handler_destroy(vt_debug_handler_t *mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // free all ptrs
     const size_t len = vt_debug_handler_handler_length(mh);
@@ -145,7 +145,7 @@ void vt_debug_handler_destroy(vt_debug_handler_t *mh) {
 bool vt_debug_handler_default_init(void) {
     gi_mh = (gi_mh == NULL) ? vt_debug_handler_create() : gi_mh;
 
-    VT_DEBUG_ASSERT(gi_mh != NULL, "%s: Failed to initialize the default memory handler!\n", vt_get_vita_error_str(vt_ve_error_allocation));
+    VT_DEBUG_ASSERT(gi_mh != NULL, "%s: Failed to initialize the default memory handler!\n", vt_get_vita_error_str(vt_status_error_allocation));
     return (gi_mh != NULL);
 }
 
@@ -161,14 +161,14 @@ vt_debug_handler_t *vt_debug_handler_default_get_handler(void) {
 
 void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // allocate memory
     void *ptr = malloc(bytes);
     if(ptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
 
@@ -187,14 +187,14 @@ void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, 
 
 void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // allocate memory
     void *ptr = calloc(1, bytes);
     if(ptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
 
@@ -213,10 +213,10 @@ void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, 
 
 void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // remove ptr from mh
     const size_t bytes_old = vt_debug_handler_remove(mh, ptr);
@@ -224,7 +224,7 @@ void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const si
     // allocate memory
     void *ptr_new = realloc(ptr, bytes);
     if(ptr_new == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
         // roll back
         vt_debug_handler_add(mh, ptr, bytes_old);
@@ -246,9 +246,9 @@ void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const si
 
 void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *const file, const char *const func, const int32_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // remove from mh
     const size_t bytes = vt_debug_handler_remove(mh, ptr);
@@ -268,14 +268,14 @@ void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *
 
 void vt_debug_handler_add(vt_debug_handler_t *const mh, const void *const ptr, const size_t bytes) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // check if we have enough space
     if(!vt_debug_handler_handler_has_space(mh) && !vt_debug_handler_handler_realloc(mh, 2 * mh->cache_capacity)) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return;
     }
 
@@ -286,9 +286,9 @@ void vt_debug_handler_add(vt_debug_handler_t *const mh, const void *const ptr, c
 
 size_t vt_debug_handler_remove(vt_debug_handler_t *const mh, const void *const ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // remove data from cache
     size_t bytes = 0;
@@ -311,25 +311,25 @@ size_t vt_debug_handler_remove(vt_debug_handler_t *const mh, const void *const p
 
 static size_t vt_debug_handler_handler_length(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->cache_len;
 }
 
 static size_t vt_debug_handler_handler_has_space(const vt_debug_handler_t *const mh)  {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return (mh->cache_capacity - mh->cache_len);
 }
 
 static int64_t vt_debug_handler_handler_find_element(const vt_debug_handler_t *const mh, const void *const ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // find element
     const size_t len = vt_debug_handler_handler_length(mh);
@@ -344,9 +344,9 @@ static int64_t vt_debug_handler_handler_find_element(const vt_debug_handler_t *c
 
 static size_t vt_debug_handler_handler_realloc(vt_debug_handler_t *const mh, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // reallocate memory for cache
     void *ptr = realloc(mh->cache, len * sizeof(vt_cache_t));
@@ -365,68 +365,68 @@ static size_t vt_debug_handler_handler_realloc(vt_debug_handler_t *const mh, con
 
 size_t vt_debug_handler_get_nallocs(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->n_allocs;
 }
 
 size_t vt_debug_handler_get_nreallocs(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->n_reallocs;
 }
 
 size_t vt_debug_handler_get_nfrees(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->n_frees;
 }
 
 size_t vt_debug_handler_get_bytes_totally_alloced(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->bytes_totally_alloced;
 }
 
 size_t vt_debug_handler_get_bytes_currently_alloced(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return (mh->bytes_totally_alloced - mh->bytes_freed);
 }
 
 size_t vt_debug_handler_get_bytes_freed(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return mh->bytes_freed;
 }
 
 char *vt_debug_handler_get_stats_str(const vt_debug_handler_t *const mh, char *buffer, const size_t buff_len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // check buffer size
     const size_t req_buf_len = VT_DEBUG_STATS_BUFFER_SIZE;
     if(buff_len < req_buf_len) {
-        VT_DEBUG_PRINTF("%s: buff_len must be >= %zu!\n", vt_get_vita_error_str(vt_ve_error_out_of_memory), req_buf_len);
+        VT_DEBUG_PRINTF("%s: buff_len must be >= %zu!\n", vt_get_vita_error_str(vt_status_error_out_of_memory), req_buf_len);
         return NULL;
     }
 
     // allocate buffer if needed
     char *buf = (buffer == NULL) ? calloc(req_buf_len, sizeof(char)) : buffer;
     if(buf == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
 
@@ -460,8 +460,8 @@ char *vt_debug_handler_get_stats_str(const vt_debug_handler_t *const mh, char *b
 
 void vt_debug_handler_print_stats(const vt_debug_handler_t *const mh) {
     // check for invalid input
-    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // get stats
     char z_stats[VT_DEBUG_STATS_BUFFER_SIZE] = {0};

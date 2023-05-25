@@ -28,7 +28,7 @@ typedef struct VitaArgOpt {
     
     // value
     void **optionValue;
-    const enum VitaDataType optionType;
+    const enum VitaTypeInfo optionType;
 } vt_argopt_t;
 
 /** Parses command line arguments

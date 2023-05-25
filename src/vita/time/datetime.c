@@ -13,8 +13,8 @@ struct VitaDateTime vt_datetime_get_now(void) {
 
 void vt_datetime_get_now_as_text(char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // get time
     const time_t t = time(NULL);
@@ -24,8 +24,8 @@ void vt_datetime_get_now_as_text(char *timebuf, const size_t len) {
 
 void vt_datetime_get_now_as_text_pretty(char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // get time
     const time_t t = time(NULL);
@@ -67,29 +67,29 @@ struct VitaDateTime vt_datetime_create(
 
 void vt_datetime_to_text(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y-%m-%d %H:%M:%S");
 }
 
 void vt_datetime_to_text_iso(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y%m%dT%H%M%S");
 }
 
 void vt_datetime_to_text_iso_ext(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     vt_datetime_to_text_fmt(vdt, timebuf, len, "%Y-%m-%dT%H:%M:%S");
 }
 
 void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, const size_t len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
@@ -105,19 +105,19 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%d %H:%M:%S");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     return vt_datetime_from_text_fmt(timebuf, "%Y%m%dT%H%M%S");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%dT%H:%M:%S");
 }
 
@@ -233,9 +233,9 @@ static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
 */
 static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf, const size_t len, const char *fmt) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(len >= VT_DATETIME_BUFFER_SIZE, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
@@ -250,8 +250,8 @@ static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf
 */
 static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const char *fmt) {
     // check for invalid input
-    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // convert to tm
     struct tm stm = {0};

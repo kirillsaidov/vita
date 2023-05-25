@@ -39,13 +39,13 @@ extern vt_plist_t *vt_plist_new(void);
     @param p vt_plist_t instance
     @param n number of elements
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_ctor(vt_plist_t *p, const size_t n);
+extern enum VitaStatus vt_plist_ctor(vt_plist_t *p, const size_t n);
 
 /** Destroys contents of vt_plist_t
     @param p vt_plist_t instance
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
 extern void vt_plist_dtor(vt_plist_t *p);
 
@@ -94,30 +94,30 @@ extern bool vt_plist_is_empty(const vt_plist_t *const p);
     @param p vt_plist_t pointer
     @param n number of elements
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_reserve(vt_plist_t *const p, const size_t n);
+extern enum VitaStatus vt_plist_reserve(vt_plist_t *const p, const size_t n);
 
 /** Shrinks vt_plist_t capacity to its length
     @param p vt_plist_t pointer
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_shrink(vt_plist_t *const p);
+extern enum VitaStatus vt_plist_shrink(vt_plist_t *const p);
 
 /** Sets vt_plist_t length to 0
     @param p vt_plist_t pointer
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_clear(vt_plist_t *const p);
+extern enum VitaStatus vt_plist_clear(vt_plist_t *const p);
 
 /** Assigns a new pointer at an index
     @param p vt_plist_t pointer
     @param ptr pointer value
     @param at index
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at);
+extern enum VitaStatus vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at);
 
 /** Returns a pointer at an index
     @param p vt_plist_t pointer
@@ -131,15 +131,15 @@ extern void *vt_plist_get(const vt_plist_t *const p, const size_t at);
     @param p vt_plist_t pointer
     @param ptr pointer value
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_push(vt_plist_t *const p, const void *const ptr);
+extern enum VitaStatus vt_plist_push(vt_plist_t *const p, const void *const ptr);
 
 /** Pop the last value from the end
     @param p vt_plist_t pointer
-    @returns enum VitaError
+    @returns enum VitaStatus
 */
-extern enum VitaError vt_plist_pop(vt_plist_t *const p);
+extern enum VitaStatus vt_plist_pop(vt_plist_t *const p);
 
 /** Get and pop the last value from the end
     @param p vt_plist_t pointer
@@ -151,14 +151,14 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
     @param p vt_plist_t pointer
     @param at index
 
-    @returns enum VitaError
+    @returns enum VitaStatus
 
     @note
-        enum VitaRemoveStrategy { vt_rs_stable = ordered removal, rs_fast = unordered removal }
-        vt_rs_stable: shifts all values by element size
+        enum VitaRemoveStrategy { vt_remove_stategy_stable = ordered removal, rs_fast = unordered removal }
+        vt_remove_stategy_stable: shifts all values by element size
           rs_fast: swaps the last value with the value of `at`
 */
-extern enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
+extern enum VitaStatus vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
 
 /** Slides through the container elements one by one
     @param p vt_plist_t pointer

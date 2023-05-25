@@ -74,5 +74,5 @@ var searchData=
   ['vita_5fversion_5fmajor_71',['VITA_VERSION_MAJOR',['../version_8h.html#a9b7b998199714a459a7d42ef0c4a237f',1,'version.h']]],
   ['vita_5fversion_5fminor_72',['VITA_VERSION_MINOR',['../version_8h.html#a68b7bb2da2bdfa12ef9e0b74c6db9a23',1,'version.h']]],
   ['vita_5fversion_5fpatch_73',['VITA_VERSION_PATCH',['../version_8h.html#a025a7f84374b108131b988850ab2fed1',1,'version.h']]],
-  ['vitaerror_74',['VitaError',['../core_8h.html#afc98bc24a89cab10e29fe33f07fc105b',1,'core.h']]]
+  ['vitaerror_74',['VitaStatus',['../core_8h.html#afc98bc24a89cab10e29fe33f07fc105b',1,'core.h']]]
 ];

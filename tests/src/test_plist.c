@@ -27,7 +27,7 @@ int main(void) {
         assert(vt_plist_len(p) == 1);
         assert(vt_plist_capacity(p) == 7);
 
-        vt_plist_remove(p, 0, vt_rs_fast);
+        vt_plist_remove(p, 0, vt_remove_stategy_fast);
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 7);
 

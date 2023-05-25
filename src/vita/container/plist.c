@@ -4,10 +4,10 @@ vt_plist_t *vt_plist_new(void) {
     return vt_bat_new();
 }
 
-enum VitaError vt_plist_ctor(vt_plist_t *p, const size_t n) {
+enum VitaStatus vt_plist_ctor(vt_plist_t *p, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // vt_plist_t init
     *p = (vt_plist_t) {
@@ -19,17 +19,17 @@ enum VitaError vt_plist_ctor(vt_plist_t *p, const size_t n) {
 
     // checking if p->ptr2 was allocated
     if(p->ptr2 == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return vt_ve_error_allocation;
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
+        return vt_status_error_allocation;
     }
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
 void vt_plist_dtor(vt_plist_t *p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // free vt_plist_t contents
     VT_DEBUG_FREE(p->ptr2);
@@ -44,18 +44,18 @@ void vt_plist_free(vt_plist_t *p) {
 
 vt_plist_t *vt_plist_create(const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // allocate a new vt_plist_t instance
     vt_plist_t *p = vt_plist_new();
     if(p == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
     
     // construct vt_plist_t instance
-    if(vt_plist_ctor(p, n) != vt_ve_operation_success) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+    if(vt_plist_ctor(p, n) != vt_status_operation_success) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
         vt_plist_free(p);
         return NULL;
@@ -66,8 +66,8 @@ vt_plist_t *vt_plist_create(const size_t n) {
 
 void vt_plist_destroy(vt_plist_t *p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // destroy
     vt_plist_dtor(p);
@@ -76,12 +76,12 @@ void vt_plist_destroy(vt_plist_t *p) {
 
 vt_plist_t *vt_plist_from(const void **const ptr, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     vt_plist_t *p = vt_plist_create(n);
     if(p == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;
     }
 
@@ -108,75 +108,75 @@ bool vt_plist_is_empty(const vt_plist_t *const p) {
     return !vt_bat_len(p);
 }
 
-enum VitaError vt_plist_reserve(vt_plist_t *const p, const size_t n) {
+enum VitaStatus vt_plist_reserve(vt_plist_t *const p, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // if n == 0, do nothing
     if(!n) {
-        return vt_ve_operation_success;
+        return vt_status_operation_success;
     }
 
     // reserve memory for additional n elements
     void **newptr = VT_DEBUG_REALLOC(p->ptr2, (p->capacity + n) * p->elsize);
     if(newptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return vt_ve_error_allocation;
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
+        return vt_status_error_allocation;
     }
 
     // update values
     p->ptr2 = newptr;
     p->capacity += n;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError vt_plist_shrink(vt_plist_t *const p) {
+enum VitaStatus vt_plist_shrink(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // if length and capacity are the same, exit the function
     if(p->len == p->capacity) {
-        return vt_ve_operation_success;
+        return vt_status_operation_success;
     }
 
     // shrink to length
     void **newptr = VT_DEBUG_REALLOC(p->ptr2, p->len * p->elsize);
     if(newptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return vt_ve_error_allocation;
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
+        return vt_status_error_allocation;
     }
 
     // update values
     p->ptr2 = newptr;
     p->capacity = p->len;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError vt_plist_clear(vt_plist_t *const p) {
+enum VitaStatus vt_plist_clear(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // update length
     p->len = 0;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at) {
+enum VitaStatus vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
+        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
         at, 
         p->len
     );
@@ -184,17 +184,17 @@ enum VitaError vt_plist_set(vt_plist_t *const p, const void *const ptr, const si
     // add ptr to vt_plist_t
     p->ptr2[at] = (void*)ptr;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
 void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
+        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
         at, 
         p->len
     );
@@ -202,41 +202,41 @@ void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
     return p->ptr2[at];
 }
 
-enum VitaError vt_plist_push(vt_plist_t *const p, const void *ptr) {
+enum VitaStatus vt_plist_push(vt_plist_t *const p, const void *ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     
     // check if new memory needs to be allocated
-    if(!vt_plist_has_space(p) && vt_plist_reserve(p, p->capacity * VT_CONTAINER_GROWTH_RATE) != vt_ve_operation_success) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_ve_error_allocation));
-        return vt_ve_error_allocation;
+    if(!vt_plist_has_space(p) && vt_plist_reserve(p, p->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE) != vt_status_operation_success) {
+        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
+        return vt_status_error_allocation;
     }
 
     // add ptr to vt_plist_t
     p->ptr2[p->len++] = (void*)ptr;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
-enum VitaError vt_plist_pop(vt_plist_t *const p) {
+enum VitaStatus vt_plist_pop(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // pop the last element
     if(p->len > 0) {
         p->len--;
     }
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
 void *vt_plist_pop_get(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // pop the last element
     if(p->len > 0) {
@@ -246,21 +246,21 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
     return p->ptr2;
 }
 
-enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs) {
+enum VitaStatus vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(rs < vt_rs_count, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(rs < vt_remove_stategy_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_ve_error_out_of_bounds_access), 
+        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
         at, 
         p->len
     );
 
     // check remove strategy
-    if(rs == vt_rs_stable) {
+    if(rs == vt_remove_stategy_stable) {
         memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         vt_gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
@@ -269,38 +269,38 @@ enum VitaError vt_plist_remove(vt_plist_t *const p, const size_t at, const enum 
     // update length
     p->len--;
 
-    return vt_ve_operation_success;
+    return vt_status_operation_success;
 }
 
 void **vt_plist_slide_front(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return (void**)vt_bat_slide_front(p);
 }
 
 void **vt_plist_slide_back(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     return (void**)vt_bat_slide_back(p);
 }
 
 void vt_plist_slide_reset(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     vt_bat_slide_reset(p);
 }
 
 void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_is_null));
-    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_get_vita_error_str(vt_ve_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // iterate
     const size_t len = vt_plist_len(p);

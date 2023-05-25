@@ -79,7 +79,7 @@ int32_t main(void) {
         assert(vt_str_capacity(ns) == 1);
         assert(vt_str_has_space(ns) == 0);
 
-        assert(vt_str_append(ns, "hello") == vt_ve_operation_success);
+        assert(vt_str_append(ns, "hello") == vt_status_operation_success);
         assert(vt_str_equals(vt_cstr(ns), "hello"));
 
         // fails, because vt_str_len(ns) < strlen("hello, world") => append instead
@@ -91,10 +91,10 @@ int32_t main(void) {
         assert(vt_str_capacity(sto) == 12);
         assert(vt_str_has_space(sto) == 0);
 
-        assert(vt_str_append(sto, "! How are you?") == vt_ve_operation_success);
+        assert(vt_str_append(sto, "! How are you?") == vt_status_operation_success);
         assert(vt_str_len(sto) == strlen("12345, world! How are you?"));
         assert(vt_str_equals(vt_cstr(sto), "12345, world! How are you?"));
-        assert(vt_str_append(sto, " hello, world; hello again. This is hello!") == vt_ve_operation_success);
+        assert(vt_str_append(sto, " hello, world; hello again. This is hello!") == vt_status_operation_success);
 
         vt_str_clear(sto);
         vt_str_append(sto, ";My name is Kirillos;How are you?;let's play;");

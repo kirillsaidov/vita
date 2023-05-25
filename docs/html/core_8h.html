@@ -129,9 +129,9 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ac4f592ab3fdc267d152345d8e4cc1313"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#ac4f592ab3fdc267d152345d8e4cc1313">__SOURCE_FILENAME__</a>&#160;&#160;&#160;(strrchr(__SOURCE_FILENAME__, '/') ? strrchr(__SOURCE_FILENAME__, '/') + 1 : __SOURCE_FILENAME__)</td></tr>
 <tr class="separator:ac4f592ab3fdc267d152345d8e4cc1313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1174b92a5b1015951057004889cdd91"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#aa1174b92a5b1015951057004889cdd91">VT_DEFAULT_INIT_ELEMENTS</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memitem:aa1174b92a5b1015951057004889cdd91"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#aa1174b92a5b1015951057004889cdd91">VT_ARRAY_DEFAULT_INIT_ELEMENTS</a>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:aa1174b92a5b1015951057004889cdd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3699a6724f1f1e564a1c641fb3076ffc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc">VT_CONTAINER_GROWTH_RATE</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:a3699a6724f1f1e564a1c641fb3076ffc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc">VT_ARRAY_DEFAULT_GROWTH_RATE</a>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:a3699a6724f1f1e564a1c641fb3076ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82eb70e201a6742f6a46de9c085fdd18"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a82eb70e201a6742f6a46de9c085fdd18">i_PCAT_NX</a>(x,  y)&#160;&#160;&#160;x ## y</td></tr>
 <tr class="separator:a82eb70e201a6742f6a46de9c085fdd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,7 +150,7 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ad8ed01ff3ff33333d8e19db4d2818bb6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">VitaDataType</a> { <br />
+<tr class="memitem:ad8ed01ff3ff33333d8e19db4d2818bb6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">VitaTypeInfo</a> { <br />
 &#160;&#160;<a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a047bd5818cde2a732dc989071b9eef3e">dt_byte</a>
 , <a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a61efe44e31ada19a7be188ad2b45c86a">dt_ubyte</a>
 , <a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6ae1cf169dde15b881727bdb274a3858a8">dt_short</a>
@@ -183,12 +183,12 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:ad8ed01ff3ff33333d8e19db4d2818bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7175ceafb3d2397336de71bfec1e4faa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">VitaRemoveStrategy</a> { <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed">vt_rs_stable</a>
+<tr class="memitem:a7175ceafb3d2397336de71bfec1e4faa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faa">VitaRemoveStrategy</a> { <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed">vt_remove_stategy_stable</a>
 , <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab2730ef3c355c101d3a74e8b372dac4c">rs_fast</a>
 , <a class="el" href="core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab604f94da4c101dfa7ea25a7a59fcfcd">rs_count</a>
  }</td></tr>
 <tr class="separator:a7175ceafb3d2397336de71bfec1e4faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc98bc24a89cab10e29fe33f07fc105b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a> { <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105ba82005e20a28829dbb17a7822db4c2ddf">i_GENERATE_VITA_ERRORS</a> =(X)
+<tr class="memitem:afc98bc24a89cab10e29fe33f07fc105b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaStatus</a> { <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105ba82005e20a28829dbb17a7822db4c2ddf">i_GENERATE_VITA_ERRORS</a> =(X)
  }</td></tr>
 <tr class="separator:afc98bc24a89cab10e29fe33f07fc105b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -214,7 +214,7 @@ Functions</h2></td></tr>
 <tr class="separator:a001c9e704c547021ab92067acbbef665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b41ef0a5b7d4bb8a21e5bfdec01ff2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a7b41ef0a5b7d4bb8a21e5bfdec01ff2c">get_current_timestamp</a> (char *timebuf, const size_t len)</td></tr>
 <tr class="separator:a7b41ef0a5b7d4bb8a21e5bfdec01ff2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a954ef1fc049aec9291ae571d884cfc8f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a954ef1fc049aec9291ae571d884cfc8f">get_vita_error_str</a> (const enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a> e)</td></tr>
+<tr class="memitem:a954ef1fc049aec9291ae571d884cfc8f"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_8h.html#a954ef1fc049aec9291ae571d884cfc8f">get_vita_error_str</a> (const enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaStatus</a> e)</td></tr>
 <tr class="separator:a954ef1fc049aec9291ae571d884cfc8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -279,13 +279,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a3699a6724f1f1e564a1c641fb3076ffc" name="a3699a6724f1f1e564a1c641fb3076ffc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3699a6724f1f1e564a1c641fb3076ffc">&#9670;&#160;</a></span>VT_CONTAINER_GROWTH_RATE</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3699a6724f1f1e564a1c641fb3076ffc">&#9670;&#160;</a></span>VT_ARRAY_DEFAULT_GROWTH_RATE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define VT_CONTAINER_GROWTH_RATE&#160;&#160;&#160;2</td>
+          <td class="memname">#define VT_ARRAY_DEFAULT_GROWTH_RATE&#160;&#160;&#160;2</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -295,13 +295,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="aa1174b92a5b1015951057004889cdd91" name="aa1174b92a5b1015951057004889cdd91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1174b92a5b1015951057004889cdd91">&#9670;&#160;</a></span>VT_DEFAULT_INIT_ELEMENTS</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1174b92a5b1015951057004889cdd91">&#9670;&#160;</a></span>VT_ARRAY_DEFAULT_INIT_ELEMENTS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define VT_DEFAULT_INIT_ELEMENTS&#160;&#160;&#160;10</td>
+          <td class="memname">#define VT_ARRAY_DEFAULT_INIT_ELEMENTS&#160;&#160;&#160;10</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -330,8 +330,8 @@ Functions</h2></td></tr>
 <div class="line">    apply(ve_error_incompatible_datatype)       <span class="comment">/* working with different datatypes */</span> \</div>
 <div class="line">    apply(ve_error_out_of_bounds_access)        <span class="comment">/* accessing memory beyond allocated size */</span> \</div>
 <div class="line">    apply(ve_error_invalid_size)                <span class="comment">/* invalid container element size */</span> \</div>
-<div class="line">    apply(vt_ve_operation_failure)                 <span class="comment">/* failed to perform an action */</span> \</div>
-<div class="line">    apply(vt_ve_operation_success)                 <span class="comment">/* all good */</span> \</div>
+<div class="line">    apply(vt_status_operation_failure)                 <span class="comment">/* failed to perform an action */</span> \</div>
+<div class="line">    apply(vt_status_operation_success)                 <span class="comment">/* all good */</span> \</div>
 <div class="line">    apply(ve_operation_element_not_found)       <span class="comment">/* element was not found */</span> \</div>
 <div class="line">    apply(ve_count)                             <span class="comment">/* number of elements */</span></div>
 </div><!-- fragment -->
@@ -461,13 +461,13 @@ Functions</h2></td></tr>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="ad8ed01ff3ff33333d8e19db4d2818bb6" name="ad8ed01ff3ff33333d8e19db4d2818bb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8ed01ff3ff33333d8e19db4d2818bb6">&#9670;&#160;</a></span>VitaDataType</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ed01ff3ff33333d8e19db4d2818bb6">&#9670;&#160;</a></span>VitaTypeInfo</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">VitaDataType</a></td>
+          <td class="memname">enum <a class="el" href="core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">VitaTypeInfo</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -514,7 +514,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed" name="a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed"></a>vt_rs_stable&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed" name="a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed"></a>vt_remove_stategy_stable&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a7175ceafb3d2397336de71bfec1e4faaab2730ef3c355c101d3a74e8b372dac4c" name="a7175ceafb3d2397336de71bfec1e4faaab2730ef3c355c101d3a74e8b372dac4c"></a>rs_fast&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a7175ceafb3d2397336de71bfec1e4faaab604f94da4c101dfa7ea25a7a59fcfcd" name="a7175ceafb3d2397336de71bfec1e4faaab604f94da4c101dfa7ea25a7a59fcfcd"></a>rs_count&#160;</td><td class="fielddoc"></td></tr>
 </table>
@@ -524,13 +524,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="afc98bc24a89cab10e29fe33f07fc105b" name="afc98bc24a89cab10e29fe33f07fc105b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc98bc24a89cab10e29fe33f07fc105b">&#9670;&#160;</a></span>VitaError</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afc98bc24a89cab10e29fe33f07fc105b">&#9670;&#160;</a></span>VitaStatus</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a></td>
+          <td class="memname">enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaStatus</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -736,7 +736,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">const char * get_vita_error_str </td>
           <td>(</td>
-          <td class="paramtype">const enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaError</a>&#160;</td>
+          <td class="paramtype">const enum <a class="el" href="core_8h.html#afc98bc24a89cab10e29fe33f07fc105b">VitaStatus</a>&#160;</td>
           <td class="paramname"><em>e</em></td><td>)</td>
           <td></td>
         </tr>

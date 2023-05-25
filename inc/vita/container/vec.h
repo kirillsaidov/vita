@@ -52,9 +52,9 @@ extern vt_vec_t *vt_vec_new(void);
     @param n number of elements
     @param elsize element size
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_ctor(vt_vec_t *const v, const size_t n, const size_t elsize);
+extern enum VitaStatus vt_vec_ctor(vt_vec_t *const v, const size_t n, const size_t elsize);
 
 /** Duplicates and returns a new dynamic array
     @param v vt_vec_t instance
@@ -146,47 +146,47 @@ extern bool vt_vec_is_empty(const vt_vec_t *const v);
 
 /** Shrinks vt_vec_t capacity to its length
     @param v vt_vec_t instance
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_shrink(vt_vec_t *const v);
+extern enum VitaStatus vt_vec_shrink(vt_vec_t *const v);
 
 /** Clears the vt_vec_t (sets length to 0)
     @param v vt_vec_t instance
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_clear(vt_vec_t *const v);
+extern enum VitaStatus vt_vec_clear(vt_vec_t *const v);
 
 /** Reserves memory for vt_vec_t
     @param v vt_vec_t instance
     @param n how many elements to reserve
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_reserve(vt_vec_t *const v, const size_t n);
+extern enum VitaStatus vt_vec_reserve(vt_vec_t *const v, const size_t n);
 
 /** Resizes vt_vec_t length
     @param v vt_vec_t instance
     @param n new size
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_resize(vt_vec_t *const v, const size_t n);
+extern enum VitaStatus vt_vec_resize(vt_vec_t *const v, const size_t n);
 
 /** Push an element at the end of vt_vec_t
     @param v vt_vec_t instance
     @param val value to push
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_push(vt_vec_t *const v, const void *const val);
+extern enum VitaStatus vt_vec_push(vt_vec_t *const v, const void *const val);
 
 /** Push an element at the end of vt_vec_t
     @param v vt_vec_t instance
     @param val value to push
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-#define VT_PROTOTYPE_VEC_PUSH(T, t) extern enum VitaError vt_vec_push##t(vt_vec_t *const v, const T val)
+#define VT_PROTOTYPE_VEC_PUSH(T, t) extern enum VitaStatus vt_vec_push##t(vt_vec_t *const v, const T val)
 VT_PROTOTYPE_VEC_PUSH(int8_t, i8);
 VT_PROTOTYPE_VEC_PUSH(uint8_t, u8);
 VT_PROTOTYPE_VEC_PUSH(int16_t, i16);
@@ -202,9 +202,9 @@ VT_PROTOTYPE_VEC_PUSH(real, r);
 
 /** Pops off the last element
     @param v vt_vec_t instance
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_pop(vt_vec_t *const v);
+extern enum VitaStatus vt_vec_pop(vt_vec_t *const v);
 
 /** Pops off and returns the last element
     @param v vt_vec_t instance
@@ -235,18 +235,18 @@ VT_PROTOTYPE_VEC_POP_GET(real, r);
     @param val value
     @param at index to set the value
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at);
+extern enum VitaStatus vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at);
 
 /** Assigns a new value at an index
     @param v vt_vec_t instance
     @param val value
     @param at index to set the value
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-#define VT_PROTOTYPE_VEC_SET(T, t) extern enum VitaError vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at)
+#define VT_PROTOTYPE_VEC_SET(T, t) extern enum VitaStatus vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at)
 VT_PROTOTYPE_VEC_SET(int8_t, i8);
 VT_PROTOTYPE_VEC_SET(uint8_t, u8);
 VT_PROTOTYPE_VEC_SET(int16_t, i16);
@@ -293,18 +293,18 @@ VT_PROTOTYPE_VEC_GET(real, r);
     @param val value to insert
     @param at index to set the value
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-extern enum VitaError vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at);
+extern enum VitaStatus vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at);
 
 /** Inserts a new value at an index
     @param v vt_vec_t instance
     @param val value to insert
     @param at index to set the value
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 */
-#define VT_PROTOTYPE_VEC_INSERT(T, t) extern enum VitaError vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at)
+#define VT_PROTOTYPE_VEC_INSERT(T, t) extern enum VitaStatus vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at)
 VT_PROTOTYPE_VEC_INSERT(int8_t, i8);
 VT_PROTOTYPE_VEC_INSERT(uint8_t, u8);
 VT_PROTOTYPE_VEC_INSERT(int16_t, i16);
@@ -323,14 +323,14 @@ VT_PROTOTYPE_VEC_INSERT(real, r);
     @param at index of the value
     @param rs choose a VitaRemoveStrategy (see Notes)
 
-    @returns enum VitaError code
+    @returns enum VitaStatus code
 
     @note
-        enum VitaRemoveStrategy { vt_rs_stable = ordered removal, rs_fast = unordered removal }
-        vt_rs_stable: shifts all values by element size
+        enum VitaRemoveStrategy { vt_remove_stategy_stable = ordered removal, rs_fast = unordered removal }
+        vt_remove_stategy_stable: shifts all values by element size
           rs_fast: swaps the last value with the value of `at`
 */
-extern enum VitaError vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs);
+extern enum VitaStatus vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs);
 
 /** Checks if vt_vec_t contains the specified element
     @param v vt_vec_t instance
