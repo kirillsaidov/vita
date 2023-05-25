@@ -162,19 +162,19 @@ const char *vt_cstr(const vt_str_t *const s) {
 }
 
 size_t vt_str_len(const vt_str_t *const s) {
-    return vt_bat_len(s);
+    return vt_array_len(s);
 }
 
 size_t vt_str_capacity(const vt_str_t *const s) {
-    return vt_bat_capacity(s);
+    return vt_array_capacity(s);
 }
 
 size_t vt_str_has_space(const vt_str_t *const s) {
-    return vt_bat_has_space(s);
+    return vt_array_has_space(s);
 }
 
 bool vt_str_is_empty(const vt_str_t *const s) {
-    return !vt_bat_len(s);
+    return !vt_array_len(s);
 }
 
 size_t vt_str_validate_len(vt_str_t *const s) {
@@ -1099,7 +1099,7 @@ char *vt_str_slide_front(vt_str_t *const s) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return (char*)vt_bat_slide_front(s);
+    return (char*)vt_array_slide_front(s);
 }
 
 char *vt_str_slide_back(vt_str_t *const s) {
@@ -1107,7 +1107,7 @@ char *vt_str_slide_back(vt_str_t *const s) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return (char*)vt_bat_slide_back(s);
+    return (char*)vt_array_slide_back(s);
 }
 
 void vt_str_slide_reset(vt_str_t *const s) {
@@ -1115,7 +1115,7 @@ void vt_str_slide_reset(vt_str_t *const s) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    vt_bat_slide_reset(s);
+    vt_array_slide_reset(s);
 }
 
 // -------------------------- PRIVATE -------------------------- //

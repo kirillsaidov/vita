@@ -14,11 +14,11 @@
     - VT_AS
 
  * Functions:
-    - vt_bat_head
-    - vt_bat_len
-    - vt_bat_capacity
-    - vt_bat_has_space
-    - vt_bat_elsize
+    - vt_array_head
+    - vt_array_len
+    - vt_array_capacity
+    - vt_array_has_space
+    - vt_array_elsize
     - vt_malloc
     - vt_calloc
     - vt_realloc
@@ -126,7 +126,7 @@ enum VitaStatus {
 };
 #undef X
 
-// base container type for all primitives
+// base array type for all array-like primitives
 struct VitaBaseArrayType {
     // data pointers
     union {
@@ -146,42 +146,42 @@ struct VitaBaseArrayType {
 /** Allocates memory for VitaBaseArrayType structure
     @returns `VitaBaseArrayType*` upon success, `NULL` otherwise
 */
-extern struct VitaBaseArrayType *vt_bat_new(void);
+extern struct VitaBaseArrayType *vt_array_new(void);
 
 /** Frees the VitaBaseArrayType instance
     @param bct VitaBaseArrayType pointer
 */
-extern void vt_bat_free(struct VitaBaseArrayType *bct);
+extern void vt_array_free(struct VitaBaseArrayType *bct);
 
 /** Returns VitaBaseArrayType's ptr head
     @param bct VitaBaseArrayType ptr instance
     @returns `NULL` upon failure
 */
-extern void *vt_bat_head(const struct VitaBaseArrayType *const bct);
+extern void *vt_array_head(const struct VitaBaseArrayType *const bct);
 
 /** Returns VitaBaseArrayType's length    
     @param bct VitaBaseArrayType ptr
     @returns length
 */
-extern size_t vt_bat_len(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_len(const struct VitaBaseArrayType *const bct);
 
 /** Returns VitaBaseArrayType's capacity
     @param bct VitaBaseArrayType ptr
     @returns capacity
 */
-extern size_t vt_bat_capacity(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_capacity(const struct VitaBaseArrayType *const bct);
 
 /** Returns available space before new allocation is required
     @param bct VitaBaseArrayType ptr
     @returns free space (capacity - length)
 */
-extern size_t vt_bat_has_space(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_has_space(const struct VitaBaseArrayType *const bct);
 
 /** Returns VitaBaseArrayType's element size
     @param bct VitaBaseArrayType ptr
     @returns element size
 */
-extern size_t vt_bat_elsize(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_elsize(const struct VitaBaseArrayType *const bct);
 
 /** Slides through the container elements one by one
     @param bct VitaBaseArrayType ptr
@@ -189,7 +189,7 @@ extern size_t vt_bat_elsize(const struct VitaBaseArrayType *const bct);
 
     @note returns `NULL` upon reaching the end
 */
-extern void *vt_bat_slide_front(struct VitaBaseArrayType *const bct);
+extern void *vt_array_slide_front(struct VitaBaseArrayType *const bct);
 
 /** Slides through the container elements one by one
     @param bct VitaBaseArrayType ptr
@@ -197,12 +197,12 @@ extern void *vt_bat_slide_front(struct VitaBaseArrayType *const bct);
 
     @note returns `NULL` upon reaching the end
 */
-extern void *vt_bat_slide_back(struct VitaBaseArrayType *const bct);
+extern void *vt_array_slide_back(struct VitaBaseArrayType *const bct);
 
 /** Resets the slider
     @param bct VitaBaseArrayType ptr
 */
-extern void vt_bat_slide_reset(struct VitaBaseArrayType *const bct);
+extern void vt_array_slide_reset(struct VitaBaseArrayType *const bct);
 
 /** Maps a 2d index to 1d index
     @param row row index

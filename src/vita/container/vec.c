@@ -1,7 +1,7 @@
 #include "vita/container/vec.h"
 
 vt_vec_t *vt_vec_new(void) {
-    return vt_bat_new();
+    return vt_array_new();
 }
 
 enum VitaStatus vt_vec_ctor(vt_vec_t *const v, const size_t n, const size_t elsize) {
@@ -65,7 +65,7 @@ void vt_vec_dtor(vt_vec_t *const v) {
 }
 
 void vt_vec_free(vt_vec_t *v) {
-    vt_bat_free(v);
+    vt_array_free(v);
 }
 
 vt_vec_t *vt_vec_create(const size_t n, const size_t elsize) {
@@ -140,19 +140,19 @@ VT_INSTANTIATE_VEC_FROM(real, r)
 #undef VT_INSTANTIATE_VEC_FROM
 
 size_t vt_vec_len(const vt_vec_t *const v) {
-    return vt_bat_len(v);
+    return vt_array_len(v);
 }
 
 size_t vt_vec_capacity(const vt_vec_t *const v) {
-    return vt_bat_capacity(v);
+    return vt_array_capacity(v);
 }
 
 size_t vt_vec_has_space(const vt_vec_t *const v) {
-    return vt_bat_has_space(v);
+    return vt_array_has_space(v);
 }
 
 bool vt_vec_is_empty(const vt_vec_t *const v) {
-    return !vt_bat_len(v);
+    return !vt_array_len(v);
 }
 
 enum VitaStatus vt_vec_shrink(vt_vec_t *const v) {
@@ -500,7 +500,7 @@ void *vt_vec_slide_front(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return vt_bat_slide_front(v);
+    return vt_array_slide_front(v);
 }
 
 void *vt_vec_slide_back(vt_vec_t *const v) {
@@ -508,7 +508,7 @@ void *vt_vec_slide_back(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return vt_bat_slide_back(v);
+    return vt_array_slide_back(v);
 }
 
 void vt_vec_slide_reset(vt_vec_t *const v) {
@@ -516,7 +516,7 @@ void vt_vec_slide_reset(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
     
-    vt_bat_slide_reset(v);
+    vt_array_slide_reset(v);
 }
 
 

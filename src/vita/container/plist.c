@@ -1,7 +1,7 @@
 #include "vita/container/plist.h"
 
 vt_plist_t *vt_plist_new(void) {
-    return vt_bat_new();
+    return vt_array_new();
 }
 
 enum VitaStatus vt_plist_ctor(vt_plist_t *p, const size_t n) {
@@ -39,7 +39,7 @@ void vt_plist_dtor(vt_plist_t *p) {
 }
 
 void vt_plist_free(vt_plist_t *p) {
-    vt_bat_free(p);
+    vt_array_free(p);
 }
 
 vt_plist_t *vt_plist_create(const size_t n) {
@@ -93,19 +93,19 @@ vt_plist_t *vt_plist_from(const void **const ptr, const size_t n) {
 }
 
 size_t vt_plist_len(const vt_plist_t *const p) {
-    return vt_bat_len(p);
+    return vt_array_len(p);
 }
 
 size_t vt_plist_capacity(const vt_plist_t *const p) {
-    return vt_bat_capacity(p);
+    return vt_array_capacity(p);
 }
 
 size_t vt_plist_has_space(const vt_plist_t *const p) {
-    return vt_bat_has_space(p);
+    return vt_array_has_space(p);
 }
 
 bool vt_plist_is_empty(const vt_plist_t *const p) {
-    return !vt_bat_len(p);
+    return !vt_array_len(p);
 }
 
 enum VitaStatus vt_plist_reserve(vt_plist_t *const p, const size_t n) {
@@ -277,7 +277,7 @@ void **vt_plist_slide_front(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return (void**)vt_bat_slide_front(p);
+    return (void**)vt_array_slide_front(p);
 }
 
 void **vt_plist_slide_back(vt_plist_t *const p) {
@@ -285,7 +285,7 @@ void **vt_plist_slide_back(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    return (void**)vt_bat_slide_back(p);
+    return (void**)vt_array_slide_back(p);
 }
 
 void vt_plist_slide_reset(vt_plist_t *const p) {
@@ -293,7 +293,7 @@ void vt_plist_slide_reset(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    vt_bat_slide_reset(p);
+    vt_array_slide_reset(p);
 }
 
 void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {

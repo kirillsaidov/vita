@@ -39,7 +39,7 @@ int main(void) {
         vt_plist_push(p, w);
 
         void *i = NULL;
-        while((i = vt_bat_slide_front(p)) != NULL) {
+        while((i = vt_array_slide_front(p)) != NULL) {
             // printf("%s\n", *((char**)(i)));
         }
     } vt_plist_destroy(p);

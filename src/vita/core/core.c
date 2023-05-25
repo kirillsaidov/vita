@@ -9,11 +9,11 @@ static const char *const vita_error_str[] = {
 
 /* ------------- BASE CONTAINER TYPE ------------- */
 
-struct VitaBaseArrayType *vt_bat_new(void) {
+struct VitaBaseArrayType *vt_array_new(void) {
     return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
 }
 
-void vt_bat_free(struct VitaBaseArrayType *bct) {
+void vt_array_free(struct VitaBaseArrayType *bct) {
     // check for invalid input
     assert(bct != NULL);
 
@@ -24,7 +24,7 @@ void vt_bat_free(struct VitaBaseArrayType *bct) {
     bct = NULL;
 }
 
-void *vt_bat_head(const struct VitaBaseArrayType *const bct) {
+void *vt_array_head(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -32,7 +32,7 @@ void *vt_bat_head(const struct VitaBaseArrayType *const bct) {
     return bct->ptr;
 }
 
-size_t vt_bat_len(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_len(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -40,7 +40,7 @@ size_t vt_bat_len(const struct VitaBaseArrayType *const bct) {
     return bct->len;
 }
 
-size_t vt_bat_capacity(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_capacity(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -48,7 +48,7 @@ size_t vt_bat_capacity(const struct VitaBaseArrayType *const bct) {
     return bct->capacity;
 }
 
-size_t vt_bat_has_space(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_has_space(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -56,7 +56,7 @@ size_t vt_bat_has_space(const struct VitaBaseArrayType *const bct) {
     return bct->capacity - bct->len;
 }
 
-size_t vt_bat_elsize(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_elsize(const struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -64,7 +64,7 @@ size_t vt_bat_elsize(const struct VitaBaseArrayType *const bct) {
     return bct->elsize;
 }
 
-void *vt_bat_slide_front(struct VitaBaseArrayType *const bct) {
+void *vt_array_slide_front(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -76,12 +76,12 @@ void *vt_bat_slide_front(struct VitaBaseArrayType *const bct) {
     }
 
     // reset the slider
-    vt_bat_slide_reset(bct);
+    vt_array_slide_reset(bct);
 
     return NULL;
 }
 
-void *vt_bat_slide_back(struct VitaBaseArrayType *const bct) {
+void *vt_array_slide_back(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);
@@ -93,12 +93,12 @@ void *vt_bat_slide_back(struct VitaBaseArrayType *const bct) {
     }
 
     // reset the slider
-    vt_bat_slide_reset(bct);
+    vt_array_slide_reset(bct);
 
     return NULL;
 }
 
-void vt_bat_slide_reset(struct VitaBaseArrayType *const bct) {
+void vt_array_slide_reset(struct VitaBaseArrayType *const bct) {
     // check for invalid input
     assert(bct != NULL);
     assert(bct->ptr != NULL);

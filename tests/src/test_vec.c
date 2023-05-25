@@ -120,7 +120,7 @@ int main(void) {
         assert(vt_vec_geti32(vecmat, 24) == 1);
 
         void *i = NULL;
-        while((i = vt_bat_slide_front(vecmat)) != NULL) {
+        while((i = vt_array_slide_front(vecmat)) != NULL) {
             // printf("%d\n", *VT_AS(int32_t*, i));
         }
     } vt_vec_destroy(vecmat);
