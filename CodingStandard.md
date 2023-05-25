@@ -24,10 +24,19 @@ const int width/WIDTH = 320;    // const
 Use `PascalCase` when naming structs and `camelCase` for struct members.
 
 ```C
+// if that is a POD:
 struct BlackBox {
     int unknownBody;
     bool exists;
 };
+
+// if that is an object (will behave like an object)
+typedef struct BlackBox {
+    int unknownBody;
+    bool exists;
+
+    int (*some_func)(void);
+} bb_t;
 ```
 
 Use capital letters of an enum as a prefix for enum members. Enums may be `ALL_CAPS`, but I prefer `lower_underscore_case` style. 
