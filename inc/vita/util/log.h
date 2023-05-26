@@ -100,7 +100,7 @@ extern const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level);
 
     @note if `NULL` is specified for filename, redirects to stdout
 */
-extern void vt_log(const char *const filename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...);
+extern void vt_log(const char *const filename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const size_t line, const char *const zfmt, ...);
 
 #endif // VITA_VT_LOG_H
 

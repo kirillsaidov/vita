@@ -13,97 +13,101 @@ struct VitaBaseArrayType *vt_array_new(void) {
     return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
 }
 
-void vt_array_free(struct VitaBaseArrayType *bct) {
+void vt_array_free(struct VitaBaseArrayType *vbat) {
     // check for invalid input
-    assert(bct != NULL);
+    assert(vbat != NULL);
+
+    // free allocator
+    VT_FREE(vbat->alloctr);
+    vbat->alloctr = NULL;
 
     // free the VitaBaseArrayType
-    VT_FREE(bct);
+    VT_FREE(vbat);
 
     // reset to NULL
-    bct = NULL;
+    vbat = NULL;
 }
 
-void *vt_array_head(const struct VitaBaseArrayType *const bct) {
+void *vt_array_head(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
     
-    return bct->ptr;
+    return vbat->ptr;
 }
 
-size_t vt_array_len(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_len(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
-    return bct->len;
+    return vbat->len;
 }
 
-size_t vt_array_capacity(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_capacity(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
-    return bct->capacity;
+    return vbat->capacity;
 }
 
-size_t vt_array_has_space(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_has_space(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
-    return bct->capacity - bct->len;
+    return (vbat->capacity - vbat->len);
 }
 
-size_t vt_array_elsize(const struct VitaBaseArrayType *const bct) {
+size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
-    return bct->elsize;
+    return vbat->elsize;
 }
 
-void *vt_array_slide_front(struct VitaBaseArrayType *const bct) {
+void *vt_array_slide_front(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
     // check bounds
-    if(bct->slider_idx < bct->len) {
-        bct->slider_idx++;
-        return (char*)bct->ptr + (bct->slider_idx - 1) * bct->elsize;
+    if(vbat->slider_idx < vbat->len) {
+        vbat->slider_idx++;
+        return (char*)vbat->ptr + (vbat->slider_idx - 1) * vbat->elsize;
     }
 
     // reset the slider
-    vt_array_slide_reset(bct);
+    vt_array_slide_reset(vbat);
 
     return NULL;
 }
 
-void *vt_array_slide_back(struct VitaBaseArrayType *const bct) {
+void *vt_array_slide_back(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
     // check bounds
-    if(bct->slider_idx < bct->len) {
-        bct->slider_idx++;
-        return (char*)bct->ptr + (bct->len - bct->slider_idx - 2) * bct->elsize;
+    if(vbat->slider_idx < vbat->len) {
+        vbat->slider_idx++;
+        return (char*)vbat->ptr + (vbat->len - vbat->slider_idx - 2) * vbat->elsize;
     }
 
     // reset the slider
-    vt_array_slide_reset(bct);
+    vt_array_slide_reset(vbat);
 
     return NULL;
 }
 
-void vt_array_slide_reset(struct VitaBaseArrayType *const bct) {
+void vt_array_slide_reset(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    assert(bct != NULL);
-    assert(bct->ptr != NULL);
+    assert(vbat != NULL);
+    assert(vbat->ptr != NULL);
 
-    bct->slider_idx = 0;
+    vbat->slider_idx = 0;
 }
 
 size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t ncols) {
@@ -121,39 +125,39 @@ void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, c
 
 /* -------------- MEMORY MANAGEMENT -------------- */
 
-void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const size_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
     void *ptr = malloc(bytes);
     if(ptr == NULL) {
-        fprintf(stderr, "%s %s:%s:%d: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
+        fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
 
     return ptr;
 }
 
-void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const size_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
     void *ptr = calloc(1, bytes);
     if(ptr == NULL) {
-        fprintf(stderr, "%s %s:%s:%d: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
+        fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
 
     return ptr;
 }
 
-void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     assert(bytes > 0);
 
     // allocate and error checking
     void *ptr_new = realloc(ptr, bytes);
     if(ptr_new == NULL) {
-        fprintf(stderr, "%s %s:%s:%d: %s\n", "MEMORY REALLOCATION FAILURE", file, func, line, "Aborting...");
+        fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY REALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
 

@@ -26,6 +26,7 @@
 
 #include "../core/core.h"
 #include "../util/debug.h"
+#include "../allocator/mallocator.h"
 
 // new pointer list type
 typedef struct VitaBaseArrayType vt_plist_t;
@@ -59,6 +60,13 @@ extern void vt_plist_free(vt_plist_t *p);
     @returns `vt_plist_t*` upon success, `NULL` otherwise
 */
 extern vt_plist_t *vt_plist_create(const size_t n);
+
+/** Transfer memory ownership to allocator
+    @param p vt_plist_t instance
+    @param alloctr allocator instance
+*/
+// TODO:
+// extern void vt_plist_to_alloctr(const vt_plist_t *const p, const struct VitaBaseAllocatorType *alloctr);
 
 /** Deallocates and destroys vt_plist_t
     @param p vt_plist_t pointer

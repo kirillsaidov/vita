@@ -26,7 +26,7 @@ static size_t vt_debug_handler_handler_has_space(const vt_debug_handler_t *const
 static int64_t vt_debug_handler_handler_find_element(const vt_debug_handler_t *const mh, const void *const ptr);
 static size_t vt_debug_handler_handler_realloc(vt_debug_handler_t *const mh, const size_t bytes);
 
-void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const int32_t line, const char *const zfmt, ...) {
+void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const size_t line, const char *const zfmt, ...) {
     if(!expr) {
         // get time
         char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
@@ -41,7 +41,7 @@ void vt_debug_assert(const bool expr, const char *const zexpr, const char *const
                 if(fp == NULL) { fp = stderr; }
 
                 // logging to fp
-                fprintf(fp, "%s %s [%s] %s:%s:%d: ", tbuf, "DEBUG ASSERTION FAILURE", zexpr, file, func, line);
+                fprintf(fp, "%s %s [%s] %s:%s:%zu: ", tbuf, "DEBUG ASSERTION FAILURE", zexpr, file, func, line);
                 vfprintf(fp, zfmt, args);
                 fprintf(fp, "\n");
 
@@ -159,7 +159,7 @@ vt_debug_handler_t *vt_debug_handler_default_get_handler(void) {
 
 /* ---------------- MEMORY MANAGEMENT FUNCTIONS ----------------- */
 
-void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
     VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -185,7 +185,7 @@ void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, 
     return ptr;
 }
 
-void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
     VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -211,7 +211,7 @@ void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, 
     return ptr;
 }
 
-void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line) {
+void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
     VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -244,7 +244,7 @@ void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const si
     return ptr_new;
 }
 
-void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *const file, const char *const func, const int32_t line) {
+void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
     VT_DEBUG_ASSERT(mh != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(mh->cache != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));

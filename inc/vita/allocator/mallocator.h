@@ -5,12 +5,13 @@
     - 
 */
 
+#include "../core/core.h"
 #include "../util/debug.h"
 
 // macros
-#define VT_MALLOCATOR_ALLOC(alloctr, bytes) vt_mallocator_alloc(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
-#define VT_MALLOCATOR_REALLOC(alloctr, ptr, bytes) vt_mallocator_realloc(alloctr, ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
-#define VT_MALLOCATOR_FREE(alloctr, bytes) vt_mallocator_free(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_ALLOCATOR_ALLOC(alloctr, bytes) alloctr->alloc(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_ALLOCATOR_REALLOC(alloctr, ptr, bytes) alloctr->realloc(alloctr, ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_ALLOCATOR_FREE(alloctr, ptr) alloctr->free(alloctr, ptr, __SOURCE_FILENAME__, __func__, __LINE__)
 
 // allocator statistics
 struct VitaAllocatorStats {
@@ -38,9 +39,9 @@ struct VitaBaseAllocatorType {
     size_t obj_list_capacity;
 
     // functions
-    void *(*alloc)(struct VitaBaseAllocatorType *const alloctr, const size_t, const char *const, const char *const, const size_t);           // custom allocation function
-    void *(*realloc)(struct VitaBaseAllocatorType *const alloctr, void*, const size_t, const char *const, const char *const, const size_t);  // custom reallocation function
-    void  (*free)(struct VitaBaseAllocatorType *const alloctr, void*, const char *const, const char *const, const size_t);                   // custom free function
+    void *(*alloc)(struct VitaBaseAllocatorType *const, const size_t, const char *const, const char *const, const size_t);           // custom allocation function
+    void *(*realloc)(struct VitaBaseAllocatorType *const, void*, const size_t, const char *const, const char *const, const size_t);  // custom reallocation function
+    void  (*free)(struct VitaBaseAllocatorType *const, void*, const char *const, const char *const, const size_t);                   // custom free function
 };
 
 // mallocator

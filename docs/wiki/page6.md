@@ -71,7 +71,7 @@ void vt_log(
     const bool expr, 
     const char *const zexpr, 
     const char *const file, 
-    const int32_t line, 
+    const size_t line, 
     const char *const zfmt, 
     ...
 );

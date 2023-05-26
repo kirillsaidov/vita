@@ -31,7 +31,7 @@ const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level) {
     return vt_log_level_strings[vt_log_level];
 }
 
-void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const int32_t line, const char *const zfmt, ...) {
+void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const size_t line, const char *const zfmt, ...) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_log_level < vt_log_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -53,9 +53,9 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
 
             // logging data
             if(zexpr == NULL) {
-                fprintf(fp, "%s %5s %s:%d: ", tbuf, vt_log_get_level_str(vt_log_level), file, line);
+                fprintf(fp, "%s %5s %s:%zu: ", tbuf, vt_log_get_level_str(vt_log_level), file, line);
             } else {
-                fprintf(fp, "%s %5s [%s] %s:%d: ", tbuf, vt_log_get_level_str(vt_log_level), zexpr, file, line);
+                fprintf(fp, "%s %5s [%s] %s:%zu: ", tbuf, vt_log_get_level_str(vt_log_level), zexpr, file, line);
             }
 
             // output the rest

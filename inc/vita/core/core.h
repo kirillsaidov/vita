@@ -127,6 +127,9 @@ enum VitaStatus {
 };
 #undef X
 
+// see allocator/mallocator.h
+struct VitaBaseAllocatorType;
+
 // base array type for all array-like primitives
 struct VitaBaseArrayType {
     // data pointers
@@ -134,6 +137,9 @@ struct VitaBaseArrayType {
         void *ptr;
         void **ptr2;
     };
+
+    // allocator: if `NULL`, then calloc/realloc/free is used
+    struct VitaBaseAllocatorType *alloctr;
 
     // data information
     size_t len;         // container length
@@ -150,60 +156,60 @@ struct VitaBaseArrayType {
 extern struct VitaBaseArrayType *vt_array_new(void);
 
 /** Frees the VitaBaseArrayType instance
-    @param bct VitaBaseArrayType pointer
+    @param vbat VitaBaseArrayType pointer
 */
-extern void vt_array_free(struct VitaBaseArrayType *bct);
+extern void vt_array_free(struct VitaBaseArrayType *vbat);
 
 /** Returns VitaBaseArrayType's ptr head
-    @param bct VitaBaseArrayType ptr instance
+    @param vbat VitaBaseArrayType ptr instance
     @returns `NULL` upon failure
 */
-extern void *vt_array_head(const struct VitaBaseArrayType *const bct);
+extern void *vt_array_head(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's length    
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns length
 */
-extern size_t vt_array_len(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_len(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's capacity
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns capacity
 */
-extern size_t vt_array_capacity(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_capacity(const struct VitaBaseArrayType *const vbat);
 
 /** Returns available space before new allocation is required
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns free space (capacity - length)
 */
-extern size_t vt_array_has_space(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_has_space(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's element size
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns element size
 */
-extern size_t vt_array_elsize(const struct VitaBaseArrayType *const bct);
+extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 
 /** Slides through the container elements one by one
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns container ptr head pointing to next element from the start
 
     @note returns `NULL` upon reaching the end
 */
-extern void *vt_array_slide_front(struct VitaBaseArrayType *const bct);
+extern void *vt_array_slide_front(struct VitaBaseArrayType *const vbat);
 
 /** Slides through the container elements one by one
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
     @returns container ptr head pointing to next element from the end
 
     @note returns `NULL` upon reaching the end
 */
-extern void *vt_array_slide_back(struct VitaBaseArrayType *const bct);
+extern void *vt_array_slide_back(struct VitaBaseArrayType *const vbat);
 
 /** Resets the slider
-    @param bct VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType ptr
 */
-extern void vt_array_slide_reset(struct VitaBaseArrayType *const bct);
+extern void vt_array_slide_reset(struct VitaBaseArrayType *const vbat);
 
 /** Maps a 2d index to 1d index
     @param row row index
@@ -238,7 +244,7 @@ extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t
 
     @note exits upon failure
 */
-extern void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_malloc(const size_t bytes, const char *const file, const char *const func, const size_t line);
 
 /** Allocates memory and initiazes to zero
     @param bytes amount to allocate
@@ -250,7 +256,7 @@ extern void *vt_malloc(const size_t bytes, const char *const file, const char *c
 
     @note exits upon failure
 */
-extern void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_calloc(const size_t bytes, const char *const file, const char *const func, const size_t line);
 
 /** Reallocates memory
     @param ptr pointer to memory address
@@ -263,13 +269,10 @@ extern void *vt_calloc(const size_t bytes, const char *const file, const char *c
 
     @note exits upon failure
 */
-extern void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const char *const func, const size_t line);
 
 /** Frees memory
-    @param bytes amount to allocate
-    @returns ptr to allocated memory
-
-    @note returns upon ptr being NULL
+    @param ptr pointer to memory
 */
 extern void vt_free(void *ptr);
 

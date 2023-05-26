@@ -123,7 +123,7 @@ typedef struct VitaDebugMemoryHandler vt_debug_handler_t;
     @param zfmt formatting
     @param ... additional arguments
 */
-extern void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const int32_t line, const char *const zfmt, ...);
+extern void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const size_t line, const char *const zfmt, ...);
 
 /** Debug info print
     @param zfilename filename to redirect the output to; if `NULL` is passed, `stderr` is used
@@ -190,7 +190,7 @@ extern vt_debug_handler_t *vt_debug_handler_default_get_handler(void);
 
     @returns pointer to allocated block of memory, `NULL` upon failure
 */
-extern void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const func, const char *const file, const int32_t line);
+extern void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const func, const char *const file, const size_t line);
 
 /** Allocates memory like calloc
     @param mh memory handler instance
@@ -201,7 +201,7 @@ extern void *vt_debug_handler_malloc(vt_debug_handler_t *const mh, const size_t 
 
     @returns pointer to allocated block of memory, `NULL` upon failure
 */
-extern void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t bytes, const char *const file, const char *const func, const size_t line);
 
 /** Rellocates memory like realloc
     @param mh memory handler instance
@@ -217,7 +217,7 @@ extern void *vt_debug_handler_calloc(vt_debug_handler_t *const mh, const size_t 
         It's meant to work with mh instance. 
         If ptr is not found the mh cache, then nothing happens.
 */
-extern void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const int32_t line);
+extern void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, const size_t bytes, const char *const file, const char *const func, const size_t line);
 
 /** Frees memory like free
     @param mh memory handler instance
@@ -230,7 +230,7 @@ extern void *vt_debug_handler_realloc(vt_debug_handler_t *const mh, void *ptr, c
         It's meant to work with mh instance. 
         If ptr is not found the mh cache, then nothing happens.
 */
-extern void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *const file, const char *const func, const int32_t line);
+extern void vt_debug_handler_free(vt_debug_handler_t *const mh, void *ptr, const char *const file, const char *const func, const size_t line);
 
 /** Adds allocated memory to memory handler cache
     @param mh memory handler instance
