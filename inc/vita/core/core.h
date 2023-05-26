@@ -53,7 +53,7 @@
 #define VT_FREE(ptr) vt_free(ptr)
 
 // constants
-#define VT_ARRAY_DEFAULT_INIT_ELEMENTS 10
+#define VT_ARRAY_DEFAULT_INIT_ELEMENTS 16
 #define VT_ARRAY_DEFAULT_GROWTH_RATE 2
 
 // this is needed in order to properly expand macros if one macro is inserted into another
