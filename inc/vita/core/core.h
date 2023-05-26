@@ -39,8 +39,9 @@
 #include <limits.h>
 #include <time.h>
 
-// getting file name
+// OS specific setup
 #if defined(_WIN32) || defined(_WIN64)
+    #define strncpy(d, s, n) strncpy_s(d, n, s, n)
     #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #else
     #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)

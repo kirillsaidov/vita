@@ -17,9 +17,9 @@ var log_8h =
       [ "ll_warn", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a77c3d7b2141c4afb7ae37866b796b293", null ],
       [ "ll_debug", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a0069c27ffa71b88361515f9f6a72ef7d", null ],
       [ "ll_error", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a1f65c1f49c959fe910e3838f1cbd7b89", null ],
-      [ "vt_ll_fatal", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9ac3b1dc490a07c4ce24044fa15da15181", null ],
+      [ "vt_log_fatal", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9ac3b1dc490a07c4ce24044fa15da15181", null ],
       [ "ll_assert", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9ad617f30674e212958df8de44b5da1dd2", null ],
-      [ "vt_ll_count", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a70567eb5469f047c31bd736742d71a7b", null ]
+      [ "vt_log_count", "log_8h.html#aca1fd1d8935433e6ba2e3918214e07f9a70567eb5469f047c31bd736742d71a7b", null ]
     ] ],
     [ "log_level_get_str", "log_8h.html#a124889b046eb7d204c90aaf8e7a969f0", null ],
     [ "log_level_set", "log_8h.html#a2d63d4bc955176207c397feb6ad5012c", null ],

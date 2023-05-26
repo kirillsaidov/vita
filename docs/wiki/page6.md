@@ -12,33 +12,33 @@ Vita provides 5 log levels:
 ```c
 // Log levels
 enum VitaLogLevel {
-    vt_ll_info,    // write to file/stderr, move on
-    vt_ll_warn,    // write to file/stderr, move on
-    vt_ll_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
-    vt_ll_error,   // write to file/stderr, move on
-    vt_ll_fatal,   // write to file/stderr, exit program
-    vt_ll_assert,  // write to file/stderr if assertion fails, move on
-    vt_ll_count    // number of elements
+    vt_log_info,    // write to file/stderr, move on
+    vt_log_warn,    // write to file/stderr, move on
+    vt_log_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
+    vt_log_error,   // write to file/stderr, move on
+    vt_log_fatal,   // write to file/stderr, exit program
+    vt_log_assert,  // write to file/stderr if assertion fails, move on
+    vt_log_count    // number of elements
 };
 ```
 
 Vita logger is easy configure. By default Vita logs data to `stderr`, unless specified otherwise.
 ```c
 // redirect output to "my_info_logger_file.log"
-vt_log_set_level(vt_ll_info, "my_info_logger_file.log"); 
+vt_log_set_level(vt_log_info, "my_info_logger_file.log"); 
 
 // redirect output to stderr
-vt_log_set_level(vt_ll_info, NULL); 
-vt_log_set_level(vt_ll_info, stderr);   // ditto
+vt_log_set_level(vt_log_info, NULL); 
+vt_log_set_level(vt_log_info, stderr);   // ditto
 
 // redirect all log levels to a file
-vt_log_set_level_default("my_log_output.log");
-vt_log_set_level_default(NULL);         // reset
+vt_log_set_level_all("my_log_output.log");
+vt_log_set_level_all(NULL);         // reset
 ```
 
 You can also get log level string:
 ```c
-const char *log_level_str = vt_log_get_level_str(vt_ll_info);
+const char *log_level_str = vt_log_get_level_str(vt_log_info);
 assert(strcmp("INFO", log_level_str));
 ```
 
