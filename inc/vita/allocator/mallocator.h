@@ -8,6 +8,11 @@
 #include "../core/core.h"
 #include "../util/debug.h"
 
+// macros
+#define VT_MALLOCATOR_ALLOC(alloctr, bytes) vt_mallocator_alloc(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_MALLOCATOR_REALLOC(alloctr, ptr, bytes) vt_mallocator_realloc(alloctr, ptr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+#define VT_MALLOCATOR_FREE(alloctr, bytes) vt_mallocator_free(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)
+
 // allocator statistics
 struct VitaAllocatorStats {
     size_t count_allocs;                    // number of allocations made
