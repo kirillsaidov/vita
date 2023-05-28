@@ -21,45 +21,26 @@
     - vt_plist_pop
     - vt_plist_pop_get
     - vt_plist_remove
+    - vt_plist_slide_front
+    - vt_plist_slide_back
+    - vt_plist_slide_reset
     - vt_plist_apply
 */
 
-#include "../core/core.h"
-#include "../util/debug.h"
-#include "../allocator/mallocator.h"
+#include "common.h"
 
 // new pointer list type
 typedef struct VitaBaseArrayType vt_plist_t;
 
-/** Allocates memory for vt_plist_t
-    @returns `vt_plist_t*` upon success, `NULL` upon failure
-*/
-extern vt_plist_t *vt_plist_new(void);
-
-/** Constructs vt_plist_t
-    @param p vt_plist_t instance
-    @param n number of elements
-
-    @returns enum VitaStatus
-*/
-extern enum VitaStatus vt_plist_ctor(vt_plist_t *p, const size_t n);
-
-/** Destroys contents of vt_plist_t
-    @param p vt_plist_t instance
-    @returns enum VitaStatus
-*/
-extern void vt_plist_dtor(vt_plist_t *p);
-
-/** Frees the vt_plist_t instance
-    @param p vt_plist_t pointer
-*/
-extern void vt_plist_free(vt_plist_t *p);
-
 /** Allocates and constructs vt_plist_t
     @param n number of elements
+    @param alloctr allocator instance
+
     @returns `vt_plist_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
 */
-extern vt_plist_t *vt_plist_create(const size_t n);
+extern vt_plist_t *vt_plist_create(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
 
 /** Transfer memory ownership to allocator
     @param p vt_plist_t instance
@@ -72,17 +53,6 @@ extern vt_plist_t *vt_plist_create(const size_t n);
     @param p vt_plist_t pointer
 */
 extern void vt_plist_destroy(vt_plist_t *p);
-
-/** Allocates and constructs vt_plist_t from an array
-    @param ptr array 
-    @param n number of elements
-
-    @returns `vt_plist_t*` upon success, `NULL` otherwise
-
-    @note 
-        If ptr == NULL, returns an empty `vt_plist_t` instance
-*/
-extern vt_plist_t *vt_plist_from(const void **const ptr, const size_t n);
 
 /** Returns length, capacity, available space (capacity - length)
     @param p vt_plist_t pointer
@@ -101,31 +71,25 @@ extern bool vt_plist_is_empty(const vt_plist_t *const p);
 /** Reserves additional memory of n elements
     @param p vt_plist_t pointer
     @param n number of elements
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_reserve(vt_plist_t *const p, const size_t n);
+extern void vt_plist_reserve(vt_plist_t *const p, const size_t n);
 
 /** Shrinks vt_plist_t capacity to its length
     @param p vt_plist_t pointer
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_shrink(vt_plist_t *const p);
+extern void vt_plist_shrink(vt_plist_t *const p);
 
 /** Sets vt_plist_t length to 0
     @param p vt_plist_t pointer
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_clear(vt_plist_t *const p);
+extern void vt_plist_clear(vt_plist_t *const p);
 
 /** Assigns a new pointer at an index
     @param p vt_plist_t pointer
     @param ptr pointer value
     @param at index
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at);
+extern void vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at);
 
 /** Returns a pointer at an index
     @param p vt_plist_t pointer
@@ -138,16 +102,13 @@ extern void *vt_plist_get(const vt_plist_t *const p, const size_t at);
 /** Push value at the end
     @param p vt_plist_t pointer
     @param ptr pointer value
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_push(vt_plist_t *const p, const void *const ptr);
+extern void vt_plist_push(vt_plist_t *const p, const void *const ptr);
 
 /** Pop the last value from the end
     @param p vt_plist_t pointer
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_plist_pop(vt_plist_t *const p);
+extern void vt_plist_pop(vt_plist_t *const p);
 
 /** Get and pop the last value from the end
     @param p vt_plist_t pointer
@@ -159,14 +120,12 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
     @param p vt_plist_t pointer
     @param at index
 
-    @returns enum VitaStatus
-
     @note
         enum VitaRemoveStrategy { vt_remove_stategy_stable = ordered removal, rs_fast = unordered removal }
         vt_remove_stategy_stable: shifts all values by element size
-          rs_fast: swaps the last value with the value of `at`
+        rs_fast: swaps the last value with the value of `at`
 */
-extern enum VitaStatus vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
+extern void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
 
 /** Slides through the container elements one by one
     @param p vt_plist_t pointer
@@ -192,6 +151,8 @@ extern void vt_plist_slide_reset(vt_plist_t *const p);
 /** Calls the specified function on each element
     @param p vt_plist_t instance
     @param func function to execute upon each element: func(pointer, for loop index)
+
+    @note function: func(void*, size_t)
 */
 extern void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t));
 
