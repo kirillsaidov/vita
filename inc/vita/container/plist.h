@@ -40,7 +40,7 @@ typedef struct VitaBaseArrayType vt_plist_t;
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
 */
-extern vt_plist_t *vt_plist_create(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
 /** Transfer memory ownership to allocator
     @param p vt_plist_t instance

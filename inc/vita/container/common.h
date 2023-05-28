@@ -22,7 +22,7 @@
 
     @note if `NULL` is specified, then vita calloc/realloc/free is used
 */
-extern struct VitaBaseArrayType *vt_array_new(const struct VitaBaseAllocatorType *const alloctr);
+extern struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloctr);
 
 /** Frees the VitaBaseArrayType instance
     @param vbat VitaBaseArrayType instance

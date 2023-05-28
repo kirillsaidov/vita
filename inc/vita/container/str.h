@@ -69,7 +69,7 @@ vt_str_t vt_str_create_static(const char *const z);
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_create(const char *const z, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 
 /** Creates a dynamic string of specified length and fills it with zeros (allocates additional memory for '\0')
     @param n number of elements
@@ -82,7 +82,7 @@ extern vt_str_t *vt_str_create(const char *const z, const struct VitaBaseAllocat
         It won't start appending from the begining. Use `vt_str_set` for that. 
         If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_create_len(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
 /** Creates an empty dynamic string of specified capacity and fills it with zeros (allocates additional memory for '\0')
     @param n number of elements
@@ -95,7 +95,7 @@ extern vt_str_t *vt_str_create_len(const size_t n, const struct VitaBaseAllocato
         `vt_str_set` won't work this time, because not enough space (length 0).
         If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_create_capacity(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
 /** Frees the str instance
     @param s vt_str_t instance
@@ -110,7 +110,7 @@ extern void vt_str_destroy(vt_str_t *s);
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_dup(const vt_str_t *const s, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_dup(const vt_str_t *const s, struct VitaBaseAllocatorType *const alloctr);
 
 /** Takes ownership of an allocated string instead of allocating memory itself
     @param z a raw C string allocated on heap
@@ -120,7 +120,7 @@ extern vt_str_t *vt_str_dup(const vt_str_t *const s, const struct VitaBaseAlloca
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_take_ownership(const char *const z, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 
 /** Returns a zero terminated C string
     @param s vt_str_t string

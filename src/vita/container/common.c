@@ -1,6 +1,6 @@
 #include "vita/container/common.h"
 
-struct VitaBaseArrayType *vt_array_new(const struct VitaBaseAllocatorType *const alloctr) {
+struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloctr) {
     if(alloctr == NULL) {
         return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
     }

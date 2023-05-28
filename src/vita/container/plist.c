@@ -1,6 +1,6 @@
 #include "vita/container/plist.h"
 
-vt_plist_t *vt_plist_create(const size_t n, const struct VitaBaseAllocatorType *const alloctr) {
+vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 

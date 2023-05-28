@@ -48,7 +48,7 @@ typedef struct VitaBaseArrayType vt_vec_t;
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
 */
-extern vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaBaseAllocatorType *const alloctr);
 
 /** Deallocates and destroys vt_vec_t
     @param v vt_vec_t pointer
@@ -63,7 +63,7 @@ extern void vt_vec_destroy(vt_vec_t *v);
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
 */
-extern vt_vec_t *vt_vec_dup(const vt_vec_t *const v, const struct VitaBaseAllocatorType *const alloctr);
+extern vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorType *const alloctr);
 
 /** Returns vt_vec_t length
     @param v vt_vec_t instance

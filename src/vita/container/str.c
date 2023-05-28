@@ -16,7 +16,7 @@ vt_str_t vt_str_create_static(const char *const z) {
     return s;
 }
 
-vt_str_t *vt_str_create(const char *const z, const struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -33,7 +33,7 @@ vt_str_t *vt_str_create(const char *const z, const struct VitaBaseAllocatorType 
     return s;
 }
 
-vt_str_t *vt_str_create_len(const size_t n, const struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -50,7 +50,7 @@ vt_str_t *vt_str_create_len(const size_t n, const struct VitaBaseAllocatorType *
     return s;
 }
 
-vt_str_t *vt_str_create_capacity(const size_t n, const struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -79,7 +79,7 @@ void vt_str_destroy(vt_str_t *s) {
     s = NULL;
 }
 
-vt_str_t *vt_str_dup(const vt_str_t *const s, const struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_dup(const vt_str_t *const s, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -87,7 +87,7 @@ vt_str_t *vt_str_dup(const vt_str_t *const s, const struct VitaBaseAllocatorType
     return vt_str_create(s->ptr, alloctr);
 }
 
-vt_str_t *vt_str_take_ownership(const char *const z, const struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 

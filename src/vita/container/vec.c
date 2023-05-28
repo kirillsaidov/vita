@@ -1,6 +1,6 @@
 #include "vita/container/vec.h"
 
-vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, const struct VitaBaseAllocatorType *const alloctr) {
+vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
@@ -37,7 +37,7 @@ void vt_vec_destroy(vt_vec_t *v) {
     v = NULL;
 }
 
-vt_vec_t *vt_vec_dup(const vt_vec_t *const v, const struct VitaBaseAllocatorType *const alloctr) {
+vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -147,7 +147,7 @@ void vt_vec_push(vt_vec_t *const v, const void *const val) {
 
 #define VT_INSTANTIATE_VEC_PUSH(T, t)                     \
     void vt_vec_push##t(vt_vec_t *const v, const T val) { \
-        return vt_vec_push(v, &val);                      \
+        vt_vec_push(v, &val);                             \
     }
 VT_INSTANTIATE_VEC_PUSH(int8_t, i8)
 VT_INSTANTIATE_VEC_PUSH(uint8_t, u8)
@@ -222,7 +222,7 @@ void vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
 
 #define VT_INSTANTIATE_VEC_SET(T, t)                                      \
     void vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) { \
-        return vt_vec_set(v, &val, at);                                   \
+        vt_vec_set(v, &val, at);                                          \
     }
 VT_INSTANTIATE_VEC_SET(int8_t, i8)
 VT_INSTANTIATE_VEC_SET(uint8_t, u8)
@@ -299,7 +299,7 @@ void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
 
 #define VT_INSTANTIATE_VEC_INSERT(T, t)                                       \
     void vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at) {  \
-        return vt_vec_insert(v, &val, at);                                    \
+        vt_vec_insert(v, &val, at);                                           \
     }
 VT_INSTANTIATE_VEC_INSERT(int8_t, i8)
 VT_INSTANTIATE_VEC_INSERT(uint8_t, u8)
