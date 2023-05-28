@@ -1,6 +1,6 @@
 #include "vita/system/fileio.h"
 
-vt_str_t *vt_file_read(const char *const filename) {
+vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(filename != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -26,7 +26,7 @@ vt_str_t *vt_file_read(const char *const filename) {
     }
 
     // create data buffer
-    vt_str_t *sbuffer = vt_str_create_len(fsize);
+    vt_str_t *sbuffer = vt_str_create_len(fsize, alloctr);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
@@ -53,7 +53,7 @@ vt_str_t *vt_file_read(const char *const filename) {
     return sbuffer;
 }
 
-vt_str_t *vt_file_readb(const char *const filename) {
+vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(filename != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
@@ -74,7 +74,7 @@ vt_str_t *vt_file_readb(const char *const filename) {
     }
 
     // create data buffer
-    vt_str_t *sbuffer = vt_str_create_len(fsize);
+    vt_str_t *sbuffer = vt_str_create_len(fsize, alloctr);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 

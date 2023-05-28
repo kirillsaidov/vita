@@ -24,8 +24,8 @@
     @param filename file name
     @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern vt_str_t *vt_file_read(const char *const filename);
-extern vt_str_t *vt_file_readb(const char *const filename);
+extern vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType *const alloctr);
 
 /** Writes to a file in 'w' mode (vt_file_write, vt_file_writeln)
     @param filename file name
