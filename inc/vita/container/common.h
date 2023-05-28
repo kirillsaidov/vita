@@ -7,6 +7,7 @@
     - vt_array_capacity
     - vt_array_has_space
     - vt_array_elsize
+    - vt_array_has_alloctr
     - vt_index_2d_to_1d
     - vt_index_1d_to_2d
 */
@@ -24,36 +25,36 @@
 extern struct VitaBaseArrayType *vt_array_new(const struct VitaBaseAllocatorType *const alloctr);
 
 /** Frees the VitaBaseArrayType instance
-    @param vbat VitaBaseArrayType pointer
+    @param vbat VitaBaseArrayType instance
 */
 extern void vt_array_free(struct VitaBaseArrayType *vbat);
 
 /** Returns VitaBaseArrayType's ptr head
-    @param vbat VitaBaseArrayType ptr instance
+    @param vbat VitaBaseArrayType instance
     @returns `NULL` upon failure
 */
 extern void *vt_array_head(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's length    
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns length
 */
 extern size_t vt_array_len(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's capacity
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns capacity
 */
 extern size_t vt_array_capacity(const struct VitaBaseArrayType *const vbat);
 
 /** Returns available space before new allocation is required
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns free space (capacity - length)
 */
 extern size_t vt_array_has_space(const struct VitaBaseArrayType *const vbat);
 
 /** Returns VitaBaseArrayType's element size
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns element size
 */
 extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
@@ -64,7 +65,7 @@ extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 extern bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat);
 
 /** Slides through the container elements one by one
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns container ptr head pointing to next element from the start
 
     @note returns `NULL` upon reaching the end
@@ -72,7 +73,7 @@ extern bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat);
 extern void *vt_array_slide_front(struct VitaBaseArrayType *const vbat);
 
 /** Slides through the container elements one by one
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
     @returns container ptr head pointing to next element from the end
 
     @note returns `NULL` upon reaching the end
@@ -80,7 +81,7 @@ extern void *vt_array_slide_front(struct VitaBaseArrayType *const vbat);
 extern void *vt_array_slide_back(struct VitaBaseArrayType *const vbat);
 
 /** Resets the slider
-    @param vbat VitaBaseArrayType ptr
+    @param vbat VitaBaseArrayType instance
 */
 extern void vt_array_slide_reset(struct VitaBaseArrayType *const vbat);
 
