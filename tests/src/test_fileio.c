@@ -18,18 +18,18 @@ void test_filewrite(void) {
         vt_str_t *s = vt_file_read("other\\test_file.txt"); {
             assert(s != NULL);
             assert(vt_str_len(s) == 18);
-        } vt_str_free(s);
+        } vt_str_destroy(s);
 
-        const vt_str_t sbuf = vt_str_make_on_stack("hello, world\nthis is a new day\n12345 test");
-        vt_file_write("other\\test_file2.txt", vt_cstr(&sbuf));
-        vt_file_writeln("other\\test_file3.txt", vt_cstr(&sbuf));
-        vt_file_appendln("other\\test_file3.txt", vt_cstr(&sbuf));
-        vt_file_append("other\\test_file3.txt", vt_cstr(&sbuf));
+        const vt_str_t sbuf = vt_str_create_static("hello, world\nthis is a new day\n12345 test");
+        vt_file_write("other\\test_file2.txt", vt_str_z(&sbuf));
+        vt_file_writeln("other\\test_file3.txt", vt_str_z(&sbuf));
+        vt_file_appendln("other\\test_file3.txt", vt_str_z(&sbuf));
+        vt_file_append("other\\test_file3.txt", vt_str_z(&sbuf));
 
-        vt_str_t sbuf_check = vt_str_make_on_stack("hello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test");
+        vt_str_t sbuf_check = vt_str_create_static("hello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test");
         vt_str_t *ss = vt_file_read("other\\test_file3.txt"); {
-            assert(vt_str_equals(vt_cstr(ss), vt_cstr(&sbuf_check)));
-        } vt_str_free(ss);
+            assert(vt_str_equals(vt_str_z(ss), vt_str_z(&sbuf_check)));
+        } vt_str_destroy(ss);
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL
         vt_file_writef("other\\test_file4.txt", "%s, %s\n", "hello", "world");
@@ -37,18 +37,18 @@ void test_filewrite(void) {
         vt_str_t *s = vt_file_read("other/test_file.txt"); {
             assert(s != NULL);
             assert(vt_str_len(s) == 18);
-        } vt_str_free(s);
+        } vt_str_destroy(s);
 
-        const vt_str_t sbuf = vt_str_make_on_stack("hello, world\nthis is a new day\n12345 test");
-        vt_file_write("other/test_file2.txt", vt_cstr(&sbuf));
-        vt_file_writeln("other/test_file3.txt", vt_cstr(&sbuf));
-        vt_file_appendln("other/test_file3.txt", vt_cstr(&sbuf));
-        vt_file_append("other/test_file3.txt", vt_cstr(&sbuf));
+        const vt_str_t sbuf = vt_str_create_static("hello, world\nthis is a new day\n12345 test");
+        vt_file_write("other/test_file2.txt", vt_str_z(&sbuf));
+        vt_file_writeln("other/test_file3.txt", vt_str_z(&sbuf));
+        vt_file_appendln("other/test_file3.txt", vt_str_z(&sbuf));
+        vt_file_append("other/test_file3.txt", vt_str_z(&sbuf));
 
-        vt_str_t sbuf_check = vt_str_make_on_stack("hello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test");
+        vt_str_t sbuf_check = vt_str_create_static("hello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test");
         vt_str_t *ss = vt_file_read("other/test_file3.txt"); {
-            assert(vt_str_equals(vt_cstr(ss), vt_cstr(&sbuf_check)));
-        } vt_str_free(ss);
+            assert(vt_str_equals(vt_str_z(ss), vt_str_z(&sbuf_check)));
+        } vt_str_destroy(ss);
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL
         vt_file_writef("other/test_file4.txt", "%s, %s\n", "hello", "world");

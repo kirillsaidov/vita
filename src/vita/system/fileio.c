@@ -26,7 +26,7 @@ vt_str_t *vt_file_read(const char *const filename) {
     }
 
     // create data buffer
-    vt_str_t *sbuffer = vt_strn(fsize);
+    vt_str_t *sbuffer = vt_str_create_len(fsize);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
@@ -43,7 +43,7 @@ vt_str_t *vt_file_read(const char *const filename) {
             bytes_read,
             fsize
         );
-        vt_str_free(sbuffer);
+        vt_str_destroy(sbuffer);
         sbuffer = NULL;
     }
 
@@ -74,7 +74,7 @@ vt_str_t *vt_file_readb(const char *const filename) {
     }
 
     // create data buffer
-    vt_str_t *sbuffer = vt_strn(fsize);
+    vt_str_t *sbuffer = vt_str_create_len(fsize);
     if(sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
@@ -91,7 +91,7 @@ vt_str_t *vt_file_readb(const char *const filename) {
             bytes_read,
             fsize
         );        
-        vt_str_free(sbuffer);
+        vt_str_destroy(sbuffer);
         sbuffer = NULL;
     }
 

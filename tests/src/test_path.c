@@ -37,20 +37,20 @@ void test_path(void) {
         vt_plist_push(p, "folder");
 
         vt_str_t *sp = vt_path_build(NULL, p); {
-            assert(vt_str_equals(vt_cstr(sp), "hello/world/folder"));
-        } vt_str_free(sp);
+            assert(vt_str_equals(vt_str_z(sp), "hello/world/folder"));
+        } vt_str_destroy(sp);
     vt_plist_destroy(p);
 
     assert(vt_path_exists("/home/lala") == false); // must fail
 
     #if defined(_WIN32) || defined(_WIN64)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_cstr(s), "hello\\world\\media\\dev"));
-        vt_str_free(s);
+        assert(vt_str_equals(vt_str_z(s), "hello\\world\\media\\dev"));
+        vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            assert(vt_str_equals(vt_cstr(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
-        } vt_str_free(cwd);
+            assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
+        } vt_str_destroy(cwd);
 
         assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
         assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src"));
@@ -61,21 +61,21 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str("my\\test\\folder\\text.txt"); {
-            assert(vt_str_equals(vt_cstr(vt_path_basename(sbasename, vt_cstr(sbasename))), "text.txt"));
-        } vt_str_free(sbasename);
+        vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt"); {
+            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+        } vt_str_destroy(sbasename);
 
         // make directories
         // vt_path_mkdir("hello_test_dir"); // works
         // vt_path_mkdir_parents("\\hello\\world\\of\\my\\"); // works
     #elif defined(__linux__)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_cstr(s), "hello/world/media/dev/"));
-        vt_str_free(s);
+        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
+        vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            assert(vt_str_equals(vt_cstr(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
-        } vt_str_free(cwd);
+            assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
+        } vt_str_destroy(cwd);
 
         assert(vt_path_exists("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
         assert(vt_path_is_dir("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
@@ -86,21 +86,21 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str("my/test/folder/text.txt"); {
-            assert(vt_str_equals(vt_cstr(vt_path_basename(sbasename, vt_cstr(sbasename))), "text.txt"));
-        } vt_str_free(sbasename);
+        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt"); {
+            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+        } vt_str_destroy(sbasename);
 
         // make directories
         // vt_path_mkdir("hello_test_dir"); // works
         // vt_path_mkdir_parents("/hello/world/of/my/"); // works
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_cstr(s), "hello/world/media/dev/"));
-        vt_str_free(s);
+        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
+        vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(); {
-            assert(vt_str_equals(vt_cstr(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
-        } vt_str_free(cwd);
+            assert(vt_str_equals(vt_str_z(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+        } vt_str_destroy(cwd);
 
         assert(vt_path_exists("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         assert(vt_path_is_dir("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
@@ -111,9 +111,9 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str("my/test/folder/text.txt"); {
-            assert(vt_str_equals(vt_cstr(vt_path_basename(sbasename, vt_cstr(sbasename))), "text.txt"));
-        } vt_str_free(sbasename);
+        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt"); {
+            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+        } vt_str_destroy(sbasename);
 
         // make directories
         // vt_path_mkdir("hello_test_dir"); // works
@@ -134,17 +134,17 @@ void test_expand_tilda(void) {
     vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
-            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
+            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
         #elif defined(__linux__)
-            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/home/kiril/hello"));
+            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/home/kiril/hello"));
         #else
-            assert(vt_str_equals(vt_cstr(s_vt_path_tilda1), "/Users/kirillos/hello"));
+            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/Users/kirillos/hello"));
         #endif
 
-        assert(vt_str_equals(vt_cstr(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
+        assert(vt_str_equals(vt_str_z(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
     }
-    vt_str_free(s_vt_path_tilda1);
-    vt_str_free(s_vt_path_tilda2);
+    vt_str_destroy(s_vt_path_tilda1);
+    vt_str_destroy(s_vt_path_tilda2);
 }
 
 void test_selfpath(void) {
@@ -152,50 +152,50 @@ void test_selfpath(void) {
     VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
 
     #if defined(_WIN32) || defined(_WIN64)
-        assert(vt_str_equals(vt_cstr(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\bin\\test_path.exe"));
+        assert(vt_str_equals(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\bin\\test_path.exe"));
     #elif defined(__linux__)
-        assert(vt_str_equals(vt_cstr(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
+        assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
     #else
-        assert(vt_str_equals(vt_cstr(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
+        assert(vt_str_equals(vt_str_z(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
     
-    VT_DEBUG_PRINTF("this exe path: %s\n", vt_cstr(selfpath));
-    vt_str_free(selfpath);
+    VT_DEBUG_PRINTF("this exe path: %s\n", vt_str_z(selfpath));
+    vt_str_destroy(selfpath);
 }
 
 void test_path_pop(void) {
-    vt_str_t *path = vt_str("./hello/world/bin");
+    vt_str_t *path = vt_str_create("./hello/world/bin");
 
     #if defined(_WIN32) || defined(_WIN64)
-        vt_path_validate((char *const)vt_cstr(path));
-        assert(vt_str_equals(vt_cstr(path), ".\\hello\\world\\bin"));
+        vt_path_validate((char *const)vt_str_z(path));
+        assert(vt_str_equals(vt_str_z(path), ".\\hello\\world\\bin"));
 
-        vt_path_pop((char *const)vt_cstr(path));
-        assert(vt_str_equals(vt_cstr(path), ".\\hello\\world"));
+        vt_path_pop((char *const)vt_str_z(path));
+        assert(vt_str_equals(vt_str_z(path), ".\\hello\\world"));
         assert(vt_str_validate_len(path) == 13);
 
-        vt_path_pop((char *const)vt_cstr(path));
-        assert(vt_str_equals(vt_cstr(path), ".\\hello"));
+        vt_path_pop((char *const)vt_str_z(path));
+        assert(vt_str_equals(vt_str_z(path), ".\\hello"));
         assert(vt_str_validate_len(path) == 7);
     #else
-        vt_path_pop((char *const)vt_cstr(path));
-        assert(vt_str_equals(vt_cstr(path), "./hello/world"));
+        vt_path_pop((char *const)vt_str_z(path));
+        assert(vt_str_equals(vt_str_z(path), "./hello/world"));
         assert(vt_str_validate_len(path) == 13);
 
-        vt_path_pop((char *const)vt_cstr(path));
-        assert(vt_str_equals(vt_cstr(path), "./hello"));
+        vt_path_pop((char *const)vt_str_z(path));
+        assert(vt_str_equals(vt_str_z(path), "./hello"));
         assert(vt_str_validate_len(path) == 7);
     #endif
 
-    vt_path_pop((char *const)vt_cstr(path));
-    assert(vt_str_equals(vt_cstr(path), "."));
+    vt_path_pop((char *const)vt_str_z(path));
+    assert(vt_str_equals(vt_str_z(path), "."));
     assert(vt_str_validate_len(path) == 1);
 
-    vt_path_pop((char *const)vt_cstr(path));
-    assert(vt_str_equals(vt_cstr(path), "."));
+    vt_path_pop((char *const)vt_str_z(path));
+    assert(vt_str_equals(vt_str_z(path), "."));
     assert(vt_str_validate_len(path) == 1);
 
-    vt_str_free(path);
+    vt_str_destroy(path);
 }
 
 

@@ -21,21 +21,21 @@ Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#
 ### Creating strings
 ```c
 // creates a string and sets its value to "hello, world!"
-vt_str_t *msg = vt_str("hello, world!");
+vt_str_t *msg = vt_str_create("hello, world!");
 
 // the same as above, but in 2 steps:
-vt_str_t *msg = vt_strn(10);                      // 1. creates a string with length 10
+vt_str_t *msg = vt_str_create_len(10);                      // 1. creates a string with length 10
 vt_str_set(msg, "hello, world!");              // 2. sets its value to "hello, world!"
 
 // almost the same as above 
-vt_str_t *msg = vt_strn_empty(10);                // creates an empty string with length of 0 and capacity of 10
+vt_str_t *msg = vt_str_create_capacity(10);                // creates an empty string with length of 0 and capacity of 10
 vt_str_append(msg, "hello, world!");           // appends "hello, world!"
 vt_str_appendf(msg, "%s!", "hello, world");    // appends "hello, world!"
 
 // the same as above, but on one go with formatting 
 // passing NULL here will allocate a new string instance
 const char *myVar = "world";
-vt_str_t *msg = vt_str_fmt(NULL, "hello, %s!", myVar);
+vt_str_t *msg = vt_str_create_fmt(NULL, "hello, %s!", myVar);
 
 // create a copy
 vt_str_t *msg_copy = vt_str_dup(msg);
@@ -50,18 +50,18 @@ const size_t freeSpace = vt_str_has_space(msg);
 const bool isEmpty = vt_str_is_empty(msg);
 
 // accessing the raw string pointer
-const char *z_str = vt_cstr(msg); // !!! don't free it
+const char *z_str = vt_str_z(msg); // !!! don't free it
 
 // free memory
-vt_str_free(msg);
-vt_str_free(msg_copy);
-vt_str_free(msg_heap_alloced);
+vt_str_destroy(msg);
+vt_str_destroy(msg_copy);
+vt_str_destroy(msg_heap_alloced);
 ```
 
 ### String operations
 ```c
 // comparing strings
-assert(vt_str_equals(vt_cstr(msg), "hello, world"));
+assert(vt_str_equals(vt_str_z(msg), "hello, world"));
 
 // checking if string is a numeric value
 const size_t max_check_len = 256;

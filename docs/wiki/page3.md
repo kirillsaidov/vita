@@ -15,7 +15,7 @@ vt_str_t *s = vt_file_readb("other/myfile.txt");
 
 // do you thing ...
 
-vt_str_free(s); // free data
+vt_str_destroy(s); // free data
 ```
 
 ### Writing to files
@@ -34,5 +34,5 @@ vt_file_append(filename, data_buffer);
 vt_file_appendln(filename, data_buffer);
 
 // free resources
-vt_str_free(sbuf);
+vt_str_destroy(sbuf);
 ```

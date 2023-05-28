@@ -11,23 +11,23 @@
 ```c
 // path concatenation
 vt_str_t *my_path = vt_path_build(NULL, 2, "photos", "mountains.jpg");
-assert(vt_str_equals(vt_cstr(my_path), "photos/mountains.jpg"));
+assert(vt_str_equals(vt_str_z(my_path), "photos/mountains.jpg"));
 
 // extracting basename from path
 my_path = vt_path_basename(my_path, "photos/mountains.jpg");
-assert(vt_str_equals(vt_cstr(my_path), "mountains.jpg"));
+assert(vt_str_equals(vt_str_z(my_path), "mountains.jpg"));
 
 // expands tilda `~` to HOMEPATH both on Unix and Windows
 vt_str_t *s_expanded = vt_path_expand_tilda("~/media/dev");
-assert(vt_str_equals(vt_cstr(s_expanded), "/home/userX/media/dev"));
+assert(vt_str_equals(vt_str_z(s_expanded), "/home/userX/media/dev"));
 
 // get your EXE path
 vt_str_t *selfpath = vt_path_get_this_exe_location();
-printf("%s\n", vt_cstr(selfpath)); // prints "/home/userX/media/Vita/tests/bin/test_path"
+printf("%s\n", vt_str_z(selfpath)); // prints "/home/userX/media/Vita/tests/bin/test_path"
 
 // free resources
-vt_str_free(my_path); 
-vt_str_free(s_expanded);
+vt_str_destroy(my_path); 
+vt_str_destroy(s_expanded);
 ```
 ### Create, delete, move
 ```c

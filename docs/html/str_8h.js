@@ -1,7 +1,7 @@
 var str_8h =
 [
     [ "vt_str_t", "str_8h.html#a097061cf8c4384da3a81e7a34b86bc80", null ],
-    [ "vt_cstr", "str_8h.html#aacbafb73a97665907379008e44553489", null ],
+    [ "vt_str_z", "str_8h.html#aacbafb73a97665907379008e44553489", null ],
     [ "str", "str_8h.html#a42a6ab855beae01a1b4500e0582c4e0c", null ],
     [ "str_append", "str_8h.html#a14fb30c690864bb2de40c117a28712e1", null ],
     [ "str_append_n", "str_8h.html#a8eb27f1ab77811837013e821f6b4a3d0", null ],

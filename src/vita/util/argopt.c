@@ -24,8 +24,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     }
 
     // parse argument options (skipping the binary name)
-    vt_str_t *s_arg_value = vt_strn_empty(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
-    vt_str_t *s_opt_split = vt_strn_empty(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *s_arg_value = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *s_opt_split = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
     const char *unrecognized_option = NULL;
     for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
@@ -47,8 +47,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
             // Case 1
             if(vt_str_len(s_opt_split)) {
                 // check if option is known
-                if(vt_str_equals(vt_cstr(s_opt_split), opt->optionLong) || vt_str_equals(vt_cstr(s_opt_split), opt->optionShort)) {
-                    vt_argopt_assign_value(opt, vt_cstr(s_arg_value));
+                if(vt_str_equals(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals(vt_str_z(s_opt_split), opt->optionShort)) {
+                    vt_argopt_assign_value(opt, vt_str_z(s_arg_value));
 
                     // reset to NULL, since it was recognized
                     unrecognized_option = NULL;
@@ -56,7 +56,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
                 }
             } else { // Case 2:
                 // check if option is known
-                if(vt_str_equals(vt_cstr(s_arg_value), opt->optionLong) || vt_str_equals(vt_cstr(s_arg_value), opt->optionShort)) {
+                if(vt_str_equals(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals(vt_str_z(s_arg_value), opt->optionShort)) {
                     if(i + 1 < argc && argv[i+1][0] != '-') {
                         vt_argopt_assign_value(opt, argv[++i]);
                     } else {
@@ -83,8 +83,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     }
 
     // free resources
-    vt_str_free(s_arg_value);
-    vt_str_free(s_opt_split);
+    vt_str_destroy(s_arg_value);
+    vt_str_destroy(s_opt_split);
 
     return parse_status;
 }
@@ -183,7 +183,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
             *(real*)(opt->optionValue) = vt_conv_str_to_r(value);
             break;
         
-        // bool, char, vt_str, vt_cstr
+        // bool, char, vt_str, vt_str_z
         case vt_type_bool:
             *(bool*)(opt->optionValue) = (value[0] == '1' || vt_str_equals(value, "true") ? true : false);
             break;
@@ -196,7 +196,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
                 // check if we need to allocate
                 if(*svalue == NULL) {
-                    *svalue = vt_str(value);
+                    *svalue = vt_str_create(value);
                 } else {
                     vt_str_clear(*svalue);
                     vt_str_append(*svalue, value);
@@ -218,7 +218,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                     if(len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
                         if(ztmp == NULL) {
-                            VT_DEBUG_PRINTF("%s: Failed to reallocate vt_cstr to assign a new value!\n", vt_get_vita_error_str(vt_status_error_allocation));
+                            VT_DEBUG_PRINTF("%s: Failed to reallocate vt_str_z to assign a new value!\n", vt_get_vita_error_str(vt_status_error_allocation));
                             return;
                         }
 

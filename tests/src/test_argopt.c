@@ -6,7 +6,7 @@ int32_t main(void) {
     VT_DEBUG_DEFAULT_INIT();
 
     // strings
-    vt_str_t *rpath = vt_str("my/temp/folder/default/initialized");
+    vt_str_t *rpath = vt_str_create("my/temp/folder/default/initialized");
     vt_str_t *wpath = NULL;
 
     // floats
@@ -76,8 +76,8 @@ int32_t main(void) {
     
     // check
     assert(parse_status == VT_ARGOPT_PARSE_ERROR);
-    assert(vt_str_equals(vt_cstr(rpath), "../temp"));
-    assert(vt_str_equals(vt_cstr(wpath), "./docs/dw/data/"));
+    assert(vt_str_equals(vt_str_z(rpath), "../temp"));
+    assert(vt_str_equals(vt_str_z(wpath), "./docs/dw/data/"));
     assert(intensity == (float)0.7);
     assert(polarity == (float)0.35);
     assert(volume == 83);
@@ -86,8 +86,8 @@ int32_t main(void) {
     assert(upgrade == 'y');
 
     // free resources
-    vt_str_free(rpath);
-    vt_str_free(wpath);
+    vt_str_destroy(rpath);
+    vt_str_destroy(wpath);
 
     VT_DEBUG_DEFAULT_QUIT();
     return 0;

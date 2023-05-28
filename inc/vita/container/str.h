@@ -2,15 +2,14 @@
 #define VITA_STR_H
 
 /** VITA_STR MODULE (dynamic string)
-    - vt_str_make_on_stack
-    - vt_str
-    - vt_str_fmt
-    - vt_strn
-    - vt_strn_empty
+    - vt_str_create_static
+    - vt_str_create
+    - vt_str_create_len
+    - vt_str_create_capacity
+    - vt_str_destroy
     - vt_str_dup
     - vt_str_take_ownership
-    - vt_str_free
-    - vt_cstr
+    - vt_str_z
     - vt_str_len
     - vt_str_capacity
     - vt_str_has_space
@@ -19,6 +18,7 @@
     - vt_str_shrink
     - vt_str_clear
     - vt_str_reserve
+    - vt_str_resize
     - vt_str_set
     - vt_str_set_n
     - vt_str_append
@@ -49,8 +49,7 @@
 
 #include <ctype.h>
 #include <stdarg.h>
-#include "../core/core.h"
-#include "../util/debug.h"
+#include "common.h"
 #include "../container/plist.h"
 
 // see core/core.h for definition
@@ -60,65 +59,74 @@ typedef struct VitaBaseArrayType vt_str_t;
     @param z raw C string
     @returns vt_str_t
 */
-vt_str_t vt_str_make_on_stack(const char *const z);
+vt_str_t vt_str_create_static(const char *const z);
 
 /** Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
     @param z raw C string
-    @returns `vt_str_t*` upon success, `NULL` otherwise
-*/
-extern vt_str_t *vt_str(const char *const z);
-
-/** Creates a formatted dynamic string (it is initialized to zero before usage)
-    @param s vt_str_t instance; if `NULL` is passed, allocates
-    @param fmt formatting
-    @param ... additional arguments
+    @param alloctr allocator instance
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_fmt(vt_str_t *s, const char *const fmt, ...);
+extern vt_str_t *vt_str_create(const char *const z, const struct VitaBaseAllocatorType *const alloctr);
 
 /** Creates a dynamic string of specified length and fills it with zeros (allocates additional memory for '\0')
     @param n number of elements
+    @param alloctr allocator instance
+
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
     @note
         Its length is n, thus, appending to it, will add a string to the end (after n elements). 
         It won't start appending from the begining. Use `vt_str_set` for that. 
+        If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_strn(const size_t n);
+extern vt_str_t *vt_str_create_len(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
 
 /** Creates an empty dynamic string of specified capacity and fills it with zeros (allocates additional memory for '\0')
     @param n number of elements
+    @param alloctr allocator instance
+
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
     @note
         Its length is 0, capacity is n. Appending to it will start from the begining. 
         `vt_str_set` won't work this time, because not enough space (length 0).
+        If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_strn_empty(const size_t n);
-
-/** Duplicates and returns a new dynamic string
-    @param s vt_str_t instance
-    @returns vt_str_t* instance upon success, `NULL` otherwise
-*/
-extern vt_str_t *vt_str_dup(const vt_str_t *const s);
-
-/** Takes ownership of an allocated string instead of allocating memory itself
-    @param z a raw C string allocated on heap
-    @returns vt_str_t* instance upon success, `NULL` otherwise
-*/
-extern vt_str_t *vt_str_take_ownership(const char *const z);
+extern vt_str_t *vt_str_create_capacity(const size_t n, const struct VitaBaseAllocatorType *const alloctr);
 
 /** Frees the str instance
     @param s vt_str_t instance
 */
-extern void vt_str_free(vt_str_t *s);
+extern void vt_str_destroy(vt_str_t *s);
 
-/** Returns a raw immutable C string
-    @param s vt_str_t string
-    @returns raw C string upon success, `NULL` otherwise
+/** Duplicates and returns a new dynamic string
+    @param s vt_str_t instance
+    @param alloctr allocator instance
+
+    @returns vt_str_t* instance upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern const char *vt_cstr(const vt_str_t *const s);
+extern vt_str_t *vt_str_dup(const vt_str_t *const s, const struct VitaBaseAllocatorType *const alloctr);
+
+/** Takes ownership of an allocated string instead of allocating memory itself
+    @param z a raw C string allocated on heap
+    @param alloctr allocator instance
+
+    @returns vt_str_t* instance upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
+*/
+extern vt_str_t *vt_str_take_ownership(const char *const z, const struct VitaBaseAllocatorType *const alloctr);
+
+/** Returns a zero terminated C string
+    @param s vt_str_t string
+    @returns zero terminated C string upon success, `NULL` otherwise
+*/
+extern const char *vt_str_z(const vt_str_t *const s);
 
 /** Returns vt_str_t length
     @param s vt_str_t instance
@@ -154,23 +162,25 @@ extern size_t vt_str_validate_len(vt_str_t *const s);
 
 /** Shrinks vt_str_t capacity to its length
     @param s vt_str_t instance
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_shrink(vt_str_t *const s);
+extern void vt_str_shrink(vt_str_t *const s);
 
 /** Clears the vt_str_t (sets length to 0)
     @param s vt_str_t instance
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_clear(vt_str_t *const s);
+extern void vt_str_clear(vt_str_t *const s);
 
 /** Reserves memory for vt_str_t
     @param s vt_str_t instance
     @param n how many elements to reserve
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_reserve(vt_str_t *const s, const size_t n);
+extern void vt_str_reserve(vt_str_t *const s, const size_t n);
+
+/** Resizes vt_str_t length
+    @param s vt_str_t instance
+    @param n resize
+*/
+extern void vt_str_resize(vt_str_t *const s, const size_t n);
 
 /** Assigns a new raw C string to vt_str_t
     @param s vt_str_t instance
@@ -192,10 +202,8 @@ extern enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size
 /** Appends a raw C string at the end of vt_str_t
     @param s vt_str_t instance
     @param z raw C string
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_append(vt_str_t *const s, const char *z);
+extern void vt_str_append(vt_str_t *const s, const char *z);
 
 /** Appends a formatted raw C string at the end of vt_str_t
     @param s vt_str_t instance
@@ -209,28 +217,22 @@ extern enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, 
     @param s vt_str_t instance
     @param z raw C string
     @param n number of characters
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_append_n(vt_str_t *const s, const char *z, const size_t n);
+extern void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n);
 
 /** Inserts a raw C string into vt_str_t starting at the specified index
     @param s vt_str_t instance
     @param z raw C string
     @param at start at index (including `at`)
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
+extern void vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
 
 /** Removes n chars from vt_str_t, starting from the specified index
     @param s vt_str_t instance
     @param from start from index
     @param n number of elements to remove after `from`
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_remove(vt_str_t *const s, const size_t from, size_t n);
+extern void vt_str_remove(vt_str_t *const s, const size_t from, size_t n);
 
 /** Removes the first encountered substring from vt_str_t
     @param s vt_str_t instance
@@ -259,30 +261,24 @@ extern enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z);
 /** Removes all encountered characters specified by the user from vt_str_t
     @param s vt_str_t instance
     @param c characters to remove one after another: "\\n ," => remove new line, whitespace, comma
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_remove_c(vt_str_t *const s, const char *const c);
+extern void vt_str_remove_c(vt_str_t *const s, const char *const c);
 
 /** Strips leading and tailing whitespace and control symbols
     @param s vt_str_t instance
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_strip(vt_str_t *const s);
+extern void vt_str_strip(vt_str_t *const s);
 
 /** Strips leading and tailing punctuation marks + whitespace and control symbols
     @param s vt_str_t instance
-    @returns enum VitaStatus
 */
-enum VitaStatus vt_str_strip_punct(vt_str_t *const s);
+extern void vt_str_strip_punct(vt_str_t *const s);
 
 /** Strips leading and tailing characters specified by the user
     @param s vt_str_t instance
     @param c characters to strip one after another: "\n ," => strip new line, whitespace, comma
-
-    @returns enum VitaStatus
 */
-enum VitaStatus vt_str_strip_c(vt_str_t *const s, const char *const c);
+extern void vt_str_strip_c(vt_str_t *const s, const char *const c);
 
 /** Find a substring
     @param s vt_str_t instance
@@ -310,13 +306,14 @@ extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
 extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep);
 
 /** Splits a string between two substrings
+    @param s vt_str_t instance where the result will be saved, if `NULL` allocates
     @param z raw C string
     @param zl left substring
     @param zr right substring
 
     @returns `vt_str_t` upon success, `NULL` upon failure
 */
-extern vt_str_t *vt_str_split_between(const char *const z, const char *const zl, const char *const zr);
+extern vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const char *const zl, const char *const zr);
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates
