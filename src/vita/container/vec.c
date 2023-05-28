@@ -1,91 +1,19 @@
 #include "vita/container/vec.h"
 
-vt_vec_t *vt_vec_new(void) {
-    return vt_array_new();
-}
-
-enum VitaStatus vt_vec_ctor(vt_vec_t *const v, const size_t n, const size_t elsize) {
+vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, const struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
-    // vt_vec_t init
+    // allocate a new vt_vec_t instance
+    vt_vec_t *v = vt_array_new(alloctr);
     *v = (vt_vec_t) {
-        .ptr = VT_DEBUG_CALLOC(n * elsize),
+        .alloctr = alloctr,
+        .ptr = alloctr ? VT_ALLOCATOR_ALLOC(alloctr, n * elsize) : VT_CALLOC(n * elsize),
         .len = 0,
         .capacity = n,
         .elsize = elsize,
     };
-
-    // checking if v->ptr was allocated
-    if(v->ptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
-    }
-
-    return vt_status_operation_success;
-}
-
-vt_vec_t *vt_vec_dup(const vt_vec_t *const v) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-
-    // allocate a new vt_vec_t instance
-    vt_vec_t *vdup = vt_vec_new();
-    if(vdup == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
-
-    // construct vdup and resize it
-    if(vt_vec_ctor(vdup, v->capacity, v->elsize) != vt_status_operation_success || vt_vec_resize(vdup, v->len) != vt_status_operation_success) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));        
-        vt_vec_free(vdup);
-        return NULL;
-    }
-
-    // copy values
-    memcpy(vdup->ptr, v->ptr, v->len * v->elsize);
-
-    return vdup;
-}
-
-void vt_vec_dtor(vt_vec_t *const v) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-
-    // free vt_vec_t contents
-    VT_DEBUG_FREE(v->ptr);
-
-    // reset to zero
-    memset(v, 0, sizeof(vt_vec_t));
-}
-
-void vt_vec_free(vt_vec_t *v) {
-    vt_array_free(v);
-}
-
-vt_vec_t *vt_vec_create(const size_t n, const size_t elsize) {
-    // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-
-    // allocate vt_vec_t
-    vt_vec_t *v = vt_vec_new();
-    if(v == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
-
-    // construct the instance
-    if(vt_vec_ctor(v, n, elsize) != vt_status_operation_success) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-        vt_vec_free(v);
-        return NULL;
-    }
 
     return v;
 }
@@ -95,49 +23,33 @@ void vt_vec_destroy(vt_vec_t *v) {
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    vt_vec_dtor(v);
-    vt_vec_free(v);
+    // free vt_vec_t contents
+    if(v->alloctr) {
+        VT_ALLOCATOR_FREE(v->alloctr, v->ptr);
+    } else {
+        VT_FREE(v->ptr);
+    }
+    v->ptr = NULL; // reset to zero
+
+
+    // free vt_vec_t instance itself
+    vt_array_free(v);
+    v = NULL;
 }
 
-vt_vec_t *vt_vec_from(const void *const ptr, const size_t n, const size_t elsize) {
+vt_vec_t *vt_vec_dup(const vt_vec_t *const v, const struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    vt_vec_t *v = vt_vec_create(n, elsize);
-    if(v == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
-
-    // if nothing to copy return an empty vt_vec_t instance
-    if(ptr == NULL) {
-        return v;
-    }
+    // allocate a new vt_vec_t instance
+    vt_vec_t *vdup = vt_vec_create(v->len, v->elsize, alloctr);
 
     // copy values
-    memmove(v->ptr, ptr, n * elsize);
-    v->len = n;
+    memcpy(vdup->ptr, v->ptr, v->len * v->elsize);
 
-    return v;
+    return vdup;
 }
-
-#define VT_INSTANTIATE_VEC_FROM(T, t)                               \
-    vt_vec_t *vt_vec_from##t(const T *const ptr, const size_t n) {  \
-        return vt_vec_from(ptr, n, sizeof(T));                      \
-    }
-VT_INSTANTIATE_VEC_FROM(int8_t, i8)
-VT_INSTANTIATE_VEC_FROM(uint8_t, u8)
-VT_INSTANTIATE_VEC_FROM(int16_t, i16)
-VT_INSTANTIATE_VEC_FROM(uint16_t, u16)
-VT_INSTANTIATE_VEC_FROM(int32_t, i32)
-VT_INSTANTIATE_VEC_FROM(uint32_t, u32)
-VT_INSTANTIATE_VEC_FROM(int64_t, i64)
-VT_INSTANTIATE_VEC_FROM(uint64_t, u64)
-VT_INSTANTIATE_VEC_FROM(float, f)
-VT_INSTANTIATE_VEC_FROM(double, d)
-VT_INSTANTIATE_VEC_FROM(real, r)
-#undef VT_INSTANTIATE_VEC_FROM
 
 size_t vt_vec_len(const vt_vec_t *const v) {
     return vt_array_len(v);
@@ -155,115 +67,87 @@ bool vt_vec_is_empty(const vt_vec_t *const v) {
     return !vt_array_len(v);
 }
 
-enum VitaStatus vt_vec_shrink(vt_vec_t *const v) {
+void vt_vec_shrink(vt_vec_t *const v) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // if length and capacity are the same, exit the function
     if(v->len == v->capacity) {
-        return vt_status_operation_success;
+        return;
     }
 
     // shrink the array capacity to length
-    void *newptr = VT_DEBUG_REALLOC(v->ptr, v->len * v->elsize);
-    if(newptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
-    }
+    v->ptr = v->alloctr 
+        ? VT_ALLOCATOR_REALLOC(v->alloctr, v->ptr, v->len * v->elsize) 
+        : VT_REALLOC(v->ptr, v->len * v->elsize);
 
-    // update values
-    v->ptr = newptr;
+    // update
     v->capacity = v->len;
-
-    return vt_status_operation_success;
 }
 
-enum VitaStatus vt_vec_clear(vt_vec_t *const v) {
+void vt_vec_clear(vt_vec_t *const v) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
     // update length
     v->len = 0;
-
-    return vt_status_operation_success;
 }
 
-enum VitaStatus vt_vec_reserve(vt_vec_t *const v, const size_t n) {
+void vt_vec_reserve(vt_vec_t *const v, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-
-    // if n == 0, do nothing
-    if(!n) {
-        return vt_status_operation_success;
-    }
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // reserve memory for additional n elements
-    void *newptr = VT_DEBUG_REALLOC(v->ptr, (v->capacity + n) * v->elsize);
-    if(newptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
-    }
+    v->ptr = v->alloctr 
+        ? VT_ALLOCATOR_REALLOC(v->alloctr, v->ptr, (v->capacity + n) * v->elsize) 
+        : VT_REALLOC(v->ptr, (v->capacity + n) * v->elsize);
 
-    // update values
-    v->ptr = newptr;
+    // update
     v->capacity += n;
-
-    return vt_status_operation_success;
 }
 
-enum VitaStatus vt_vec_resize(vt_vec_t *const v, const size_t n) {
+void vt_vec_resize(vt_vec_t *const v, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-
-    // cannot resize to 0, it's not an error, thus, do nothing
-    if(n == 0) {
-        return vt_status_operation_failure;
-    }
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     if(n == v->capacity) {
         v->len = v->capacity;
-        return vt_status_operation_success;
+        return;
     }
 
     // resize vt_vec_t
-    void *newptr = VT_DEBUG_REALLOC(v->ptr, n * v->elsize);
-    if(newptr == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
-    }
+    v->ptr = v->alloctr 
+        ? VT_ALLOCATOR_REALLOC(v->alloctr, v->ptr, n * v->elsize) 
+        : VT_REALLOC(v->ptr, n * v->elsize);
 
-    // update values
-    v->ptr = newptr;
+    // update
     v->len = v->capacity = n;
-
-    return vt_status_operation_success;
 }
 
-enum VitaStatus vt_vec_push(vt_vec_t *const v, const void *const val) {
+void vt_vec_push(vt_vec_t *const v, const void *const val) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // check if new memory needs to be allocated
-    if(!vt_vec_has_space(v) && vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE) != vt_status_operation_success) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
+    if(!vt_vec_has_space(v)) {
+        vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
     // copy val to vt_vec_t
     memcpy(((char*)(v->ptr) + v->len++ * v->elsize), val, v->elsize);
-
-    return vt_status_operation_success;
 }
 
-#define VT_INSTANTIATE_VEC_PUSH(T, t)                               \
-    enum VitaStatus vt_vec_push##t(vt_vec_t *const v, const T val) { \
-        return vt_vec_push(v, &val);                                \
+#define VT_INSTANTIATE_VEC_PUSH(T, t)                     \
+    void vt_vec_push##t(vt_vec_t *const v, const T val) { \
+        return vt_vec_push(v, &val);                      \
     }
 VT_INSTANTIATE_VEC_PUSH(int8_t, i8)
 VT_INSTANTIATE_VEC_PUSH(uint8_t, u8)
@@ -278,7 +162,7 @@ VT_INSTANTIATE_VEC_PUSH(double, d)
 VT_INSTANTIATE_VEC_PUSH(real, r)
 #undef VT_INSTANTIATE_VEC_PUSH
 
-enum VitaStatus vt_vec_pop(vt_vec_t *const v) {
+void vt_vec_pop(vt_vec_t *const v) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -287,8 +171,6 @@ enum VitaStatus vt_vec_pop(vt_vec_t *const v) {
     if(v->len > 0) {
         v->len--;
     }
-
-    return vt_status_operation_success;
 }
 
 void *vt_vec_pop_get(vt_vec_t *const v) {
@@ -321,7 +203,7 @@ VT_INSTANTIATE_VEC_POP_GET(double, d)
 VT_INSTANTIATE_VEC_POP_GET(real, r)
 #undef VT_INSTANTIATE_VEC_POP_GET
 
-enum VitaStatus vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
+void vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -336,13 +218,11 @@ enum VitaStatus vt_vec_set(vt_vec_t *const v, const void *const val, const size_
 
     // copy val data to vt_str_t
     memcpy(((char*)(v->ptr) + at * v->elsize), val, v->elsize);
-
-    return vt_status_operation_success;
 }
 
-#define VT_INSTANTIATE_VEC_SET(T, t)                                                \
-    enum VitaStatus vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) { \
-        return vt_vec_set(v, &val, at);                                             \
+#define VT_INSTANTIATE_VEC_SET(T, t)                                      \
+    void vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) { \
+        return vt_vec_set(v, &val, at);                                   \
     }
 VT_INSTANTIATE_VEC_SET(int8_t, i8)
 VT_INSTANTIATE_VEC_SET(uint8_t, u8)
@@ -389,7 +269,7 @@ VT_INSTANTIATE_VEC_GET(double, d)
 VT_INSTANTIATE_VEC_GET(real, r)
 #undef VT_INSTANTIATE_VEC_GET
 
-enum VitaStatus vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
+void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -403,9 +283,8 @@ enum VitaStatus vt_vec_insert(vt_vec_t *const v, const void *const val, const si
     );
 
     // check if new memory needs to be allocated
-    if(!vt_vec_has_space(v) && !vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE)) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return vt_status_error_allocation;
+    if(!vt_vec_has_space(v)) {
+        vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
     // shift values by one value to the end of the vt_vec_t
@@ -416,13 +295,11 @@ enum VitaStatus vt_vec_insert(vt_vec_t *const v, const void *const val, const si
 
     // set new length
     v->len++;
-
-    return vt_status_operation_success;
 }
 
-#define VT_INSTANTIATE_VEC_INSERT(T, t)                                                 \
-    enum VitaStatus vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at) {  \
-        return vt_vec_insert(v, &val, at);                                              \
+#define VT_INSTANTIATE_VEC_INSERT(T, t)                                       \
+    void vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at) {  \
+        return vt_vec_insert(v, &val, at);                                    \
     }
 VT_INSTANTIATE_VEC_INSERT(int8_t, i8)
 VT_INSTANTIATE_VEC_INSERT(uint8_t, u8)
@@ -437,10 +314,11 @@ VT_INSTANTIATE_VEC_INSERT(double, d)
 VT_INSTANTIATE_VEC_INSERT(real, r)
 #undef VT_INSTANTIATE_VEC_INSERT
 
-enum VitaStatus vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs) {
+void vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(rs < vt_remove_stategy_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(
         at < v->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
@@ -458,8 +336,6 @@ enum VitaStatus vt_vec_remove(vt_vec_t *const v, const size_t at, const enum Vit
 
     // set new length
     v->len--;
-
-    return vt_status_operation_success;
 }
 
 int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
