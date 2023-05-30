@@ -4,7 +4,17 @@
 static bool vt_debug_output_on = true;
 static const char *vt_debug_output_filename = NULL;
 
-void vt_debug_assert(const bool expr, const char *const zexpr, const char *const file, const char *const func, const size_t line, const char *const zfmt, ...) {
+void vt_debug_assert(
+    const bool expr, 
+    const char *const zexpr, 
+    const char *const subject, 
+    const bool quit_on_failure, 
+    const char *const file, 
+    const char *const func, 
+    const size_t line, 
+    const char *const zfmt, 
+    ...
+) {
     if(!expr) {
         // get time
         char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
@@ -19,7 +29,7 @@ void vt_debug_assert(const bool expr, const char *const zexpr, const char *const
                 if(fp == NULL) { fp = stderr; }
 
                 // logging to fp
-                fprintf(fp, "%s %s [%s] %s:%s:%zu: ", tbuf, "DEBUG ASSERTION FAILURE", zexpr, file, func, line);
+                fprintf(fp, "%s %s [%s] %s:%s:%zu: ", tbuf, subject, zexpr, file, func, line);
                 vfprintf(fp, zfmt, args);
                 fprintf(fp, "\n");
 
@@ -30,11 +40,11 @@ void vt_debug_assert(const bool expr, const char *const zexpr, const char *const
         va_end(args);
 
         // exit upon failure
-        exit(EXIT_FAILURE);
+        if(quit_on_failure) { exit(EXIT_FAILURE); }
     }
 }
 
-void vt_debug_printf(const char *const zfmt, ...) {
+void vt_debug_printf(const char *const subject, const char *const zfmt, ...) {
     // check for invalid input
     assert(zfmt != NULL);
 
@@ -51,7 +61,7 @@ void vt_debug_printf(const char *const zfmt, ...) {
             if(fp == NULL) { fp = stderr; }
 
             // logging to stderr
-            fprintf(fp, "%s %s ", tbuf, "DEBUG INFO");
+            fprintf(fp, "%s %s ", tbuf, subject);
             vfprintf(fp, zfmt, args);
 
             // close the file, if needed
