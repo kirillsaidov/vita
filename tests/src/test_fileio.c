@@ -4,12 +4,9 @@
 void test_filewrite(void);
 
 int32_t main(void) {
-    VT_DEBUG_DEFAULT_INIT();
-
     // tests
     test_filewrite();
-    
-    VT_DEBUG_DEFAULT_QUIT();
+
     return 0;
 }
 
