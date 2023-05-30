@@ -3,9 +3,9 @@
 #include "../../inc/vita/container/plist.h"
 
 int main(void) {
-    VT_DEBUG_DEFAULT_INIT();
-    
-    vt_plist_t *p = vt_plist_create(5); {
+    vt_mallocator_t *alloctr = vt_mallocator_create();
+
+    vt_plist_t *p = vt_plist_create(5, alloctr); {
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 5);
 
@@ -44,6 +44,6 @@ int main(void) {
         }
     } vt_plist_destroy(p);
 
-    VT_DEBUG_DEFAULT_QUIT();
+    vt_mallocator_destroy(alloctr);
     return 0;
 }

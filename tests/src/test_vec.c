@@ -7,9 +7,9 @@ void func(void *ptr, size_t i) {
 }
 
 int main(void) {
-    VT_DEBUG_DEFAULT_INIT();
+    vt_mallocator_t *alloctr = vt_mallocator_create();
 
-    vt_vec_t *v = vt_vec_create(10, sizeof(double)); {
+    vt_vec_t *v = vt_vec_create(10, sizeof(double), alloctr); {
         assert(vt_vec_len(v) == 0);
         assert(vt_vec_capacity(v) == 10);
         assert(vt_vec_has_space(v) == 10);
@@ -46,10 +46,9 @@ int main(void) {
         assert(vt_vec_has_space(v) == 50);
         assert(vt_vec_can_find(v, &dt) == 5);
 
-        vt_vec_t *vcopy = vt_vec_dup(v); {
+        vt_vec_t *vcopy = vt_vec_dup(v, alloctr); {
             assert(vt_vec_getd(vcopy, 5) == dt);
-
-            vt_vec_remove(vcopy, vt_vec_can_find(v, &dt), vt_remove_stategy_fast);
+            vt_vec_remove(vcopy, vt_vec_can_find(v, &dt), vt_remove_stategy_fast);            
             assert(vt_vec_getd(vcopy, 5) == 3.125);
         } vt_vec_destroy(vcopy);
 
@@ -96,7 +95,7 @@ int main(void) {
     } vt_vec_destroy(v);
     
     size_t w = 5, h = 5;
-    vt_vec_t *vecmat = vt_vec_create(w*h, sizeof(int32_t)); {
+    vt_vec_t *vecmat = vt_vec_create(w*h, sizeof(int32_t), alloctr); {
         // right now it acts as a list, we need to set its length = w*h
         assert(vt_vec_len(vecmat) == 0);
         assert(vt_vec_capacity(vecmat) == w*h);
@@ -125,6 +124,6 @@ int main(void) {
         }
     } vt_vec_destroy(vecmat);
 
-    VT_DEBUG_DEFAULT_QUIT();
+    vt_mallocator_destroy(alloctr);
     return 0;
 }

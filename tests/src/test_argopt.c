@@ -3,10 +3,10 @@
 #include "../../inc/vita/util/argopt.h"
 
 int32_t main(void) {
-    VT_DEBUG_DEFAULT_INIT();
+    vt_mallocator_t *alloctr = vt_mallocator_create();
 
     // strings
-    vt_str_t *rpath = vt_str_create("my/temp/folder/default/initialized");
+    vt_str_t *rpath = vt_str_create("my/temp/folder/default/initialized", alloctr);
     vt_str_t *wpath = NULL;
 
     // floats
@@ -72,7 +72,7 @@ int32_t main(void) {
     const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 
     // parse args and opts
-    const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);
+    const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv, alloctr);
     
     // check
     assert(parse_status == VT_ARGOPT_PARSE_ERROR);
@@ -89,6 +89,6 @@ int32_t main(void) {
     vt_str_destroy(rpath);
     vt_str_destroy(wpath);
 
-    VT_DEBUG_DEFAULT_QUIT();
+    vt_mallocator_destroy(alloctr);
     return 0;
 }

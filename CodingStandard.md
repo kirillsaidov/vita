@@ -73,15 +73,15 @@ Use `UPPER_UNDERSCORE_CASE` for macros.
 
 ```C
 typedef struct BlackBox {
-    int darkness_level;
+    int box_id;
 } bbox_t;
 ```
 
 ### Gotos
-Gotos should start with `label_` prefix and 2 underscores should be appended at the end.
+Labels should start with `prefix_label__` prefix and 2 underscores should be appended at the end.
 ```C
 // this is a goto example:
-label_my_function_name_goto_label__:
+vt_label_my_function_name__:
 // do something ...
 ```
 

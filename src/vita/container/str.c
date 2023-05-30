@@ -480,7 +480,11 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     *sLen -= offset;
 
     // update ptr data
-    VT_DEBUG_FREE(start);
+    if(s->alloctr) {
+        VT_ALLOCATOR_FREE(s->alloctr, start);
+    } else {
+        VT_FREE(start);
+    }
     sdup[*sLen] = '\0';
     s->ptr = sdup;
 }
@@ -693,13 +697,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
                 return p;
             }
             vt_plist_push(p, tempStr);
-
-            // TODO: remove if ok
-            // if(vt_str_set_n(tempStr, head, copyLen) != vt_status_operation_success || vt_plist_push(p, tempStr) != vt_status_operation_success) {
-            //     VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-            //     return p;
-            // }
-
+            
             // update head
             head = current + sepLen;
         }

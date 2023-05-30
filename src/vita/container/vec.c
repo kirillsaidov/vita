@@ -44,6 +44,7 @@ vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorType *cons
 
     // allocate a new vt_vec_t instance
     vt_vec_t *vdup = vt_vec_create(v->len, v->elsize, alloctr);
+    vdup->len = v->len;
 
     // copy values
     memcpy(vdup->ptr, v->ptr, v->len * v->elsize);

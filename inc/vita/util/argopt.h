@@ -36,13 +36,15 @@ typedef struct VitaArgOpt {
     @param argv command line arguments
     @param optc number of options
     @param optv an array of argument options
+    @param alloctr allocator instance
 
     @returns `1` if help wanted, `0` upon sucess and `-1` upon error
 
     @note
         Strings must be heap-allocated be it char* or vt_str_t!
+        Passing in `NULL` for the alloctr instance results in vt_calloc/realloc/free being used.
 */
-extern int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv);
+extern int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv, struct VitaBaseAllocatorType *const alloctr);
 
 /** Prints the help manual
     @param header msg before the usage  manual

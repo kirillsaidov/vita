@@ -7,14 +7,14 @@ void print_str(void *ptr, size_t i);
 void apply_func(char *c, size_t i);
 
 int32_t main(void) {
-    VT_DEBUG_DEFAULT_INIT();
+    vt_mallocator_t *alloctr = vt_mallocator_create();
 
     const vt_str_t static_s = vt_str_create_static("hello, world");
     assert(vt_str_equals(vt_str_z(&static_s), "hello, world"));
     assert(vt_str_starts_with(vt_str_z(&static_s), "hello"));
     assert(vt_str_ends_with(vt_str_z(&static_s), "world"));
 
-    vt_str_t* mystr = vt_str_create("hello, world!"); {
+    vt_str_t* mystr = vt_str_create("hello, world!", alloctr); {
         assert(vt_str_len(mystr) == 13);
         assert(vt_str_capacity(mystr) == 13);
         assert(vt_str_has_space(mystr) == 0);
@@ -55,7 +55,7 @@ int32_t main(void) {
         assert(vt_str_capacity(mystr) == 23);
         assert(vt_str_has_space(mystr) == 0);
 
-        vt_str_t *copy = vt_str_dup(mystr); {
+        vt_str_t *copy = vt_str_dup(mystr, alloctr); {
             assert(vt_str_len(copy) == 23);
             assert(vt_str_capacity(copy) == 23);
             assert(vt_str_has_space(copy) == 0);
@@ -67,34 +67,34 @@ int32_t main(void) {
         assert(vt_str_has_space(mystr) == 23);
         assert(vt_str_equals(vt_str_z(mystr), ""));
 
-        vt_str_t *copy2 = vt_str_create_len(10); {
+        vt_str_t *copy2 = vt_str_create_len(10, alloctr); {
             assert(vt_str_len(copy2) == 10);
             assert(vt_str_capacity(copy2) == 10);
             assert(vt_str_has_space(copy2) == 0);
         } vt_str_destroy(copy2);
     } vt_str_destroy(mystr);
-
-    vt_str_t *ns = vt_str_create_len(1); {
+    
+    vt_str_t *ns = vt_str_create_len(1, alloctr); {
         assert(vt_str_len(ns) == 1);
         assert(vt_str_capacity(ns) == 1);
         assert(vt_str_has_space(ns) == 0);
 
-        assert(vt_str_append(ns, "hello") == vt_status_operation_success);
+        vt_str_append(ns, "hello");
         assert(vt_str_equals(vt_str_z(ns), "hello"));
 
         // fails, because vt_str_len(ns) < strlen("hello, world") => append instead
         // assert(vt_str_set(ns, "hello, world"));
     } vt_str_destroy(ns);
 
-    vt_str_t *sto = vt_str_take_ownership(strdup("12345, world")); {
+    vt_str_t *sto = vt_str_take_ownership(strdup("12345, world"), alloctr); {
         assert(vt_str_len(sto) == 12);
         assert(vt_str_capacity(sto) == 12);
         assert(vt_str_has_space(sto) == 0);
 
-        assert(vt_str_append(sto, "! How are you?") == vt_status_operation_success);
+        vt_str_append(sto, "! How are you?");
         assert(vt_str_len(sto) == strlen("12345, world! How are you?"));
         assert(vt_str_equals(vt_str_z(sto), "12345, world! How are you?"));
-        assert(vt_str_append(sto, " hello, world; hello again. This is hello!") == vt_status_operation_success);
+        vt_str_append(sto, " hello, world; hello again. This is hello!");
 
         vt_str_clear(sto);
         vt_str_append(sto, ";My name is Kirillos;How are you?;let's play;");
@@ -114,8 +114,7 @@ int32_t main(void) {
         } vt_str_destroy(spl);
 
         assert(vt_str_equals(vt_str_z(sto), ";How are "));
-
-        vt_str_t *_s__ = vt_str_create("hello world of world of wonders!"); {
+        vt_str_t *_s__ = vt_str_create("hello world of world of wonders!", alloctr); {
             vt_str_t *_s_ = vt_str_pop_get_last(NULL, _s__, "world"); {
                 assert(vt_str_equals(vt_str_z(_s_), " of wonders!"));
             } vt_str_destroy(_s_);
@@ -125,42 +124,42 @@ int32_t main(void) {
 
     } vt_str_destroy(sto);
 
-    vt_str_t *s_strip = vt_str_create("   \nhello, world\t  ");
+    vt_str_t *s_strip = vt_str_create("   \nhello, world\t  ", alloctr);
     vt_str_strip(s_strip);
     assert(vt_str_len(s_strip) == 12);
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world"));
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n");
+    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n", alloctr);
     vt_str_strip_punct(s_strip);
     assert(vt_str_len(s_strip) == 12);
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world"));
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n");
+    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n", alloctr);
     vt_str_strip_c(s_strip, "\n .,;!\t-");
     assert(vt_str_len(s_strip) == 12);
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world"));
     vt_str_destroy(s_strip);
-
-    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n");
+    
+    s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n", alloctr);
     vt_str_remove_c(s_strip, "\n .,;!\t-");
     assert(vt_str_len(s_strip) == 10);
     assert(vt_str_equals(vt_str_z(s_strip), "helloworld"));
     vt_str_destroy(s_strip);
     
-    s_strip = vt_str_create("Here is a shopping list: apples and oranges, milk and sugar, and vinegar.");
+    s_strip = vt_str_create("Here is a shopping list: apples and oranges, milk and sugar, and vinegar.", alloctr);
     vt_str_remove_all(s_strip, " and");
     assert(vt_str_equals(vt_str_z(s_strip), "Here is a shopping list: apples oranges, milk sugar, vinegar."));
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create("hello, world, world!");
+    s_strip = vt_str_create("hello, world, world!", alloctr);
     vt_str_remove_last(s_strip, ", world");
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world!"));
     assert(vt_str_len(s_strip) == 13);
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create("A A A");
+    s_strip = vt_str_create("A A A", alloctr);
     vt_str_apply(s_strip, apply_func);
     assert(vt_str_equals(vt_str_z(s_strip), "bbbbb"));
     vt_str_clear(s_strip);
@@ -169,16 +168,12 @@ int32_t main(void) {
     assert(vt_str_equals(vt_str_z(s_strip), "I have 2 apples"));
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create_fmt(NULL, "%s, %s. %s %d!", "hello", "world", "hi", 5);
+    s_strip = vt_str_create_capacity(1, alloctr);
+    vt_str_appendf(s_strip, "%s, %s. %s %d!", "hello", "world", "hi", 5);
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world. hi 5!"));
     vt_str_destroy(s_strip);
 
-    s_strip = vt_str_create_len(1);
-    vt_str_create_fmt(s_strip, "%s, %s. %s %d!", "hello", "world", "hi", 5);
-    assert(vt_str_equals(vt_str_z(s_strip), "hello, world. hi 5!"));
-    vt_str_destroy(s_strip);
-
-    s_strip = vt_str_create("hello, world!");
+    s_strip = vt_str_create("hello, world!", alloctr);
     vt_str_capitalize(s_strip);
     assert(vt_str_equals(vt_str_z(s_strip), "HELLO, WORLD!"));
     assert(!vt_str_is_numeric(vt_str_z(s_strip), 256));
@@ -190,11 +185,11 @@ int32_t main(void) {
     assert(vt_str_is_numeric(vt_str_z(s_strip), 256));
     vt_str_destroy(s_strip);
 
-    vt_str_t *sbetween = vt_str_split_between("https :1.8.8.8@ world", ":", "@");
+    vt_str_t *sbetween = vt_str_split_between(NULL, "https :1.8.8.8@ world", ":", "@");
     assert(vt_str_equals(vt_str_z(sbetween), "1.8.8.8"));
     vt_str_destroy(sbetween);
 
-    vt_str_t *s_val_test = vt_str_create("123456789"); {
+    vt_str_t *s_val_test = vt_str_create("123456789", alloctr); {
         assert(vt_str_len(s_val_test) == 9);
         assert(vt_str_capacity(s_val_test) == 9);
 
@@ -206,12 +201,12 @@ int32_t main(void) {
 
     } vt_str_destroy(s_val_test);
 
-    VT_DEBUG_DEFAULT_QUIT();
+    vt_mallocator_destroy(alloctr);
     return 0;
 }
 
 void print_str(void *ptr, size_t i) {
-    vt_str_destroy(ptr);
+    vt_str_destroy((vt_str_t*)ptr);
 }
 
 void apply_func(char *c, size_t i) {

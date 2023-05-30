@@ -22,7 +22,10 @@
 
 /** Reads contents of a file in 'r' and 'rb' mode (vt_file_read, vt_file_readb)
     @param filename file name
+    @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
 extern vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType *const alloctr);
 extern vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType *const alloctr);

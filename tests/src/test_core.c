@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "../../inc/vita/core/core.h"
+#include "../../inc/vita/container/common.h"
 
 int32_t main(void) {
     // 4x5 matrix

@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 14
+#define FILES_IN_DIR 15
 
 // helper functions
 void free_str(void *ptr, size_t i);
@@ -12,8 +12,11 @@ void test_expand_tilda(void);
 void test_selfpath(void);
 void test_path_pop(void);
 
+static vt_mallocator_t *alloctr;
+
 int main(void) {
-    VT_DEBUG_DEFAULT_INIT();
+    alloctr = vt_mallocator_create();
+
     // debug_disable_output(true);
 
     // tests
@@ -22,7 +25,7 @@ int main(void) {
     test_selfpath();
     test_path_pop();
 
-    VT_DEBUG_DEFAULT_QUIT();
+    vt_mallocator_destroy(alloctr);
     return 0;
 }
 
@@ -31,7 +34,7 @@ void free_str(void *ptr, size_t i) {
 }
 
 void test_path(void) {
-    vt_plist_t *p = vt_plist_create(3);
+    vt_plist_t *p = vt_plist_create(3, alloctr);
         vt_plist_push(p, "hello");
         vt_plist_push(p, "world");
         vt_plist_push(p, "folder");
@@ -48,7 +51,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello\\world\\media\\dev"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(); {
+        vt_str_t *cwd = vt_path_getcwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
         } vt_str_destroy(cwd);
 
@@ -61,7 +64,7 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt"); {
+        vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt", alloctr); {
             assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
@@ -73,7 +76,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(); {
+        vt_str_t *cwd = vt_path_getcwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
         } vt_str_destroy(cwd);
 
@@ -86,7 +89,7 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt"); {
+        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
             assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
@@ -98,7 +101,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(); {
+        vt_str_t *cwd = vt_path_getcwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_destroy(cwd);
 
@@ -111,7 +114,7 @@ void test_path(void) {
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
 
-        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt"); {
+        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
             assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
@@ -130,8 +133,8 @@ void test_path(void) {
 void test_expand_tilda(void) {
     const char *z_vt_path_tilda1 = "~/hello";
     const char *z_vt_path_tilda2 = "./~";
-    vt_str_t *s_vt_path_tilda1 = vt_path_expand_tilda(z_vt_path_tilda1);
-    vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2);    
+    vt_str_t *s_vt_path_tilda1 = vt_path_expand_tilda(z_vt_path_tilda1, alloctr);
+    vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2, alloctr);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
             assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
@@ -148,7 +151,7 @@ void test_expand_tilda(void) {
 }
 
 void test_selfpath(void) {
-    vt_str_t *selfpath = vt_path_get_this_exe_location();
+    vt_str_t *selfpath = vt_path_get_this_exe_location(alloctr);
     VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
 
     #if defined(_WIN32) || defined(_WIN64)
@@ -164,7 +167,7 @@ void test_selfpath(void) {
 }
 
 void test_path_pop(void) {
-    vt_str_t *path = vt_str_create("./hello/world/bin");
+    vt_str_t *path = vt_str_create("./hello/world/bin", alloctr);
 
     #if defined(_WIN32) || defined(_WIN64)
         vt_path_validate((char *const)vt_str_z(path));

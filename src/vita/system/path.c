@@ -6,7 +6,7 @@ vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
 
 vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     // save args to list
-    vt_plist_t *const p = vt_plist_create(n);
+    vt_plist_t *const p = vt_plist_create(n, NULL);
     va_list args; va_start(args, n);
     for (size_t i = 0; i < n; i++) {
         // get next item
@@ -24,8 +24,8 @@ vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     return st;
 }
 
-vt_str_t *vt_path_getcwd(void) {
-    return vt_str_take_ownership(getcwd(NULL, 0));
+vt_str_t *vt_path_getcwd(struct VitaBaseAllocatorType *alloctr) {
+    return vt_str_take_ownership(getcwd(NULL, 0), alloctr);
 }
 
 bool vt_path_exists(const char *const z) {
@@ -97,11 +97,9 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
     }
 
     // create plist instance
-    vt_plist_t *pl = (p == NULL ? (vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS)) : (p));
-    if(pl == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
+    vt_plist_t *pl = (p == NULL) 
+        ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
+        : p;
 
     // open directory
     DIR *dir = opendir(z);
@@ -110,7 +108,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         
         // free only if it was allocated
         if(p == NULL) {
-            vt_plist_free(pl);
+            vt_plist_destroy(pl);
         }
 
         return NULL;
@@ -135,15 +133,14 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         }
 
         // push directory name to vt_plist_t
-        if(vt_plist_push(pl, d_name) != vt_status_operation_success) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-            break;
-        }
+        vt_plist_push(pl, d_name);
     }
 
     // close dir
     const int retVal = closedir(dir);
-    if(retVal != 0) { VT_DEBUG_PRINTF("%s: Failed to close the directory <%s>!\n", vt_get_vita_error_str(vt_status_operation_failure), z); }
+    if(retVal != 0) {
+        VT_DEBUG_PRINTF("%s: Failed to close the directory <%s>!\n", vt_get_vita_error_str(vt_status_operation_failure), z); 
+    }
 
     return pl;
 }
@@ -159,11 +156,9 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     }
 
     // create plist instance
-    vt_plist_t *pl = (p == NULL ? (vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS)) : (p));
-    if(pl == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
+    vt_plist_t *pl = (p == NULL) 
+        ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
+        : p;
 
     // open directory
     DIR *dir = opendir(z);
@@ -172,14 +167,14 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         
         // free only if it was allocated
         if(p == NULL) {
-            vt_plist_free(pl);
+            vt_plist_destroy(pl);
         }
 
         return NULL;
     }
 
     // get directory contents
-    vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL);
     struct dirent *dirtree = NULL;
     while((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
@@ -190,25 +185,17 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
             continue;
         }
 
-        // save full path
-        if(st == NULL || vt_str_append(st, z) != vt_status_operation_success) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-            break;
-        }
+        // append full path (my_path)
+        vt_str_append(st, z);
 
-        // save path
-        if(vt_str_append(st, PATH_SEPARATOR) != vt_status_operation_success || vt_str_append(st, dirtree->d_name) != vt_status_operation_success) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-            break;
-        }
+        // append the next path listed (my_path + / + next_path)
+        vt_str_append(st, PATH_SEPARATOR);
+        vt_str_append(st, dirtree->d_name);
 
         // push directory name to list
-        if(vt_plist_push(pl, strdup(vt_str_z(st))) != vt_status_operation_success) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-            break;
-        }
+        vt_plist_push(pl, strdup(vt_str_z(st)));
 
-        // check if current path is a directory
+        // check if current path is a directory; if false, then break
         if(vt_path_is_dir(vt_str_z(st)) && vt_path_listdir_recurse(pl, vt_str_z(st), ignoreDotFiles) == NULL) {
             break;
         }
@@ -232,11 +219,9 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // create a new vt_str_t instance
-    vt_str_t *st = ((s == NULL) ? (vt_str_create_len(strlen(z))) : (s));
-    if(st == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
-        return NULL;
-    }
+    vt_str_t *st = (s == NULL)
+        ? vt_str_create_len(strlen(z), NULL) 
+        : s;
 
     // find the basename
     const char *ptr = NULL;
@@ -300,25 +285,22 @@ bool vt_path_mkdir_parents(const char *const z) {
     vt_plist_t *dir_list = NULL;
     
     // copy the raw C string into vt_str_t for ease of use
-    s = vt_str_create(z);
+    s = vt_str_create(z, NULL);
     if(s == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
         status = false;
-        goto label_vt_path_mkdir_parents_cleanup__;
+        goto vt_label_path_mkdir_parents__;
     }
 
     // create a fullpath variable
-    sfull = vt_str_create_len(vt_str_len(s) + 1);
+    sfull = vt_str_create_capacity(vt_str_len(s) + 1, NULL);
     if(sfull == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
 
         status = false;
-        goto label_vt_path_mkdir_parents_cleanup__;
+        goto vt_label_path_mkdir_parents__;
     }
-
-    // set len to 0
-    vt_str_clear(sfull);
 
     // split string into directories
     dir_list = vt_str_split(NULL, s, PATH_SEPARATOR);
@@ -326,7 +308,7 @@ bool vt_path_mkdir_parents(const char *const z) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
 
         status = false;
-        goto label_vt_path_mkdir_parents_cleanup__;
+        goto vt_label_path_mkdir_parents__;
     }
 
     // make directories with parents
@@ -343,7 +325,7 @@ bool vt_path_mkdir_parents(const char *const z) {
         vt_path_mkdir(vt_str_z(sfull));
     }
 
-label_vt_path_mkdir_parents_cleanup__:
+vt_label_path_mkdir_parents__:
     // free the strings
     if(s != NULL) { vt_str_destroy(s); }
     if(sfull != NULL) { vt_str_destroy(sfull); }
@@ -358,7 +340,7 @@ label_vt_path_mkdir_parents_cleanup__:
     }
 
     // free dir_list itself
-    if(dir_list != NULL) { vt_plist_free(dir_list); }
+    if(dir_list != NULL) { vt_plist_destroy(dir_list); }
     
     return status;
 }
@@ -427,7 +409,7 @@ vt_path_rmdir_recurse_cleanup__:
         }
 
         // free dir_list itself
-        vt_plist_free(dir_list);
+        vt_plist_destroy(dir_list);
     }
 
     return status;
@@ -464,12 +446,12 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
-vt_str_t *vt_path_expand_tilda(const char *const z) {
+vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // find tilda `~`
-    vt_str_t *s_tilda = vt_str_create(z);
+    vt_str_t *s_tilda = vt_str_create(z, alloctr);
     const int64_t tilda_pos = vt_str_index_of(s_tilda, '~');
     if(!vt_str_len(s_tilda) || tilda_pos != 0) {
         return s_tilda;
@@ -497,8 +479,8 @@ vt_str_t *vt_path_expand_tilda(const char *const z) {
 }
 
 // FIXME
-vt_str_t *vt_path_get_this_exe_location(void) {
-    vt_str_t *spath = vt_str_create_capacity(PATH_MAX);
+vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
+    vt_str_t *spath = vt_str_create_capacity(PATH_MAX, alloctr);
     if (spath == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
         return NULL;

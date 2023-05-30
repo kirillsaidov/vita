@@ -1,9 +1,9 @@
 #include "vita/util/argopt.h"
 
 static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv);
-static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value);
+static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value, struct VitaBaseAllocatorType *const alloctr);
 
-int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv) {
+int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
@@ -24,8 +24,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     }
 
     // parse argument options (skipping the binary name)
-    vt_str_t *s_arg_value = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
-    vt_str_t *s_opt_split = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS);
+    vt_str_t *s_arg_value = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, alloctr);
+    vt_str_t *s_opt_split = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, alloctr);
     const char *unrecognized_option = NULL;
     for(size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
@@ -48,7 +48,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
             if(vt_str_len(s_opt_split)) {
                 // check if option is known
                 if(vt_str_equals(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals(vt_str_z(s_opt_split), opt->optionShort)) {
-                    vt_argopt_assign_value(opt, vt_str_z(s_arg_value));
+                    vt_argopt_assign_value(opt, vt_str_z(s_arg_value), alloctr);
 
                     // reset to NULL, since it was recognized
                     unrecognized_option = NULL;
@@ -58,9 +58,9 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
                 // check if option is known
                 if(vt_str_equals(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals(vt_str_z(s_arg_value), opt->optionShort)) {
                     if(i + 1 < argc && argv[i+1][0] != '-') {
-                        vt_argopt_assign_value(opt, argv[++i]);
+                        vt_argopt_assign_value(opt, argv[++i], alloctr);
                     } else {
-                        vt_argopt_assign_value(opt, "1"); // if it's a boolean | '--verbose'
+                        vt_argopt_assign_value(opt, "1", alloctr); // if it's a boolean | '--verbose'
                     }
 
                     // reset to NULL, since it was recognized
@@ -137,7 +137,7 @@ static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv)
     return true;
 }
 
-static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value) {
+static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value, struct VitaBaseAllocatorType *const alloctr) {
     if(opt == NULL || value == NULL) {
         return;
     }
@@ -196,7 +196,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
                 // check if we need to allocate
                 if(*svalue == NULL) {
-                    *svalue = vt_str_create(value);
+                    *svalue = vt_str_create(value, alloctr);
                 } else {
                     vt_str_clear(*svalue);
                     vt_str_append(*svalue, value);

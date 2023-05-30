@@ -69,9 +69,12 @@ extern vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p);
 extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
 
 /** Get current working directory
+    @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_path_getcwd(void);
+extern vt_str_t *vt_path_getcwd(struct VitaBaseAllocatorType *alloctr);
 
 /** Checks if path exists
     @param z path
@@ -104,7 +107,7 @@ extern int64_t vt_path_get_file_size(const char *const z);
 
     @returns `vt_plist_t*` of C string upon success, `NULL` otherwise
 
-    @note returns immidiately if faces an error
+    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
 extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
@@ -115,7 +118,7 @@ extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, con
 
     @returns `vt_plist_t*` of C string upon success, `NULL` otherwise
 
-    @note returns immidiately if faces an error
+    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
 extern vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
@@ -124,6 +127,8 @@ extern vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *cons
     @param z path
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
 extern vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z);
 
@@ -167,14 +172,21 @@ extern bool vt_path_rename(const char *const z1, const char *const z2);
 
 /** Expands tilda `~` to HOMEPATH
     @param z1 path
-    @returns a newly allocated `vt_str_t` path with the expanded tilda `~` upon success, `NULL` otherwise
+    @param alloctr alloctr instance
+
+    @returns a newly allocated `vt_str_t` path with the expanded tilda `~` upon success or the unmodified string otherwise
+
+    @note passing in `NULL` for the alloctr instance results in vt_calloc/realloc/free being used.
 */
-extern vt_str_t *vt_path_expand_tilda(const char *const z);
+extern vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 
 /** Returns executable path
+    @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
-extern vt_str_t *vt_path_get_this_exe_location(void);
+extern vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr);
 
 /** Pops off directory / steps back up the directory tree
     @param z path

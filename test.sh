@@ -6,6 +6,7 @@ rm -rf bin;
 # declare an array variable
 declare -a tests=( \
     "test_core" \
+    "test_mallocator" \
     "test_str" \
     "test_vec" \
     "test_plist" \
