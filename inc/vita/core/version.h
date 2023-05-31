@@ -1,7 +1,7 @@
 #ifndef VITA_VERSION_H
 #define VITA_VERSION_H
 
-/** VITA_CORE MODULE
+/** VITA_VERSION MODULE
     - vt_version_get
 */
 
