@@ -2,12 +2,16 @@
 #define VITA_H
 
 /** VITA MODULE
-    -
 */
 
 #include "core/core.h"
 #include "core/conv.h"
 #include "core/version.h"
+#include "core/compiler.h"
+
+#include "time/datetime.h"
+
+#include "allocator/mallocator.h"
 
 #include "container/vec.h"
 #include "container/str.h"

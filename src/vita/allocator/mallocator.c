@@ -1,6 +1,6 @@
 #include "vita/allocator/mallocator.h"
 
-static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const struct VitaAllocatorObject obj);
+static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const struct VitaAllocatedObject obj);
 static size_t vt_mallocator_obj_list_remove(vt_mallocator_t *const alloctr, const void *const ptr);
 static void vt_mallocator_obj_list_resize(vt_mallocator_t *const alloctr, const size_t length);
 static bool vt_mallocator_obj_list_has_space(const vt_mallocator_t *const alloctr);
@@ -12,7 +12,7 @@ vt_mallocator_t *vt_mallocator_create(void) {
     
     // initialize object list
     *alloctr = (vt_mallocator_t) {
-        .obj_list = VT_CALLOC(sizeof(struct VitaAllocatorObject) * VT_ARRAY_DEFAULT_INIT_ELEMENTS),
+        .obj_list = VT_CALLOC(sizeof(struct VitaAllocatedObject) * VT_ARRAY_DEFAULT_INIT_ELEMENTS),
         .obj_list_capacity = VT_ARRAY_DEFAULT_INIT_ELEMENTS
     };
 
@@ -29,14 +29,25 @@ void vt_mallocator_destroy(vt_mallocator_t *alloctr) {
     VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
 
-    // reset pointers to NULL
+    // reset function pointers to NULL
     alloctr->alloc = NULL;
     alloctr->realloc = NULL;
     alloctr->free = NULL;
 
-    // free object list
+    // free all objects in object list
+    VT_FOREACH(iter, 0, alloctr->obj_list_len) {
+        VT_FREE(alloctr->obj_list[iter].ptr);
+
+        // reset
+        alloctr->obj_list[iter].ptr = NULL;
+        alloctr->obj_list[iter].bytes = 0;
+    }
+
+    // free the object list itself
     VT_FREE(alloctr->obj_list);
     alloctr->obj_list = NULL;
+    alloctr->obj_list_len = 0;
+    alloctr->obj_list_capacity = 0;
 
     // free allocator itself
     VT_FREE(alloctr);
@@ -50,7 +61,7 @@ void *vt_mallocator_alloc(vt_mallocator_t *const alloctr, const size_t bytes, co
     VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // allocate memory
-    const struct VitaAllocatorObject obj = { 
+    const struct VitaAllocatedObject obj = { 
         .ptr = vt_calloc(bytes, file, func, line),
         .bytes = bytes
     };
@@ -79,7 +90,7 @@ void *vt_mallocator_realloc(vt_mallocator_t *const alloctr, void *ptr, const siz
     const size_t bytes_old = vt_mallocator_obj_list_remove(alloctr, ptr);
     
     // reallocate memory
-    const struct VitaAllocatorObject obj = { 
+    const struct VitaAllocatedObject obj = { 
         .ptr = vt_realloc(ptr, bytes, file, func, line), 
         .bytes = bytes
     };
@@ -122,7 +133,7 @@ void vt_mallocator_free(vt_mallocator_t *const alloctr, void *ptr, const char *c
     ptr = NULL;
 }
 
-void vt_mallocator_stats_print(const struct VitaAllocatorStats stats) {
+void vt_mallocator_print_stats(const struct VitaAllocatorStats stats) {
     // create stats formatter
     const int8_t width = 10;
     const char *const fmt = 
@@ -160,7 +171,7 @@ void vt_mallocator_stats_print(const struct VitaAllocatorStats stats) {
     @param alloctr allocator instance
     @param obj allocator object instance
 */
-static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const struct VitaAllocatorObject obj) {
+static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const struct VitaAllocatedObject obj) {
     // check for invalid input
     VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
     VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
@@ -220,7 +231,7 @@ static void vt_mallocator_obj_list_resize(vt_mallocator_t *const alloctr, const 
     VT_DEBUG_ASSERT(length > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
 
     // resize object list
-    alloctr->obj_list = VT_REALLOC(alloctr->obj_list, length * sizeof(struct VitaAllocatorObject));
+    alloctr->obj_list = VT_REALLOC(alloctr->obj_list, length * sizeof(struct VitaAllocatedObject));
     alloctr->obj_list_capacity = length;
 }
 

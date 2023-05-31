@@ -9,12 +9,12 @@ int32_t main(void) {
 
     VT_ALLOCATOR_FREE(alloctr, zbuf);
     zbuf = VT_ALLOCATOR_ALLOC(alloctr, 210);
-    // vt_mallocator_stats_print(alloctr->stats);
+    // vt_mallocator_print_stats(alloctr->stats);
 
     VT_ALLOCATOR_FREE(alloctr, val);
     VT_ALLOCATOR_FREE(alloctr, zbuf);
 
-    // vt_mallocator_stats_print(alloctr->stats);
+    // vt_mallocator_print_stats(alloctr->stats);
     vt_mallocator_destroy(alloctr);
 
     return 0;

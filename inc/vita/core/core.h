@@ -56,9 +56,11 @@
 #define VT_i_PCAT_NX(x, y) x ## y           // preprocessor concatenation
 #define VT_i_STR_EXPAND(x) #x               // expands macros to its value
 
+// useful macros
 #define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
 #define VT_STRING_OF(x) VT_i_STR_EXPAND(x)  // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
+#define VT_FOREACH(iter, from, to) for(size_t iter = from; iter < to; iter++)
 
 // data types for internal usage
 enum VitaTypeInfo {
