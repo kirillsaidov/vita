@@ -54,12 +54,22 @@ extern vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType 
 */
 extern void vt_plist_destroy(vt_plist_t *p);
 
-/** Returns length, capacity, available space (capacity - length)
+/** Returns length
     @param p vt_plist_t pointer
-    @returns size_t (length, capacity, available space (capacity - length))
+    @returns size_t length
 */
 extern size_t vt_plist_len(const vt_plist_t *const p);
+
+/** Returns capacity
+    @param p vt_plist_t pointer
+    @returns size_t capacity
+*/
 extern size_t vt_plist_capacity(const vt_plist_t *const p);
+
+/** Returns available space (capacity - length)
+    @param p vt_plist_t pointer
+    @returns size_t available space (capacity - length)
+*/
 extern size_t vt_plist_has_space(const vt_plist_t *const p);
 
 /** Checks if length == 0
