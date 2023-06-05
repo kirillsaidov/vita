@@ -46,13 +46,21 @@ extern vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType 
     @param p vt_plist_t instance
     @param alloctr allocator instance
 */
-// TODO:
-// extern void vt_plist_to_alloctr(const vt_plist_t *const p, const struct VitaBaseAllocatorType *alloctr);
 
 /** Deallocates and destroys vt_plist_t
     @param p vt_plist_t pointer
 */
 extern void vt_plist_destroy(vt_plist_t *p);
+
+/** Duplicates and returns a new plist instance
+    @param p vt_plist_t instance
+    @param alloctr allocator instance
+
+    @returns vt_vec_t* instance upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
+*/
+extern vt_plist_t *vt_plist_dup(const vt_plist_t *const p, struct VitaBaseAllocatorType *const alloctr);
 
 /** Returns length
     @param p vt_plist_t pointer

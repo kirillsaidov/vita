@@ -36,6 +36,21 @@ void vt_plist_destroy(vt_plist_t *p) {
     p = NULL;
 }
 
+vt_plist_t *vt_plist_dup(const vt_plist_t *const p, struct VitaBaseAllocatorType *const alloctr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+
+    // allocate a new vt_vec_t instance
+    vt_plist_t *pdup = vt_plist_create(p->len, alloctr);
+    pdup->len = p->len;
+
+    // copy values
+    memcpy(pdup->ptr2, p->ptr2, p->len);
+
+    return pdup;
+}
+
 size_t vt_plist_len(const vt_plist_t *const p) {
     return vt_array_len(p);
 }
