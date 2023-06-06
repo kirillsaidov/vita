@@ -46,7 +46,7 @@ vt_plist_t *vt_plist_dup(const vt_plist_t *const p, struct VitaBaseAllocatorType
     pdup->len = p->len;
 
     // copy values
-    memcpy(pdup->ptr2, p->ptr2, p->len);
+    memcpy(pdup->ptr2, p->ptr2, p->len * p->elsize);
 
     return pdup;
 }
@@ -100,6 +100,26 @@ void vt_plist_shrink(vt_plist_t *const p) {
     
     // update
     p->capacity = p->len;
+}
+
+void vt_plist_resize(vt_plist_t *const p, const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+
+    if(n == p->capacity) {
+        p->len = p->capacity;
+        return;
+    }
+
+    // resize vt_vec_t
+    p->ptr2 = p->alloctr 
+        ? VT_ALLOCATOR_REALLOC(p->alloctr, p->ptr2, n * p->elsize) 
+        : VT_REALLOC(p->ptr2, n * p->elsize);
+
+    // update
+    p->len = p->capacity = n;
 }
 
 void vt_plist_clear(vt_plist_t *const p) {

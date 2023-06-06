@@ -97,6 +97,12 @@ extern void vt_plist_reserve(vt_plist_t *const p, const size_t n);
 */
 extern void vt_plist_shrink(vt_plist_t *const p);
 
+/** Resizes vt_plist_t length
+    @param p vt_plist_t instance
+    @param n new size
+*/
+extern void vt_plist_resize(vt_plist_t *const p, const size_t n);
+
 /** Sets vt_plist_t length to 0
     @param p vt_plist_t pointer
 */
