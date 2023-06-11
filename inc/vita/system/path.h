@@ -36,6 +36,7 @@
     #include <io.h>
     #include <direct.h>
     #include <windows.h>
+    
     #define PATH_SEPARATOR "\\"
     #define getcwd _getcwd
     #define mkdir CreateDirectory
@@ -43,10 +44,14 @@
     #define rename MoveFile
     #define DIR_PERMISSIONS NULL
 #else
+    #if defined(__APPLE__) || defined(__MACH__)
+        #include <libproc.h>        
+    #endif
+
     #include <unistd.h>
     #include <dirent.h>
     #include <libgen.h>
-    #include <libproc.h>
+
     #define PATH_SEPARATOR "/"
     #define DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif
