@@ -122,6 +122,34 @@ void vt_plist_resize(vt_plist_t *const p, const size_t n) {
     p->len = p->capacity = n;
 }
 
+void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(
+        at < p->len,
+        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
+        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        at, 
+        p->len
+    );
+
+    // check if new memory needs to be allocated
+    if(!vt_plist_has_space(p)) {
+        vt_plist_reserve(p, p->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
+    }
+
+    // shift values by one value to the end of the vt_vec_t
+    memmove(((char*)(p->ptr2) + (at + 1) * p->elsize), ((char*)(p->ptr2) + at * p->elsize), ((p->len - at) * p->elsize));
+
+    // copy the str contents to str from the specified index
+    ((char**)p->ptr2)[at] = (char*)ptr;
+
+    // set new length
+    p->len++;
+}
+
 void vt_plist_clear(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));

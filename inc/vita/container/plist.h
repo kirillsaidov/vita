@@ -103,6 +103,13 @@ extern void vt_plist_shrink(vt_plist_t *const p);
 */
 extern void vt_plist_resize(vt_plist_t *const p, const size_t n);
 
+/** Inserts a pointer at an index
+    @param p vt_plist_t instance
+    @param ptr value to insert
+    @param at index to set the value
+*/
+extern void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at);
+
 /** Sets vt_plist_t length to 0
     @param p vt_plist_t pointer
 */
