@@ -10,6 +10,9 @@ project(vita
 set(DEFAULT_BUILD_TYPE "Debug")
 set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+if(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.0)
+endif()
 
 # finding all headers and sources 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
