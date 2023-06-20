@@ -19,7 +19,7 @@ declare -a tests=( \
     "test_debug" \
     "test_version" \
     "test_compiler" \
-    "test_time" \
+    "test_datetime" \
 )
 
 # colored output

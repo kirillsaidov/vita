@@ -77,14 +77,14 @@ void test_path(void) {
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
+            assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_destroy(cwd);
 
-        assert(vt_path_exists("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
-        assert(vt_path_is_dir("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src"));
-        assert(vt_path_is_file("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src/test_path.c"));
+        assert(vt_path_exists("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_dir("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_file("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/src/", true); {
+        vt_plist_t *pdir = vt_path_listdir(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
@@ -157,7 +157,7 @@ void test_selfpath(void) {
     #if defined(_WIN32) || defined(_WIN64)
         assert(vt_str_equals(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\bin\\test_path.exe"));
     #elif defined(__linux__)
-        assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/gitlab.kirill.saidov/Vita/tests/bin/test_path"));
+        assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #else
         assert(vt_str_equals(vt_str_z(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif

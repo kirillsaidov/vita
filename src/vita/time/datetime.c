@@ -106,19 +106,19 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%d %H:%M:%S");
+    return vt_datetime_from_text_fmt(timebuf, "%d-%d-%d %d:%d:%d");     // "%Y-%m-%d %H:%M:%S"
 }
 
 struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    return vt_datetime_from_text_fmt(timebuf, "%Y%m%dT%H%M%S");
+    return vt_datetime_from_text_fmt(timebuf, "%4d%2d%2dT%2d%2d%2d");   // "%Y%m%dT%H%M%S"
 }
 
 struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    return vt_datetime_from_text_fmt(timebuf, "%Y-%m-%dT%H:%M:%S");
+    return vt_datetime_from_text_fmt(timebuf, "%d-%d-%dT%d:%d:%d");     // "%Y-%m-%dT%H:%M:%S"
 }
 
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
@@ -255,9 +255,13 @@ static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const 
 
     // convert to tm
     struct tm stm = {0};
-    strptime(timebuf, fmt, &stm);
+    sscanf(timebuf, fmt, &stm.tm_year, &stm.tm_mon, &stm.tm_mday, &stm.tm_hour, &stm.tm_min, &stm.tm_sec);
+
+    // adjust
+    stm.tm_year -= VT_DATETIME_MIN_YEAR_RANGE;
+    stm.tm_mon -= 1;
+    stm.tm_isdst = -1;
 
     return vt_datetime_tm_to_vdt(stm);
 }
-
 
