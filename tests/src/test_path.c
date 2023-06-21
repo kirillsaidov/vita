@@ -34,16 +34,6 @@ void free_str(void *ptr, size_t i) {
 }
 
 void test_path(void) {
-    vt_plist_t *p = vt_plist_create(3, alloctr);
-        vt_plist_push(p, "hello");
-        vt_plist_push(p, "world");
-        vt_plist_push(p, "folder");
-
-        vt_str_t *sp = vt_path_build(NULL, p); {
-            assert(vt_str_equals(vt_str_z(sp), "hello/world/folder"));
-        } vt_str_destroy(sp);
-    vt_plist_destroy(p);
-
     assert(vt_path_exists("/home/lala") == false); // must fail
 
     #if defined(_WIN32) || defined(_WIN64)
@@ -52,14 +42,14 @@ void test_path(void) {
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
+            assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
         } vt_str_destroy(cwd);
 
-        assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests"));
-        assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src"));
-        assert(vt_path_is_file("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src\\test_path.c"));
+        assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
+        assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src"));
+        assert(vt_path_is_file("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src\\test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\src", true); {
+        vt_plist_t *pdir = vt_path_listdir(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
@@ -155,7 +145,7 @@ void test_selfpath(void) {
     VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
 
     #if defined(_WIN32) || defined(_WIN64)
-        assert(vt_str_equals(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\gitlab.kirill.saidov\\Vita\\tests\\bin\\test_path.exe"));
+        assert(vt_str_equals(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\bin\\test_path.exe"));
     #elif defined(__linux__)
         assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #else

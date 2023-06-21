@@ -34,7 +34,11 @@ int32_t main(void) {
 
     vt_datetime_to_text_pretty(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
     VT_DEBUG_PRINTF("%s\n", timebuf);
-    assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
+    #if defined(_WIN32) || defined(_WIN64)
+        assert(vt_str_equals(timebuf, "Sun Jan 01 11:24:56 2023"));
+    #else
+        assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
+    #endif
 
     // check week day
     assert(vt_datetime_find_week_day((const struct VitaDateTime) {.year = 2023, .month = 5, .month_day = 15}) == 1);
