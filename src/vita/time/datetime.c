@@ -93,8 +93,8 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
-    asctime_r(&stm, timebuf);
-
+    asctime(timebuf, VT_DATETIME_BUFFER_SIZE, &stm);
+    
     // remove '\n' that's appended at the end
     if(timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
         timebuf[VT_DATETIME_BUFFER_SIZE-1] = '\0';
@@ -106,7 +106,7 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    return vt_datetime_from_text_fmt(timebuf, "%d-%d-%d %d:%d:%d");     // "%Y-%m-%d %H:%M:%S"
+    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2d %2d:%2d:%2d");     // "%Y-%m-%d %H:%M:%S"
 }
 
 struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
@@ -118,7 +118,7 @@ struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
 struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    return vt_datetime_from_text_fmt(timebuf, "%d-%d-%dT%d:%d:%d");     // "%Y-%m-%dT%H:%M:%S"
+    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2dT%2d:%2d:%2d");     // "%Y-%m-%dT%H:%M:%S"
 }
 
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
