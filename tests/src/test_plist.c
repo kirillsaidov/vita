@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "../../inc/vita/container/str.h"
 #include "../../inc/vita/container/plist.h"
 
 int main(void) {
@@ -42,6 +43,17 @@ int main(void) {
         while((i = vt_array_slide_front(p)) != NULL) {
             // printf("%s\n", *((char**)(i)));
         }
+
+        // copying 
+        vt_plist_t *pcopy = vt_plist_dup(p, alloctr); {
+            assert(vt_plist_len(pcopy) == vt_plist_len(p));
+            assert(vt_plist_get(pcopy, 0) == vt_plist_get(p, 0));
+            assert(vt_str_equals(vt_plist_get(pcopy, 0), "hello"));
+        } vt_plist_destroy(pcopy);
+
+        // resize
+        vt_plist_resize(p, 3);
+        assert(vt_plist_len(p) == 3);
     } vt_plist_destroy(p);
 
     vt_mallocator_destroy(alloctr);
