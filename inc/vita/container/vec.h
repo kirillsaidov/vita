@@ -1,7 +1,7 @@
-#ifndef VITA_VEC_H
-#define VITA_VEC_H
+#ifndef VITA_CONTAINER_VEC_H
+#define VITA_CONTAINER_VEC_H
 
-/** VITA_VEC MODULE (dynamic array)
+/** VEC MODULE (dynamic array)
     - vt_vec_create
     - vt_vec_destroy
     - vt_vec_len
@@ -306,4 +306,4 @@ extern void vt_vec_slide_reset(vt_vec_t *const v);
 */
 extern void vt_vec_apply(const vt_vec_t *const v, void (*func)(void*, size_t));
 
-#endif // VITA_VEC_H
+#endif // VITA_CONTAINER_VEC_H

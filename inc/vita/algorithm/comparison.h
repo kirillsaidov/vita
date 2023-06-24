@@ -1,7 +1,7 @@
-#ifndef VITA_COMPARISON_H
-#define VITA_COMPARISON_H
+#ifndef VITA_ALGORITHM_COMPARISON_H
+#define VITA_ALGORITHM_COMPARISON_H
 
-/** VITA_COMPARISON MODULE
+/** COMPARISON MODULE
     - vt_cmp_minT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_cmp_maxT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_cmp_clampT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
@@ -70,4 +70,4 @@ VT_PROTOTYPE_CMP_CLAMP(double, d)
 VT_PROTOTYPE_CMP_CLAMP(real, r)
 #undef VT_PROTOTYPE_CMP_CLAMP
 
-#endif // VITA_COMPARISON_H
+#endif // VITA_ALGORITHM_COMPARISON_H

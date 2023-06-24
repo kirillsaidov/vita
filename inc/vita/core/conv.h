@@ -1,7 +1,7 @@
-#ifndef VITA_CONV_H
-#define VITA_CONV_H
+#ifndef VITA_CORE_CONV_H
+#define VITA_CORE_CONV_H
 
-/** VITA_CONV MODULE
+/** CONV MODULE
     - vt_conv_str_to_int64
     - vt_conv_str_to_uint64
     - vt_conv_str_to_double

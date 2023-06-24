@@ -1,7 +1,7 @@
-#ifndef VITA_FILEIO_H
-#define VITA_FILEIO_H
+#ifndef VITA_SYSTEM_FILEIO_H
+#define VITA_SYSTEM_FILEIO_H
 
-/** VITA_FILEIO MODULE (working with files)
+/** FILEIO MODULE (working with files)
     - vt_file_read
     - vt_file_readb
     - vt_file_write
@@ -89,5 +89,5 @@ extern bool vt_file_writef(const char *const filename, const char *const fmt, ..
 */
 extern bool vt_file_writefc(const char *const filename, const bool use_binary_mode, const bool use_append_mode, const bool add_ln, const char *const fmt, ...);
 
-#endif // VITA_FILEIO_H
+#endif // VITA_SYSTEM_FILEIO_H
 

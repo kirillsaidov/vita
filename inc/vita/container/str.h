@@ -1,7 +1,7 @@
-#ifndef VITA_STR_H
-#define VITA_STR_H
+#ifndef VITA_CONTAINER_STR_H
+#define VITA_CONTAINER_STR_H
 
-/** VITA_STR MODULE (dynamic string)
+/** STR MODULE (dynamic string)
     - vt_str_create_static
     - vt_str_create
     - vt_str_create_len
@@ -424,4 +424,4 @@ extern char *vt_str_slide_back(vt_str_t *const s);
 */
 extern void vt_str_slide_reset(vt_str_t *const s);
 
-#endif // VITA_STR_H
+#endif // VITA_CONTAINER_STR_H

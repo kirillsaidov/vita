@@ -1,7 +1,7 @@
-#ifndef VITA_COMPILER_H
-#define VITA_COMPILER_H
+#ifndef VITA_CORE_COMPILER_H
+#define VITA_CORE_COMPILER_H
 
-/** VITA_CORE MODULE
+/** COMPILER MODULE
     - vt_compiler_get_version
 */
 
@@ -31,6 +31,6 @@
 */
 extern vt_version_t vt_compiler_get_version(void);
 
-#endif // VITA_COMPILER_H
+#endif // VITA_CORE_COMPILER_H
 
 

@@ -1,7 +1,7 @@
-#ifndef VITA_CORE_H
-#define VITA_CORE_H
+#ifndef VITA_CORE_CORE_H
+#define VITA_CORE_CORE_H
 
-/** VITA_CORE MODULE
+/** CORE MODULE
  * This module is a collection of all common definitions and code needed by the rest of the library.
 
  * Macros:

@@ -1,7 +1,7 @@
-#ifndef VITA_PLIST_H
-#define VITA_PLIST_H
+#ifndef VITA_CONTAINER_PLIST_H
+#define VITA_CONTAINER_PLIST_H
 
-/** VITA_PLIST MODULE (dynamic array(list) of pointers)
+/** PLIST MODULE (dynamic array(list) of pointers)
     - vt_plist_create
     - vt_plist_destroy
     - vt_plist_len
@@ -192,4 +192,4 @@ extern void vt_plist_slide_reset(vt_plist_t *const p);
 extern void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t));
 
 
-#endif // VITA_PLIST_H
+#endif // VITA_CONTAINER_PLIST_H

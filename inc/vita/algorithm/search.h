@@ -1,7 +1,7 @@
-#ifndef VITA_SEARCH_H
-#define VITA_SEARCH_H
+#ifndef VITA_ALGORITHM_SEARCH_H
+#define VITA_ALGORITHM_SEARCH_H
 
-/** VITA_SEARCH MODULE
+/** SEARCH MODULE
     - //
 */
 
@@ -49,4 +49,4 @@ Notes:
 
 extern void search_test(void);
 
-#endif // VITA_SEARCH_H
+#endif // VITA_ALGORITHM_SEARCH_H

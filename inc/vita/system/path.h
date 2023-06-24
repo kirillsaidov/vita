@@ -1,7 +1,7 @@
-#ifndef VITA_PATH_H
-#define VITA_PATH_H
+#ifndef VITA_SYSTEM_PATH_H
+#define VITA_SYSTEM_PATH_H
 
-/** VITA_PATH MODULE
+/** PATH MODULE
     - vt_path_build
     - vt_path_build_n
     - vt_path_getcwd
@@ -203,4 +203,4 @@ extern void vt_path_pop(char *const z);
 */
 extern void vt_path_validate(char *const z);
 
-#endif // VITA_PATH_H
+#endif // VITA_SYSTEM_PATH_H

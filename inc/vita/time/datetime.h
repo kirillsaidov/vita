@@ -1,7 +1,7 @@
-#ifndef VITA_DATETIME_H
-#define VITA_DATETIME_H
+#ifndef VITA_TIME_DATETIME_H
+#define VITA_TIME_DATETIME_H
 
-/** VITA_DATETIME MODULE 
+/** DATETIME MODULE 
  * This is a datetime handling module. By defaut it will always return the VitaDateTime struct.
  * If a function has `text` in its name, then it returns data in textual format.
     - vt_datetime_get_now
@@ -180,4 +180,4 @@ extern int16_t vt_datetime_find_days_in_year(const struct VitaDateTime vdt);
 */
 extern bool vt_datetime_is_leap_year(const struct VitaDateTime vdt);
 
-#endif // VITA_DATETIME_H
+#endif // VITA_TIME_DATETIME_H

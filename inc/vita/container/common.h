@@ -1,7 +1,7 @@
-#ifndef VITA_COMMON_H
-#define VITA_COMMON_H
+#ifndef VITA_CONTAINER_COMMON_H
+#define VITA_CONTAINER_COMMON_H
 
-/** VITA_COMMON MODULE
+/** COMMON MODULE
     - vt_array_head
     - vt_array_len
     - vt_array_capacity
@@ -101,4 +101,4 @@ extern size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t
 */
 extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
 
-#endif // VITA_COMMON_H
+#endif // VITA_CONTAINER_COMMON_H

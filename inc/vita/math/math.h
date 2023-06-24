@@ -1,7 +1,7 @@
-#ifndef VITA_MATH_H
-#define VITA_MATH_H
+#ifndef VITA_MATH_MATH_H
+#define VITA_MATH_MATH_H
 
-/** VITA_MATH MODULE
+/** MATH MODULE
     - vt_math_is_palindrome
     - vt_math_map_to
     - vt_math_sqrt_carmack

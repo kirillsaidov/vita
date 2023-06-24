@@ -1,7 +1,7 @@
-#ifndef VITA_MALLOCATOR_H
-#define VITA_MALLOCATOR_H
+#ifndef VITA_ALLOCATOR_MALLOCATOR_H
+#define VITA_ALLOCATOR_MALLOCATOR_H
 
-/** VITA_MALLOCATOR MODULE 
+/** MALLOCATOR MODULE 
     - vt_mallocator_create
     - vt_mallocator_destroy
     - vt_mallocator_alloc
@@ -99,4 +99,4 @@ extern void vt_mallocator_free(vt_mallocator_t *const alloctr, void *ptr, const 
 */
 extern void vt_mallocator_print_stats(const struct VitaAllocatorStats stats);
 
-#endif // VITA_MALLOCATOR_H
+#endif // VITA_ALLOCATOR_MALLOCATOR_H

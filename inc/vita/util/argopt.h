@@ -1,7 +1,7 @@
-#ifndef VITA_ARGOPT_H
-#define VITA_ARGOPT_H
+#ifndef VITA_UTIL_ARGOPT_H
+#define VITA_UTIL_ARGOPT_H
 
-/** VITA_ARGOPT MODULE
+/** ARGOPT MODULE
     - vt_argopt_parse
     - vt_argopt_print_help
 */
@@ -54,4 +54,4 @@ extern int8_t vt_argopt_parse(const size_t argc, const char **const argv, const 
 */
 extern void vt_argopt_print_help(const char *header, const char *footer, const size_t optc, const vt_argopt_t *const optv);
 
-#endif // VITA_ARGOPT_H
+#endif // VITA_UTIL_ARGOPT_H

@@ -1,5 +1,5 @@
-#ifndef VITA_VT_DEBUG_H
-#define VITA_VT_DEBUG_H
+#ifndef VITA_UTIL_DEBUG_H
+#define VITA_UTIL_DEBUG_H
 
 /** VITA_DEBUG MODULE
  * Macros
@@ -78,4 +78,4 @@ extern void vt_debug_redirect_output(const char *const zfilename);
 */
 extern void vt_debug_disable_output(const bool off);
 
-#endif // VITA_VT_DEBUG_H
+#endif // VITA_UTIL_DEBUG_H

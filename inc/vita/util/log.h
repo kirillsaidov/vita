@@ -1,5 +1,5 @@
-#ifndef VITA_VT_LOG_H
-#define VITA_VT_LOG_H
+#ifndef VITA_UTIL_LOG_H
+#define VITA_UTIL_LOG_H
 
 /** VITA_LOG MODULE
  * Macros - GLOBAL LOGGER
@@ -102,7 +102,7 @@ extern const char *vt_log_get_level_str(enum VitaLogLevel vt_log_level);
 */
 extern void vt_log(const char *const filename, enum VitaLogLevel vt_log_level, const bool expr, const char *const zexpr, const char *const file, const size_t line, const char *const zfmt, ...);
 
-#endif // VITA_VT_LOG_H
+#endif // VITA_UTIL_LOG_H
 
 
 
