@@ -18,22 +18,24 @@ A simple library for your modern C project! Lightweight and no dependencies. Pro
 #include "vita/vita.h"
 
 int32_t main(const int32_t argc, const char *argv[]) {
-    char *opt_savedir = strdup("./media");
-    int32_t opt_max_grab_files = 10;
-    bool opt_verbose = false;
+    char   *opt_link = NULL;
+    char   *opt_save = strdup("~/Desktop");
+    bool    opt_verbose = false;
+    int32_t opt_quality = 640;
 
     // create options to parse
     vt_argopt_t optv[] = {
-          // long       short     description           argument               type
-        { "--verbose",  "-v", "verbose output",   VT_ARGOPT(opt_verbose),        VT_TYPE_BOOL },
-        { "--max",      "-m", "max grab files",   VT_ARGOPT(opt_max_grab_files), VT_TYPE_INT32 },
-        { "--save",     "-s", "save directory",   VT_ARGOPT(opt_savedir),        VT_TYPE_CSTR },
+        //  long        short     description          argument              type
+        { "--link",     "-l",   "url link",       VT_ARGOPT(opt_link),    VT_TYPE_CSTR },
+        { "--save",     "-s",   "save directory", VT_ARGOPT(opt_save),    VT_TYPE_CSTR },
+        { "--verbose",  "-v",   "verbose output", VT_ARGOPT(opt_verbose), VT_TYPE_BOOL },
+        { "--quality",  "-q",   "video quality",  VT_ARGOPT(opt_quality), VT_TYPE_INT32 },
     };
     const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 
     // parse args and opts
-    const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);
-    if(parse_status < 0) { // or (parse_status == VT_ARGOPT_PARSE_ERROR)
+    const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv, NULL);
+    if(parse_status < 0) {
         printf("See 'argopt -h' for more info!\n");
         goto cleanup;
     }
@@ -41,20 +43,19 @@ int32_t main(const int32_t argc, const char *argv[]) {
     // display help manual
     if(parse_status == VT_ARGOPT_PARSE_HELP_WANTED) {
         vt_argopt_print_help(
-            "argopt v0.3.0 -- Testing argopt parser",               // header
-            "Example: argopt --max 15 -s my/save/dir/ --verbose",   // footer
+            "downloader v0.3.0 -- easy video downloader",                    // header
+            "Example: downloader --link your_url --save save/dir --verbose", // footer
             optc, optv
         );
         return 0;
     }
 
     // now do your thing
-    printf("%20s : %d\n", "opt_verbose", opt_verbose);
-    printf("%20s : %d\n", "opt_max_grab_files", opt_max_grab_files);
-    printf("%20s : %s\n", "opt_savedir", opt_savedir);
+    download(opt_link, opt_save, opt_verbose, opt_quality);
 
 cleanup:
-    free(opt_savedir);
+    free(opt_link);
+    free(opt_save);
 
     return 0;
 }
@@ -62,19 +63,23 @@ cleanup:
 
 Building and running:
 ```
-$ gcc argopt_showcase.c -o argopt -lvita -L.
-$ ./argopt --max 15 -s my/save/dir/ --verbose
-        opt_verbose : 1
- opt_max_grab_files : 15
-        opt_savedir : my/save/dir/
+$ gcc argopt_showcase.c -o downloader -lvita -L.
+$ ./downloader --link "www.abs.com/video" -s ~/Desktop/media --verbose
+==============================================
+Downloading video with the following options:
+        url: www.abs.com/video
+       save: ~/Desktop/media
+    verbose: true
+==============================================
 
-$ ./argopt -h
-argopt v0.3.0 -- Testing argopt parser
--v --verbose verbose output
--m     --max max grab files
+$ ./downloader -h
+downloader v0.3.0 -- easy video downloader
+-l    --link url link
 -s    --save save directory
+-v --verbose verbose output
+-q --quality video quality
 -h    --help This help information.
-Example: argopt --max 15 -s my/save/dir/ --verbose
+Example: downloader --link your_url --save save/dir --verbose
 ```
 
 ## More examples
