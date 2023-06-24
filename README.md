@@ -1,15 +1,16 @@
 <img src="imgs/v-flaticon.png" width="64" height="64" align="left"></img>
 # Vita
 
-A custom C library for quick prototyping with simple data structures, string manipulation, file and path handling, command line arguments parser and more!
+A simple C library for quick prototyping. Lightweight and no dependencies. Provides data structures, string manipulation, file and path handling, command line args parsing and more!
 
 ## Features
-* simple containers (vec, mat, plist)
+* containers
 * string manipulation
 * path and file handling
 * logging facility
 * command line arguments parsing
 * facilities to work with paths and directories
+* datetime utility
 
 ### Arguments parser showcase
 ```c
