@@ -2,8 +2,9 @@
 This is a list of guidelines that I adhere to while developing Vita library.
 
 ## A few notes for future revision
-* Don't use a MACRO if a function can be used instead
-* Avoid ambiguity
+* Don't use a MACRO if a function can be used instead.
+* Avoid ambiguity.
+* There must be only one way to do something.
 
 ---
 
@@ -39,16 +40,16 @@ typedef struct BlackBox {
 } bb_t;
 ```
 
-Use capital letters of an enum as a prefix for enum members. Enums may be `ALL_CAPS`, but I prefer `lower_underscore_case` style. 
+Enums must be `ALL_CAPS`, sometimes `lower_underscore_case` style is also acceptable. 
 
 ```C
-enum WorldElements { // (W)orld (E)elements => we_enum_name
-    we_air,
-    we_water,
-    we_earth,
-    we_fire,
-    we_count // number of elements
-}
+enum WorldElements { // => world_elements_enum_value
+    WORLD_ELEMENTS_AIR,
+    WORLD_ELEMENTS_WATER,
+    WORLD_ELEMENTS_EARTH,
+    WORLD_ELEMENTS_FIRE,
+    WORLD_ELEMENTS_COUNT // number of elements
+};
 ```
 
 Don't `typedef` enums! 
@@ -95,6 +96,17 @@ Always prepend project name to the header guard to avoid name collisions.
 // In this case BLACKBOX is a project name and MYSTERY is a module name
 
 #endif // BLACKBOX_MYSTERY_H
+```
+
+Or even better add package name as well:
+
+```C
+#ifndef BLACKBOX_SPACE_MYSTERY_H
+#define BLACKBOX_SPACE_MYSTERY_H
+
+// In this case BLACKBOX is a project name, SPACE is a package and MYSTERY is a module
+
+#endif // BLACKBOX_SPACE_MYSTERY_H => project_package_module
 ```
 
 ---
