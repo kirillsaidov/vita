@@ -4,6 +4,7 @@ static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm);
 static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt);
 static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf, const size_t len, const char *fmt);
 static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const char *fmt);
+static bool vt_datetime_is_valid_fmt(const char *const timebuf, const char *const fmt, const size_t len);
 
 struct VitaDateTime vt_datetime_get_now(void) {
     const time_t t = time(NULL);
@@ -106,19 +107,40 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2d %2d:%2d:%2d");     // "%Y-%m-%d %H:%M:%S"
+    VT_ENFORCE(
+        vt_datetime_is_valid_text(timebuf), 
+        "Invalid timestamp format! Expected \'%s\', but recieved \'%s\'.\n", 
+        "YYYY-MM-DD HH:MM:SS", 
+        timebuf
+    );
+
+    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2d %2d:%2d:%2d");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    return vt_datetime_from_text_fmt(timebuf, "%4d%2d%2dT%2d%2d%2d");   // "%Y%m%dT%H%M%S"
+    VT_ENFORCE(
+        vt_datetime_is_valid_text_iso(timebuf), 
+        "Invalid timestamp format! Expected \'%s\', but recieved \'%s\'.\n", 
+        "YYYYMMDDTHHMMSS", 
+        timebuf
+    );
+
+    return vt_datetime_from_text_fmt(timebuf, "%4d%2d%2dT%2d%2d%2d");
 }
 
 struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
     // check for invalid input
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2dT%2d:%2d:%2d");     // "%Y-%m-%dT%H:%M:%S"
+    VT_ENFORCE(
+        vt_datetime_is_valid_text_iso_ext(timebuf), 
+        "Invalid timestamp format! Expected \'%s\', but recieved \'%s\'.\n", 
+        "YYYY-MM-DDTHH:MM:SS", 
+        timebuf
+    );
+
+    return vt_datetime_from_text_fmt(timebuf, "%4d-%2d-%2dT%2d:%2d:%2d");
 }
 
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
@@ -149,13 +171,13 @@ int16_t vt_datetime_find_days_in_month(const struct VitaDateTime vdt) {
     const int16_t year = vdt.year < 0 ? VT_DATETIME_MIN_YEAR_RANGE : vdt.year;
 
     // check for 31 Days
-    if (month == 1 || month == 3 || month == 5 ||
+    if(month == 1 || month == 3 || month == 5 ||
         month == 7 || month == 8 || month == 10 ||
         month == 12) {
         return 31;
     } 
     // check for 30 Days
-    else if (month == 4 || month == 6 ||
+    else if(month == 4 || month == 6 ||
              month == 9 || month == 11) {
         return 30;
     }
@@ -172,6 +194,30 @@ int16_t vt_datetime_find_days_in_year(const struct VitaDateTime vdt) {
 bool vt_datetime_is_leap_year(const struct VitaDateTime vdt) {
     const int16_t year = vdt.year < 0 ? VT_DATETIME_MIN_YEAR_RANGE : vdt.year;
     return (year % 4 == 0);
+}
+
+bool vt_datetime_is_valid_text(const char *const timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    const char fmt[] = "YYYY-MM-DD HH:MM:SS";
+    return vt_datetime_is_valid_fmt(timebuf, fmt, sizeof(fmt));
+}
+
+bool vt_datetime_is_valid_text_iso(const char *const timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    const char fmt[] = "YYYYMMDDTHHMMSS";
+    return vt_datetime_is_valid_fmt(timebuf, fmt, sizeof(fmt));
+}
+
+bool vt_datetime_is_valid_text_iso_ext(const char *const timebuf) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    const char fmt[] = "YYYY-MM-DDTHH:MM:DD";
+    return vt_datetime_is_valid_fmt(timebuf, fmt, sizeof(fmt));
 }
 
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
@@ -263,5 +309,28 @@ static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const 
     stm.tm_isdst = -1;
 
     return vt_datetime_tm_to_vdt(stm);
+}
+
+/** Checks if timestamp is valid format
+    @param timebuf timestamp
+    @param fmt timestamp format with 0 in place of digits, see notes below
+    @param len timestamp/fmt buffer size
+    @returns true if valid
+
+    @note checks if format is valid, does not check for correct values in timestamp itself.
+    @note `fmt` must use 0 for digits and non-digit for separators, e.g.: "0000-00-00 00:00:00", "00000000T000000", "0000-00-00T00:00:00"
+*/
+static bool vt_datetime_is_valid_fmt(const char *const timebuf, const char *const fmt, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    for(size_t i = 0; i < len; i++) {
+        if(fmt[i] != 'T' && isalpha(fmt[i]) && !isdigit(timebuf[i])) {
+            return false;
+        }
+    }
+
+    return true;
 }
 

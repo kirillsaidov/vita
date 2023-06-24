@@ -81,6 +81,14 @@ int32_t main(void) {
     assert(vdt_iso_ext.minute == 31);
     assert(vdt_iso_ext.second == 1);
 
+    assert(vt_datetime_is_valid_text("2023-12-27 23:12:02") == true);
+    assert(vt_datetime_is_valid_text_iso("20231227T231202") == true);
+    assert(vt_datetime_is_valid_text_iso_ext("2023-12-27T23:12:02") == true);
+    assert(vt_datetime_is_valid_text("2023-13-27 23:1 :02") == false);
+    assert(vt_datetime_is_valid_text("2023-1d-27 22:12:02") == false);
+    assert(vt_datetime_is_valid_text("2023-27 22:12:02   ") == false);
+    assert(vt_datetime_is_valid_text("a023-27 22:12:02   ") == false);
+
     return 0;
 }
 

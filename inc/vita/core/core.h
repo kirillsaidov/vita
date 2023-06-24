@@ -31,6 +31,7 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <limits.h>
+#include <ctype.h>
 #include <time.h>
 
 // OS specific setup

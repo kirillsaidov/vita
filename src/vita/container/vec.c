@@ -346,7 +346,7 @@ int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     size_t i = 0;
-    for (char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
+    for(char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
         if(memcmp(iter, val, v->elsize) == 0) {
             return i;
         }

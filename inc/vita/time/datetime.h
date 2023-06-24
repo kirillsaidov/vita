@@ -180,4 +180,28 @@ extern int16_t vt_datetime_find_days_in_year(const struct VitaDateTime vdt);
 */
 extern bool vt_datetime_is_leap_year(const struct VitaDateTime vdt);
 
+/** Checks if timestamp is a valid string format
+    @param timebuf timestamp
+    @returns true if valid
+
+    @note checks if format is valid, does not check for correct values in timestamp itself
+*/
+extern bool vt_datetime_is_valid_text(const char *const timebuf);
+
+/** Checks if timestamp is a valid ISO format string
+    @param timebuf timestamp
+    @returns true if valid
+
+    @note checks if format is valid, does not check for correct values in timestamp itself
+*/
+extern bool vt_datetime_is_valid_text_iso(const char *const timebuf);
+
+/** Checks if timestamp is a valid ISO Extended format string
+    @param timebuf timestamp
+    @returns true if valid
+
+    @note checks if format is valid, does not check for correct values in timestamp itself
+*/
+extern bool vt_datetime_is_valid_text_iso_ext(const char *const timebuf);
+
 #endif // VITA_TIME_DATETIME_H

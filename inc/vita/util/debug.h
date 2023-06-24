@@ -31,11 +31,11 @@
     #define VT_DEBUG_PRINTF(...)
 #endif
 
-// check for a condition;  isn't removed in release builds
-#define VT_CHECK(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), "DEBUG CHECK FAILURE", false, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
+// check for a condition (outputs a message in case of error, does not exit);  isn't removed in release builds
+#define VT_CHECK(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), "CHECK FAILURE", false, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
 // the same as assert, but isn't removed in release builds
-#define VT_ENFORCE(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), "DEBUG ENFORCE FAILURE", true,  __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
+#define VT_ENFORCE(expr, ...) vt_debug_assert(expr, VT_STRING_OF(expr), "ENFORCE FAILURE", true,  __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
 /** Asserts an expression and exits upon its evaluation to false
     @param expr expression to test
