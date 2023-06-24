@@ -12,11 +12,14 @@ int main(void) {
 
         char *h = "hello";
         char *w = "world";
+        char *t = "temp";
         vt_plist_push(p, h);
         vt_plist_push(p, w);
         assert(vt_plist_len(p) == 2);
         assert(vt_plist_capacity(p) == 5);
         assert(vt_plist_has_space(p) == 3);
+        assert(vt_plist_can_find(p, w) == 1);
+        assert(vt_plist_can_find(p, t) == -1);
 
         vt_plist_shrink(p);
         assert(vt_plist_capacity(p) == 2);

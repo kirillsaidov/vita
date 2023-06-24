@@ -254,6 +254,22 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
     p->len--;
 }
 
+int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+
+    size_t i = 0;
+    for (char *iter = (char*)p->ptr2; iter != (char*)(p->ptr2) + p->len * p->elsize; iter += p->elsize, i++) {
+        if(p->ptr2[i] == (char*)ptr) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void **vt_plist_slide_front(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));

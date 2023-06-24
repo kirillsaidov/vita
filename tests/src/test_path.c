@@ -92,14 +92,14 @@ void test_path(void) {
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+            assert(vt_str_equals(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_destroy(cwd);
 
-        assert(vt_path_exists("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_dir("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_file("/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
+        assert(vt_path_exists("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_dir("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+        assert(vt_path_is_file("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
+        vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
             vt_plist_apply(pdir, free_str);
         } vt_plist_destroy(pdir);
@@ -131,7 +131,7 @@ void test_expand_tilda(void) {
         #elif defined(__linux__)
             assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/home/kiril/hello"));
         #else
-            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/Users/kirillos/hello"));
+            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
         #endif
 
         assert(vt_str_equals(vt_str_z(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
@@ -149,7 +149,7 @@ void test_selfpath(void) {
     #elif defined(__linux__)
         assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #else
-        assert(vt_str_equals(vt_str_z(selfpath), "/Users/kirillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
+        assert(vt_str_equals(vt_str_z(selfpath), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
     
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_str_z(selfpath));

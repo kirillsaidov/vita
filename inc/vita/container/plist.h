@@ -154,6 +154,14 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
 */
 extern void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);
 
+/** Checks if vt_plist_t contains the specified element (pointer)
+    @param p vt_plist_t instance
+    @param ptr value to check
+
+    @returns index to first val instance, `-1` upon failure
+*/
+extern int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr);
+
 /** Slides through the container elements one by one
     @param p vt_plist_t pointer
     @returns container ptr head pointing to next element from the start
