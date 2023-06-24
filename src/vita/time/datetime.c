@@ -95,7 +95,12 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
     asctime(timebuf, VT_DATETIME_BUFFER_SIZE, &stm);
-    
+
+    // set day digit to blank space when < 10, e.g.: 'Jan 01' to 'Jan 1'
+    if(timebuf[8] == '0') {
+        timebuf[8] = ' ';
+    }
+
     // remove '\n' that's appended at the end
     if(timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
         timebuf[VT_DATETIME_BUFFER_SIZE-1] = '\0';
