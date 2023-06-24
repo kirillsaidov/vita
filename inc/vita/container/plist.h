@@ -2,10 +2,6 @@
 #define VITA_PLIST_H
 
 /** VITA_PLIST MODULE (dynamic array(list) of pointers)
-    - vt_plist_new
-    - vt_plist_ctor
-    - vt_plist_dtor
-    - vt_plist_free
     - vt_plist_create
     - vt_plist_destroy
     - vt_plist_len

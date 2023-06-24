@@ -2,11 +2,6 @@
 #define VITA_VEC_H
 
 /** VITA_VEC MODULE (dynamic array)
-    - vt_vec_new
-    - vt_vec_ctor
-    - vt_vec_dup
-    - vt_vec_dtor
-    - vt_vec_free
     - vt_vec_create
     - vt_vec_destroy
     - vt_vec_len
