@@ -2,7 +2,7 @@
 
 vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // allocate a new vt_plist_t instance
     vt_plist_t *p = vt_array_new(alloctr);
@@ -19,8 +19,8 @@ vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const 
 
 void vt_plist_destroy(vt_plist_t *p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free vt_plist_t contents
     if(p->alloctr) {
@@ -38,8 +38,8 @@ void vt_plist_destroy(vt_plist_t *p) {
 
 vt_plist_t *vt_plist_dup(const vt_plist_t *const p, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // allocate a new vt_vec_t instance
     vt_plist_t *pdup = vt_plist_create(p->len, alloctr);
@@ -69,9 +69,9 @@ bool vt_plist_is_empty(const vt_plist_t *const p) {
 
 void vt_plist_reserve(vt_plist_t *const p, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // reserve memory for additional n elements
     p->ptr2 = p->alloctr 
@@ -84,8 +84,8 @@ void vt_plist_reserve(vt_plist_t *const p, const size_t n) {
 
 void vt_plist_shrink(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if length and capacity are the same, exit the function
     if(p->len == p->capacity) {
@@ -104,9 +104,9 @@ void vt_plist_shrink(vt_plist_t *const p) {
 
 void vt_plist_resize(vt_plist_t *const p, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     if(n == p->capacity) {
         p->len = p->capacity;
@@ -124,13 +124,13 @@ void vt_plist_resize(vt_plist_t *const p, const size_t n) {
 
 void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
         p->len
     );
@@ -152,8 +152,8 @@ void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at
 
 void vt_plist_clear(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // update length
     p->len = 0;
@@ -161,13 +161,13 @@ void vt_plist_clear(vt_plist_t *const p) {
 
 void vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
         p->len
     );
@@ -178,12 +178,12 @@ void vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_t at) {
 
 void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
         p->len
     );
@@ -193,9 +193,9 @@ void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
 
 void vt_plist_push(vt_plist_t *const p, const void *ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     
     // check if new memory needs to be allocated
     if(!vt_plist_has_space(p)) {
@@ -208,8 +208,8 @@ void vt_plist_push(vt_plist_t *const p, const void *ptr) {
 
 void vt_plist_pop(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
     if(p->len > 0) {
@@ -219,8 +219,8 @@ void vt_plist_pop(vt_plist_t *const p) {
 
 void *vt_plist_pop_get(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
     if(p->len > 0) {
@@ -232,19 +232,19 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
 
 void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(rs < vt_remove_stategy_count, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(rs < VT_REMOVE_STRATEGY_COUNT, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < p->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
         p->len
     );
 
     // check remove strategy
-    if(rs == vt_remove_stategy_stable) {
+    if(rs == VT_REMOVE_STRATEGY_STABLE) {
         memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         vt_gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
@@ -256,9 +256,9 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
 
 int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     size_t i = 0;
     for (char *iter = (char*)p->ptr2; iter != (char*)(p->ptr2) + p->len * p->elsize; iter += p->elsize, i++) {
@@ -272,33 +272,33 @@ int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
 
 void **vt_plist_slide_front(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (void**)vt_array_slide_front(p);
 }
 
 void **vt_plist_slide_back(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (void**)vt_array_slide_back(p);
 }
 
 void vt_plist_slide_reset(vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     vt_array_slide_reset(p);
 }
 
 void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // iterate
     const size_t len = vt_plist_len(p);

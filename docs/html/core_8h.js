@@ -38,7 +38,7 @@ var core_8h =
       [ "dt_count", "core_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6a90a26eb32dd5824a44f5b5c9d81e1866", null ]
     ] ],
     [ "VitaRemoveStrategy", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faa", [
-      [ "vt_remove_stategy_stable", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed", null ],
+      [ "VT_REMOVE_STRATEGY_STABLE", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaac999f312129bf899371e82a84d6a6eed", null ],
       [ "rs_fast", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab2730ef3c355c101d3a74e8b372dac4c", null ],
       [ "rs_count", "core_8h.html#a7175ceafb3d2397336de71bfec1e4faaab604f94da4c101dfa7ea25a7a59fcfcd", null ]
     ] ],

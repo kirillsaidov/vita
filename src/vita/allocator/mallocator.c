@@ -26,8 +26,8 @@ vt_mallocator_t *vt_mallocator_create(void) {
 
 void vt_mallocator_destroy(vt_mallocator_t *alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // reset function pointers to NULL
     alloctr->alloc = NULL;
@@ -56,9 +56,9 @@ void vt_mallocator_destroy(vt_mallocator_t *alloctr) {
 
 void *vt_mallocator_alloc(vt_mallocator_t *const alloctr, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // allocate memory
     const struct VitaAllocatedObject obj = { 
@@ -81,10 +81,10 @@ void *vt_mallocator_alloc(vt_mallocator_t *const alloctr, const size_t bytes, co
 
 void *vt_mallocator_realloc(vt_mallocator_t *const alloctr, void *ptr, const size_t bytes, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(bytes > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove the pointer from the mallocator instance object list
     const size_t bytes_old = vt_mallocator_obj_list_remove(alloctr, ptr);
@@ -112,9 +112,9 @@ void *vt_mallocator_realloc(vt_mallocator_t *const alloctr, void *ptr, const siz
 
 void vt_mallocator_free(vt_mallocator_t *const alloctr, void *ptr, const char *const file, const char *const func, const size_t line) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove the pointer from the mallocator instance object list
     const size_t bytes = vt_mallocator_obj_list_remove(alloctr, ptr);
@@ -173,9 +173,9 @@ void vt_mallocator_print_stats(const struct VitaAllocatorStats stats) {
 */
 static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const struct VitaAllocatedObject obj) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(obj.ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(obj.ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     
     // check if we have enough space
     if(!vt_mallocator_obj_list_has_space(alloctr)) {
@@ -194,9 +194,9 @@ static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const str
 */
 static size_t vt_mallocator_obj_list_remove(vt_mallocator_t *const alloctr, const void *const ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove only if the object list isn't empty
     size_t bytes_old = 0;
@@ -226,9 +226,9 @@ static size_t vt_mallocator_obj_list_remove(vt_mallocator_t *const alloctr, cons
 */
 static void vt_mallocator_obj_list_resize(vt_mallocator_t *const alloctr, const size_t length) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(length > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(length > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // resize object list
     alloctr->obj_list = VT_REALLOC(alloctr->obj_list, length * sizeof(struct VitaAllocatedObject));
@@ -241,8 +241,8 @@ static void vt_mallocator_obj_list_resize(vt_mallocator_t *const alloctr, const 
 */
 static bool vt_mallocator_obj_list_has_space(const vt_mallocator_t *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (alloctr->obj_list_capacity - alloctr->obj_list_len);
 }
@@ -255,9 +255,9 @@ static bool vt_mallocator_obj_list_has_space(const vt_mallocator_t *const alloct
 */
 static int64_t vt_mallocator_obj_list_find(const vt_mallocator_t *const alloctr, const void *const ptr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(alloctr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(alloctr->obj_list != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find element
     const size_t len = alloctr->obj_list_len;

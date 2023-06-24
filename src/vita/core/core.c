@@ -81,8 +81,8 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
     return true;
 }
 
-const char *vt_get_vita_error_str(const enum VitaStatus e) {
-    if(e < vt_status_count) {
+const char *vt_status_to_str(const enum VitaStatus e) {
+    if(e < VT_STATUS_COUNT) {
         return vita_error_str[e];
     }
 

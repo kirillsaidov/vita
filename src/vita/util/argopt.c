@@ -5,10 +5,10 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
 int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t optc, vt_argopt_t *const optv, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_ENFORCE(argv != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_ENFORCE(argc >= 1, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_ENFORCE(optv != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(optc >= 1, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(argv != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(argc >= 1, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // validate artopt
     if(!vt_argopt_validate(optc, optv)) {
@@ -91,8 +91,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
 
 void vt_argopt_print_help(const char *header, const char *footer, const size_t optc, const vt_argopt_t *const optv) {
     // check for invalid input
-    VT_ENFORCE(optv != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_ENFORCE(optc >= 1, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_ENFORCE(optv != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(optc >= 1, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     
     // calculate optionLong and optionShort padding
     int32_t olPadding = 6; // strlen("--help")
@@ -131,7 +131,7 @@ static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv)
         if(opt->optionShort == NULL) { fprintf(stderr, "optionShort cannot be NULL!\n"); return false; }
         if(opt->optionValue == NULL) { fprintf(stderr, "optionValue cannot be NULL!\n"); return false; }
         if(strnlen(opt->optionShort, 4) > 3) { fprintf(stderr, "optionShort=<%s> cannot be longer than 3 characters!\n", opt->optionShort); return false; }
-        if(opt->optionType >= vt_type_count) { fprintf(stderr, "optionType specified is invalid!\n"); return false; }
+        if(opt->optionType >= VT_TYPE_COUNT) { fprintf(stderr, "optionType specified is invalid!\n"); return false; }
     }
     
     return true;
@@ -145,52 +145,52 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
     // save arg value
     switch(opt->optionType) {
         // int
-        case vt_type_int8:
+        case VT_TYPE_INT8:
             *(int8_t*)(opt->optionValue) = vt_conv_str_to_i8(value);
             break;
-        case vt_type_int16:
+        case VT_TYPE_INT16:
             *(int16_t*)(opt->optionValue) = vt_conv_str_to_i16(value);
             break;
-        case vt_type_int32:
+        case VT_TYPE_INT32:
             *(int32_t*)(opt->optionValue) = vt_conv_str_to_i32(value);
             break;
-        case vt_type_int64:
+        case VT_TYPE_INT64:
             *(int64_t*)(opt->optionValue) = vt_conv_str_to_i64(value);
             break;
         
         // uint
-        case vt_type_uint8:
+        case VT_TYPE_UINT8:
             *(uint8_t*)(opt->optionValue) = vt_conv_str_to_u8(value);
             break;
-        case vt_type_uint16:
+        case VT_TYPE_UINT16:
             *(uint16_t*)(opt->optionValue) = vt_conv_str_to_u16(value);
             break;
-        case vt_type_uint32:
+        case VT_TYPE_UINT32:
             *(uint32_t*)(opt->optionValue) = vt_conv_str_to_u32(value);
             break;
-        case vt_type_uint64:
+        case VT_TYPE_UINT64:
             *(uint64_t*)(opt->optionValue) = vt_conv_str_to_u64(value);
             break;
         
         // floating point variables
-        case vt_type_float:
+        case VT_TYPE_FLOAT:
             *(float*)(opt->optionValue) = (float)vt_conv_str_to_f(value);
             break;
-        case vt_type_double:
+        case VT_TYPE_DOUBLE:
             *(double*)(opt->optionValue) = vt_conv_str_to_d(value);
             break;
-        case vt_type_real:
+        case VT_TYPE_REAL:
             *(real*)(opt->optionValue) = vt_conv_str_to_r(value);
             break;
         
         // bool, char, vt_str, vt_str_z
-        case vt_type_bool:
+        case VT_TYPE_BOOL:
             *(bool*)(opt->optionValue) = (value[0] == '1' || vt_str_equals(value, "true") ? true : false);
             break;
-        case vt_type_char:
+        case VT_TYPE_CHAR:
             *(char*)(opt->optionValue) = value[0];
             break;
-        case vt_type_str:
+        case VT_TYPE_STR:
             {
                 vt_str_t **svalue = (vt_str_t**)opt->optionValue;
 
@@ -203,7 +203,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                 }
             }
             break;
-        case vt_type_cstr:
+        case VT_TYPE_CSTR:
             {
                 char **zvalue = (char**)opt->optionValue;
 
@@ -218,7 +218,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                     if(len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
                         if(ztmp == NULL) {
-                            VT_DEBUG_PRINTF("%s: Failed to reallocate vt_str_z to assign a new value!\n", vt_get_vita_error_str(vt_status_error_allocation));
+                            VT_DEBUG_PRINTF("%s: Failed to reallocate vt_str_z to assign a new value!\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
                             return;
                         }
 

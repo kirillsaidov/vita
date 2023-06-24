@@ -48,11 +48,11 @@ int main(void) {
 
         vt_vec_t *vcopy = vt_vec_dup(v, alloctr); {
             assert(vt_vec_getd(vcopy, 5) == dt);
-            vt_vec_remove(vcopy, vt_vec_can_find(v, &dt), vt_remove_stategy_fast);            
+            vt_vec_remove(vcopy, vt_vec_can_find(v, &dt), VT_REMOVE_STRATEGY_FAST);            
             assert(vt_vec_getd(vcopy, 5) == 3.125);
         } vt_vec_destroy(vcopy);
 
-        vt_vec_remove(v, vt_vec_can_find(v, &dt), vt_remove_stategy_stable);
+        vt_vec_remove(v, vt_vec_can_find(v, &dt), VT_REMOVE_STRATEGY_STABLE);
         assert(vt_vec_getd(v, 5) == 24.5);
 
         vt_vec_shrink(v);

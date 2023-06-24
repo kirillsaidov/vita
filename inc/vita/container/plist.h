@@ -148,8 +148,8 @@ extern void *vt_plist_pop_get(vt_plist_t *const p);
     @param at index
 
     @note
-        enum VitaRemoveStrategy { vt_remove_stategy_stable = ordered removal, rs_fast = unordered removal }
-        vt_remove_stategy_stable: shifts all values by element size
+        enum VitaRemoveStrategy { VT_REMOVE_STRATEGY_STABLE = ordered removal, rs_fast = unordered removal }
+        VT_REMOVE_STRATEGY_STABLE: shifts all values by element size
         rs_fast: swaps the last value with the value of `at`
 */
 extern void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs);

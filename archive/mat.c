@@ -35,7 +35,7 @@ enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, c
         return ve_error_allocation;
     }
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 mat_t *mat_dup(const mat_t *const m) {
@@ -84,7 +84,7 @@ mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     }
 
     // construct mat_t
-    if(mat_ctor(m, rows, cols, elsize) != vt_status_operation_success) {
+    if(mat_ctor(m, rows, cols, elsize) != VT_STATUS_OPERATION_SUCCESS) {
         DEBUG_ASSERT(0, "Failed to construct mat_t instance!");
 
         mat_free(m);
@@ -183,7 +183,7 @@ enum VitaStatus mat_clear(mat_t *const m) {
     // set values to 0
     memset(m->ptr, 0, m->rows * m->cols * m->elsize);
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
@@ -198,7 +198,7 @@ enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols)
     }
 
     if(m->rows == rows && m->cols == cols) {
-        return vt_status_operation_success;
+        return VT_STATUS_OPERATION_SUCCESS;
     }
 
     // allocate memory for rows*cols number of elements
@@ -213,7 +213,7 @@ enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols)
     m->rows = rows;
     m->cols = cols;
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
@@ -231,7 +231,7 @@ enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, con
     // set the value
     memcpy((char*)(m->ptr) + (atRow * m->cols + atCol) * m->elsize, val, m->elsize);
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 enum VitaStatus mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {

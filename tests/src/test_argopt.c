@@ -54,20 +54,20 @@ int32_t main(void) {
 
     // options
     vt_argopt_t optv[] = {
-        { "--rpath", "-r", "read path", VT_ARGOPT(rpath), vt_type_str },
-        { "--wpath", "-w", "save path", VT_ARGOPT(wpath), vt_type_str },
+        { "--rpath", "-r", "read path", VT_ARGOPT(rpath), VT_TYPE_STR },
+        { "--wpath", "-w", "save path", VT_ARGOPT(wpath), VT_TYPE_STR },
 
-        { "--intensity", "-i", "level of intensity between [0; 1]", VT_ARGOPT(intensity), vt_type_float },
-        { "--polarity", "-p", "level of polarity between [0; 1]", VT_ARGOPT(polarity), vt_type_float },
+        { "--intensity", "-i", "level of intensity between [0; 1]", VT_ARGOPT(intensity), VT_TYPE_FLOAT },
+        { "--polarity", "-p", "level of polarity between [0; 1]", VT_ARGOPT(polarity), VT_TYPE_FLOAT },
 
-        { "--verbose", "-v", "verbose output", VT_ARGOPT(verbose), vt_type_bool },
-        { "--audio", "-a", "include audio", VT_ARGOPT(audio), vt_type_bool },
+        { "--verbose", "-v", "verbose output", VT_ARGOPT(verbose), VT_TYPE_BOOL },
+        { "--audio", "-a", "include audio", VT_ARGOPT(audio), VT_TYPE_BOOL },
 
-        { "--volume", "-vl", "volume level", VT_ARGOPT(volume), vt_type_int32 },
-        { "--level", "-l", "output level", VT_ARGOPT(level), vt_type_int32 },
+        { "--volume", "-vl", "volume level", VT_ARGOPT(volume), VT_TYPE_INT32 },
+        { "--level", "-l", "output level", VT_ARGOPT(level), VT_TYPE_INT32 },
 
-        { "--update", "-ud", "update (y, n)", VT_ARGOPT(update), vt_type_char },
-        { "--upgrade", "-ug", "upgrade (y, n)", VT_ARGOPT(upgrade), vt_type_char }
+        { "--update", "-ud", "update (y, n)", VT_ARGOPT(update), VT_TYPE_CHAR },
+        { "--upgrade", "-ug", "upgrade (y, n)", VT_ARGOPT(upgrade), VT_TYPE_CHAR }
     };
     const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 

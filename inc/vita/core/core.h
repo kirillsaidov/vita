@@ -19,8 +19,7 @@
     - vt_realloc
     - vt_free
     - vt_gswap
-    - vt_get_current_timestamp
-    - vt_get_vita_error_str
+    - vt_status_to_str
 */
 
 #include <stdio.h>
@@ -67,32 +66,32 @@
 // data types for internal usage
 enum VitaTypeInfo {
     // fixed size
-    vt_type_int8,     // int8_t
-    vt_type_uint8,    // uint8_t
-    vt_type_int16,    // int16_t
-    vt_type_uint16,   // uint16_t
-    vt_type_int32,    // int32_t
-    vt_type_uint32,   // uint32_t
-    vt_type_int64,    // int64_t
-    vt_type_uint64,   // uint64_t
+    VT_TYPE_INT8,     // int8_t
+    VT_TYPE_UINT8,    // uint8_t
+    VT_TYPE_INT16,    // int16_t
+    VT_TYPE_UINT16,   // uint16_t
+    VT_TYPE_INT32,    // int32_t
+    VT_TYPE_UINT32,   // uint32_t
+    VT_TYPE_INT64,    // int64_t
+    VT_TYPE_UINT64,   // uint64_t
 
     // floats
-    vt_type_float,    // float
-    vt_type_double,   // double
-    vt_type_real,     // long double
+    VT_TYPE_FLOAT,    // float
+    VT_TYPE_DOUBLE,   // double
+    VT_TYPE_REAL,     // long double
 
     // other
-    vt_type_bool,     // bool
-    vt_type_char,     // char
-    vt_type_cstr,     // char*
+    VT_TYPE_BOOL,     // bool
+    VT_TYPE_CHAR,     // char
+    VT_TYPE_CSTR,     // char*
 
     // vita
-    vt_type_str,      // vt_str_t
-    vt_type_vec,      // vt_vec_t
-    vt_type_plist,    // vt_plist_t
+    VT_TYPE_STR,      // vt_str_t
+    VT_TYPE_VEC,      // vt_vec_t
+    VT_TYPE_PLIST,    // vt_plist_t
 
-    vt_type_unknown,  // unknown data type
-    vt_type_count     // number of elements
+    VT_TYPE_UNKNOWN,  // unknown data type
+    VT_TYPE_COUNT     // number of elements
 };
 
 // float, double, real (long double alias)
@@ -100,24 +99,24 @@ typedef long double real;
 
 // removing elements from array
 enum VitaRemoveStrategy {
-    vt_remove_stategy_stable,  // keep ordering
-    vt_remove_stategy_fast,    // ordering doesn't matter
-    vt_remove_stategy_count    // number of elements
+    VT_REMOVE_STRATEGY_STABLE,  // keep ordering
+    VT_REMOVE_STRATEGY_FAST,    // ordering doesn't matter
+    VT_REMOVE_STRATEGY_COUNT    // number of elements
 };
 
 // define all vita errors
 #define VT_i_GENERATE_VITA_STATUS(apply) \
-    apply(vt_status_error_is_null)                  /* element wasn't initialized or is NULL */ \
-    apply(vt_status_error_allocation)               /* failed to allocate or reallocate memory */ \
-    apply(vt_status_error_invalid_arguments)        /* invalid arguments supplied */ \
-    apply(vt_status_error_out_of_memory)            /* not enough memory/space, allocate more */ \
-    apply(vt_status_error_out_of_bounds_access)     /* accessing memory beyond allocated size */ \
-    apply(vt_status_error_incompatible_datatype)    /* working with different datatypes */ \
-    apply(vt_status_error_conversion)               /* failed to convert one type to another */ \
-    apply(vt_status_error_element_not_found)        /* element was not found */ \
-    apply(vt_status_operation_failure)              /* failed to perform an action */ \
-    apply(vt_status_operation_success)              /* all good */ \
-    apply(vt_status_count)                          /* number of elements */
+    apply(VT_STATUS_ERROR_IS_NULL)                  /* element wasn't initialized or is NULL */ \
+    apply(VT_STATUS_ERROR_ALLOCATION)               /* failed to allocate or reallocate memory */ \
+    apply(VT_STATUS_ERROR_INVALID_ARGUMENTS)        /* invalid arguments supplied */ \
+    apply(VT_STATUS_ERROR_OUT_OF_MEMORY)            /* not enough memory/space, allocate more */ \
+    apply(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS)     /* accessing memory beyond allocated size */ \
+    apply(VT_STATUS_ERROR_INCOMPATIBLE_DATATYPE)    /* working with different datatypes */ \
+    apply(VT_STATUS_ERROR_CONVERSION)               /* failed to convert one type to another */ \
+    apply(VT_STATUS_ERROR_ELEMENT_NOT_FOUND)        /* element was not found */ \
+    apply(VT_STATUS_OPERATION_FAILURE)              /* failed to perform an action */ \
+    apply(VT_STATUS_OPERATION_SUCCESS)              /* all good */ \
+    apply(VT_STATUS_COUNT)                          /* number of elements */
 
 // generate vita errors enum
 #define X(a) a,
@@ -211,6 +210,6 @@ extern bool vt_gswap(void* a, void* b, const size_t elsize);
     @param e vita error code
     @returns C string upon success, `NULL` otherwise
 */
-extern const char *vt_get_vita_error_str(const enum VitaStatus e);
+extern const char *vt_status_to_str(const enum VitaStatus e);
 
 #endif // VITA_CORE_H

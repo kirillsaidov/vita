@@ -6,12 +6,12 @@ static real vt_strtold(const char *z, char **zend, int base) { (void)base; retur
 
 #define VT_INSTANTIATE_CONV_FROM_STR(T, t, F)                                                       \
     T vt_conv_str_to_##t(const char *const z) {                                                     \
-        VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));   \
+        VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));   \
                                                                                                     \
         if(!vt_str_is_numeric(z, VT_MAX_PRECISION)) {                                               \
             VT_DEBUG_PRINTF(                                                                        \
                 "%s: Must be digits only, not \"<%s>\".\n",                                         \
-                vt_get_vita_error_str(vt_status_error_conversion),                                 \
+                vt_status_to_str(VT_STATUS_ERROR_CONVERSION),                                 \
                 z                                                                                   \
             );                                                                                      \
             return 0;                                                                               \
@@ -34,7 +34,7 @@ VT_INSTANTIATE_CONV_FROM_STR(real, r, vt_strtold)
 
 #define VT_INSTANTIATE_CONV_TO_STR(T, t, fmt)                                                       \
     void vt_conv_##t##_to_str(char *const buf, const size_t buf_len, const T val) {                 \
-        VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments)); \
+        VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS)); \
                                                                                                     \
         const size_t required_len = snprintf(NULL, 0, "%" fmt, val);                                \
         VT_ENFORCE(buf_len >= required_len + 1, "%s\n", "Buffer size is too small!");               \

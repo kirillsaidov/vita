@@ -4,7 +4,7 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args);
 
 vt_str_t vt_str_create_static(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create vt_str_t instance
     vt_str_t s = {
@@ -18,13 +18,13 @@ vt_str_t vt_str_create_static(const char *const z) {
 
 vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create str
     vt_str_t *s = vt_str_create_len(strlen(z), alloctr);
 
     // set z to str
-    if(vt_str_set(s, z) != vt_status_operation_success) {
+    if(vt_str_set(s, z) != VT_STATUS_OPERATION_SUCCESS) {
         VT_DEBUG_PRINTF("Failed to copy \"%s\" to vt_str_t!", z);
         vt_str_destroy(s);
         return NULL;
@@ -35,7 +35,7 @@ vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const
 
 vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // allocate memory for a vt_str_t struct
     vt_str_t *s = vt_array_new(alloctr);
@@ -52,7 +52,7 @@ vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const 
 
 vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create and clear vt_str_t
     vt_str_t *s = vt_str_create_len(n, alloctr);
@@ -63,8 +63,8 @@ vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *c
 
 void vt_str_destroy(vt_str_t *s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free the vt_str_t string and vt_str_t struct
     if(s->alloctr) {
@@ -81,15 +81,15 @@ void vt_str_destroy(vt_str_t *s) {
 
 vt_str_t *vt_str_dup(const vt_str_t *const s, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return vt_str_create(s->ptr, alloctr);
 }
 
 vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // allocate memory for a vt_str_t struct
     vt_str_t *s = vt_array_new(alloctr);
@@ -109,8 +109,8 @@ vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorTyp
 
 const char *vt_str_z(const vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (const char*)(s->ptr);
 }
@@ -133,8 +133,8 @@ bool vt_str_is_empty(const vt_str_t *const s) {
 
 size_t vt_str_validate_len(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // calculate valid length
     const size_t s_len = strnlen(s->ptr, s->capacity);
@@ -148,8 +148,8 @@ size_t vt_str_validate_len(vt_str_t *const s) {
 
 void vt_str_shrink(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if length and capacity are the same, exit the function
     if(s->len == s->capacity) {
@@ -170,8 +170,8 @@ void vt_str_shrink(vt_str_t *const s) {
 
 void vt_str_clear(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // set C string to ""
     ((char*)s->ptr)[0] = '\0';
@@ -182,9 +182,9 @@ void vt_str_clear(vt_str_t *const s) {
 
 void vt_str_reserve(vt_str_t *const s, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // reserve memory for additional n elements
     s->ptr = s->alloctr 
@@ -201,9 +201,9 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
 // TODO: test this
 void vt_str_resize(vt_str_t *const s, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // resize memory to (n + 1) elements
     s->ptr = s->alloctr 
@@ -220,29 +220,29 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
 
 enum VitaStatus vt_str_set(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     return vt_str_set_n(s, z, strlen(z));
 }
 
 enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if it has enough space
     if(s->capacity < n) {
         VT_DEBUG_PRINTF(
             "%s: Supplied string length is %zu, but vt_str_t length is %zu!\n", 
-            vt_get_vita_error_str(vt_status_error_out_of_memory), 
+            vt_status_to_str(VT_STATUS_ERROR_OUT_OF_MEMORY), 
             n, 
             s->len
         );
-        return vt_status_error_out_of_memory;
+        return VT_STATUS_ERROR_OUT_OF_MEMORY;
     }
 
     // copy z data to vt_str_t
@@ -254,42 +254,42 @@ enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     // update values
     s->len = n;
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_append(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     vt_str_append_n(s, z, strlen(z));
 }
 
 enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // iterate over all arguments
     va_list args; 
     va_start(args, fmt); 
     if(vt_str_vfmt(s, fmt, args) == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
-        return vt_status_operation_failure;
+        VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_STATUS_OPERATION_FAILURE;
     }
     va_end(args);
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if new memory needs to be allocated
     if(vt_str_has_space(s) < n) {
@@ -308,13 +308,13 @@ void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
 
 void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at <= s->len,
         "%s: Inserts at %zu, but vt_str_t length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
         s->len
     );
@@ -341,13 +341,13 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
 
 void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         from <= s->len,
         "%s: Start from %zu, but vt_str_t length is %zu!\n", 
-        vt_get_vita_error_str(vt_status_error_out_of_bounds_access), 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         from, 
         s->len
     );
@@ -369,14 +369,14 @@ void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
 
 enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find a substring in strbuf; if substring wasn't found, return
     char* sub = strstr(s->ptr, z);
     if(sub == NULL) {
-        return vt_status_error_element_not_found;
+        return VT_STATUS_ERROR_ELEMENT_NOT_FOUND;
     }
 
     // find how many characters to copy from the end
@@ -393,14 +393,14 @@ enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
     // add the '\0' terminator
     ((char*)s->ptr)[s->len] = '\0';
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find the last instance of sep
     const size_t zLen = strlen(z);
@@ -412,7 +412,7 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
 
     // if not found, return
     if(lastInstance == NULL) {
-        return vt_status_error_element_not_found;
+        return VT_STATUS_ERROR_ELEMENT_NOT_FOUND;
     }
 
     // find how many characters to shrink the string
@@ -425,26 +425,26 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     // update vt_str_t
     s->len -= diff - 1;
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove all instances of substring
-    while(vt_str_remove_first(s, z) == vt_status_operation_success);
+    while(vt_str_remove_first(s, z) == VT_STATUS_OPERATION_SUCCESS);
 
-    return vt_status_operation_success;
+    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // prepare
     size_t offset = 0;
@@ -491,8 +491,8 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
 
 void vt_str_strip(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // prepare
     size_t offset = 0;
@@ -525,8 +525,8 @@ void vt_str_strip(vt_str_t *const s) {
 
 void vt_str_strip_punct(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // prepare
     size_t offset = 0;
@@ -559,9 +559,9 @@ void vt_str_strip_punct(vt_str_t *const s) {
 
 void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // prepare
     bool stop = false;
@@ -619,17 +619,17 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
 
 const char *vt_str_find(const char *const z, const char *sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     return strstr(z, sub);
 }
 
 size_t vt_str_can_find(const vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // count the number of substring instances in strbuf
     size_t count = 0;
@@ -644,9 +644,9 @@ size_t vt_str_can_find(const vt_str_t *const s, const char *z) {
 
 vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if s contains sep substring
     const size_t strInstances = vt_str_can_find(s, sep);
@@ -659,7 +659,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
     if(ps == NULL) {
         p = vt_plist_create(strInstances + 1, NULL);
         if(p == NULL) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_error_allocation));
+            VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
             return NULL;
         }
     } else {
@@ -691,8 +691,8 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
             // set the value and push it to the list
             const enum VitaStatus ret = vt_str_set_n(tempStr, head, copyLen);
-            if(ret != vt_status_operation_success) {
-                VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(ret));
+            if(ret != VT_STATUS_OPERATION_SUCCESS) {
+                VT_DEBUG_PRINTF("%s\n", vt_status_to_str(ret));
                 vt_str_destroy(tempStr);
                 return p;
             }
@@ -713,9 +713,9 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
 vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const char *const zl, const char *const zr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(zl != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(zr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(zl != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(zr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find zl - left substring
     const char *const lsub = vt_str_find(z, zl);
@@ -751,9 +751,9 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
 
 vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create vt_str_t if needed
     vt_str_t *st = (s == NULL) 
@@ -777,8 +777,8 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
 // TODO:
 vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create a new vt_str_t instance
     vt_str_t *st = (s == NULL) 
@@ -809,9 +809,9 @@ vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n
 
 vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t sepLen = strlen(sep);
     if(!vt_str_len(s) || !sepLen) {
@@ -852,9 +852,9 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
 
 vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t sepLen = strlen(sep);
     if(!vt_str_len(s) || !sepLen) {
@@ -901,8 +901,8 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
 
 bool vt_str_equals(const char *const z1, const char *const z2) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z1 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z1 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t z1Len = strlen(z1);
     if(z1Len > strlen(z2)) {
@@ -914,8 +914,8 @@ bool vt_str_equals(const char *const z1, const char *const z2) {
 
 bool vt_str_starts_with(const char *const z, const char *const sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t subLen = strlen(sub);
     if(subLen > strlen(z)) {
@@ -927,8 +927,8 @@ bool vt_str_starts_with(const char *const z, const char *const sub) {
 
 bool vt_str_ends_with(const char *const z, const char *const sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t zLen = strlen(z);
     const size_t subLen = strlen(sub);
@@ -941,9 +941,9 @@ bool vt_str_ends_with(const char *const z, const char *const sub) {
 
 void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t len = vt_str_len(s);
     for(size_t i = 0; i < len; i++) {
@@ -953,8 +953,8 @@ void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
 
 bool vt_str_is_numeric(const char *const z, const size_t max_len) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(max_len > 0, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(max_len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if string is a number
     const size_t zLen = strnlen(z, max_len);
@@ -969,8 +969,8 @@ bool vt_str_is_numeric(const char *const z, const size_t max_len) {
 
 void vt_str_capitalize(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if string is a number
     char *const z = s->ptr;
@@ -982,8 +982,8 @@ void vt_str_capitalize(vt_str_t *const s) {
 
 int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     const char *const ztmp = strchr(s->ptr, z);
     if(ztmp == NULL) {
@@ -995,24 +995,24 @@ int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
 
 char *vt_str_slide_front(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (char*)vt_array_slide_front(s);
 }
 
 char *vt_str_slide_back(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     return (char*)vt_array_slide_back(s);
 }
 
 void vt_str_slide_reset(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     vt_array_slide_reset(s);
 }
@@ -1028,9 +1028,9 @@ void vt_str_slide_reset(vt_str_t *const s) {
 */
 static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_is_null));
-    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_get_vita_error_str(vt_status_error_invalid_arguments));
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // format string
     va_list args2; va_copy(args2, args); 
@@ -1038,7 +1038,7 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
         // check if new memory needs to be allocated
         const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
         if(len < 0) {
-            VT_DEBUG_PRINTF("%s\n", vt_get_vita_error_str(vt_status_operation_failure));
+            VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
             return NULL;
         }
 

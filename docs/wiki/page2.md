@@ -122,11 +122,11 @@ const int32_t myVal = vt_vec_geti32(v, 0);
 // remove data
 const int32_t index = vt_vec_can_find(v, &myVal);
 if(index >= 0) { // index is -1 if element not found
-    vt_vec_remove(v, index, vt_remove_stategy_fast);
+    vt_vec_remove(v, index, VT_REMOVE_STRATEGY_FAST);
     /**
      * VitaRemoveStrategy => rs
-     *  vt_remove_stategy_fast         => order does not matter
-     *  vt_remove_stategy_stable    => keep order
+     *  VT_REMOVE_STRATEGY_FAST         => order does not matter
+     *  VT_REMOVE_STRATEGY_STABLE    => keep order
     */
 }
 
@@ -195,7 +195,7 @@ char *w = strdup("world");
 // add/remove data
 vt_plist_push(p, h);
 vt_plist_push(p, w);
-vt_plist_remove(p, 0, vt_remove_stategy_fast);
+vt_plist_remove(p, 0, VT_REMOVE_STRATEGY_FAST);
 
 assert(vt_plist_len(p) == 1);
 assert(vt_plist_capacity(p) == 5);

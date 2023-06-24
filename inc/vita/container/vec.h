@@ -245,8 +245,8 @@ VT_PROTOTYPE_VEC_INSERT(real, r);
     @param rs choose a VitaRemoveStrategy (see Notes)
 
     @note
-        enum VitaRemoveStrategy { vt_remove_stategy_stable = ordered removal, rs_fast = unordered removal };
-        vt_remove_stategy_stable: shifts all values by element size;
+        enum VitaRemoveStrategy { VT_REMOVE_STRATEGY_STABLE = ordered removal, rs_fast = unordered removal };
+        VT_REMOVE_STRATEGY_STABLE: shifts all values by element size;
         rs_fast: swaps the last value with the value of `at`.
 */
 extern void vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStrategy rs);
