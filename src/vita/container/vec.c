@@ -355,22 +355,22 @@ int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
     return -1;
 }
 
-#define VT_INSTANTIATE_VEC_CONTAINS(T, t)                               \
+#define VT_INSTANTIATE_VEC_CAN_FIND(T, t)                               \
     int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val) {  \
         return vt_vec_can_find(v, &val);                                \
     }
-VT_INSTANTIATE_VEC_CONTAINS(int8_t, i8)
-VT_INSTANTIATE_VEC_CONTAINS(uint8_t, u8)
-VT_INSTANTIATE_VEC_CONTAINS(int16_t, i16)
-VT_INSTANTIATE_VEC_CONTAINS(uint16_t, u16)
-VT_INSTANTIATE_VEC_CONTAINS(int32_t, i32)
-VT_INSTANTIATE_VEC_CONTAINS(uint32_t, u32)
-VT_INSTANTIATE_VEC_CONTAINS(int64_t, i64)
-VT_INSTANTIATE_VEC_CONTAINS(uint64_t, u64)
-VT_INSTANTIATE_VEC_CONTAINS(float, f)
-VT_INSTANTIATE_VEC_CONTAINS(double, d)
-VT_INSTANTIATE_VEC_CONTAINS(real, r)
-#undef VT_INSTANTIATE_VEC_CONTAINS
+VT_INSTANTIATE_VEC_CAN_FIND(int8_t, i8)
+VT_INSTANTIATE_VEC_CAN_FIND(uint8_t, u8)
+VT_INSTANTIATE_VEC_CAN_FIND(int16_t, i16)
+VT_INSTANTIATE_VEC_CAN_FIND(uint16_t, u16)
+VT_INSTANTIATE_VEC_CAN_FIND(int32_t, i32)
+VT_INSTANTIATE_VEC_CAN_FIND(uint32_t, u32)
+VT_INSTANTIATE_VEC_CAN_FIND(int64_t, i64)
+VT_INSTANTIATE_VEC_CAN_FIND(uint64_t, u64)
+VT_INSTANTIATE_VEC_CAN_FIND(float, f)
+VT_INSTANTIATE_VEC_CAN_FIND(double, d)
+VT_INSTANTIATE_VEC_CAN_FIND(real, r)
+#undef VT_INSTANTIATE_VEC_CAN_FIND
 
 void *vt_vec_slide_front(vt_vec_t *const v) {
     // check for invalid input

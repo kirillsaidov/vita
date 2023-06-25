@@ -403,7 +403,7 @@ extern void vt_str_capitalize(vt_str_t *const s);
 */
 extern int64_t vt_str_index_of(const vt_str_t *const s, const char z);
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the begining
     @param s vt_str_t pointer
     @returns container ptr head pointing to next element from the start
 
@@ -411,11 +411,11 @@ extern int64_t vt_str_index_of(const vt_str_t *const s, const char z);
 */
 extern char *vt_str_slide_front(vt_str_t *const s);
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the end
     @param s vt_str_t pointer
     @returns container ptr head pointing to next element from the end
 
-    @note returns `NULL` upon reaching the end
+    @note returns `NULL` upon reaching the the begining
 */
 extern char *vt_str_slide_back(vt_str_t *const s);
 

@@ -265,21 +265,21 @@ extern int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val);
 
     @returns index to first val instance, `-1` upon failure
 */
-#define VT_PROTOTYPE_VEC_CONTAINS(T, t) extern int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val)
-VT_PROTOTYPE_VEC_CONTAINS(int8_t, i8);
-VT_PROTOTYPE_VEC_CONTAINS(uint8_t, u8);
-VT_PROTOTYPE_VEC_CONTAINS(int16_t, i16);
-VT_PROTOTYPE_VEC_CONTAINS(uint16_t, u16);
-VT_PROTOTYPE_VEC_CONTAINS(int32_t, i32);
-VT_PROTOTYPE_VEC_CONTAINS(uint32_t, u32);
-VT_PROTOTYPE_VEC_CONTAINS(int64_t, i64);
-VT_PROTOTYPE_VEC_CONTAINS(uint64_t, u64);
-VT_PROTOTYPE_VEC_CONTAINS(float, f);
-VT_PROTOTYPE_VEC_CONTAINS(double, d);
-VT_PROTOTYPE_VEC_CONTAINS(real, r);
-#undef VT_PROTOTYPE_VEC_CONTAINS
+#define VT_PROTOTYPE_VEC_CAN_FIND(T, t) extern int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val)
+VT_PROTOTYPE_VEC_CAN_FIND(int8_t, i8);
+VT_PROTOTYPE_VEC_CAN_FIND(uint8_t, u8);
+VT_PROTOTYPE_VEC_CAN_FIND(int16_t, i16);
+VT_PROTOTYPE_VEC_CAN_FIND(uint16_t, u16);
+VT_PROTOTYPE_VEC_CAN_FIND(int32_t, i32);
+VT_PROTOTYPE_VEC_CAN_FIND(uint32_t, u32);
+VT_PROTOTYPE_VEC_CAN_FIND(int64_t, i64);
+VT_PROTOTYPE_VEC_CAN_FIND(uint64_t, u64);
+VT_PROTOTYPE_VEC_CAN_FIND(float, f);
+VT_PROTOTYPE_VEC_CAN_FIND(double, d);
+VT_PROTOTYPE_VEC_CAN_FIND(real, r);
+#undef VT_PROTOTYPE_VEC_CAN_FIND
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the begining
     @param v vt_vec_t instance
     @returns container ptr head pointing to next element from the start
 
@@ -287,11 +287,11 @@ VT_PROTOTYPE_VEC_CONTAINS(real, r);
 */
 extern void *vt_vec_slide_front(vt_vec_t *const v);
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the end
     @param v vt_vec_t instance
     @returns container ptr head pointing to next element from the end
 
-    @note returns `NULL` upon reaching the end
+    @note returns `NULL` upon reaching the begining
 */
 extern void *vt_vec_slide_back(vt_vec_t *const v);
 

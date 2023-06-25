@@ -64,7 +64,7 @@ extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 */
 extern bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat);
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the begining
     @param vbat VitaBaseArrayType instance
     @returns container ptr head pointing to next element from the start
 
@@ -72,11 +72,11 @@ extern bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat);
 */
 extern void *vt_array_slide_front(struct VitaBaseArrayType *const vbat);
 
-/** Slides through the container elements one by one
+/** Slides through the container elements one by one starting from the end
     @param vbat VitaBaseArrayType instance
     @returns container ptr head pointing to next element from the end
 
-    @note returns `NULL` upon reaching the end
+    @note returns `NULL` upon reaching the begining
 */
 extern void *vt_array_slide_back(struct VitaBaseArrayType *const vbat);
 
