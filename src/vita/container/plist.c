@@ -224,7 +224,7 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
 
     // pop the last element
     if(p->len > 0) {
-        return ((char**)p->ptr2)[--p->len];
+        return p->ptr2[--p->len];
     }
 
     return p->ptr2;
@@ -270,20 +270,38 @@ int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
     return -1;
 }
 
-void **vt_plist_slide_front(vt_plist_t *const p) {
+void *vt_plist_slide_front(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    return (void**)vt_array_slide_front(p);
+    // check bounds
+    if(p->slider_idx < p->len) {
+        p->slider_idx++;
+        return p->ptr2[p->slider_idx - 1];
+    }
+
+    // reset the slider
+    vt_plist_slide_reset(p);
+
+    return NULL;
 }
 
-void **vt_plist_slide_back(vt_plist_t *const p) {
+void *vt_plist_slide_back(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    return (void**)vt_array_slide_back(p);
+    // check bounds
+    if(p->slider_idx < p->len) {
+        p->slider_idx++;
+        return p->ptr2[p->len - p->slider_idx - 2];
+    }
+
+    // reset the slider
+    vt_plist_slide_reset(p);
+
+    return NULL;
 }
 
 void vt_plist_slide_reset(vt_plist_t *const p) {
