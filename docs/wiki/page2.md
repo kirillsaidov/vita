@@ -1,4 +1,4 @@
-# Using Vita containers
+# Data structures
 In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 3 container types:
 
 ```
@@ -7,61 +7,62 @@ In this chapter we are going to discuss how to use `Vita` containers. Currently,
 * vt_plist_t   // an array of pointers
 ```
 
-Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#L115) struct.
+Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#L133) struct.
 
 ## Contents
 * [Using `vt_str_t` strings](page2.md#using-vt_str_t-strings)
 * [Dynamic arrays with `vt_vec_t`](page2.md#dynamic-arrays-with-vt_vec_t)
-* [Using `vt_vec_t` type as 2d array](page2.md#using-vt_vec_t-type-as-2d-array)
+* [Imitating 2d arrays with `vt_vec_t`](page2.md#imitating-2d-arrays-with-vt_vec_t)
 * [A list of pointers with `vt_plist_t`](page2.md#a-list-of-pointers-with-vt_plist_t)
 
 ### Using `vt_str_t` strings
-`Vita` has a lot of string functions available to the user. `vt_str_fmt, vt_str_split, vt_str_strip` just to name a few. To read more about available functions, check out the [vt_str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
+`Vita` has a lot of string functions available to the user. `vt_str_starts_with, vt_str_split, vt_str_strip` just to name a few. To read more about available functions, check out the [vt_str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
 
 ### Creating strings
 ```c
-// creates a string and sets its value to "hello, world!"
-vt_str_t *msg = vt_str_create("hello, world!");
+// create static string (non-modifiable, pointer-length pair)
+const vt_str_t str = vt_str_create_static("hello, world!");
+
+// creates a dynamic string and sets its value to "hello, world!"
+vt_str_t *str = vt_str_create("hello, world!", alloctr); // if alloctr == NULL, use plain calloc/free
 
 // the same as above, but in 2 steps:
-vt_str_t *msg = vt_str_create_len(10);                      // 1. creates a string with length 10
-vt_str_set(msg, "hello, world!");              // 2. sets its value to "hello, world!"
+vt_str_t *str = vt_str_create_len(10, alloctr);          // 1. creates a string with length 10
+vt_str_set(str, "hello, world!");                        // 2. sets its value to "hello, world!"
 
 // almost the same as above 
-vt_str_t *msg = vt_str_create_capacity(10);                // creates an empty string with length of 0 and capacity of 10
-vt_str_append(msg, "hello, world!");           // appends "hello, world!"
-vt_str_appendf(msg, "%s!", "hello, world");    // appends "hello, world!"
-
-// the same as above, but on one go with formatting 
-// passing NULL here will allocate a new string instance
-const char *myVar = "world";
-vt_str_t *msg = vt_str_create_fmt(NULL, "hello, %s!", myVar);
+vt_str_t *msg = vt_str_create_capacity(32);              // creates an empty string with length of 0 and capacity of 32
+vt_str_append(str, "hello, world!");                     // appends "hello, world!"
+vt_str_appendf(str, "%s!", "hello, world");              // appends "hello, world!"
 
 // create a copy
-vt_str_t *msg_copy = vt_str_dup(msg);
+vt_str_t *str_copy = vt_str_dup(str, alloctr);           // if alloctr == NULL, use plain calloc/free
 
-// creating a string from heap allocated memory
-vt_str_t *msg_heap_alloced = vt_str_take_ownership(strdup("hello, world"));
+/* taking memory ownership from custom allocated block of data
+    if alloctr == NULL, assumes plain calloc/free were used to allocate this data,
+    otherwise give it the allocator that was used.
+*/
+vt_str_t *str_heap_alloced = vt_str_take_ownership(strdup("hello, world"), alloctr); 
 
 // get string info
-const size_t s_length = vt_str_len(msg);
-const size_t s_capacity = vt_str_capacity(msg);
-const size_t freeSpace = vt_str_has_space(msg);
-const bool isEmpty = vt_str_is_empty(msg);
+const size_t str_length = vt_str_len(msg);
+const size_t str_capacity = vt_str_capacity(msg);
+const size_t str_freeSpace = vt_str_has_space(msg);
+const bool str_isEmpty = vt_str_is_empty(msg);
 
 // accessing the raw string pointer
 const char *z_str = vt_str_z(msg); // !!! don't free it
 
 // free memory
-vt_str_destroy(msg);
-vt_str_destroy(msg_copy);
-vt_str_destroy(msg_heap_alloced);
+vt_str_destroy(str);
+vt_str_destroy(str_copy);
+vt_str_destroy(str_heap_alloced);
 ```
 
 ### String operations
 ```c
 // comparing strings
-assert(vt_str_equals(vt_str_z(msg), "hello, world"));
+assert(vt_str_equals(vt_str_z(str), "hello, world"));
 
 // checking if string is a numeric value
 const size_t max_check_len = 256;
@@ -71,30 +72,30 @@ assert(vt_str_is_numeric("15,7", max_check_len) == false);
 assert(vt_str_is_numeric("this is a str 123", max_check_len) == false);
 
 // basic operations
-vt_str_reserve(msg, 100);              // reserve 100 chars
-vt_str_shrink(msg);                    // shrink to length
-vt_str_clear(msg);                     // sets length = 0 and [0] = '\0' 
+vt_str_reserve(str, 100);              // reserve 100 chars
+vt_str_shrink(str);                    // shrink to length
+vt_str_clear(str);                     // sets length = 0 and [0] = '\0' 
 
-vt_str_insert(msg, "Oranges", 0);      // inserts at position
-vt_str_remove(msg, 4, 3);              // removes 3 chars starting from 4th index
+vt_str_insert(str, "Oranges", 0);      // inserts at position
+vt_str_remove(str, 4, 3);              // removes 3 chars starting from 4th index
 
 // check substring
-assert(vt_str_can_find(msg, "world") == true);
+assert(vt_str_can_find(str, "world") == true);
 
 // advanced operations
-vt_str_remove_first(msg, "Watermellon");   // removes the first encountered substring
-vt_str_remove_last(s_strip, "world");      // removes the last encountered substring
-vt_str_remove_all(s_strip, ".");           // removes every substring in a string
-vt_str_remove_c(s_strip, ",!.");           // removes every char '.' ',' '!' in a string
+vt_str_remove_first(str, "world");  // removes the first encountered substring
+vt_str_remove_last(str, "world");   // removes the last encountered substring
+vt_str_remove_all(str, ".");        // removes every substrings in a string
+vt_str_remove_c(str, ",!.");        // removes every char '.' ',' '!' in a string
 
-vt_str_strip("  hello, world\n   ");       // strips leading and tailing whitespace and control symbols
-vt_str_strip_punct(",. \n hello, world!")  // strips leading and tailing punctuation marks + whitespace and control symbols
+vt_str_strip("  hello, world\n   ");        // strips leading and tailing whitespace and control symbols
+vt_str_strip_punct(",. \n hello, world!");  // strips leading and tailing punctuation marks + whitespace and control symbols
 ```
 
 There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_capitalize`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or string [test_str.c](../../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vt_vec_t`
-
+// TODO:
 ```c
 // create/destroy a vector instance
 vt_vec_t *v = vt_vec_create(10, sizeof(int32_t));
@@ -143,7 +144,7 @@ vt_vec_apply(v, func); // func(void *ptr, size_t index)
 
 For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
 
-### Using `vt_vec_t` type as 2d array
+### Imitating 2d arrays with `vt_vec_t`
 
 ```c
 // rows and columns

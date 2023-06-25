@@ -198,7 +198,6 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
     ((char*)s->ptr)[s->capacity] = '\0';
 }
 
-// TODO: test this
 void vt_str_resize(vt_str_t *const s, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -774,7 +773,6 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
     return st;
 }
 
-// TODO:
 vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...) {
     // check for invalid input
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
