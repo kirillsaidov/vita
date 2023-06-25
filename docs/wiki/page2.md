@@ -24,19 +24,19 @@ Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#
 const vt_str_t str = vt_str_create_static("hello, world!");
 
 // creates a dynamic string and sets its value to "hello, world!"
-vt_str_t *str = vt_str_create("hello, world!", alloctr); // if alloctr == NULL, use plain calloc/free
+vt_str_t *str = vt_str_create("hello, world!", alloctr); // if alloctr == NULL, uses plain calloc/free
 
 // the same as above, but in 2 steps:
 vt_str_t *str = vt_str_create_len(10, alloctr);          // 1. creates a string with length 10
 vt_str_set(str, "hello, world!");                        // 2. sets its value to "hello, world!"
 
 // almost the same as above 
-vt_str_t *msg = vt_str_create_capacity(32);              // creates an empty string with length of 0 and capacity of 32
+vt_str_t *str = vt_str_create_capacity(32);              // creates an empty string with length of 0 and capacity of 32
 vt_str_append(str, "hello, world!");                     // appends "hello, world!"
 vt_str_appendf(str, "%s!", "hello, world");              // appends "hello, world!"
 
 // create a copy
-vt_str_t *str_copy = vt_str_dup(str, alloctr);           // if alloctr == NULL, use plain calloc/free
+vt_str_t *str_copy = vt_str_dup(str, alloctr);           // if alloctr == NULL, uses plain calloc/free
 
 /* taking memory ownership from custom allocated block of data
     if alloctr == NULL, assumes plain calloc/free were used to allocate this data,
@@ -45,13 +45,13 @@ vt_str_t *str_copy = vt_str_dup(str, alloctr);           // if alloctr == NULL, 
 vt_str_t *str_heap_alloced = vt_str_take_ownership(strdup("hello, world"), alloctr); 
 
 // get string info
-const size_t str_length = vt_str_len(msg);
-const size_t str_capacity = vt_str_capacity(msg);
-const size_t str_freeSpace = vt_str_has_space(msg);
-const bool str_isEmpty = vt_str_is_empty(msg);
+const size_t str_length = vt_str_len(str);
+const size_t str_capacity = vt_str_capacity(str);
+const size_t str_freeSpace = vt_str_has_space(str);
+const bool str_isEmpty = vt_str_is_empty(str);
 
 // accessing the raw string pointer
-const char *z_str = vt_str_z(msg); // !!! don't free it
+const char *z_str = vt_str_z(str); // !!! don't free it
 
 // free memory
 vt_str_destroy(str);
@@ -92,57 +92,58 @@ vt_str_strip("  hello, world\n   ");        // strips leading and tailing whites
 vt_str_strip_punct(",. \n hello, world!");  // strips leading and tailing punctuation marks + whitespace and control symbols
 ```
 
-There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_capitalize`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or string [test_str.c](../../tests/src/test_str.c) files.
+There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_capitalize`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or [test_str.c](../../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vt_vec_t`
-// TODO:
 ```c
 // create/destroy a vector instance
-vt_vec_t *v = vt_vec_create(10, sizeof(int32_t));
-vt_vec_destroy(v);
+vt_vec_t *vec = vt_vec_create(10, sizeof(int32_t), alloctr); // if alloctr == NULL, uses plain calloc/free
+vt_vec_destroy(vec);
 
 // get vector info
-const size_t v_length = vt_vec_len(v);
-const size_t v_capacity = vt_vec_capacity(v);
-const size_t hasSpace = vt_vec_has_space(v);
-const bool isEmpty = vt_vec_is_empty(v);
+const size_t vec_length = vt_vec_len(vec);
+const size_t vec_capacity = vt_vec_capacity(vec);
+const size_t vec_hasSpace = vt_vec_has_space(vec);
+const bool vec_isEmpty = vt_vec_is_empty(vec);
 
 // push data
 const int32_t var = 33;
-vt_vec_push(v, &var);
-vt_vec_pushi32(v, 33);
+vt_vec_push(vec, &var);
+vt_vec_pushi32(vec, 33); // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
 
 // set data
-vt_vec_set(v, &var, 0);    // assign vector[0] = var
-vt_vec_seti32(v, 33, 0);   // assign vector[0] = 33
+vt_vec_set(vec, &var, 0);    // assign vector[0] = var
+vt_vec_seti32(vec, 33, 0);   // ditto
 
 // get data
-const int32_t myVal = *(int32_t*)vt_vec_get(v, 0);
-const int32_t myVal = vt_vec_geti32(v, 0);
+const int32_t myVal = *(int32_t*)vt_vec_get(vec, 0);
+const int32_t myVal = vt_vec_geti32(vec, 0);
 
 // remove data
-const int32_t index = vt_vec_can_find(v, &myVal);
+const int32_t index = vt_vec_can_find(vec, &myVal);
+const int32_t index = vt_vec_can_findi32(vec, 33);
 if(index >= 0) { // index is -1 if element not found
-    vt_vec_remove(v, index, VT_REMOVE_STRATEGY_FAST);
+    vt_vec_remove(vec, index, VT_REMOVE_STRATEGY_FAST);
     /**
      * VitaRemoveStrategy => rs
-     *  VT_REMOVE_STRATEGY_FAST         => order does not matter
-     *  VT_REMOVE_STRATEGY_STABLE    => keep order
+     *  VT_REMOVE_STRATEGY_FAST     => order does not matter
+     *  VT_REMOVE_STRATEGY_STABLE   => keep order
     */
 }
 
 // pop value
-vt_vec_pop(v);
-const int32_t popVal = *(int32_t*)vt_vec_pop_get(v);
+vt_vec_pop(vec);
+const int32_t popVal = *(int32_t*)vt_vec_pop_get(vec);
+const int32_t popVal = vt_vec_pop_geti32(vec);
 
 // set length to 0
-vt_vec_clear(v);
+vt_vec_clear(vec);
 
 // foreach looping
-vt_vec_apply(v, func); // func(void *ptr, size_t index)
+vt_vec_apply(vec, func); // func(void *ptr, size_t index)
 ```
 
-For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
+For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or [test_vec.c](../../tests/src/test_vec.c) files.
 
 ### Imitating 2d arrays with `vt_vec_t`
 
@@ -151,9 +152,9 @@ For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or str
 const size_t r = 5;
 const size_t c = 5;
 
-vt_vec_t *vec2d = vt_vec_create(r*c, sizeof(int32_t));
+vt_vec_t *vec2d = vt_vec_create(r*c, sizeof(int32_t), alloctr); // if alloctr == NULL, uses plain calloc/free
 
-// right now it acts as a list, we need to set its length = r*c
+// right now it acts as a dynamic vector with capacity = r*c, we need to set its length = r*c
 assert(vt_vec_len(vec2d) == 0);
 assert(vt_vec_capacity(vec2d) == r*c);
 
@@ -181,14 +182,14 @@ assert(vt_vec_geti32(vec2d, 24) == 1);
 vt_vec_destroy(vec2d);
 ```
 
-For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or string [test_vec.c](../../tests/src/test_vec.c) files.
+For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or [test_vec.c](../../tests/src/test_vec.c) files.
 
 ### A list of pointers with `vt_plist_t`
 
 ```c
 // create/destroy a pointer list instance
-vt_plist_t *p = vt_plist_create(5);   // allocate 5 elements
-vt_plist_destroy(p);               // frees all elements with free()
+vt_plist_t *p = vt_plist_create(5, alloctr);    // if alloctr == NULL, uses plain calloc/free
+vt_plist_destroy(p);                            // !!! does not free its elements, only the the `vt_plist_t` structure itself
 
 char *h = strdup("hello");
 char *w = strdup("world");
@@ -201,12 +202,26 @@ vt_plist_remove(p, 0, VT_REMOVE_STRATEGY_FAST);
 assert(vt_plist_len(p) == 1);
 assert(vt_plist_capacity(p) == 5);
 assert(vt_plist_has_space(p) == 4);
+assert(vt_plist_is_empty(p) == false);
 
 // basic operations
 vt_plist_shrink(p);
 vt_plist_reserve(p, 5);
+
+// iteration: you can use for loop or sliders (available for `vt_str_t` and `vt_vec_t` as well)
+char *z = NULL;
+while((z = vt_plist_slide_front(p)) != NULL) {
+    printf("%s\n", z);
+}
+/* OUTPUT:
+hello
+world
+*/
+
+// you may want to reset the slider when breaking from the loop, otherwise its automatic
+vt_plist_slide_reset(p);
 ```
 
-For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or string [test_plist.c](../../tests/src/test_plist.c) files.
+For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or [test_plist.c](../../tests/src/test_plist.c) files.
 
 **[ [Back](page1.md) | [Next](page3.md) ]**

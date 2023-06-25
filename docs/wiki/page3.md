@@ -36,3 +36,5 @@ vt_file_appendln(filename, data_buffer);
 // free resources
 vt_str_destroy(sbuf);
 ```
+
+**[ [Back](page2.md) | [Next](page4.md) ]**
