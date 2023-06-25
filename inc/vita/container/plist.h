@@ -164,19 +164,19 @@ extern int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const pt
 
 /** Slides through the container elements one by one starting from the begining
     @param p vt_plist_t pointer
-    @returns container ptr head pointing to next element from the start
+    @returns ptr head pointing to next element from the start
 
     @note returns `NULL` upon reaching the end
 */
-extern void **vt_plist_slide_front(vt_plist_t *const p);
+extern void *vt_plist_slide_front(vt_plist_t *const p);
 
 /** Slides through the container elements one by one starting from the end
     @param p vt_plist_t pointer
-    @returns container ptr head pointing to next element from the end
+    @returns ptr head pointing to next element from the end
 
     @note returns `NULL` upon reaching the begining
 */
-extern void **vt_plist_slide_back(vt_plist_t *const p);
+extern void *vt_plist_slide_back(vt_plist_t *const p);
 
 /** Resets the slider
     @param p vt_plist_t pointer

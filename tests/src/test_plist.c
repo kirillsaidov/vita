@@ -44,7 +44,12 @@ int main(void) {
 
         void *i = NULL;
         while((i = vt_array_slide_front(p)) != NULL) {
-            // printf("%s\n", *((char**)(i)));
+            printf("%s\n", *((char**)(i)));
+        }
+
+        char *c = NULL;
+        while((c = vt_plist_slide_front(p)) != NULL) {
+            printf("--- %s\n", c);
         }
 
         // copying 
