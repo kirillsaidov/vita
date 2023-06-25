@@ -208,3 +208,5 @@ vt_plist_reserve(p, 5);
 ```
 
 For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or string [test_plist.c](../../tests/src/test_plist.c) files.
+
+**[ [Back](page1.md) | [Next](page3.md) ]**

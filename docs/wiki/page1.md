@@ -48,5 +48,5 @@ Vita version: 0.4.0
 
 The reason is simple: when using the debug version, your will benefit from internal checks, asserts and debug error messages done by `Vita` that are removed in release builds. Nevertheless, you can still check the return value of a function to determine if an operation was successful. Almost every `Vita` functions returns a certain value.
 
-**[ [Back](VITA.md) | [Next](page8.md) ]**
+**[ [Back](VITA.md) | [Next](page2.md) ]**
 
