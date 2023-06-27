@@ -70,14 +70,14 @@ vt_plist_apply(pdir, your_func);
 // or this
 const size_t len = vt_plist_len(pdir);
 for(size_t i = 0; i < len; i++) {
-    vt_str_t *s = vt_plist_get(pdir, i);
+    const char* path = vt_plist_get(pdir, i);
 
-    // do something with "s"
+    // do something with "path"
     // ...
 }
 
 // free resources
-vt_plist_apply(pdir, free_str);    // free `vt_str_t` inside `vt_plist_t`
+vt_plist_apply(pdir, free_str);    // free `char*` inside `vt_plist_t` | void free_str(void *ptr, size_t index) { free(ptr); }
 vt_plist_destroy(pdir);            // free `vt_plist_t` itself
 ```
 
