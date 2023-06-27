@@ -173,6 +173,33 @@ bool vt_file_writef(const char *const filename, const char *const fmt, ...) {
     return true;
 }
 
+bool vt_file_writefln(const char *const filename, const char *const fmt, ...) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(filename != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // open file
+    FILE *fp = fopen(filename, "w");
+    if(fp == NULL) {
+        VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
+        return false;
+    }
+    
+    // write to file
+    va_list args;
+    va_start(args, fmt);
+    vfprintf(fp, fmt, args);
+    va_end(args);
+
+    // add a new line
+    fprintf(fp, "\n");
+    
+    // close file
+    fclose(fp); 
+
+    return true;
+}
+
 bool vt_file_writefc(const char *const filename, const bool use_binary_mode, const bool use_append_mode, const bool add_ln, const char *const fmt, ...) {
     // check for invalid input
     VT_DEBUG_ASSERT(filename != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));

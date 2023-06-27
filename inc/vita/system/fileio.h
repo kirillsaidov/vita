@@ -76,6 +76,7 @@ extern bool vt_file_appendbln(const char* const filename, const char *const buff
     @returns `true` upon success
 */
 extern bool vt_file_writef(const char *const filename, const char *const fmt, ...);
+extern bool vt_file_writefln(const char *const filename, const char *const fmt, ...);
 
 /** Custom writer to file using a formatted string
     @param filename file name
