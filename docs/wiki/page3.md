@@ -2,20 +2,20 @@
 In this chapter we are going to discuss how to read and write to files with `Vita`! The functinality presented below can be found in [`system/fileio.h`](../../inc/vita/system/fileio.h)
 
 ## Contents
-* [Reading from files on one line of code](page3.md#reading-from-files-on-one-line-of-code)
+* [Reading from files](page3.md#reading-from-files)
 * [Writing to files](page3.md#writing-to-files)
 
-### Reading from files on one line of code
+### Reading from files
 ```c
 // read plain data
-vt_str_t *s = vt_file_read("other/myfile.txt");
+vt_str_t *str = vt_file_read("other/myfile.txt", alloctr);  // if alloctr == NULL, uses plain calloc/free
 
 // read in binary mode
-vt_str_t *s = vt_file_readb("other/myfile.txt");
+vt_str_t *str = vt_file_readb("other/myfile.txt", alloctr); // ditto
 
 // do you thing ...
 
-vt_str_destroy(s); // free data
+vt_str_destroy(str); // free data
 ```
 
 ### Writing to files
@@ -27,14 +27,15 @@ const char *data_buffer = "hello, world\n";
 
 // write to file
 vt_file_write(filename, data_buffer);
+vt_file_writef(filename, "%s\n", data_buffer);
 vt_file_writeln(filename, data_buffer);
+vt_file_writefln(filename, "%s", data_buffer);
 
 // append at the end of a file
 vt_file_append(filename, data_buffer);
 vt_file_appendln(filename, data_buffer);
-
-// free resources
-vt_str_destroy(sbuf);
 ```
+
+For more details, please refer to [test_fileio.c](../../tests/src/test_fileio.c) files.
 
 **[ [Back](page2.md) | [Next](page4.md) ]**
