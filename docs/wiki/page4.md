@@ -18,17 +18,19 @@ my_path = vt_path_basename(my_path, "photos/mountains.jpg");
 assert(vt_str_equals(vt_str_z(my_path), "mountains.jpg"));
 
 // expands tilda `~` to HOMEPATH both on Unix and Windows
-vt_str_t *s_expanded = vt_path_expand_tilda("~/media/dev");
-assert(vt_str_equals(vt_str_z(s_expanded), "/home/userX/media/dev"));
+vt_str_t *path_expanded = vt_path_expand_tilda("~/media/dev", alloctr);  // if alloctr == NULL, uses plain calloc/free
+assert(vt_str_equals(vt_str_z(path_expanded), "/home/userX/media/dev"));
 
 // get your EXE path
-vt_str_t *selfpath = vt_path_get_this_exe_location();
+vt_str_t *selfpath = vt_path_get_this_exe_location(alloctr);             // if alloctr == NULL, uses plain calloc/free
 printf("%s\n", vt_str_z(selfpath)); // prints "/home/userX/media/Vita/tests/bin/test_path"
 
 // free resources
 vt_str_destroy(my_path); 
-vt_str_destroy(s_expanded);
+vt_str_destroy(path_expanded);
+vt_str_destroy(selfpath);
 ```
+
 ### Create, delete, move
 ```c
 /**
@@ -45,6 +47,7 @@ if(!success) {
     // ...
 }
 
+// ditto
 vt_path_mkdir_parents(mypath);
 
 // rename and move
@@ -92,4 +95,6 @@ if(file_size < 0) {
 }
 ```
 
+For more details, please refer to [test_fileio.c](../../tests/src/test_path.c) files.
 
+**[ [Back](page3.md) | [Next](page5.md) ]**
