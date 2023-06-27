@@ -109,7 +109,7 @@ const bool vec_isEmpty = vt_vec_is_empty(vec);
 // push data
 const int32_t var = 33;
 vt_vec_push(vec, &var);
-vt_vec_pushi32(vec, 33); // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
+vt_vec_pushi32(vec, 33);     // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
 
 // set data
 vt_vec_set(vec, &var, 0);    // assign vector[0] = var
@@ -188,8 +188,8 @@ For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or [te
 
 ```c
 // create/destroy a pointer list instance
-vt_plist_t *p = vt_plist_create(5, alloctr);    // if alloctr == NULL, uses plain calloc/free
-vt_plist_destroy(p);                            // !!! does not free its elements, only the the `vt_plist_t` structure itself
+vt_plist_t *p = vt_plist_create(5, alloctr); // if alloctr == NULL, uses plain calloc/free
+vt_plist_destroy(p);                         // !!! does not free its elements, only the the `vt_plist_t` structure itself
 
 char *h = strdup("hello");
 char *w = strdup("world");
