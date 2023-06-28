@@ -56,6 +56,19 @@ void vt_free(void *ptr) {
     free(ptr);
 }
 
+void vt_memcopy(void *dest, const void *const src, const size_t bytes) {
+    assert(src != NULL);
+    assert(bytes > 0);
+
+    // allocate if NULL is passed
+    if(dest == NULL) {
+        dest = VT_CALLOC(bytes);
+    }
+
+    // copy data
+    memmove(dest, src, bytes);
+}
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 bool vt_gswap(void* a, void* b, const size_t elsize) {

@@ -196,6 +196,15 @@ extern void *vt_realloc(void *ptr, const size_t bytes, const char *const file, c
 */
 extern void vt_free(void *ptr);
 
+/** Copies data from source to destination memory buffer
+    @param dest pointer to destination memory address
+    @param src pointer to source memory address
+
+    @note exits upon failure
+    @note if `dest == NULL`, then destination is allocated with size of `bytes`
+*/
+extern void vt_memcopy(void *dest, const void *const src, const size_t bytes);
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 /** Generic swap

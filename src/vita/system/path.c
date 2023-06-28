@@ -6,7 +6,7 @@ vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
 
 vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     // save args to list
-    vt_plist_t *const p = vt_plist_create(n, NULL);
+    vt_plist_t *const p = vt_plist_create(n, s == NULL ? NULL : s->alloctr);
     va_list args; va_start(args, n);
     for (size_t i = 0; i < n; i++) {
         // get next item
@@ -100,6 +100,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
     vt_plist_t *pl = (p == NULL) 
         ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
         : p;
+    vt_plist_clear(pl);
 
     // open directory
     DIR *dir = opendir(z);
@@ -124,13 +125,13 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         {
             continue;
         }
-        
-        // save directory
-        const char *const d_name = strdup(dirtree->d_name);
-        if(d_name == NULL) {
-            VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
-            break;
-        }
+
+        // allocate memory buffer and copy it to that buffer
+        const size_t tmp_dir_len = strlen(dirtree->d_name);
+        const char *const d_name = pl->alloctr 
+            ? VT_ALLOCATOR_ALLOC(pl->alloctr, tmp_dir_len)
+            : VT_CALLOC(tmp_dir_len);
+        vt_memcopy((void*)d_name, dirtree->d_name, tmp_dir_len);
 
         // push directory name to vt_plist_t
         vt_plist_push(pl, d_name);
@@ -159,6 +160,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     vt_plist_t *pl = (p == NULL) 
         ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
         : p;
+    vt_plist_clear(pl);
 
     // open directory
     DIR *dir = opendir(z);
@@ -174,7 +176,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     }
 
     // get directory contents
-    vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL);
+    vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, pl->alloctr);
     struct dirent *dirtree = NULL;
     while((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
@@ -192,8 +194,15 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_append(st, PATH_SEPARATOR);
         vt_str_append(st, dirtree->d_name);
 
+        // allocate memory buffer and copy it to that buffer
+        const size_t tmp_dir_len = vt_str_len(st);
+        const char *const d_name = pl->alloctr 
+            ? VT_ALLOCATOR_ALLOC(pl->alloctr, tmp_dir_len)
+            : VT_CALLOC(tmp_dir_len);
+        vt_memcopy((void*)d_name, vt_str_z(st), tmp_dir_len);
+
         // push directory name to list
-        vt_plist_push(pl, strdup(vt_str_z(st)));
+        vt_plist_push(pl, d_name);
 
         // check if current path is a directory; if false, then break
         if(vt_path_is_dir(vt_str_z(st)) && vt_path_listdir_recurse(pl, vt_str_z(st), ignoreDotFiles) == NULL) {
@@ -214,6 +223,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     return pl;
 }
 
+// TODO:
 vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -478,7 +488,6 @@ vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType
     return s_tilda;
 }
 
-// FIXME
 vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
     vt_str_t *spath = vt_str_create_capacity(PATH_MAX, alloctr);
     if (spath == NULL) {
