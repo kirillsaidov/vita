@@ -96,24 +96,18 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         return NULL;
     }
 
+    // open directory
+    DIR *dir = opendir(z);
+    if(dir == NULL) {
+        VT_DEBUG_PRINTF("%s: Failed read the directory <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
+        return NULL;
+    }
+
     // create plist instance
     vt_plist_t *pl = (p == NULL) 
         ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
         : p;
     vt_plist_clear(pl);
-
-    // open directory
-    DIR *dir = opendir(z);
-    if(dir == NULL) {
-        VT_DEBUG_PRINTF("%s: Failed read the directory <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
-        
-        // free only if it was allocated
-        if(p == NULL) {
-            vt_plist_destroy(pl);
-        }
-
-        return NULL;
-    }
 
     // get directory contents
     struct dirent *dirtree = NULL;
@@ -156,24 +150,18 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         return NULL;
     }
 
+    // open directory
+    DIR *dir = opendir(z);
+    if(dir == NULL) {
+        VT_DEBUG_PRINTF("%s: Failed read the directory %s!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
+        return NULL;
+    }
+
     // create plist instance
     vt_plist_t *pl = (p == NULL) 
         ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
         : p;
     vt_plist_clear(pl);
-
-    // open directory
-    DIR *dir = opendir(z);
-    if(dir == NULL) {
-        VT_DEBUG_PRINTF("%s: Failed read the directory %s!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
-        
-        // free only if it was allocated
-        if(p == NULL) {
-            vt_plist_destroy(pl);
-        }
-
-        return NULL;
-    }
 
     // get directory contents
     vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, pl->alloctr);
@@ -223,7 +211,6 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     return pl;
 }
 
-// TODO:
 vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -237,8 +224,8 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     const char *ptr = NULL;
     const size_t sLen = vt_str_len(st);
     for(size_t i = sLen - 1; i > 0; i--) {
-        if(vt_str_z(st)[i] == PATH_SEPARATOR[0] && i != sLen - 1) {
-            ptr = &vt_str_z(st)[i+1];
+        if(z[i] == PATH_SEPARATOR[0] && i != sLen - 1) {
+            ptr = &z[i+1];
             break;
         }
     }
@@ -397,11 +384,10 @@ bool vt_path_rmdir_recurse(const char *const z) {
     
     // iterate starting from the end and remove each element
     // checking its type
-    vt_str_t *s = NULL;
-    while((s = (vt_str_t*)(vt_plist_pop_get(dir_list))) != NULL) {
+    const char *zpath = NULL;
+    while((zpath = vt_plist_pop_get(dir_list)) != NULL) {
         // remove file/directory
-        const char *const ztmp = vt_str_z(s);
-        status = vt_path_is_dir(ztmp) ? vt_path_rmdir(ztmp) : vt_path_remove(ztmp);
+        status = vt_path_is_dir(zpath) ? vt_path_rmdir(zpath) : vt_path_remove(zpath);
 
         // check status
         if(!status) {
@@ -414,8 +400,8 @@ vt_path_rmdir_recurse_cleanup__:
     if(dir_list != NULL) {
         const size_t dirLen = vt_plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
-            s = (vt_str_t*)(vt_plist_get(dir_list, i));
-            vt_str_destroy(s);
+            zpath = vt_plist_get(dir_list, i);
+            VT_FREE(zpath);
         }
 
         // free dir_list itself
