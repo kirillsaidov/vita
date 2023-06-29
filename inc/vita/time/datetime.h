@@ -24,6 +24,12 @@
 #include "../core/core.h"
 #include "../util/debug.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+    #define asctime(timebuf, timebuf_size, tm) asctime_s(timebuf, timebuf_size, tm)
+#else
+    #define asctime(timebuf, timebuf_size, tm) asctime_r(tm, timebuf)
+#endif
+
 #define VT_DATETIME_BUFFER_SIZE 26
 #define VT_DATETIME_MIN_YEAR_RANGE 1900
 

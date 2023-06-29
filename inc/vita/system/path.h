@@ -38,11 +38,12 @@
     #include <windows.h>
     
     #define PATH_SEPARATOR "\\"
+    #define DIR_PERMISSIONS NULL
+
     #define getcwd _getcwd
     #define mkdir CreateDirectory
     #define rmdir RemoveDirectory
     #define rename MoveFile
-    #define DIR_PERMISSIONS NULL
 #else
     #if defined(__APPLE__) || defined(__MACH__)
         #include <libproc.h>        

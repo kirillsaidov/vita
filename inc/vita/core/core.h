@@ -38,10 +38,8 @@
 #if defined(_WIN32) || defined(_WIN64)
     #define __SOURCE_FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
     #define strncpy(d, s, n) strncpy_s(d, n, s, n)
-    #define asctime(timebuf, timebuf_size, tm) asctime_s(timebuf, timebuf_size, tm)
 #else
     #define __SOURCE_FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-    #define asctime(timebuf, timebuf_size, tm) asctime_r(tm, timebuf)
 #endif
 
 // memory management macros
