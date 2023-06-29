@@ -1,5 +1,5 @@
 # Parsing command line arguments
-In this chapter we are going to discuss how to parse command line arguments with `Vita`. 
+In this chapter we discuss how to parse command line arguments with `Vita`. 
 
 ## Contents
 * [Declaring our variables and command options](page5.md#declaring-our-variables-and-command-options)
@@ -14,13 +14,13 @@ int32_t     opt_video_quality   = 720;
 bool        opt_verbose         = false;
 ```
 
-Secondly, we need to create an `vt_argopt_t` array type and describe our variables so it knows what to parse:
+Secondly, we need to create an `vt_argopt_t` array instance and describe our variables so it knows what and how to parse:
 ```c
 vt_argopt_t optv[] = {
-      // long      short  description            argument                  type
-    { "--link",    "-l", "youtube link",   VT_ARGOPT(opt_youtube_link),  dt_cstr },
-    { "--quality", "-q", "video quality",  VT_ARGOPT(opt_video_quality), dt_int32 },
-    { "--verbose", "-v", "verbose output", VT_ARGOPT(opt_verbose),       dt_bool },
+      // long      short   description            argument                   type
+    { "--link",    "-l", "youtube link",   VT_ARGOPT(opt_youtube_link),  VT_TYPE_CSTR  },
+    { "--quality", "-q", "video quality",  VT_ARGOPT(opt_video_quality), VT_TYPE_INT32 },
+    { "--verbose", "-v", "verbose output", VT_ARGOPT(opt_verbose),       VT_TYPE_BOOL  },
 };
 const size_t optc = sizeof(optv)/sizeof(vt_argopt_t);
 ```
@@ -64,10 +64,12 @@ And do not forget to free allocated resorces:
     // ...
 
 cleanup:
-    free(opt_youtube_link);
+    free(opt_youtube_link); // argopt uses dynamic strings
 
     return 0;
 } // main
 ```
 
-Read more at [util/argopt.h](../../inc/vita/util/argopt.h).
+Read more at [util/argopt.h](../../inc/vita/util/argopt.h) or [test_argopt.c](../../tests/src/test_argopt.c).
+
+**[ [Back](page4.md) | [Next](page6.md) ]**
