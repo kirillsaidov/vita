@@ -79,12 +79,12 @@ void vt_str_destroy(vt_str_t *s) {
     s = NULL;
 }
 
-vt_str_t *vt_str_dup(const vt_str_t *const s, struct VitaBaseAllocatorType *const alloctr) {
+vt_str_t *vt_str_dup(const vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
-    return vt_str_create(s->ptr, alloctr);
+    
+    return vt_str_create(s->ptr, s->alloctr);
 }
 
 vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr) {

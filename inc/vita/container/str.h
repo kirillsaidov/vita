@@ -104,21 +104,15 @@ extern void vt_str_destroy(vt_str_t *s);
 
 /** Duplicates and returns a new dynamic string
     @param s vt_str_t instance
-    @param alloctr allocator instance
-
     @returns vt_str_t* instance upon success, `NULL` otherwise
-
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_str_dup(const vt_str_t *const s, struct VitaBaseAllocatorType *const alloctr);
+extern vt_str_t *vt_str_dup(const vt_str_t *const s);
 
 /** Takes ownership of an allocated string instead of allocating memory itself
-    @param z a raw C string allocated on heap
-    @param alloctr allocator instance
+    @param z a raw C string
+    @param alloctr allocator instance that was used to allocate the C string, otherwise NULL
 
     @returns vt_str_t* instance upon success, `NULL` otherwise
-
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
 extern vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 

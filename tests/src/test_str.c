@@ -55,7 +55,7 @@ int32_t main(void) {
         assert(vt_str_capacity(mystr) == 23);
         assert(vt_str_has_space(mystr) == 0);
 
-        vt_str_t *copy = vt_str_dup(mystr, alloctr); {
+        vt_str_t *copy = vt_str_dup(mystr); {
             assert(vt_str_len(copy) == 23);
             assert(vt_str_capacity(copy) == 23);
             assert(vt_str_has_space(copy) == 0);

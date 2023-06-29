@@ -401,7 +401,7 @@ vt_path_rmdir_recurse_cleanup__:
         const size_t dirLen = vt_plist_len(dir_list);
         for(size_t i = 0; i < dirLen; i++) {
             zpath = vt_plist_get(dir_list, i);
-            VT_FREE(zpath);
+            VT_FREE((void*)zpath);
         }
 
         // free dir_list itself
