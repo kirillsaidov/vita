@@ -7,6 +7,8 @@ In this chapter we are going to discuss how to read and write to files with `Vit
 
 ### Reading from files
 ```c
+#include "vita/system/fileio.h"
+
 // read plain data
 vt_str_t *str = vt_file_read("other/myfile.txt", alloctr);  // if alloctr == NULL, uses plain calloc/free
 

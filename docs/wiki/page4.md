@@ -9,6 +9,8 @@
 
 ### Path manipulation
 ```c
+#include "vita/system/path.h"
+
 // path concatenation
 vt_str_t *my_path = vt_path_build(NULL, 2, "photos", "mountains.jpg");
 assert(vt_str_equals(vt_str_z(my_path), "photos/mountains.jpg"));

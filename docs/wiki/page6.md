@@ -24,6 +24,8 @@ enum VitaLogLevel {
 
 Vita logger is easy configure. By default Vita logs data to `stderr`, unless specified otherwise.
 ```c
+#include "vita/util/log.h"
+
 // redirect output to "my_info_logger_file.log"
 vt_log_set_level(vt_log_info, "my_info_logger_file.log"); 
 
@@ -77,4 +79,4 @@ void vt_log(
 );
 ```
 
-
+**[ [Back](page5.md) | [Next](page7.md) ]**

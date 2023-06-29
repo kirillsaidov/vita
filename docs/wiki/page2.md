@@ -20,6 +20,8 @@ Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#
 
 ### Creating strings
 ```c
+#include "vita/container/str.h"
+
 // create static string (non-modifiable, pointer-length pair)
 const vt_str_t str = vt_str_create_static("hello, world!");
 
@@ -96,6 +98,8 @@ There are many more advanced functions available like `vt_str_starts_with, vt_st
 
 ### Dynamic arrays with `vt_vec_t`
 ```c
+#include "vita/container/vec.h"
+
 // create/destroy a vector instance
 vt_vec_t *vec = vt_vec_create(10, sizeof(int32_t), alloctr); // if alloctr == NULL, uses plain calloc/free
 vt_vec_destroy(vec);
@@ -187,6 +191,8 @@ For more details, please refer to [vec.h](../../inc/vita/container/vec.h) or [te
 ### A list of pointers with `vt_plist_t`
 
 ```c
+#include "vita/container/plist.h"
+
 // create/destroy a pointer list instance
 vt_plist_t *p = vt_plist_create(5, alloctr); // if alloctr == NULL, uses plain calloc/free
 vt_plist_destroy(p);                         // !!! does not free its elements, only the the `vt_plist_t` structure itself
