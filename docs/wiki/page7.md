@@ -26,15 +26,18 @@ Vita logger is easy configure. By default Vita logs data to `stderr`, unless spe
 ```c
 #include "vita/util/log.h"
 
+// log file
+const char *log_file = "my_log_output.log";
+
 // redirect output to "my_info_logger_file.log"
-vt_log_set_level(vt_log_info, "my_info_logger_file.log"); 
+vt_log_set_level(vt_log_info, log_file); 
 
 // redirect output to stderr
 vt_log_set_level(vt_log_info, NULL); 
 vt_log_set_level(vt_log_info, stderr); // ditto
 
 // redirect all log levels to a file
-vt_log_set_level_all("my_log_output.log");
+vt_log_set_level_all(log_file);
 vt_log_set_level_all(NULL);            // reset
 ```
 
@@ -70,14 +73,14 @@ VT_LOGF_ASSERT(logger_filename, val == 2, "ditto");
 ```c
 // customize
 void vt_log(
-    const char *const zfilename, 
-    enum VitaLogLevel vt_log_level, 
-    const bool expr, 
-    const char *const zexpr, 
-    const char *const file, 
-    const size_t line, 
-    const char *const zfmt, 
-    ...
+    const char *const zfilename,    // if NULL, checks if output was redirected by the user, otherwise use stderr
+    enum VitaLogLevel vt_log_level, // log level
+    const bool expr,                // expression to test
+    const char *const zexpr,        // VT_STRING_OF(expr)
+    const char *const file,         // __SOURCE_FILENAME__
+    const size_t line,              // __LINE__
+    const char *const zfmt,         // format
+    ...                             // arguments
 );
 ```
 
