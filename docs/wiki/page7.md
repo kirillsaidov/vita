@@ -41,7 +41,7 @@ vt_log_set_level_all(NULL);            // reset
 You can also get log level string:
 ```c
 const char *log_level_str = vt_log_get_level_str(vt_log_info);
-assert(strcmp("INFO", log_level_str));
+assert(vt_str_equals("INFO", log_level_str));
 ```
 
 ### Logging to `stderr`
