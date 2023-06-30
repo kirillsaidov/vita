@@ -46,6 +46,7 @@ assert(vt_str_equals("INFO", log_level_str));
 
 ### Logging to `stderr`
 ```c
+// log to stderr unless you specified otherwise above
 VT_LOG_INFO("[s] This is an info log entry.");
 VT_LOG_WARN("[s] WRONG input specified: %s", "LOG");
 VT_LOG_DEBUG("[s] Log only if NDEBUG is not defined. Testing: = %s, %s", "debug msg", "debug2");
@@ -56,6 +57,7 @@ VT_LOG_ASSERT(val == 2, "Log if assertion fails: %s", "assertion failed");
 
 ### Logging to file
 ```c
+// log to a specified file
 VT_LOGF_INFO(logger_filename, "This is a test. %s", "Trying out new functionality.");
 VT_LOGF_WARN(logger_filename, "ditto");
 VT_LOGF_DEBUG(logger_filename, "ditto");
