@@ -1,5 +1,5 @@
 # Datetime
-This chapter describes how to use the functionality provided by the [`datetime`](../../inc/vita/time/datetime.h.h) module.
+This chapter describes how to use the functionality provided by the [`datetime`](../../inc/vita/time/datetime.h) module.
 
 ## Contents
 1. [Get current time](page6.md#get-current-time)
