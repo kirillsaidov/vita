@@ -31,11 +31,11 @@ vt_log_set_level(vt_log_info, "my_info_logger_file.log");
 
 // redirect output to stderr
 vt_log_set_level(vt_log_info, NULL); 
-vt_log_set_level(vt_log_info, stderr);     // ditto
+vt_log_set_level(vt_log_info, stderr); // ditto
 
 // redirect all log levels to a file
 vt_log_set_level_all("my_log_output.log");
-vt_log_set_level_all(NULL);                // reset
+vt_log_set_level_all(NULL);            // reset
 ```
 
 You can also get log level string:
