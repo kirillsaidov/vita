@@ -21,7 +21,7 @@ int32_t main(const int32_t argc, const char *argv[]) {
     char   *opt_link = NULL;
     char   *opt_save = strdup("~/Desktop");
     bool    opt_verbose = false;
-    int32_t opt_quality = 640;
+    int32_t opt_quality = 720;
 
     // create options to parse
     vt_argopt_t optv[] = {
@@ -70,6 +70,7 @@ Downloading video with the following options:
         url: www.abs.com/video
        save: ~/Desktop/media
     verbose: true
+    quality: 720
 ==============================================
 
 $ ./downloader -h
