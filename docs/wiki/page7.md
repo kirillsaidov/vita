@@ -30,15 +30,15 @@ Vita logger is easy configure. By default Vita logs data to `stderr`, unless spe
 const char *log_file = "my_log_output.log";
 
 // redirect output to "my_info_logger_file.log"
-vt_log_set_level(vt_log_info, log_file); 
+vt_log_redirect_level_output(vt_log_info, log_file); 
 
 // redirect output to stderr
-vt_log_set_level(vt_log_info, NULL); 
-vt_log_set_level(vt_log_info, stderr); // ditto
+vt_log_redirect_level_output(vt_log_info, NULL); 
+vt_log_redirect_level_output(vt_log_info, stderr); // ditto
 
 // redirect all log levels to a file
-vt_log_set_level_all(log_file);
-vt_log_set_level_all(NULL);            // reset
+vt_log_redirect_all_output(log_file);
+vt_log_redirect_all_output(NULL);                  // reset
 ```
 
 You can also get log level string:

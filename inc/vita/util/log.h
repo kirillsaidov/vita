@@ -19,8 +19,8 @@
     - VT_LOGF_ASSERT
 
  * Functions
-    - vt_log_set_level
-    - vt_log_set_level_all
+    - vt_log_redirect_level_output
+    - vt_log_redirect_all_output
     - vt_log_get_level_str
     - vt_log
 */
@@ -72,7 +72,7 @@ enum VitaLogLevel {
 
     @note if `NULL` is specified, redirects to stdout
 */
-extern void vt_log_set_level(enum VitaLogLevel vt_log_level, const char *const filename);
+extern void vt_log_redirect_level_output(enum VitaLogLevel vt_log_level, const char *const filename);
 
 /** Redirect all log levels to the specified output
     @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
@@ -80,7 +80,7 @@ extern void vt_log_set_level(enum VitaLogLevel vt_log_level, const char *const f
 
     @note if `NULL` is specified, redirects to stdout
 */
-extern void vt_log_set_level_all(const char *const filename);
+extern void vt_log_redirect_all_output(const char *const filename);
 
 /** Get log level string
     @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
