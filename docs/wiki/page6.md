@@ -93,9 +93,9 @@ assert(vt_datetime_is_valid_text("2023-27 22:12:02 lala") == false);
 
 // find the lacking datetime information
 const int16_t year_day = vt_datetime_find_year_day(vdt);
-const int16_t year_day = vt_datetime_find_week_day(vdt);
-const int16_t year_day = vt_datetime_find_days_in_month(vdt);
-const int16_t year_day = vt_datetime_find_days_in_year(vdt);
+const int16_t week_day = vt_datetime_find_week_day(vdt);
+const int16_t days_in_month = vt_datetime_find_days_in_month(vdt);
+const int16_t days_in_year = vt_datetime_find_days_in_year(vdt);
 
 // check if leap year
 const bool is_leap_year = vt_datetime_is_leap_year(vdt);
