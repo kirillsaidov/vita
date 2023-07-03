@@ -44,8 +44,17 @@ Vita version: 0.4.0
 ```
 
 ## Debug vs Release builds
-`Vita` comes in two variants: debug and release builds. It is highly recommended to use the debug build for testing and debugging purposes and the release build `Vita` library for release.
+By default `Vita` builds in **debug** mode. To build in **release** mode, open the `CMakeLists.txt` file and find two lines below, comment out the `Debug` version and uncomment the `Release` version:
+```sh
+# COMMENT OUT
+# set(DEFAULT_BUILD_TYPE "Debug")
+# set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror -O2")
 
-The reason is simple: when using the debug version, your will benefit from internal checks, asserts and debug error messages done by `Vita` that are removed in release builds. Nevertheless, you can still check the return value of a function to determine if an operation was successful. Almost every `Vita` functions returns a certain value.
+# UNCOMMENT
+set(DEFAULT_BUILD_TYPE "Release")
+set(CMAKE_C_FLAGS "-DNDEBUG -Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror -O2")
+```
+
+`Vita` comes in two variants: debug and release builds. It is highly recommended to use the debug build for testing and debugging purposes and the release build `Vita` library for your finalized project. You will benefit from internal checks, assertions and debug error messages are removed in release builds. Nevertheless, you can still check the return value of a function to determine if an operation was successful. Almost every `Vita` functions returns a certain value.
 
 **[ [Back](VITA.md) | [Next](page2.md) ]**
