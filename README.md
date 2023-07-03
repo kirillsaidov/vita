@@ -1,7 +1,7 @@
 <img src="imgs/v-flaticon.png" width="64" height="64" align="left"></img>
 # Vita
 
-A simple library for your modern C project! Lightweight and no dependencies. Provides data structures, string manipulation, file and path handling, command line args parsing and more!
+A simple and intuitive standard library for your modern C project! Lightweight and no dependencies. `Vita` strives to provide all common functionality other modern libraries have to ease prototyping with C and simplify the development process.
 
 ## Features
 * containers
