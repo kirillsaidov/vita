@@ -20,7 +20,7 @@ void vt_datetime_get_now_as_text(char *timebuf, const size_t len) {
     // get time
     const time_t t = time(NULL);
     const struct tm stm = *localtime(&t);
-    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, "%Y-%m-%d %H:%M:%S", &stm)] = '\0';
+    timebuf[strftime(timebuf, len, "%Y-%m-%d %H:%M:%S", &stm)] = '\0';
 }
 
 void vt_datetime_get_now_as_text_pretty(char *timebuf, const size_t len) {
@@ -94,13 +94,14 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
 
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
-    asctime(timebuf, VT_DATETIME_BUFFER_SIZE, &stm);
+    asctime(timebuf, len, &stm);
 
     // set day digit to blank space when < 10, e.g.: 'Jan 01' to 'Jan 1'
     if(timebuf[8] == '0') {
         timebuf[8] = ' ';
     }
-
+    timebuf[len-1] = '\0';
+    
     // remove '\n' that's appended at the end
     if(timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
         timebuf[VT_DATETIME_BUFFER_SIZE-1] = '\0';
@@ -290,7 +291,7 @@ static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf
 
     // get time
     const struct tm stm = vt_datetime_vdt_to_tm(vdt);
-    timebuf[strftime(timebuf, VT_DATETIME_BUFFER_SIZE, fmt, &stm)] = '\0';
+    timebuf[strftime(timebuf, len, fmt, &stm)] = '\0';
 }
 
 /** Reads timestamp text

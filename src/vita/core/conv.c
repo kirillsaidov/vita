@@ -1,7 +1,7 @@
 #include "vita/core/conv.h"
 
 static float vt_strtof(const char *z, char **zend, int base) { (void)base; return strtof(z, zend); }
-static double vt_strtod(const char *z, char **zend, int base) { (void) base; return strtod(z, zend); }
+static double vt_strtod(const char *z, char **zend, int base) { (void)base; return strtod(z, zend); }
 static real vt_strtold(const char *z, char **zend, int base) { (void)base; return strtold(z, zend); }
 
 #define VT_INSTANTIATE_CONV_FROM_STR(T, t, F)                                                       \

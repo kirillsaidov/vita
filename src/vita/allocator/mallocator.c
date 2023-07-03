@@ -126,6 +126,9 @@ void vt_mallocator_free(vt_mallocator_t *const alloctr, void *ptr, const char *c
 
         // debug info
         VT_DEBUG_PRINTF("%s:%s:%d: %zu bytes freed (left: %zu)\n", file, func, line, bytes, alloctr->stats.count_bytes_allocated);
+        (void)file;
+        (void)func;
+        (void)line;
     }
 
     // free the data
