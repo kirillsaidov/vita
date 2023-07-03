@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['capacity_0',['capacity',['../struct_base_container_type.html#ad721fc6ca6a3d6ba3bc506576622aab0',1,'VitaBaseArrayType']]],
-  ['cols_1',['cols',['../struct_base_container_type.html#a8bc05371b3a4013263f68932ba1b6452',1,'VitaBaseArrayType']]]
+  ['alloc_0',['alloc',['../struct_vita_base_allocator_type.html#ab43ead56a76c1fd2a19ec4c1875feaf5',1,'VitaBaseAllocatorType']]],
+  ['alloctr_1',['alloctr',['../struct_vita_base_array_type.html#ad0ed979a7221af0236468d68d5b156fc',1,'VitaBaseArrayType']]]
 ];

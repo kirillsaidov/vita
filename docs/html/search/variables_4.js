@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['major_0',['major',['../structversion__t.html#a5bd4e4c943762926c8f653b6224cced2',1,'version_t']]],
-  ['minor_1',['minor',['../structversion__t.html#ae2f416b0a34b7beb4ed3873d791ac393',1,'version_t']]]
+  ['free_0',['free',['../struct_vita_base_allocator_type.html#a55b94b6e8bc927eb1b47592ea6e4cbf5',1,'VitaBaseAllocatorType']]]
 ];

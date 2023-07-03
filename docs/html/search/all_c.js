@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['optiondesc_0',['optionDesc',['../struct_arg_opt.html#a0096d2a73f23834b95d7985daa2c2029',1,'ArgOpt']]],
-  ['optionlong_1',['optionLong',['../struct_arg_opt.html#acd6f3ef9b3dae6d02e127b56eeae783c',1,'ArgOpt']]],
-  ['optionshort_2',['optionShort',['../struct_arg_opt.html#a0d2ac9818e46833f772b8a66b91d5b6c',1,'ArgOpt']]],
-  ['optiontype_3',['optionType',['../struct_arg_opt.html#a66a11b3790826f5f9e2288f62d3a17b4',1,'ArgOpt']]],
-  ['optionvalue_4',['optionValue',['../struct_arg_opt.html#acfccd61badc8b3b99e3e192e5d924a45',1,'ArgOpt']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['real_1',['real',['../core_8h.html#a72fc969235546f963139679fdedbc646',1,'core.h']]],
+  ['realloc_2',['realloc',['../struct_vita_base_allocator_type.html#a869e133be9ef6bb0af726f663b05f4f3',1,'VitaBaseAllocatorType']]]
 ];

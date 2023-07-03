@@ -1,15 +1,14 @@
 var searchData=
 [
-  ['capacity_0',['capacity',['../struct_base_container_type.html#ad721fc6ca6a3d6ba3bc506576622aab0',1,'VitaBaseArrayType']]],
-  ['clamp_1',['CLAMP',['../comparison_8h.html#abcafdb4a998e1c8769328c1f7f570484',1,'comparison.h']]],
-  ['cmp_5ftest_2',['cmp_test',['../comparison_8h.html#afcdde416feb9241b9415fc4bdb76d10f',1,'comparison.h']]],
-  ['cols_3',['cols',['../struct_base_container_type.html#a8bc05371b3a4013263f68932ba1b6452',1,'VitaBaseArrayType']]],
-  ['comparison_2eh_4',['comparison.h',['../comparison_8h.html',1,'']]],
-  ['container_5fgrowth_5frate_5',['VT_ARRAY_DEFAULT_GROWTH_RATE',['../core_8h.html#a3699a6724f1f1e564a1c641fb3076ffc',1,'core.h']]],
-  ['conv_2eh_6',['conv.h',['../conv_8h.html',1,'']]],
-  ['conv_5fstr_5fto_5fdouble_7',['conv_str_to_double',['../conv_8h.html#af04568d574efed2a911f06ed299254c5',1,'conv.h']]],
-  ['conv_5fstr_5fto_5fint64_8',['conv_str_to_int64',['../conv_8h.html#ad5af5a8eedf7140fb27894547bbfa0d7',1,'conv.h']]],
-  ['conv_5fstr_5fto_5fuint64_9',['conv_str_to_uint64',['../conv_8h.html#a82acd2e29229566090822652b89a5b73',1,'conv.h']]],
-  ['core_2eh_10',['core.h',['../core_8h.html',1,'']]],
-  ['cstr_11',['vt_str_z',['../str_8h.html#aacbafb73a97665907379008e44553489',1,'str.h']]]
+  ['capacity_0',['capacity',['../struct_vita_base_array_type.html#adc3709e76ee1e12c705dc646cf9d4931',1,'VitaBaseArrayType']]],
+  ['common_2eh_1',['common.h',['../common_8h.html',1,'']]],
+  ['comparison_2eh_2',['comparison.h',['../comparison_8h.html',1,'']]],
+  ['compiler_2eh_3',['compiler.h',['../compiler_8h.html',1,'']]],
+  ['conv_2eh_4',['conv.h',['../conv_8h.html',1,'']]],
+  ['core_2eh_5',['core.h',['../core_8h.html',1,'']]],
+  ['count_5fallocs_6',['count_allocs',['../struct_vita_allocator_stats.html#a5205110707b39d003707618929e8329d',1,'VitaAllocatorStats']]],
+  ['count_5fbytes_5fallocated_7',['count_bytes_allocated',['../struct_vita_allocator_stats.html#a4b25ae983249e36fb003600b295e5448',1,'VitaAllocatorStats']]],
+  ['count_5fbytes_5ffreed_8',['count_bytes_freed',['../struct_vita_allocator_stats.html#ae7d1be9cd8afa870569363071fcbc0b5',1,'VitaAllocatorStats']]],
+  ['count_5ffrees_9',['count_frees',['../struct_vita_allocator_stats.html#ac2d06e0b25fb5f502fc561ff68e9d8cd',1,'VitaAllocatorStats']]],
+  ['count_5freallocs_10',['count_reallocs',['../struct_vita_allocator_stats.html#a14c02705b6256d47ed240d2f6d420162',1,'VitaAllocatorStats']]]
 ];

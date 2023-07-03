@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elsize_0',['elsize',['../struct_base_container_type.html#ae8214a3e983e767cced72e5b5dc29d4f',1,'VitaBaseArrayType']]]
+  ['elsize_0',['elsize',['../struct_vita_base_array_type.html#a6de779b641b730030f7e5e4594dafc56',1,'VitaBaseArrayType']]]
 ];

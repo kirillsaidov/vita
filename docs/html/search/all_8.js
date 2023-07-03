@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['help_5fwanted_0',['help_wanted',['../struct_arg_opt.html#a5fa365273d6becc4933ca262fa6f2317',1,'ArgOpt']]]
+  ['len_0',['len',['../struct_vita_base_array_type.html#a4055bb8c1e76ce9b9f7a58736a9fd39a',1,'VitaBaseArrayType']]],
+  ['log_2eh_1',['log.h',['../log_8h.html',1,'']]]
 ];
