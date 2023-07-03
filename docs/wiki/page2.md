@@ -7,7 +7,7 @@ In this chapter we are going to discuss how to use `Vita` containers. Currently,
 * vt_plist_t   // an array of pointers
 ```
 
-Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#L133) struct.
+Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#L131) struct.
 
 ## Contents
 * [Using `vt_str_t` strings](page2.md#using-vt_str_t-strings)
