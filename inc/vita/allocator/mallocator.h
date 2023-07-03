@@ -2,6 +2,15 @@
 #define VITA_ALLOCATOR_MALLOCATOR_H
 
 /** MALLOCATOR MODULE 
+ * This allocator utilizes plain calloc/free functions for memory management. 
+ * However, it also keeps the allocation statistics for further examination.
+
+ * Macros
+    - VT_ALLOCATOR_ALLOC
+    - VT_ALLOCATOR_REALLOC
+    - VT_ALLOCATOR_FREE
+
+ * Functions
     - vt_mallocator_create
     - vt_mallocator_destroy
     - vt_mallocator_alloc
