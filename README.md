@@ -86,8 +86,8 @@ Example: downloader --link your_url --save save/dir --verbose
 ## More examples
 Check out the [`tests/src`](tests/src) directory for usage examples or read more on [Vita Wiki](docs/wiki/VITA.md).
 
-#### Dev-process
-You can also closely follow the development process in Trello [board](https://trello.com/b/MFeDGO8u/vita).
+## Development process
+You can also closely follow the development process in Trello [board](https://trello.com/b/MFeDGO8u/vita). If you face any errors, please report by PR or create an issue. 
 
 ## LICENSE
 All code is licensed under the BSL license.
