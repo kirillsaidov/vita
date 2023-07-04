@@ -56,7 +56,7 @@ void vt_free(void *ptr) {
     free(ptr);
 }
 
-void vt_memcopy(void *dest, const void *const src, const size_t bytes) {
+void vt_memmove(void *dest, const void *const src, const size_t bytes) {
     assert(src != NULL);
     assert(bytes > 0);
 

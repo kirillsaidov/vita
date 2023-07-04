@@ -201,7 +201,7 @@ extern void vt_free(void *ptr);
     @note exits upon failure
     @note if `dest == NULL`, then destination is allocated with size of `bytes`
 */
-extern void vt_memcopy(void *dest, const void *const src, const size_t bytes);
+extern void vt_memmove(void *dest, const void *const src, const size_t bytes);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 

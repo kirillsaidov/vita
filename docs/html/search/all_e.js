@@ -146,7 +146,7 @@ var searchData=
   ['vt_5fmath_5frandom_5fu64_143',['vt_math_random_u64',['../math_8h.html#a5fcad0718b82bd26744305fa243dba43',1,'math.h']]],
   ['vt_5fmath_5fsqrt_5fcarmack_144',['vt_math_sqrt_carmack',['../math_8h.html#aef41cad9a6bc26d30f5a49ab01ce2fb0',1,'math.h']]],
   ['vt_5fmax_5fprecision_145',['VT_MAX_PRECISION',['../conv_8h.html#a8a28e6d908fb1fd2782d00a2eeb30ed5',1,'conv.h']]],
-  ['vt_5fmemcopy_146',['vt_memcopy',['../core_8h.html#a40ffb23d20eb7b9e8684fe19d4743995',1,'core.h']]],
+  ['vt_5fmemcopy_146',['vt_memmove',['../core_8h.html#a40ffb23d20eb7b9e8684fe19d4743995',1,'core.h']]],
   ['vt_5fpath_5fbasename_147',['vt_path_basename',['../path_8h.html#a7346a816697f2fc5a5a4789080e9c2a1',1,'path.h']]],
   ['vt_5fpath_5fbuild_148',['vt_path_build',['../path_8h.html#a08f88a8f1103cc30b97806fd9fb7c098',1,'path.h']]],
   ['vt_5fpath_5fbuild_5fn_149',['vt_path_build_n',['../path_8h.html#a3a158015e267eadcf38e5ac89261a40d',1,'path.h']]],
