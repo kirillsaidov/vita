@@ -54,12 +54,12 @@ struct VitaDateTime vt_datetime_create(
     };
 
     // calculate wday
-    if(vdt.week_day < 0) {
+    if (vdt.week_day < 0) {
         vdt.week_day = vt_datetime_find_week_day(vdt);
     }
 
     // calculate yday
-    if(vdt.year_day < 0) {
+    if (vdt.year_day < 0) {
         vdt.year_day = vt_datetime_find_year_day(vdt);
     }
 
@@ -97,13 +97,13 @@ void vt_datetime_to_text_pretty(const struct VitaDateTime vdt, char *timebuf, co
     asctime(timebuf, len, &stm);
 
     // set day digit to blank space when < 10, e.g.: 'Jan 01' to 'Jan 1'
-    if(timebuf[8] == '0') {
+    if (timebuf[8] == '0') {
         timebuf[8] = ' ';
     }
     timebuf[len-1] = '\0';
     
     // remove '\n' that's appended at the end
-    if(timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
+    if (timebuf[VT_DATETIME_BUFFER_SIZE-1] == '\n') {
         timebuf[VT_DATETIME_BUFFER_SIZE-1] = '\0';
     } else {
         timebuf[VT_DATETIME_BUFFER_SIZE-2] = '\0'; 
@@ -152,7 +152,7 @@ struct VitaDateTime vt_datetime_from_text_iso_ext(const char *timebuf) {
 int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
     struct tm stm = vt_datetime_vdt_to_tm(vdt);
     time_t ret = mktime(&stm);
-    if(ret < 0) {
+    if (ret < 0) {
         VT_DEBUG_PRINTF("%s: Invalid datetime format.\n");
         return -1;
     }
@@ -163,7 +163,7 @@ int16_t vt_datetime_find_year_day(const struct VitaDateTime vdt) {
 int16_t vt_datetime_find_week_day(const struct VitaDateTime vdt) {
     struct tm stm = vt_datetime_vdt_to_tm(vdt);
     time_t ret = mktime(&stm);
-    if(ret < 0) {
+    if (ret < 0) {
         VT_DEBUG_PRINTF("%s: Invalid datetime format.\n");
         return -1;
     }
@@ -177,13 +177,13 @@ int16_t vt_datetime_find_days_in_month(const struct VitaDateTime vdt) {
     const int16_t year = vdt.year < 0 ? VT_DATETIME_MIN_YEAR_RANGE : vdt.year;
 
     // check for 31 Days
-    if(month == 1 || month == 3 || month == 5 ||
+    if (month == 1 || month == 3 || month == 5 ||
         month == 7 || month == 8 || month == 10 ||
         month == 12) {
         return 31;
     } 
     // check for 30 Days
-    else if(month == 4 || month == 6 ||
+    else if (month == 4 || month == 6 ||
              month == 9 || month == 11) {
         return 30;
     }
@@ -331,8 +331,8 @@ static bool vt_datetime_is_valid_fmt(const char *const timebuf, const char *cons
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    for(size_t i = 0; i < len; i++) {
-        if(fmt[i] != 'T' && isalpha(fmt[i]) && !isdigit(timebuf[i])) {
+    for (size_t i = 0; i < len; i++) {
+        if (fmt[i] != 'T' && isalpha(fmt[i]) && !isdigit(timebuf[i])) {
             return false;
         }
     }

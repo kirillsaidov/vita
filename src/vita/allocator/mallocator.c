@@ -118,7 +118,7 @@ void vt_mallocator_free(vt_mallocator_t *const alloctr, void *ptr, const char *c
 
     // remove the pointer from the mallocator instance object list
     const size_t bytes = vt_mallocator_obj_list_remove(alloctr, ptr);
-    if(bytes > 0) {
+    if (bytes > 0) {
         // update stats
         alloctr->stats.count_frees++;
         alloctr->stats.count_bytes_freed += bytes;
@@ -181,7 +181,7 @@ static void vt_mallocator_obj_list_add(vt_mallocator_t *const alloctr, const str
     VT_DEBUG_ASSERT(obj.ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     
     // check if we have enough space
-    if(!vt_mallocator_obj_list_has_space(alloctr)) {
+    if (!vt_mallocator_obj_list_has_space(alloctr)) {
         vt_mallocator_obj_list_resize(alloctr, 2 * alloctr->obj_list_capacity);
     }
 
@@ -204,9 +204,9 @@ static size_t vt_mallocator_obj_list_remove(vt_mallocator_t *const alloctr, cons
     // remove only if the object list isn't empty
     size_t bytes_old = 0;
     const size_t obj_list_len = alloctr->obj_list_len;
-    if(obj_list_len > 0) {
+    if (obj_list_len > 0) {
         const int64_t idx = vt_mallocator_obj_list_find(alloctr, ptr);
-        if(idx < 0) {
+        if (idx < 0) {
             return bytes_old;
         }
 
@@ -214,7 +214,7 @@ static size_t vt_mallocator_obj_list_remove(vt_mallocator_t *const alloctr, cons
         bytes_old = alloctr->obj_list[idx].bytes;
 
         // remove only if it's not the last in the list
-        if(idx != (int64_t)(obj_list_len-1)) { 
+        if (idx != (int64_t)(obj_list_len-1)) { 
             alloctr->obj_list[idx] = alloctr->obj_list[obj_list_len-1];
         }
         alloctr->obj_list_len--;
@@ -264,8 +264,8 @@ static int64_t vt_mallocator_obj_list_find(const vt_mallocator_t *const alloctr,
 
     // find element
     const size_t len = alloctr->obj_list_len;
-    for(size_t i = 0; i < len; i++) {
-        if(alloctr->obj_list[i].ptr == ptr) {
+    for (size_t i = 0; i < len; i++) {
+        if (alloctr->obj_list[i].ptr == ptr) {
             return i;
         }
     }

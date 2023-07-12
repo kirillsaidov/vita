@@ -19,7 +19,7 @@ void vt_log_redirect_level_output(enum VitaLogLevel vt_log_level, const char *co
 }
 
 void vt_log_redirect_all_output(const char *const zfilename) {
-    for(size_t i = 0; i < vt_log_count; i++) {
+    for (size_t i = 0; i < vt_log_count; i++) {
         strncpy(vt_log_filenames[i], zfilename, PATH_MAX-1);
     }
 }
@@ -35,7 +35,7 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
     // check for invalid input
     VT_DEBUG_ASSERT(vt_log_level < vt_log_count, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    if(!expr) {
+    if (!expr) {
         // get time
         char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
         vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
@@ -46,13 +46,13 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
         {
             // if `NULL` log to `stderr`, otherwise to a file
             FILE *fp = (logger_filename[0] == '\0') ? stderr : fopen(logger_filename, "a");
-            if(fp == NULL) {
+            if (fp == NULL) {
                 VT_DEBUG_PRINTF("%s:%i: Failed to open a file <%s>!\n", file, line, logger_filename);
                 return;
             }
 
             // logging data
-            if(zexpr == NULL) {
+            if (zexpr == NULL) {
                 fprintf(fp, "%s %5s %s:%zu: ", tbuf, vt_log_get_level_str(vt_log_level), file, line);
             } else {
                 fprintf(fp, "%s %5s [%s] %s:%zu: ", tbuf, vt_log_get_level_str(vt_log_level), zexpr, file, line);
@@ -63,12 +63,12 @@ void vt_log(const char *const zfilename, enum VitaLogLevel vt_log_level, const b
             fprintf(fp, "\n");
 
             // close file
-            if(fp != stderr) { fclose(fp); }
+            if (fp != stderr) { fclose(fp); }
         }
         va_end(args);
 
         // if log level = fatal or assert, exit
-        if(vt_log_level == vt_log_fatal || vt_log_level == vt_log_assert) {
+        if (vt_log_level == vt_log_fatal || vt_log_level == vt_log_assert) {
             exit(EXIT_FAILURE);
         }
     }

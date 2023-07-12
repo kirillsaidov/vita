@@ -15,7 +15,7 @@ void vt_debug_assert(
     const char *const zfmt, 
     ...
 ) {
-    if(!expr) {
+    if (!expr) {
         // get time
         char tbuf[VT_DATETIME_BUFFER_SIZE] = {0};
         vt_datetime_get_now_as_text(tbuf, sizeof(tbuf) / sizeof(tbuf[0]));
@@ -23,10 +23,10 @@ void vt_debug_assert(
         // getting arguments
         va_list args; va_start(args, zfmt); 
         {
-            if(vt_debug_output_on) {
+            if (vt_debug_output_on) {
                 // create a file
                 FILE *fp = (vt_debug_output_filename == NULL) ? stderr : fopen(vt_debug_output_filename, "a");
-                if(fp == NULL) { fp = stderr; }
+                if (fp == NULL) { fp = stderr; }
 
                 // logging to fp
                 fprintf(fp, "%s %s [%s] %s:%s:%zu: ", tbuf, subject, zexpr, file, func, line);
@@ -34,13 +34,13 @@ void vt_debug_assert(
                 fprintf(fp, "\n");
 
                 // close the file, if needed
-                if(vt_debug_output_filename != NULL) { fclose(fp); }
+                if (vt_debug_output_filename != NULL) { fclose(fp); }
             }
         }
         va_end(args);
 
         // exit upon failure
-        if(quit_on_failure) { exit(EXIT_FAILURE); }
+        if (quit_on_failure) { exit(EXIT_FAILURE); }
     }
 }
 
@@ -55,17 +55,17 @@ void vt_debug_printf(const char *const subject, const char *const zfmt, ...) {
     // getting arguments
     va_list args; va_start(args, zfmt); 
     {
-        if(vt_debug_output_on) {
+        if (vt_debug_output_on) {
             // create a file
             FILE *fp = (vt_debug_output_filename == NULL) ? stderr : fopen(vt_debug_output_filename, "a");
-            if(fp == NULL) { fp = stderr; }
+            if (fp == NULL) { fp = stderr; }
 
             // logging to stderr
             fprintf(fp, "%s %s ", tbuf, subject);
             vfprintf(fp, zfmt, args);
 
             // close the file, if needed
-            if(vt_debug_output_filename != NULL) { fclose(fp); }
+            if (vt_debug_output_filename != NULL) { fclose(fp); }
         }
     }
     va_end(args);

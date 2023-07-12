@@ -24,7 +24,7 @@ vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const
     vt_str_t *s = vt_str_create_len(strlen(z), alloctr);
 
     // set z to str
-    if(vt_str_set(s, z) != VT_STATUS_OPERATION_SUCCESS) {
+    if (vt_str_set(s, z) != VT_STATUS_OPERATION_SUCCESS) {
         VT_DEBUG_PRINTF("Failed to copy \"%s\" to vt_str_t!", z);
         vt_str_destroy(s);
         return NULL;
@@ -67,7 +67,7 @@ void vt_str_destroy(vt_str_t *s) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free the vt_str_t string and vt_str_t struct
-    if(s->alloctr) {
+    if (s->alloctr) {
         VT_ALLOCATOR_FREE(s->alloctr, s->ptr);
     } else {
         VT_FREE(s->ptr);
@@ -152,7 +152,7 @@ void vt_str_shrink(vt_str_t *const s) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if length and capacity are the same, exit the function
-    if(s->len == s->capacity) {
+    if (s->len == s->capacity) {
         return;
     }
 
@@ -234,7 +234,7 @@ enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if it has enough space
-    if(s->capacity < n) {
+    if (s->capacity < n) {
         VT_DEBUG_PRINTF(
             "%s: Supplied string length is %zu, but vt_str_t length is %zu!\n", 
             vt_status_to_str(VT_STATUS_ERROR_OUT_OF_MEMORY), 
@@ -274,7 +274,7 @@ enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     // iterate over all arguments
     va_list args; 
     va_start(args, fmt); 
-    if(vt_str_vfmt(s, fmt, args) == NULL) {
+    if (vt_str_vfmt(s, fmt, args) == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_STATUS_OPERATION_FAILURE;
     }
@@ -291,7 +291,7 @@ void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if new memory needs to be allocated
-    if(vt_str_has_space(s) < n) {
+    if (vt_str_has_space(s) < n) {
         vt_str_reserve(s, (n - vt_str_has_space(s)));
     }
 
@@ -321,7 +321,7 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     // check if new memory needs to be allocated
     const size_t zLen = strlen(z);
     const size_t hasSpace = vt_str_has_space(s);
-    if(hasSpace < zLen) {
+    if (hasSpace < zLen) {
         vt_str_reserve(s, (zLen - hasSpace));
     }
 
@@ -352,7 +352,7 @@ void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     );
 
     // check if we need to remove all chars until the end
-    if(n > s->len - from) {
+    if (n > s->len - from) {
         n = s->len - from;
     }
 
@@ -374,7 +374,7 @@ enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
 
     // find a substring in strbuf; if substring wasn't found, return
     char* sub = strstr(s->ptr, z);
-    if(sub == NULL) {
+    if (sub == NULL) {
         return VT_STATUS_ERROR_ELEMENT_NOT_FOUND;
     }
 
@@ -410,7 +410,7 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     }
 
     // if not found, return
-    if(lastInstance == NULL) {
+    if (lastInstance == NULL) {
         return VT_STATUS_ERROR_ELEMENT_NOT_FOUND;
     }
 
@@ -455,9 +455,9 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
 
     // remove all specitified characters
     bool copy = true;
-    for(size_t i = 0; i < *sLen; i++) {
-        for(size_t j = 0; j < cLen; j++) {
-            if(start[i] == c[j]) {
+    for (size_t i = 0; i < *sLen; i++) {
+        for (size_t j = 0; j < cLen; j++) {
+            if (start[i] == c[j]) {
                 offset++;
 
                 // do not copy characters
@@ -467,7 +467,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
         }
         
         // copy data
-        if(copy) {
+        if (copy) {
             last_index = i - offset;
             sdup[last_index] = start[i];
         } else {
@@ -479,7 +479,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     *sLen -= offset;
 
     // update ptr data
-    if(s->alloctr) {
+    if (s->alloctr) {
         VT_ALLOCATOR_FREE(s->alloctr, start);
     } else {
         VT_FREE(start);
@@ -572,8 +572,8 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
 
     // strip leading whitespace and control symbols
     while(!stop) {
-        for(size_t i = 0; i < cLen; i++) {
-            if(*curr == c[i]) {
+        for (size_t i = 0; i < cLen; i++) {
+            if (*curr == c[i]) {
                 offset++;
                 curr = p + offset;
 
@@ -594,8 +594,8 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     stop = false;
     curr = p + (*len + offset - 1);
     while(!stop) {
-        for(size_t i = 0; i < cLen; i++) {
-            if(*curr == c[i]) {
+        for (size_t i = 0; i < cLen; i++) {
+            if (*curr == c[i]) {
                 (*len)--;
                 curr = p + (*len + offset - 1);
 
@@ -649,21 +649,21 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
     // check if s contains sep substring
     const size_t strInstances = vt_str_can_find(s, sep);
-    if(!strInstances) {
+    if (!strInstances) {
         return NULL;
     }
 
     // create a vec_t instance
     vt_plist_t *p = NULL;
-    if(ps == NULL) {
+    if (ps == NULL) {
         p = vt_plist_create(strInstances + 1, NULL);
-        if(p == NULL) {
+        if (p == NULL) {
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
             return NULL;
         }
     } else {
         p = ps;
-        if(vt_plist_has_space(p) < strInstances + 1) {
+        if (vt_plist_has_space(p) < strInstances + 1) {
             vt_plist_reserve(p, (strInstances + 1) - vt_plist_has_space(p));
         }
     }
@@ -681,7 +681,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
         // count copy length
         const size_t copyLen = strlen(head) - (current == NULL ? 0 : strlen(current));
-        if(copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
+        if (copyLen == 0) { // if head == current, move head by sepLen (if sep is in the begining)
             head += sepLen;
             continue;
         } else {
@@ -690,7 +690,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
 
             // set the value and push it to the list
             const enum VitaStatus ret = vt_str_set_n(tempStr, head, copyLen);
-            if(ret != VT_STATUS_OPERATION_SUCCESS) {
+            if (ret != VT_STATUS_OPERATION_SUCCESS) {
                 VT_DEBUG_PRINTF("%s\n", vt_status_to_str(ret));
                 vt_str_destroy(tempStr);
                 return p;
@@ -702,7 +702,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
         }
 
         // break from loop when no more sep is found or we are at the end of string
-        if(current == NULL || current[sepLen] == '\0') {
+        if (current == NULL || current[sepLen] == '\0') {
             break;
         }
     }
@@ -718,13 +718,13 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
 
     // find zl - left substring
     const char *const lsub = vt_str_find(z, zl);
-    if(lsub == NULL) {
+    if (lsub == NULL) {
         return NULL;
     }
 
     // find r - right substring
     const char *const rsub = vt_str_find(z, zr);
-    if(rsub == NULL) {
+    if (rsub == NULL) {
         return NULL;
     }
 
@@ -735,7 +735,7 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
     vt_str_clear(st);
 
     // check if lsub < rsub
-    if(lsub < rsub) {
+    if (lsub < rsub) {
         ptrdiff_t sub_len = rsub - lsub - strlen(zl);
         vt_str_resize(st, sub_len);
 
@@ -765,7 +765,7 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
 
     // continue appending
     const size_t pLen = vt_plist_len(p);
-    for(size_t i = 1; i < pLen; i++) {
+    for (size_t i = 1; i < pLen; i++) {
         vt_str_append(st, sep);
         vt_str_append(st, vt_plist_get(p, i));
     }
@@ -788,7 +788,7 @@ vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n
     va_list args;
     va_start(args, n);
     const char* z = NULL;
-    for(size_t i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
         // get next item
         z = va_arg(args, char*);
         
@@ -796,7 +796,7 @@ vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n
         vt_str_append(st, z);
 
         // do not append the separator at the very end
-        if(i < n-1) {
+        if (i < n-1) {
             vt_str_append(st, sep);
         }
     }
@@ -812,19 +812,19 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t sepLen = strlen(sep);
-    if(!vt_str_len(s) || !sepLen) {
+    if (!vt_str_len(s) || !sepLen) {
         return sr;
     }
 
     // check if s contains sep substring
     const char *const tempStr = strstr(s->ptr, sep);
-    if(tempStr == NULL) {
+    if (tempStr == NULL) {
         return sr;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
     const size_t copyLen = vt_str_len(s) - strlen(tempStr);
-    if(!copyLen) {
+    if (!copyLen) {
         return sr;
     }
 
@@ -835,7 +835,7 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
     vt_str_clear(spop);
 
     // if not enough space, reserve more
-    if(vt_str_len(spop) < copyLen) {
+    if (vt_str_len(spop) < copyLen) {
         vt_str_reserve(spop, copyLen - vt_str_len(spop));
     }
 
@@ -855,7 +855,7 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t sepLen = strlen(sep);
-    if(!vt_str_len(s) || !sepLen) {
+    if (!vt_str_len(s) || !sepLen) {
         return sr;
     }
 
@@ -867,13 +867,13 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     }
 
     // if not found, return
-    if(lastInstance == NULL) {
+    if (lastInstance == NULL) {
         return sr;
     }
 
     // if the copy length of the substring is zero, there is nothing to copy
     const size_t copyLen = strlen(lastInstance) - sepLen;
-    if(!copyLen) {
+    if (!copyLen) {
         return sr;
     }
 
@@ -884,7 +884,7 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     vt_str_clear(spop);
 
     // if not enough space, reserve more
-    if(vt_str_len(spop) < copyLen) {
+    if (vt_str_len(spop) < copyLen) {
         vt_str_reserve(spop, copyLen - vt_str_len(spop) + 1);
     }
 
@@ -903,7 +903,7 @@ bool vt_str_equals(const char *const z1, const char *const z2) {
     VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t z1Len = strlen(z1);
-    if(z1Len > strlen(z2)) {
+    if (z1Len > strlen(z2)) {
         return false;
     }
 
@@ -916,7 +916,7 @@ bool vt_str_starts_with(const char *const z, const char *const sub) {
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t subLen = strlen(sub);
-    if(subLen > strlen(z)) {
+    if (subLen > strlen(z)) {
         return false;
     }
 
@@ -930,7 +930,7 @@ bool vt_str_ends_with(const char *const z, const char *const sub) {
 
     const size_t zLen = strlen(z);
     const size_t subLen = strlen(sub);
-    if(subLen > zLen) {
+    if (subLen > zLen) {
         return false;
     }
 
@@ -944,7 +944,7 @@ void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
     VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t len = vt_str_len(s);
-    for(size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; i++) {
         func(&((char*)s->ptr)[i], i);
     }
 }
@@ -956,8 +956,8 @@ bool vt_str_is_numeric(const char *const z, const size_t max_len) {
 
     // check if string is a number
     const size_t zLen = strnlen(z, max_len);
-    for(size_t i = 0; i < zLen; i++) {
-        if(!isdigit(z[i]) && z[i] != '.') {
+    for (size_t i = 0; i < zLen; i++) {
+        if (!isdigit(z[i]) && z[i] != '.') {
             return false;
         }
     }
@@ -973,7 +973,7 @@ void vt_str_capitalize(vt_str_t *const s) {
     // capitalize
     char *const z = s->ptr;
     const size_t zLen = vt_str_len(s);
-    for(size_t i = 0; i < zLen; i++) {
+    for (size_t i = 0; i < zLen; i++) {
         z[i] = toupper(z[i]);
     }
 }
@@ -984,7 +984,7 @@ int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     const char *const ztmp = strchr(s->ptr, z);
-    if(ztmp == NULL) {
+    if (ztmp == NULL) {
         return -1;
     }
 
@@ -1035,14 +1035,14 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
     {
         // check if new memory needs to be allocated
         const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
-        if(len < 0) {
+        if (len < 0) {
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
             return NULL;
         }
 
         // check for space
         const size_t hasSpace = vt_str_has_space(s);
-        if(hasSpace < (size_t)len) {
+        if (hasSpace < (size_t)len) {
             vt_str_reserve(s, (len - hasSpace));
         }
 

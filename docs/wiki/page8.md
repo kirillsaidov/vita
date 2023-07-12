@@ -23,7 +23,7 @@ void download_file(const char *const url) {
 In case you need only to output the debug information, then you can use `VT_DEBUG_PRINTF`:
 ```C
 Result parse_html(const char *const html) {
-    if(!validate_html(html)) {
+    if (!validate_html(html)) {
         VT_DEBUG_PRINTF("Invalid html source! Attempting to fix...\n"); // acts like printf
         fix_html(html);
     }

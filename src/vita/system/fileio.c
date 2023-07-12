@@ -11,14 +11,14 @@ vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType 
     #else
         fopen(filename, "r");
     #endif
-    if(fp == NULL) {
+    if (fp == NULL) {
         VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
         return NULL;
     }
 
     // get file size
     const int64_t fsize = vt_path_get_file_size(filename);
-    if(fsize < 0) {
+    if (fsize < 0) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
         fclose(fp);
@@ -27,7 +27,7 @@ vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType 
 
     // create data buffer
     vt_str_t *sbuffer = vt_str_create_len(fsize, alloctr);
-    if(sbuffer == NULL) {
+    if (sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
 
         fclose(fp);
@@ -36,7 +36,7 @@ vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType 
 
     // copy file contents into the buffer
     const size_t bytes_read = fread(sbuffer->ptr, sbuffer->elsize, sbuffer->len, fp);
-    if(bytes_read != sbuffer->len) {
+    if (bytes_read != sbuffer->len) {
         VT_DEBUG_PRINTF(
             "%s: Failed to read file data! Inconsistent read (%zu) != file size (%zu) bytes\n", 
             vt_status_to_str(VT_STATUS_OPERATION_FAILURE),
@@ -59,14 +59,14 @@ vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType
 
     // open file
     FILE *fp = fopen(filename, "rb");
-    if(fp == NULL) {
+    if (fp == NULL) {
         VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
         return NULL;
     }
 
     // get file size
     const int64_t fsize = vt_path_get_file_size(filename);
-    if(fsize < 0) {
+    if (fsize < 0) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
         fclose(fp);
@@ -75,7 +75,7 @@ vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType
 
     // create data buffer
     vt_str_t *sbuffer = vt_str_create_len(fsize, alloctr);
-    if(sbuffer == NULL) {
+    if (sbuffer == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
 
         fclose(fp);
@@ -84,7 +84,7 @@ vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType
 
     // copy file contents into the buffer
     const size_t bytes_read = fread(sbuffer->ptr, sbuffer->elsize, sbuffer->len, fp);
-    if(bytes_read != sbuffer->len) {
+    if (bytes_read != sbuffer->len) {
         VT_DEBUG_PRINTF(
             "%s: Failed to read file data! Inconsistent read (%zu) != file size (%zu) bytes\n", 
             vt_status_to_str(VT_STATUS_OPERATION_FAILURE),
@@ -156,7 +156,7 @@ bool vt_file_writef(const char *const filename, const char *const fmt, ...) {
 
     // open file
     FILE *fp = fopen(filename, "w");
-    if(fp == NULL) {
+    if (fp == NULL) {
         VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
         return false;
     }
@@ -180,7 +180,7 @@ bool vt_file_writefln(const char *const filename, const char *const fmt, ...) {
 
     // open file
     FILE *fp = fopen(filename, "w");
-    if(fp == NULL) {
+    if (fp == NULL) {
         VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
         return false;
     }
@@ -207,7 +207,7 @@ bool vt_file_writefc(const char *const filename, const bool use_binary_mode, con
 
     // open file
     FILE *fp = fopen(filename, (use_binary_mode ? (use_append_mode ? "ab" : "wb") : (use_append_mode ? "a" : "w")));
-    if(fp == NULL) {
+    if (fp == NULL) {
         VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
         return false;
     }
@@ -219,7 +219,7 @@ bool vt_file_writefc(const char *const filename, const bool use_binary_mode, con
     va_end(args);
 
     // add a new line
-    if(add_ln) {
+    if (add_ln) {
         fprintf(fp, "\n");
     }
     

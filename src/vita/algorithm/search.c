@@ -1,7 +1,7 @@
 #include "vita/algorithm/search.h"
 
 // int64_t search_linear(const char *const arr, const size_t len, const size_t elsize, const void *val, int8_t (*compare)(const void *a, const void *b)) {
-//     if(arr == NULL || val == NULL) {
+//     if (arr == NULL || val == NULL) {
 //         return -1;
 //     }
 
@@ -10,8 +10,8 @@
 //     const char *end = arr + len * elsize;
 
 //     // if the element that is sought for is found, break from the loop
-//     for(char *current = arr; current != end; current += elsize, index++) {
-//         if(compare == NULL ? (memcmp(current, val, elsize) == 0) : (compare(current, val))) {
+//     for (char *current = arr; current != end; current += elsize, index++) {
+//         if (compare == NULL ? (memcmp(current, val, elsize) == 0) : (compare(current, val))) {
 //             return index;
 //         }
 //     }
@@ -35,9 +35,9 @@
 //             memcmp((arr + index * elsize), val, elsize) : 
 //             compare((arr + index * elsize), val)
 //         );
-//         if(found == 0) {
+//         if (found == 0) {
 //             return index;
-//         } else if(found < 0) { 	// if val is on the right hand side of the array, ignore the left half
+//         } else if (found < 0) { 	// if val is on the right hand side of the array, ignore the left half
 //             start = index + 1;
 //         } else { 				// if val is on the left hand side of the array, ignore the right half
 //             end = index - 1;

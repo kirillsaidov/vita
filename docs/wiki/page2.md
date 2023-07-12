@@ -126,7 +126,7 @@ const int32_t myVal = vt_vec_geti32(vec, 0);
 // remove data
 const int32_t index = vt_vec_can_find(vec, &myVal);
 const int32_t index = vt_vec_can_findi32(vec, 33);
-if(index >= 0) { // index is -1 if element not found
+if (index >= 0) { // index is -1 if element not found
     vt_vec_remove(vec, index, VT_REMOVE_STRATEGY_FAST);
     /**
      * VitaRemoveStrategy => rs

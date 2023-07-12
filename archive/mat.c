@@ -2,7 +2,7 @@
 
 mat_t *mat_new(void) {
     mat_t *m = DEBUG_CALLOC(sizeof(mat_t));
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "Failed to allocate mat_t instance!");
         return NULL;
     }
@@ -11,12 +11,12 @@ mat_t *mat_new(void) {
 }
 
 enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, const size_t elsize) {
-    if(m == NULL) {
+    if (m == NULL) {
         VT_DEBUG_PRINTF("%s", "mat_t instance was not allocated!");
         return ve_error_is_null;
     }
 
-    if(!rows || !cols) {
+    if (!rows || !cols) {
         VT_DEBUG_PRINTF("%s", "invalid mat_t size supplied (rows, cols) = (%zu, %zu)!", rows, cols);
         return ve_error_invalid_size;
     }
@@ -30,7 +30,7 @@ enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, c
     };
 
     // error checking
-    if(m->ptr == NULL) {
+    if (m->ptr == NULL) {
         VT_DEBUG_PRINTF("%s", "Unable to construct mat_t instance!");
         return ve_error_allocation;
     }
@@ -39,14 +39,14 @@ enum VitaStatus mat_ctor(mat_t *const m, const size_t rows, const size_t cols, c
 }
 
 mat_t *mat_dup(const mat_t *const m) {
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return NULL;
     }
 
     // allocate a new mat_t instance
     mat_t *mdup = mat_from(m->ptr, m->rows, m->cols, m->elsize);
-    if(mdup == NULL) {
+    if (mdup == NULL) {
         VT_DEBUG_PRINTF("%s", "Failed to create a mat_t copy!");
         return NULL;
     }
@@ -56,7 +56,7 @@ mat_t *mat_dup(const mat_t *const m) {
 
 void mat_dtor(mat_t *const m) {
     // if NULL, exit
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return;
     }
@@ -69,7 +69,7 @@ void mat_dtor(mat_t *const m) {
 }
 
 void mat_free(mat_t *m) {
-    if(m == NULL) {
+    if (m == NULL) {
         return;
     }
 
@@ -78,13 +78,13 @@ void mat_free(mat_t *m) {
 
 mat_t *mat_create(const size_t rows, const size_t cols, const size_t elsize) {
     mat_t *m = mat_new(); // allocate mem for mat_t
-    if(m == NULL) {
+    if (m == NULL) {
         VT_DEBUG_PRINTF("%s", "Unable to allocate memory for mat_t instance!");
         return NULL;
     }
 
     // construct mat_t
-    if(mat_ctor(m, rows, cols, elsize) != VT_STATUS_OPERATION_SUCCESS) {
+    if (mat_ctor(m, rows, cols, elsize) != VT_STATUS_OPERATION_SUCCESS) {
         DEBUG_ASSERT(0, "Failed to construct mat_t instance!");
 
         mat_free(m);
@@ -101,13 +101,13 @@ void mat_destroy(mat_t *m) {
 
 mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, const size_t elsize) {
     mat_t *m = mat_create(rows, cols, elsize);
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "Failed to create mat_t instance!");
         return NULL;
     }
 
     // if nothing to copy return an empty mat_t instance
-    if(ptr == NULL) {
+    if (ptr == NULL) {
         return m;
     }
 
@@ -175,7 +175,7 @@ size_t mat_size(const mat_t *const m) {
 }
 
 enum VitaStatus mat_clear(mat_t *const m) {
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return ve_error_is_null;
     }
@@ -187,23 +187,23 @@ enum VitaStatus mat_clear(mat_t *const m) {
 }
 
 enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols) {
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return ve_error_is_null;
     }
 
-    if(!rows || !cols) {
+    if (!rows || !cols) {
         DEBUG_ASSERT(rows && cols, "invalid mat_t size supplied (rows, cols) = (%zu, %zu). Must be > 0!", rows, cols);
         return ve_error_invalid_size;
     }
 
-    if(m->rows == rows && m->cols == cols) {
+    if (m->rows == rows && m->cols == cols) {
         return VT_STATUS_OPERATION_SUCCESS;
     }
 
     // allocate memory for rows*cols number of elements
     void *els = DEBUG_REALLOC(m->ptr, rows * cols * m->elsize);
-    if(els == NULL) {
+    if (els == NULL) {
         DEBUG_ASSERT(els != NULL, "Unable to reallocate memory for mat_t instance before resizing!");
         return ve_error_allocation;
     }
@@ -217,13 +217,13 @@ enum VitaStatus mat_resize(mat_t *const m, const size_t rows, const size_t cols)
 }
 
 enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, const size_t atCol) {
-    if(m == NULL || val == NULL) {
+    if (m == NULL || val == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         DEBUG_ASSERT(val != NULL, "value supplied is NULL!");
         return ve_error_is_null;
     }
 
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
+    if (!(atRow < m->rows) || !(atCol < m->cols)) {
         DEBUG_ASSERT((atRow < m->rows) && (atCol < m->cols), "Accessing elements out of mat_t bounds at (%zu, %zu), but size is (%zu, %zu)!", m->rows, m->cols, atRow, atCol);
         return ve_error_out_of_bounds_access;
     }
@@ -235,7 +235,7 @@ enum VitaStatus mat_set(mat_t *const m, const void *val, const size_t atRow, con
 }
 
 enum VitaStatus mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -244,7 +244,7 @@ enum VitaStatus mat_seti8(mat_t *const m, const int8_t val, const size_t atRow, 
 }
 
 enum VitaStatus mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -253,7 +253,7 @@ enum VitaStatus mat_setu8(mat_t *const m, const uint8_t val, const size_t atRow,
 }
 
 enum VitaStatus mat_seti16(mat_t *const m, const int16_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -262,7 +262,7 @@ enum VitaStatus mat_seti16(mat_t *const m, const int16_t val, const size_t atRow
 }
 
 enum VitaStatus mat_setu16(mat_t *const m, const uint16_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -271,7 +271,7 @@ enum VitaStatus mat_setu16(mat_t *const m, const uint16_t val, const size_t atRo
 }
 
 enum VitaStatus mat_seti32(mat_t *const m, const int32_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -280,7 +280,7 @@ enum VitaStatus mat_seti32(mat_t *const m, const int32_t val, const size_t atRow
 }
 
 enum VitaStatus mat_setu32(mat_t *const m, const uint32_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -289,7 +289,7 @@ enum VitaStatus mat_setu32(mat_t *const m, const uint32_t val, const size_t atRo
 }
 
 enum VitaStatus mat_seti64(mat_t *const m, const int64_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -298,7 +298,7 @@ enum VitaStatus mat_seti64(mat_t *const m, const int64_t val, const size_t atRow
 }
 
 enum VitaStatus mat_setu64(mat_t *const m, const uint64_t val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -307,7 +307,7 @@ enum VitaStatus mat_setu64(mat_t *const m, const uint64_t val, const size_t atRo
 }
 
 enum VitaStatus mat_setf(mat_t *const m, const float val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -316,7 +316,7 @@ enum VitaStatus mat_setf(mat_t *const m, const float val, const size_t atRow, co
 }
 
 enum VitaStatus mat_setd(mat_t *const m, const double val, const size_t atRow, const size_t atCol) {
-    if(m->elsize != sizeof(val)) {
+    if (m->elsize != sizeof(val)) {
         DEBUG_ASSERT(m->elsize == sizeof(val), "Incompatible data type supplied!");
         return ve_error_incompatible_datatype;
     }
@@ -325,12 +325,12 @@ enum VitaStatus mat_setd(mat_t *const m, const double val, const size_t atRow, c
 }
 
 void *mat_get(const mat_t *const m, const size_t atRow, const size_t atCol) {
-    if(m == NULL) {
+    if (m == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         return NULL;
     }
 
-    if(!(atRow < m->rows) || !(atCol < m->cols)) {
+    if (!(atRow < m->rows) || !(atCol < m->cols)) {
         DEBUG_ASSERT((atRow < m->rows) && (atCol < m->cols), "Accessing elements out of mat_t bounds at (%zu, %zu), but size is (%zu, %zu)!", m->rows, m->cols, atRow, atCol);
         return NULL;
     }
@@ -379,15 +379,15 @@ double mat_getd(const mat_t *const m, const size_t atRow, const size_t atCol) {
 }
 
 void mat_apply(const mat_t *const m, void (*func)(void*, size_t, size_t)) {
-    if(m == NULL || func == NULL) {
+    if (m == NULL || func == NULL) {
         DEBUG_ASSERT(m != NULL, "mat_t instance was not initialized!");
         DEBUG_ASSERT(func != NULL, "func supplied is NULL!");
         return;
     }
 
     // call func upon each element
-    for(size_t i = 0; i < m->rows; i++) {
-        for(size_t j = 0; j < m->cols; j++) {
+    for (size_t i = 0; i < m->rows; i++) {
+        for (size_t j = 0; j < m->cols; j++) {
             func(mat_get(m, i, j), i, j);
         }
     }
