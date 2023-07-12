@@ -970,7 +970,7 @@ void vt_str_capitalize(vt_str_t *const s) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    // check if string is a number
+    // capitalize
     char *const z = s->ptr;
     const size_t zLen = vt_str_len(s);
     for(size_t i = 0; i < zLen; i++) {
