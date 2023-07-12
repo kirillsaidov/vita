@@ -13,7 +13,7 @@ A simple and intuitive standard library for your modern C project! Lightweight a
 * datetime utility
 
 ### Arguments parser showcase
-```C
+```c
 // argopt_showcase.c
 #include "vita/vita.h"
 
