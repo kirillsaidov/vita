@@ -8,9 +8,9 @@ This chapter explains how to get compiler information. For more details refer to
 
 ### Check for available compiler
 ```C
-if(VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
+if (VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
     // ...
-} else if(VT_COMPILER_ID == VT_COMPILER_ID_GCC) {
+} else if (VT_COMPILER_ID == VT_COMPILER_ID_GCC) {
     // ...
 } else {
     // ...

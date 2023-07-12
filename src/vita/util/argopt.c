@@ -11,7 +11,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     VT_ENFORCE(argc >= 1, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // validate artopt
-    if(!vt_argopt_validate(optc, optv)) {
+    if (!vt_argopt_validate(optc, optv)) {
         return VT_ARGOPT_PARSE_ERROR;
     }
 
@@ -19,7 +19,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     int8_t parse_status = VT_ARGOPT_PARSE_SUCCESS;
 
     // if help wanted
-    if(argc == 2 && (argv[1][0] == '?' || vt_str_equals(argv[1], "-h") || vt_str_equals(argv[1], "--help"))) {
+    if (argc == 2 && (argv[1][0] == '?' || vt_str_equals(argv[1], "-h") || vt_str_equals(argv[1], "--help"))) {
         return VT_ARGOPT_PARSE_HELP_WANTED;
     }
 
@@ -27,7 +27,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     vt_str_t *s_arg_value = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, alloctr);
     vt_str_t *s_opt_split = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, alloctr);
     const char *unrecognized_option = NULL;
-    for(size_t i = 1; i < argc; i++) {
+    for (size_t i = 1; i < argc; i++) {
         // save argv[i] as unrecognized_option
         unrecognized_option = argv[i];
 
@@ -36,7 +36,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
         s_opt_split = vt_str_pop_get_first(s_opt_split, s_arg_value, "=");
 
         // find the corresponding option in optv
-        for(size_t j = 0; j < optc; j++) {
+        for (size_t j = 0; j < optc; j++) {
             vt_argopt_t *const opt = &optv[j];
 
             /* Check for 2 cases:
@@ -45,9 +45,9 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
             */
 
             // Case 1
-            if(vt_str_len(s_opt_split)) {
+            if (vt_str_len(s_opt_split)) {
                 // check if option is known
-                if(vt_str_equals(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals(vt_str_z(s_opt_split), opt->optionShort)) {
+                if (vt_str_equals(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals(vt_str_z(s_opt_split), opt->optionShort)) {
                     vt_argopt_assign_value(opt, vt_str_z(s_arg_value), alloctr);
 
                     // reset to NULL, since it was recognized
@@ -56,8 +56,8 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
                 }
             } else { // Case 2:
                 // check if option is known
-                if(vt_str_equals(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals(vt_str_z(s_arg_value), opt->optionShort)) {
-                    if(i + 1 < argc && argv[i+1][0] != '-') {
+                if (vt_str_equals(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals(vt_str_z(s_arg_value), opt->optionShort)) {
+                    if (i + 1 < argc && argv[i+1][0] != '-') {
                         vt_argopt_assign_value(opt, argv[++i], alloctr);
                     } else {
                         vt_argopt_assign_value(opt, "1", alloctr); // if it's a boolean | '--verbose'
@@ -71,7 +71,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
         }
 
         // if an option wasn't unrecognized, return
-        if(unrecognized_option != NULL) {
+        if (unrecognized_option != NULL) {
             fprintf(stdout, "Unrecognized option: %s!\n", unrecognized_option);
             parse_status = VT_ARGOPT_PARSE_ERROR;
             break;
@@ -97,24 +97,24 @@ void vt_argopt_print_help(const char *header, const char *footer, const size_t o
     // calculate optionLong and optionShort padding
     int32_t olPadding = 6; // strlen("--help")
     int32_t osPadding = 2; // strlen("-h")
-    for(size_t i = 0; i < optc; i++) {
+    for (size_t i = 0; i < optc; i++) {
         olPadding = vt_cmp_maxi32((int32_t)strlen(optv[i].optionLong), olPadding);
         osPadding = vt_cmp_maxi32((int32_t)strlen(optv[i].optionShort), osPadding);
     }
 
     // print header
-    if(header != NULL) {
+    if (header != NULL) {
         fprintf(stdout, "%s\n", header);
     }
 
     // print help (usage) manual
-    for(size_t i = 0; i < optc; i++) {
+    for (size_t i = 0; i < optc; i++) {
         fprintf(stdout, "%*s %*s %s\n", osPadding, optv[i].optionShort, olPadding, optv[i].optionLong, optv[i].optionDesc);
     }
     fprintf(stdout, "%*s %*s %s\n", osPadding, "-h", olPadding, "--help", "This help information.");
 
     // print footer
-    if(footer != NULL) {
+    if (footer != NULL) {
         fprintf(stdout, "%s\n", footer);
     }
 }
@@ -127,18 +127,18 @@ static bool vt_argopt_validate(const size_t optc, const vt_argopt_t *const optv)
         const vt_argopt_t *opt = &optv[i];
 
         // validate
-        if(opt->optionLong == NULL)  { fprintf(stderr, "optionLong cannot be NULL!\n"); return false; }
-        if(opt->optionShort == NULL) { fprintf(stderr, "optionShort cannot be NULL!\n"); return false; }
-        if(opt->optionValue == NULL) { fprintf(stderr, "optionValue cannot be NULL!\n"); return false; }
-        if(strnlen(opt->optionShort, 4) > 3) { fprintf(stderr, "optionShort=<%s> cannot be longer than 3 characters!\n", opt->optionShort); return false; }
-        if(opt->optionType >= VT_TYPE_COUNT) { fprintf(stderr, "optionType specified is invalid!\n"); return false; }
+        if (opt->optionLong == NULL)  { fprintf(stderr, "optionLong cannot be NULL!\n"); return false; }
+        if (opt->optionShort == NULL) { fprintf(stderr, "optionShort cannot be NULL!\n"); return false; }
+        if (opt->optionValue == NULL) { fprintf(stderr, "optionValue cannot be NULL!\n"); return false; }
+        if (strnlen(opt->optionShort, 4) > 3) { fprintf(stderr, "optionShort=<%s> cannot be longer than 3 characters!\n", opt->optionShort); return false; }
+        if (opt->optionType >= VT_TYPE_COUNT) { fprintf(stderr, "optionType specified is invalid!\n"); return false; }
     }
     
     return true;
 }
 
 static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const value, struct VitaBaseAllocatorType *const alloctr) {
-    if(opt == NULL || value == NULL) {
+    if (opt == NULL || value == NULL) {
         return;
     }
 
@@ -195,7 +195,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                 vt_str_t **svalue = (vt_str_t**)opt->optionValue;
 
                 // check if we need to allocate
-                if(*svalue == NULL) {
+                if (*svalue == NULL) {
                     *svalue = vt_str_create(value, alloctr);
                 } else {
                     vt_str_clear(*svalue);
@@ -208,16 +208,16 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
                 char **zvalue = (char**)opt->optionValue;
 
                 // check if we need to allocate
-                if(*zvalue == NULL) {
+                if (*zvalue == NULL) {
                     *zvalue = strdup(value);
                 } else {
                     const size_t len = strlen(value);
                     const size_t zLen = strlen(*zvalue);
 
                     // check we need to reallocate
-                    if(len > zLen) {
+                    if (len > zLen) {
                         char *ztmp = realloc(*zvalue, len - zLen);
-                        if(ztmp == NULL) {
+                        if (ztmp == NULL) {
                             VT_DEBUG_PRINTF("%s: Failed to reallocate vt_str_z to assign a new value!\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
                             return;
                         }

@@ -139,11 +139,11 @@ Always use curly braces (explicit scope `{...}` is better)
 
 ```C
 // don't:
-if(condition)
+if (condition)
     action;
 
 // do:
-if(condition) {
+if (condition) {
     action;
 }
 ```

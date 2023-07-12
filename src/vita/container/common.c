@@ -1,7 +1,7 @@
 #include "vita/container/common.h"
 
 struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloctr) {
-    if(alloctr == NULL) {
+    if (alloctr == NULL) {
         return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
     }
 
@@ -17,7 +17,7 @@ void vt_array_free(struct VitaBaseArrayType *vbat) {
     VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // free the VitaBaseArrayType
-    if(vbat->alloctr) {
+    if (vbat->alloctr) {
         VT_ALLOCATOR_FREE(vbat->alloctr, vbat);
     } else {
         VT_FREE(vbat);
@@ -80,7 +80,7 @@ void *vt_array_slide_front(struct VitaBaseArrayType *const vbat) {
     VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check bounds
-    if(vbat->slider_idx < vbat->len) {
+    if (vbat->slider_idx < vbat->len) {
         vbat->slider_idx++;
         return (char*)vbat->ptr + (vbat->slider_idx - 1) * vbat->elsize;
     }
@@ -97,7 +97,7 @@ void *vt_array_slide_back(struct VitaBaseArrayType *const vbat) {
     VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check bounds
-    if(vbat->slider_idx < vbat->len) {
+    if (vbat->slider_idx < vbat->len) {
         vbat->slider_idx++;
         return (char*)vbat->ptr + (vbat->len - vbat->slider_idx - 2) * vbat->elsize;
     }

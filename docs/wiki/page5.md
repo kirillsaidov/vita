@@ -36,7 +36,7 @@ The next step is to parse command line options and check the return value return
 ```c
     // parse args and opts
     const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv);
-    if(parse_status < 0) { // or (parse_status == ARGOPT_PARSE_ERROR)
+    if (parse_status < 0) { // or (parse_status == ARGOPT_PARSE_ERROR)
         printf("See 'argopt -h' for more info!\n");
         goto cleanup;
     }
@@ -46,7 +46,7 @@ The next step is to parse command line options and check the return value return
 Finally, we can print the help manual in case it is needed:
 ```c
     // display help manual
-    if(parse_status == ARGOPT_PARSE_HELP_WANTED) {
+    if (parse_status == ARGOPT_PARSE_HELP_WANTED) {
         vt_argopt_print_help(
             "argopt v0.3.0 -- Testing argopt parser",                   // header
             "Example: argopt --link my_youtube_link -q 1080 --verbose", // footer
@@ -59,7 +59,7 @@ Finally, we can print the help manual in case it is needed:
 Now you can do your thing:
 ```c
     const bool success = download_youtube_video(opt_youtube_link, opt_video_quality, opt_verbose);
-    if(!success) {
+    if (!success) {
         // error handling
         // ...
     }

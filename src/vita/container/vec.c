@@ -24,7 +24,7 @@ void vt_vec_destroy(vt_vec_t *v) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free vt_vec_t contents
-    if(v->alloctr) {
+    if (v->alloctr) {
         VT_ALLOCATOR_FREE(v->alloctr, v->ptr);
     } else {
         VT_FREE(v->ptr);
@@ -74,7 +74,7 @@ void vt_vec_shrink(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if length and capacity are the same, exit the function
-    if(v->len == v->capacity) {
+    if (v->len == v->capacity) {
         return;
     }
 
@@ -117,7 +117,7 @@ void vt_vec_resize(vt_vec_t *const v, const size_t n) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    if(n == v->capacity) {
+    if (n == v->capacity) {
         v->len = v->capacity;
         return;
     }
@@ -138,7 +138,7 @@ void vt_vec_push(vt_vec_t *const v, const void *const val) {
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if new memory needs to be allocated
-    if(!vt_vec_has_space(v)) {
+    if (!vt_vec_has_space(v)) {
         vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
@@ -169,7 +169,7 @@ void vt_vec_pop(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
-    if(v->len > 0) {
+    if (v->len > 0) {
         v->len--;
     }
 }
@@ -180,7 +180,7 @@ void *vt_vec_pop_get(vt_vec_t *const v) {
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
-    if(v->len > 0) {
+    if (v->len > 0) {
         return ((char*)(v->ptr) + --v->len * v->elsize);
     }
 
@@ -284,7 +284,7 @@ void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
     );
 
     // check if new memory needs to be allocated
-    if(!vt_vec_has_space(v)) {
+    if (!vt_vec_has_space(v)) {
         vt_vec_reserve(v, v->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
@@ -329,7 +329,7 @@ void vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStra
     );
 
     // check remove strategy
-    if(rs == VT_REMOVE_STRATEGY_STABLE) {
+    if (rs == VT_REMOVE_STRATEGY_STABLE) {
         memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at) * v->elsize);
     } else {
         vt_gswap((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (v->len - 1) * v->elsize, v->elsize);
@@ -346,8 +346,8 @@ int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     size_t i = 0;
-    for(char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
-        if(memcmp(iter, val, v->elsize) == 0) {
+    for (char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
+        if (memcmp(iter, val, v->elsize) == 0) {
             return i;
         }
     }
@@ -404,7 +404,7 @@ void vt_vec_apply(const vt_vec_t *const v, void (*func)(void*, size_t)) {
     VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     size_t i = 0;
-    for(char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
+    for (char *iter = v->ptr; iter != (char*)(v->ptr) + v->len * v->elsize; iter += v->elsize, i++) {
         func(iter, i);
     }
 }

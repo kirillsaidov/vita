@@ -44,7 +44,7 @@ vt_str_destroy(selfpath);
 // --- Example ---
 // create path
 bool success = vt_path_mkdir(mypath);
-if(!success) {
+if (!success) {
     // handle error
     // ...
 }
@@ -71,7 +71,7 @@ vt_plist_apply(pdir, your_func);
 
 // or this
 const size_t len = vt_plist_len(pdir);
-for(size_t i = 0; i < len; i++) {
+for (size_t i = 0; i < len; i++) {
     const char* zpath = vt_plist_get(pdir, i);
 
     // do something with "path"
@@ -92,7 +92,7 @@ assert(vt_path_is_dir(zpath));
 assert(!vt_path_is_file(zpath));
 
 const int64_t file_size = vt_path_get_file_size("myfile.txt");
-if(file_size < 0) {
+if (file_size < 0) {
     // error ...
 }
 

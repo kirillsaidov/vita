@@ -23,7 +23,7 @@ void vt_plist_destroy(vt_plist_t *p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free vt_plist_t contents
-    if(p->alloctr) {
+    if (p->alloctr) {
         VT_ALLOCATOR_FREE(p->alloctr, p->ptr2);
     } else {
         VT_FREE(p->ptr2);
@@ -88,7 +88,7 @@ void vt_plist_shrink(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if length and capacity are the same, exit the function
-    if(p->len == p->capacity) {
+    if (p->len == p->capacity) {
         return;
     }
 
@@ -108,7 +108,7 @@ void vt_plist_resize(vt_plist_t *const p, const size_t n) {
     VT_DEBUG_ASSERT(p->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    if(n == p->capacity) {
+    if (n == p->capacity) {
         p->len = p->capacity;
         return;
     }
@@ -136,7 +136,7 @@ void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at
     );
 
     // check if new memory needs to be allocated
-    if(!vt_plist_has_space(p)) {
+    if (!vt_plist_has_space(p)) {
         vt_plist_reserve(p, p->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
@@ -198,7 +198,7 @@ void vt_plist_push(vt_plist_t *const p, const void *ptr) {
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     
     // check if new memory needs to be allocated
-    if(!vt_plist_has_space(p)) {
+    if (!vt_plist_has_space(p)) {
         vt_plist_reserve(p, p->capacity * VT_ARRAY_DEFAULT_GROWTH_RATE);
     }
 
@@ -212,7 +212,7 @@ void vt_plist_pop(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
-    if(p->len > 0) {
+    if (p->len > 0) {
         p->len--;
     }
 }
@@ -223,7 +223,7 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // pop the last element
-    if(p->len > 0) {
+    if (p->len > 0) {
         return p->ptr2[--p->len];
     }
 
@@ -244,7 +244,7 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
     );
 
     // check remove strategy
-    if(rs == VT_REMOVE_STRATEGY_STABLE) {
+    if (rs == VT_REMOVE_STRATEGY_STABLE) {
         memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         vt_gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
@@ -262,7 +262,7 @@ int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
 
     size_t i = 0;
     for (char *iter = (char*)p->ptr2; iter != (char*)(p->ptr2) + p->len * p->elsize; iter += p->elsize, i++) {
-        if(p->ptr2[i] == (char*)ptr) {
+        if (p->ptr2[i] == (char*)ptr) {
             return i;
         }
     }
@@ -276,7 +276,7 @@ void *vt_plist_slide_front(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check bounds
-    if(p->slider_idx < p->len) {
+    if (p->slider_idx < p->len) {
         p->slider_idx++;
         return p->ptr2[p->slider_idx - 1];
     }
@@ -293,7 +293,7 @@ void *vt_plist_slide_back(vt_plist_t *const p) {
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check bounds
-    if(p->slider_idx < p->len) {
+    if (p->slider_idx < p->len) {
         p->slider_idx++;
         return p->ptr2[p->len - p->slider_idx - 2];
     }
@@ -320,7 +320,7 @@ void vt_plist_apply(const vt_plist_t *const p, void (*func)(void*, size_t)) {
 
     // iterate
     const size_t len = vt_plist_len(p);
-    for(size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; i++) {
         func(((char**)p->ptr2)[i], i);
     }
 }

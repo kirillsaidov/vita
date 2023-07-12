@@ -14,7 +14,7 @@ void *vt_malloc(const size_t bytes, const char *const file, const char *const fu
 
     // allocate and error checking
     void *ptr = malloc(bytes);
-    if(ptr == NULL) {
+    if (ptr == NULL) {
         fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
@@ -27,7 +27,7 @@ void *vt_calloc(const size_t bytes, const char *const file, const char *const fu
 
     // allocate and error checking
     void *ptr = calloc(1, bytes);
-    if(ptr == NULL) {
+    if (ptr == NULL) {
         fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY ALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
@@ -40,7 +40,7 @@ void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const ch
 
     // allocate and error checking
     void *ptr_new = realloc(ptr, bytes);
-    if(ptr_new == NULL) {
+    if (ptr_new == NULL) {
         fprintf(stderr, "%s %s:%s:%zu: %s\n", "MEMORY REALLOCATION FAILURE", file, func, line, "Aborting...");
         exit(EXIT_FAILURE);
     }
@@ -49,7 +49,7 @@ void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const ch
 }
 
 void vt_free(void *ptr) {
-    if(ptr == NULL) {
+    if (ptr == NULL) {
         return;
     }
 
@@ -61,7 +61,7 @@ void vt_memmove(void *dest, const void *const src, const size_t bytes) {
     assert(bytes > 0);
 
     // allocate if NULL is passed
-    if(dest == NULL) {
+    if (dest == NULL) {
         dest = VT_CALLOC(bytes);
     }
 
@@ -79,7 +79,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 
     // allocate a temporary variable
     void* temp = VT_CALLOC(elsize);
-    if(temp == NULL) {
+    if (temp == NULL) {
         return false;
     }
 
@@ -95,7 +95,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 }
 
 const char *vt_status_to_str(const enum VitaStatus e) {
-    if(e < VT_STATUS_COUNT) {
+    if (e < VT_STATUS_COUNT) {
         return vita_error_str[e];
     }
 

@@ -8,7 +8,7 @@ static real vt_strtold(const char *z, char **zend, int base) { (void)base; retur
     T vt_conv_str_to_##t(const char *const z) {                                                     \
         VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));   \
                                                                                                     \
-        if(!vt_str_is_numeric(z, VT_MAX_PRECISION)) {                                               \
+        if (!vt_str_is_numeric(z, VT_MAX_PRECISION)) {                                               \
             VT_DEBUG_PRINTF(                                                                        \
                 "%s: Must be digits only, not \"<%s>\".\n",                                         \
                 vt_status_to_str(VT_STATUS_ERROR_CONVERSION),                                 \
