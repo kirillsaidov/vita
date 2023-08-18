@@ -1047,7 +1047,11 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
         }
 
         // print data to s
-        vsprintf(s->ptr, fmt, args2);
+        vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2);
+
+        // update
+        s->len += len;
+        ((char*)s->ptr)[s->len] = '\0';
     } 
     va_end(args2);
 
