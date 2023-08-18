@@ -166,6 +166,11 @@ int32_t main(void) {
 
     vt_str_appendf(s_strip, "%s %d %s", "I have", 2, "apples");
     assert(vt_str_equals(vt_str_z(s_strip), "I have 2 apples"));
+    vt_str_clear(s_strip);
+
+    vt_str_appendf(s_strip, "%s", "abc");
+    vt_str_appendf(s_strip, "%s", "def");
+    assert(vt_str_equals(vt_str_z(s_strip), "abcdef"));
     vt_str_destroy(s_strip);
 
     s_strip = vt_str_create_capacity(1, alloctr);
