@@ -25,7 +25,7 @@ enum VitaCompilerID {
 #elif defined(__GNUC__) || defined(__GNUG__)
     #define VT_COMPILER_ID VT_COMPILER_ID_GCC
     #define VT_COMPILER_NAME "gcc"
-    #define VT_COMPILER_VENDOR "GCC"
+    #define VT_COMPILER_VENDOR "GNU Compiler Collection"
     #define VT_COMPILER_VERSION_MAJOR __GNUC__
     #define VT_COMPILER_VERSION_MINOR __GNUC_MINOR__
     #define VT_COMPILER_VERSION_PATCH __GNUC_PATCHLEVEL__
