@@ -4,7 +4,7 @@
 A simple and intuitive standard library for your modern C project! Lightweight and no dependencies. `Vita` strives to provide all common functionality other modern libraries have to ease prototyping with C and simplify the development process.
 
 ## Features
-* uses C11
+* written in C11
 * containers
 * string manipulation
 * path and file handling
