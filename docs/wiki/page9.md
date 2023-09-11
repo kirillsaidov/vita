@@ -24,7 +24,7 @@ const vt_version_vt v = vt_compiler_get_version();
 // print compiler information
 printf("Compiler id: %d\n", VT_COMPILER_ID);         // 0
 printf("Compiler name: %s\n", VT_COMPILER_NAME);     // gcc
-printf("Compiler vendor: %s\n", VT_COMPILER_VENDOR); // GCC
+printf("Compiler vendor: %s\n", VT_COMPILER_VENDOR); // GNU Compiler Collection
 
 // compiler version
 printf("Compiler version: %s\n", v.str); // 13.0.1
