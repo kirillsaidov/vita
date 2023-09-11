@@ -338,6 +338,80 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     ((char*)s->ptr)[s->len] = '\0';
 }
 
+enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *const fmt, ...) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // iterate over all arguments
+    va_list args; va_start(args, fmt); {
+        // check format length
+        int64_t len = 0; 
+        va_list args2; va_copy(args2, args); {
+            len = vsnprintf(NULL, (size_t)0, fmt, args2);
+        } va_end(args2);
+
+        // check for error
+        if (len < 0) {
+            VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            return VT_STATUS_OPERATION_FAILURE;
+        }
+        len += 1; // account for '\0'
+
+        // if format length is small, use stack memory
+        if (len < VT_STR_TMP_BUFFER_SIZE - 1) {
+            char tmp_buf[VT_STR_TMP_BUFFER_SIZE] = {0};
+
+            // print formatted string to tmp_buf
+            vsnprintf(tmp_buf, len, fmt, args);
+
+            // insert tmp_buf to vt_str_t
+            vt_str_insert(s, tmp_buf, at);
+        } else {
+            // append data to a temporary vt_str_t instance
+            vt_str_t *tmp_str = vt_str_create_capacity(len, s->alloctr);
+            if (vt_str_vfmt(tmp_str, fmt, args) == NULL) {
+                VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+                return VT_STATUS_OPERATION_FAILURE;
+            }
+
+            // insert tmp_str
+            vt_str_insert(s, vt_str_z(tmp_str), at);
+
+            // free tmp_str
+            vt_str_destroy(tmp_str);
+        }
+    } va_end(args);
+
+    return VT_STATUS_OPERATION_SUCCESS;
+}
+
+void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check if new memory needs to be allocated
+    if (vt_str_has_space(s) < n) {
+        vt_str_reserve(s, (n - vt_str_has_space(s)));
+    }
+
+    // move everyting between [at; at + n) by n
+    memmove((char*)(s->ptr) + (at + n) * s->elsize, (char*)(s->ptr) + at * s->elsize, (vt_str_len(s) - n) * s->elsize);
+
+    // insert n elements of z between [at; at + n)
+    memmove((char*)(s->ptr) + at * s->elsize, z, n * s->elsize);
+
+    // set new length
+    s->len += n;
+
+    // add the '\0' terminator
+    ((char*)s->ptr)[s->len] = '\0';
+}
+
 void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -1034,11 +1108,12 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
     va_list args2; va_copy(args2, args); 
     {
         // check if new memory needs to be allocated
-        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
         if (len < 0) {
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
             return NULL;
         }
+        len += 1; // account for '\0'
 
         // check for space
         const size_t hasSpace = vt_str_has_space(s);
@@ -1047,7 +1122,7 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
         }
 
         // print data to s
-        vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2);
+        vsnprintf((char*)s->ptr + s->len * s->elsize, len, fmt, args2);
 
         // update
         s->len += len;

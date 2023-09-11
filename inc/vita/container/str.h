@@ -25,6 +25,8 @@
     - vt_str_appendf
     - vt_str_append_n
     - vt_str_insert
+    - vt_str_insertf
+    - vt_str_insert_n
     - vt_str_remove
     - vt_str_remove_first
     - vt_str_remove_all
@@ -45,12 +47,18 @@
     - vt_str_is_numeric
     - vt_str_capitalize
     - vt_str_index_of
+    - vt_str_slide_front
+    - vt_str_slide_back
+    - vt_str_slide_reset           
 */
 
 #include <ctype.h>
 #include <stdarg.h>
 #include "common.h"
 #include "../container/plist.h"
+
+// temporary buffer size for char[]
+#define VT_STR_TMP_BUFFER_SIZE 1024
 
 // see core/core.h for definition
 typedef struct VitaBaseArrayType vt_str_t;
@@ -202,6 +210,7 @@ extern void vt_str_append(vt_str_t *const s, const char *z);
 /** Appends a formatted raw C string at the end of vt_str_t
     @param s vt_str_t instance
     @param fmt format
+    @param ... arguments
 
     @returns enum VitaStatus
 */
@@ -220,6 +229,24 @@ extern void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n);
     @param at start at index (including `at`)
 */
 extern void vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
+
+/** Inserts a formatted raw C string into vt_str_t starting at the specified index
+    @param s vt_str_t instance
+    @param at start at index (including `at`)
+    @param fmt format
+    @param ... arguments  
+
+    @returns enum VitaStatus      
+*/
+extern enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *const fmt, ...);
+
+/** Inserts n characters of raw C string at the specified index
+    @param s vt_str_t instance
+    @param z raw C string
+    @param at start at index (including `at`)
+    @param n number of characters
+*/
+extern void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const size_t n);
 
 /** Removes n chars from vt_str_t, starting from the specified index
     @param s vt_str_t instance
