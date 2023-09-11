@@ -84,7 +84,7 @@ Example: downloader --link your_url --save save/dir --verbose
 ```
 
 ## More examples
-Check out the [`tests/src`](tests/src) directory for usage examples or read more on [Vita Wiki](docs/wiki/VITA.md).
+Check out the [Vita Wiki](docs/wiki/VITA.md) or take a look at [`tests/src`](tests/src) for more examples.
 
 ## Development process
 You can also closely follow the development process in Trello [board](https://trello.com/b/MFeDGO8u/vita). If you face any errors, please report by PR or create an issue. 
