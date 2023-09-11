@@ -120,12 +120,8 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
             continue;
         }
 
-        // allocate memory buffer and copy it to that buffer
-        const size_t tmp_dir_len = strlen(dirtree->d_name) + 1; // account for '\0'
-        char *d_name = pl->alloctr 
-            ? VT_ALLOCATOR_ALLOC(pl->alloctr, tmp_dir_len)
-            : VT_CALLOC(tmp_dir_len);
-        strncat(d_name, dirtree->d_name, tmp_dir_len - 1);
+        // save directory name
+        vt_str_t *d_name = vt_str_create(dirtree->d_name, pl->alloctr);
 
         // push directory name to vt_plist_t
         vt_plist_push(pl, d_name);
@@ -182,12 +178,8 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_append(st, PATH_SEPARATOR);
         vt_str_append(st, dirtree->d_name);
 
-        // allocate memory buffer and copy it to that buffer
-        const size_t tmp_dir_len = vt_str_len(st) + 1;
-        char *d_name = pl->alloctr 
-            ? VT_ALLOCATOR_ALLOC(pl->alloctr, tmp_dir_len)
-            : VT_CALLOC(tmp_dir_len);
-        strncat(d_name, dirtree->d_name, tmp_dir_len - 1);
+        // save directory name
+        vt_str_t *d_name = vt_str_create(dirtree->d_name, pl->alloctr);
 
         // push directory name to list
         vt_plist_push(pl, d_name);

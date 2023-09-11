@@ -30,7 +30,8 @@ int main(void) {
 }
 
 void free_str(void *ptr, size_t i) {
-    free(ptr);
+    // printf("* (%zu) %s\n", i, vt_str_z((vt_str_t*)ptr));
+    vt_str_destroy((vt_str_t*)ptr);
 }
 
 void test_path(void) {

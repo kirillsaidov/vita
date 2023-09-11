@@ -111,9 +111,9 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns list of `char*` upon success, `NULL` otherwise
+    @returns list of `vt_str_t*` upon success, `NULL` otherwise
 
-    @note allocates the container if passing in `NULL`
+    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
 extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
@@ -122,7 +122,7 @@ extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, con
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns list of `char*` upon success, `NULL` otherwise
+    @returns list of `vt_str_t*` upon success, `NULL` otherwise
 
     @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
 */
