@@ -1,5 +1,5 @@
-#ifndef VITA_CORE_CORE_H
-#define VITA_CORE_CORE_H
+#ifndef VITA_CORE_H
+#define VITA_CORE_H
 
 /** CORE MODULE
  * This module is a collection of all common definitions and code needed by the rest of the library.
@@ -220,4 +220,4 @@ extern bool vt_gswap(void* a, void* b, const size_t elsize);
 */
 extern const char *vt_status_to_str(const enum VitaStatus e);
 
-#endif // VITA_CORE_CORE_H
+#endif // VITA_CORE_H
