@@ -5,6 +5,8 @@ To use `Vita` either copy and paste the source code into your project or link th
 * `C compiler (GCC, Clang, MinGW)`
 * `CMake`
 
+**NOTE:** on Windows you need the MSYS2 toolchain to use the `build.bat` script; or use your own alternative. 
+
 ## Building
 ```
 git clone https://github.com/kirillsaidov/vita.git
@@ -55,6 +57,6 @@ set(DEFAULT_BUILD_TYPE "Release")
 set(CMAKE_C_FLAGS "-DNDEBUG -Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror -O2")
 ```
 
-`Vita` comes in two variants: debug and release builds. It is highly recommended to use the debug build for testing and debugging purposes and the release build `Vita` library for your finalized project. You will benefit from internal checks, assertions and debug error messages are removed in release builds. Nevertheless, you can still check the return value of a function to determine if an operation was successful. Almost every `Vita` functions returns a certain value.
+`Vita` comes in two variants: debug and release builds. It is highly recommended to use the debug build for testing and debugging purposes and the release build `Vita` library for your finalized project. You will benefit from internal checks, assertions and debug error messages that are removed in release builds. Nevertheless, you can still check the return value of a function to determine if an operation was successful. Almost every `Vita` functions returns a certain value.
 
 **[ [Back](VITA.md) | [Next](page2.md) ]**

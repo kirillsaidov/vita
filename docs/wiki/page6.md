@@ -9,7 +9,7 @@ This chapter describes how to use the functionality provided by the [`datetime`]
 5. [Additional functionality](page6.md#additional-functionality)
 
 ### Get current time
-```C
+```c
 #include "vita/time/datetime.h"
 
 // save current time to datetime object
@@ -30,7 +30,7 @@ vt_datetime_get_now_as_text_pretty(timebuf, VT_DATETIME_BUFFER_SIZE); // "Fri Ju
 ```
 
 ### Create datetime and datetime operations
-```C
+```c
 // create custom datetime object
 const struct VitaDateTime custom_time = vt_datetime_create(2023, 1, 1, 11, 24, 56, -1, -1);
 assert(custom_time.year == 2023);
@@ -47,7 +47,7 @@ assert(custom_time.year_day == 1); // ditto
 ```
 
 ### Convert datetime to string
-```C
+```c
 // define time buffer
 char timebuf[VT_DATETIME_BUFFER_SIZE] = {0};
 
@@ -66,7 +66,7 @@ assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
 ```
 
 ### Convert string to datetime
-```C
+```c
 // convert string time representation to datetime object
 struct VitaDateTime time_simple = vt_datetime_from_text("2023-05-19 20:31:01");
 struct VitaDateTime time_iso = vt_datetime_from_text_iso("20230519T203101");
@@ -82,7 +82,7 @@ assert(time_iso_ext.second == 1);
 ```
 
 ### Additional functionality
-```C
+```c
 // check if datetime string is valid
 assert(vt_datetime_is_valid_text("2023-12-27 23:12:02") == true);
 assert(vt_datetime_is_valid_text_iso("20231227T231202") == true);

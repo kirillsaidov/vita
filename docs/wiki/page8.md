@@ -8,7 +8,7 @@
 
 ### Assert and debug information
 If the specified condition fails, `Vita` assertions exit the program outputting an error message: 
-```C
+```c
 #include "vita/util/debug.h"
 
 void download_file(const char *const url) {
@@ -21,7 +21,7 @@ void download_file(const char *const url) {
 ```
 
 In case you need only to output the debug information, then you can use `VT_DEBUG_PRINTF`:
-```C
+```c
 Result parse_html(const char *const html) {
     if (!validate_html(html)) {
         VT_DEBUG_PRINTF("Invalid html source! Attempting to fix...\n"); // acts like printf
@@ -39,7 +39,7 @@ All funtionality that has `debug` in its name is removed in release builds! So `
 
 ### Enforcing conditions even in release builds
 You can also enforce a condition in release builds using `VT_ENFORCE`. Code below is taken from `Vita` [datetime](../../inc/vita/time/datetime.h) module:
-```C
+```c
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // removed in relase builds
     VT_DEBUG_ASSERT(timebuf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -58,7 +58,7 @@ struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
 ```
 
 You can also add runtime checks that only output a message if condition fails. It does not interrupt the program flow or exit:
-```C
+```c
 VT_CHECK(
     1 == 2, 
     "If you read this, then the condition has failed! But your program continues to run | read more here %s\n", 
@@ -67,7 +67,7 @@ VT_CHECK(
 ```
 
 ### Redirect or disable debug output
-```C
+```c
 // redirect output to a file
 vt_debug_redirect_output("file.debug");
 

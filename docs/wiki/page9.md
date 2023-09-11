@@ -7,7 +7,7 @@ This chapter explains how to get compiler information. For more details refer to
 2. [Get compiler version](page9.md#get-compiler-version)
 
 ### Check for available compiler
-```C
+```c
 if (VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
     // ...
 } else if (VT_COMPILER_ID == VT_COMPILER_ID_GCC) {
@@ -18,7 +18,7 @@ if (VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
 ```
 
 ### Get compiler version
-```C
+```c
 const vt_version_vt v = vt_compiler_get_version();
 
 // print compiler information

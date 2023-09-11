@@ -12,10 +12,12 @@
 #include "vita/system/path.h"
 
 // path concatenation
-vt_str_t *my_path = vt_path_build(NULL, 2, "photos", "mountains.jpg");
+// If NULL is passed, allocates a new instance, otherwise the said instance is used and returned
+vt_str_t *my_path = vt_path_build(NULL, 2, "photos", "mountains.jpg"); 
 assert(vt_str_equals(vt_str_z(my_path), "photos/mountains.jpg"));
 
 // extracting basename from path
+// If my_path is NULL, allocates a new instance, otherwise the said instance is used and returned
 my_path = vt_path_basename(my_path, "photos/mountains.jpg");
 assert(vt_str_equals(vt_str_z(my_path), "mountains.jpg"));
 
@@ -52,17 +54,20 @@ if (!success) {
 // ditto
 vt_path_mkdir_parents(mypath);
 
-// rename and move
-vt_path_remove(mypath);
+// rename a file or directory
 vt_path_rename(mypath, "newname");
 
-// remove
+// delete a file
+vt_path_remove(mypath);
+
+// delete directory
 vt_path_rmdir(mypath);
 vt_path_rmdir_recurse(mypath);
 ```
 
 ### Listing directory contents
 ```c
+// If NULL is passed, allocates a new instance, otherwise the said instance is used and returned
 vt_plist_t *pdir = vt_path_listdir(NULL, "media/dev", true); // `true` here is for ignoring dot.files: .vim, .gitignore, etc...
 assert(vt_plist_len(pdir) == FILES_IN_DIR);
 
@@ -72,7 +77,7 @@ vt_plist_apply(pdir, your_func);
 // or this
 const size_t len = vt_plist_len(pdir);
 for (size_t i = 0; i < len; i++) {
-    const char* zpath = vt_plist_get(pdir, i);
+    vt_str_t *path = (vt_str_t*)vt_plist_get(pdir, i);
 
     // do something with "path"
     // ...

@@ -8,14 +8,14 @@ Read more below or check out [`util/log.h`](../../inc/vita/util/log.h).
 * [Custom logger](page7.md#custom-logger)
 
 ### Logger setup
-Vita provides 5 log levels: 
+Vita provides 6 log levels: 
 ```c
 // Log levels
 enum VitaLogLevel {
     vt_log_info,    // write to file/stderr, move on
     vt_log_warn,    // write to file/stderr, move on
     vt_log_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
-    vt_log_error,   // write to file/stderr, move on
+    vt_log_error,   // write to file/stderr, exit program
     vt_log_fatal,   // write to file/stderr, exit program
     vt_log_assert,  // write to file/stderr if assertion fails, move on
     vt_log_count    // number of elements
@@ -53,7 +53,7 @@ assert(vt_str_equals("INFO", log_level_str));
 VT_LOG_INFO("[s] This is an info log entry.");
 VT_LOG_WARN("[s] WRONG input specified: %s", "LOG");
 VT_LOG_DEBUG("[s] Log only if NDEBUG is not defined. Testing: = %s, %s", "debug msg", "debug2");
-VT_LOG_ERROR("[s] Error: %s", "testing...");
+VT_LOG_ERROR("[s] Error: %s", "exit...");
 VT_LOG_FATAL("[s] Error: %s", "fatal error encountered. exit...");
 VT_LOG_ASSERT(val == 2, "Log if assertion fails: %s", "assertion failed");
 ```

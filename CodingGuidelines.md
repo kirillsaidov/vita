@@ -12,7 +12,7 @@ This is a list of guidelines that I adhere to while developing Vita library.
 ### Variables
 Use `camelCase` for variables. If needed, UPPER_CASE for const.
 
-```C
+```c
 int helloWorld;                 // local
 int g_helloWorld                // global
 int gi_helloWorld;              // global private (static)
@@ -24,7 +24,7 @@ const int width/WIDTH = 320;    // const
 ### Structs and Enums
 Use `PascalCase` when naming structs and `camelCase` for struct members.
 
-```C
+```c
 // if that is a POD:
 struct BlackBox {
     int unknownBody;
@@ -42,7 +42,7 @@ typedef struct BlackBox {
 
 Enums must be `ALL_CAPS`, sometimes `lower_underscore_case` style is also acceptable. 
 
-```C
+```c
 enum WorldElements { // => world_elements_enum_value
     WORLD_ELEMENTS_AIR,
     WORLD_ELEMENTS_WATER,
@@ -57,14 +57,14 @@ Don't `typedef` enums!
 ### Functions
 Project_Module/File name should be prepended to functions. The `project_` acts as a namespace to dissambiguate between other library functionality. 
 
-```C
+```c
 void project_module_function_name(struct BlackBox* blackBox);
 ```
 
 ### Macros
 Use `UPPER_UNDERSCORE_CASE` for macros.
 
-```C
+```c
 // don't use a macro, if a function can be used instead
 #define MAX(a, b) (((a)>(b)) ? (a) : (b))
 ```
@@ -72,7 +72,7 @@ Use `UPPER_UNDERSCORE_CASE` for macros.
 ### Typedefs
 `struct` should be `typedef`'ed with `_t` appended at the end.
 
-```C
+```c
 typedef struct BlackBox {
     int box_id;
 } bbox_t;
@@ -80,7 +80,7 @@ typedef struct BlackBox {
 
 ### Gotos
 Labels should start with `prefix_label__` prefix and 2 underscores should be appended at the end.
-```C
+```c
 // this is a goto example:
 vt_label_my_function_name__:
 // do something ...
@@ -89,7 +89,7 @@ vt_label_my_function_name__:
 ### Header guards
 Always prepend project name to the header guard to avoid name collisions.
 
-```C
+```c
 #ifndef BLACKBOX_MYSTERY_H
 #define BLACKBOX_MYSTERY_H
 
@@ -100,7 +100,7 @@ Always prepend project name to the header guard to avoid name collisions.
 
 Or even better add package name as well:
 
-```C
+```c
 #ifndef BLACKBOX_SPACE_MYSTERY_H
 #define BLACKBOX_SPACE_MYSTERY_H
 
@@ -121,7 +121,7 @@ Or even better add package name as well:
 ### Variable declaration
 Always initialize variables upon declaration, even if you reinitialize them later;
 
-```C
+```c
 // don't:
 int a, b = 0, c;
 float d;
@@ -137,7 +137,7 @@ float d = 0;
 #### Braces
 Always use curly braces (explicit scope `{...}` is better)
 
-```C
+```c
 // don't:
 if (condition)
     action;
@@ -151,13 +151,13 @@ if (condition) {
 #### Ternary operator
 If a condition is short, place it on one line.
 
-```C
+```c
 (condition) ? statement : statement;
 ```
 
 If its long, split it into multiple lines.
 
-```C
+```c
 (condition)
     ? a very long statement
     : another even longer statement;
@@ -166,13 +166,13 @@ If its long, split it into multiple lines.
 #### Comments
 * for commenting out functions use: `/* ... */` or `//...` for one-line comments.
 
-```C
+```c
 /* void some_func() {...} */
 ```
 
 * for documentation: `/** ... */`
 
-```C
+```c
 /** Description
     @param param1 description
     @param param2 description
@@ -199,7 +199,7 @@ float some_func(int param1, int param2) {...}
 ## Conditional compilation
 Use `#if` instead of `#ifdef`.
 
-```C
+```c
 // don't:
 #ifdef DEBUG
     // debug code
@@ -213,13 +213,13 @@ Use `#if` instead of `#ifdef`.
 
 When setting a macro variable outside a program, `#if` will always pick it up, `#ifdef` won't. 
 
-```C
+```c
 gcc ... -DEBUG=0
 ```
 
 More over, the former allows for compound confiditons, where as the latter accepts only one condition. To test whether a symbol is defined use `#if defined(...)`:
 
-```C
+```c
 #if defined(_WIN32) || defined(_WIN64)
     // code
 #endif
@@ -228,7 +228,7 @@ More over, the former allows for compound confiditons, where as the latter accep
 ## Error checking
 Remember to always use `assert` when checking for programmer errors. Otherwise, a control flow or user error should be handled accordingly with return codes (or a different method).
 
-```C
+```c
 void validate(const char *z) {
     assert(z != NULL); // programmer is responsible for passing a valid string
     
