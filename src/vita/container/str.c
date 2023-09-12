@@ -47,6 +47,9 @@ vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const 
         .elsize = sizeof(char),
     };
 
+    // default initiaze it to whitespace
+    memset(s->ptr, ' ', s->len);
+
     return s;
 }
 
@@ -357,7 +360,6 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
             return VT_STATUS_OPERATION_FAILURE;
         }
-        len += 1; // account for '\0'
 
         // if format length is small, use stack memory
         if (len < VT_STR_TMP_BUFFER_SIZE - 1) {
@@ -488,15 +490,11 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
         return VT_STATUS_ERROR_ELEMENT_NOT_FOUND;
     }
 
-    // find how many characters to shrink the string
-    // it cannot be negative, since the substring will always be to the right of the begining
-    const size_t diff = (size_t)(((char*)(s->ptr) + s->len * s->elsize) - lastInstance);
+    // find the position of last substring instance
+    const ptrdiff_t last_instance_pos = (((char*)(s->ptr) + s->len * s->elsize) - lastInstance);
 
-    // set z to zero where it begins
-    lastInstance[0]= '\0';
-
-    // update vt_str_t
-    s->len -= diff - 1;
+    // remove the last instance
+    vt_str_remove(s, last_instance_pos, zLen);
 
     return VT_STATUS_OPERATION_SUCCESS;
 }
@@ -977,7 +975,7 @@ bool vt_str_equals(const char *const z1, const char *const z2) {
     VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t z1Len = strlen(z1);
-    if (z1Len > strlen(z2)) {
+    if (z1Len != strlen(z2)) {
         return false;
     }
 
@@ -1113,7 +1111,6 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
             return NULL;
         }
-        len += 1; // account for '\0'
 
         // check for space
         const size_t hasSpace = vt_str_has_space(s);
