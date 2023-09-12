@@ -75,9 +75,27 @@ int32_t main(void) {
     } vt_str_destroy(mystr);
 
     // check insertf, insert_n
+    vt_str_t *sss = vt_str_create("hello ", alloctr); {
+        vt_str_appendf(sss, "%s", "world");
+        vt_str_append(sss, "!");
+        // vt_str_insert(sss, ",", 5);
+        vt_str_append(sss, " hello ");
+        vt_str_appendf(sss, "%s", "world!");
+        printf("%s | len: %zu\n", vt_str_z(sss), vt_str_len(sss));
+        assert(vt_str_equals(vt_str_z(sss), "hello, world! hello world!"));
+    } vt_str_destroy(sss);
     vt_str_t *tmp_str = vt_str_create("<defs></defs>", alloctr); {
-        // vt_str_insertf(tmp_str, 6, "%s", "hello, world!");
+        vt_str_insert(tmp_str, "[]", 6);
+        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
+        assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[]</defs>"));
+        // vt_str_insert_n(tmp_str, "hello, world! HAHA", 6, 13);
+        // printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>hello, world!</defs>"));
+
+        // vt_str_insert(tmp_str, "[", 6);
+        // // vt_str_insert(tmp_str, "]", 20);
+        // printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
+        // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[hello, world!</defs>"));
 
         // vt_str_insertf(tmp_str, 6, "%s", "[][][]");
         // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[][][]hello, world!</defs>"));
@@ -101,7 +119,8 @@ int32_t main(void) {
         assert(vt_str_has_space(ns) == 0);
 
         vt_str_append(ns, "hello");
-        assert(vt_str_equals(vt_str_z(ns), "hello"));
+        printf("%s | len: %zu\n", vt_str_z(ns), vt_str_len(ns));
+        assert(vt_str_equals(vt_str_z(ns), " hello"));
 
         // fails, because vt_str_len(ns) < strlen("hello, world") => append instead
         // assert(vt_str_set(ns, "hello, world"));
@@ -186,11 +205,14 @@ int32_t main(void) {
     vt_str_clear(s_strip);
 
     vt_str_appendf(s_strip, "%s %d %s", "I have", 2, "apples");
+    printf("%s | len: %zu\n", vt_str_z(s_strip), vt_str_len(s_strip));
     assert(vt_str_equals(vt_str_z(s_strip), "I have 2 apples"));
     vt_str_clear(s_strip);
 
     vt_str_appendf(s_strip, "%s", "abc");
+    printf("%s | len: %zu\n", vt_str_z(s_strip), vt_str_len(s_strip));
     vt_str_appendf(s_strip, "%s", "def");
+    printf("%s | len: %zu\n", vt_str_z(s_strip), vt_str_len(s_strip));
     assert(vt_str_equals(vt_str_z(s_strip), "abcdef"));
     vt_str_destroy(s_strip);
 
