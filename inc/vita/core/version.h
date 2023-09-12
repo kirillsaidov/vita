@@ -24,3 +24,4 @@ typedef struct {
 extern vt_version_t vt_version_get(void);
 
 #endif // VITA_CORE_VERSION_H
+
