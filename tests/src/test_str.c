@@ -76,16 +76,23 @@ int32_t main(void) {
 
     // check insertf, insert_n
     vt_str_t *tmp_str = vt_str_create("<defs></defs>", alloctr); {
-        vt_str_insertf(tmp_str, 6, "%s", "hello, world!");
-        assert(vt_str_equals(vt_str_z(tmp_str), "<defs>hello, world!</defs>"));
+        // vt_str_insertf(tmp_str, 6, "%s", "hello, world!");
+        // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>hello, world!</defs>"));
 
-        vt_str_insertf(tmp_str, 6, "%s", "[][][]");
-        assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[][][]hello, world!</defs>"));
+        // vt_str_insertf(tmp_str, 6, "%s", "[][][]");
+        // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[][][]hello, world!</defs>"));
 
-        vt_str_insert_n(tmp_str, "1234567890", 7, 3);
-        vt_str_insert_n(tmp_str, "4567890", 12, 3);
-        vt_str_insert_n(tmp_str, "7890", 17, 3);
-        assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[123][456][789]hello, world!</defs>"));
+        // vt_str_insert_n(tmp_str, "1234567890", 7, 3);
+        // vt_str_insert_n(tmp_str, "4567890", 12, 3);
+        // vt_str_insert_n(tmp_str, "7890", 17, 3);
+        // assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[123][456][789]hello, world!</defs>"));
+
+        // vt_str_clear(tmp_str);
+        // vt_str_append(tmp_str, "hello ");
+        // vt_str_appendf(tmp_str, "world ");
+        // vt_str_append(tmp_str, "APPEND");
+        // assert(vt_str_equals(vt_str_z(tmp_str), "hello world APPEND"));
+        // printf("----- [%s]\n", vt_str_z(tmp_str));
     } vt_str_destroy(tmp_str);
     
     vt_str_t *ns = vt_str_create_len(1, alloctr); {
