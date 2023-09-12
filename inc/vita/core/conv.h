@@ -2,10 +2,22 @@
 #define VITA_CORE_CONV_H
 
 /** CONV MODULE
+    - vt_conv_str_to_int8
+    - vt_conv_str_to_uint8
+    - vt_conv_str_to_int16
+    - vt_conv_str_to_uint16
+    - vt_conv_str_to_int32
+    - vt_conv_str_to_uint32
     - vt_conv_str_to_int64
     - vt_conv_str_to_uint64
     - vt_conv_str_to_double
     - vt_conv_str_to_real
+    - vt_conv_int8_to_str
+    - vt_conv_uint8_to_str
+    - vt_conv_int16_to_str
+    - vt_conv_uint16_to_str
+    - vt_conv_int32_to_str
+    - vt_conv_uint32_to_str
     - vt_conv_int64_to_str
     - vt_conv_uint64_to_str
     - vt_conv_double_to_str
