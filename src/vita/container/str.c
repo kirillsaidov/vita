@@ -348,12 +348,15 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // iterate over all arguments
-    va_list args; va_start(args, fmt); {
+    va_list args; va_start(args, fmt); 
+    {
         // check format length
-        int64_t len = 0; 
-        va_list args2; va_copy(args2, args); {
+        int64_t len = 0;
+        va_list args2; va_copy(args2, args); 
+        {
             len = vsnprintf(NULL, (size_t)0, fmt, args2);
-        } va_end(args2);
+        } 
+        va_end(args2);
 
         // check for error
         if (len < 0) {
@@ -366,7 +369,7 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
             char tmp_buf[VT_STR_TMP_BUFFER_SIZE] = {0};
 
             // print formatted string to tmp_buf
-            vsnprintf(tmp_buf, len, fmt, args);
+            vsprintf(tmp_buf, fmt, args);
 
             // insert tmp_buf to vt_str_t
             vt_str_insert(s, tmp_buf, at);
@@ -384,7 +387,8 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
             // free tmp_str
             vt_str_destroy(tmp_str);
         }
-    } va_end(args);
+    } 
+    va_end(args);
 
     return VT_STATUS_OPERATION_SUCCESS;
 }
@@ -397,12 +401,13 @@ void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const si
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if new memory needs to be allocated
-    if (vt_str_has_space(s) < n) {
-        vt_str_reserve(s, (n - vt_str_has_space(s)));
+    const size_t hasSpace = vt_str_has_space(s);
+    if (hasSpace < n) {
+        vt_str_reserve(s, (n - hasSpace));
     }
 
     // move everyting between [at; at + n) by n
-    memmove((char*)(s->ptr) + (at + n) * s->elsize, (char*)(s->ptr) + at * s->elsize, (vt_str_len(s) - n) * s->elsize);
+    memmove((char*)(s->ptr) + (at + n) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
 
     // insert n elements of z between [at; at + n)
     memmove((char*)(s->ptr) + at * s->elsize, z, n * s->elsize);
@@ -1105,10 +1110,11 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
     // format string
     va_list args2; va_copy(args2, args); 
     {
-        // check if new memory needs to be allocated
-        int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
+        // check format length
+        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args);
         if (len < 0) {
             VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            va_end(args2);
             return NULL;
         }
 
@@ -1119,7 +1125,7 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
         }
 
         // print data to s
-        vsnprintf((char*)s->ptr + s->len * s->elsize, len, fmt, args2);
+        vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2);
 
         // update
         s->len += len;
