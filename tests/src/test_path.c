@@ -64,7 +64,7 @@ void test_path(void) {
         // vt_path_mkdir_parents("\\hello\\world\\of\\my\\"); // works
     #elif defined(__linux__)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
+        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(alloctr); {
@@ -89,11 +89,11 @@ void test_path(void) {
         // vt_path_mkdir_parents("/hello/world/of/my/"); // works
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev/"));
+        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_getcwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
+            assert(vt_str_equals(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests"));
         } vt_str_destroy(cwd);
 
         assert(vt_path_exists("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
