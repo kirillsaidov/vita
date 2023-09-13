@@ -419,6 +419,40 @@ void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const si
     ((char*)s->ptr)[s->len] = '\0';
 }
 
+void vt_str_insert_before(vt_str_t *const s, const char *const sub, const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // find the substring
+    const int64_t idx = vt_str_index_find(s, sub);
+    if(idx < 0) {
+        return;
+    }
+
+    // insert z
+    vt_str_insert(s, z, idx);
+}
+
+void vt_str_insert_after(vt_str_t *const s, const char *const sub, const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // find the substring
+    const int64_t idx = vt_str_index_find(s, sub);
+    if(idx < 0) {
+        return;
+    }
+
+    // insert z
+    vt_str_insert(s, z, idx + strlen(sub));
+}
+
 void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -1074,12 +1108,27 @@ int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    const char *const ztmp = strchr(s->ptr, z);
+    const char *const ztmp = strchr(vt_str_z(s), z);
     if (ztmp == NULL) {
         return -1;
     }
 
-    return (int64_t)(ztmp - (char*)(s->ptr));
+    return (int64_t)(ztmp - vt_str_z(s));
+}
+
+int64_t vt_str_index_find(const vt_str_t *const s, const char *sub) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // find substring
+    const char *sub_start = vt_str_find(vt_str_z(s), sub);
+    if(sub_start == NULL) {
+        return -1;
+    }
+
+    return (int64_t)(sub_start - vt_str_z(s));
 }
 
 char *vt_str_slide_front(vt_str_t *const s) {

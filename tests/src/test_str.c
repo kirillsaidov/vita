@@ -117,6 +117,15 @@ int32_t main(void) {
         vt_str_appendf(tmp_str, "world ");
         vt_str_append(tmp_str, "APPEND");
         assert(vt_str_equals(vt_str_z(tmp_str), "hello world APPEND"));
+
+        vt_str_insert_before(tmp_str, "world", "[1, 2, 3] ");
+        assert(vt_str_equals(vt_str_z(tmp_str), "hello [1, 2, 3] world APPEND"));
+
+        vt_str_insert_after(tmp_str, "world", " [4, 5, 6]");
+        assert(vt_str_equals(vt_str_z(tmp_str), "hello [1, 2, 3] world [4, 5, 6] APPEND"));
+
+        vt_str_insert_after(tmp_str, "not_found", " [1, 2, 3]");
+        assert(vt_str_equals(vt_str_z(tmp_str), "hello [1, 2, 3] world [4, 5, 6] APPEND"));
     } vt_str_destroy(tmp_str);
     
     vt_str_t *ns = vt_str_create_len(1, alloctr); {
@@ -251,6 +260,17 @@ int32_t main(void) {
         assert(vt_str_capacity(s_val_test) == 9);
 
     } vt_str_destroy(s_val_test);
+
+    vt_str_t *ntmp_str = vt_str_create("Hello, World! How are you?", alloctr); {
+        int64_t idx = vt_str_index_of(ntmp_str, 'o');
+        assert(idx == 4);
+
+        idx = vt_str_index_of(ntmp_str, 'z');
+        assert(idx == -1);
+        
+        idx = vt_str_index_find(ntmp_str, "How");
+        assert(idx == 14);
+    } vt_str_destroy(ntmp_str);
 
     vt_mallocator_destroy(alloctr);
     return 0;
