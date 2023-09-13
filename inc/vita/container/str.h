@@ -302,20 +302,20 @@ extern void vt_str_strip_punct(vt_str_t *const s);
 extern void vt_str_strip_c(vt_str_t *const s, const char *const c);
 
 /** Find a substring
-    @param s vt_str_t instance
-    @param z raw C string
+    @param z haystack
+    @param sub substring needle
 
     @returns pointer to the begining of a substring in a string, or `NULL` upon failure
 */
 extern const char *vt_str_find(const char *const z, const char *sub);
 
 /** Checks if vt_str_t contains a substring
-    @param s vt_str_t instance
-    @param z raw C string
+    @param z haystack
+    @param sub substring needle
 
-    @returns number of substring instances in `vt_str_t`
+    @returns number of substring instances (needles) in haystack
 */
-extern size_t vt_str_can_find(const vt_str_t *const s, const char *z);
+extern size_t vt_str_can_find(const char *const z, const char *sub);
 
 /** Splits a string given a separator into substrings
     @param p vt_plist_t instance, if `NULL` allocates
@@ -380,6 +380,15 @@ extern vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char
     @returns `true` if z1 == z2
 */
 extern bool vt_str_equals(const char *const z1, const char *const z2);
+
+/** Checks if N characters of C strings are the same
+    @param z1 raw C string
+    @param z2 raw C string
+    @param n size to compare
+
+    @returns `true` if z1[0..n] == z2[0..n]
+*/
+extern bool vt_str_equals_n(const char *const z1, const char *const z2, const size_t n);
 
 /** Checks if a raw C string starts with a substring
     @param z raw C string

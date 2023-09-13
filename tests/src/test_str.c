@@ -45,11 +45,14 @@ int32_t main(void) {
 
         vt_str_remove(mystr, 4, 3);
         vt_str_remove_first(mystr, "Watermellon is red");
-        assert(vt_str_can_find(mystr, "sweet") == 1);
+        assert(vt_str_can_find(vt_str_z(mystr), "sweet") == 1);
+        assert(vt_str_can_find(vt_str_z(mystr), "Oran") == 1);
         assert(vt_str_equals(vt_str_z(mystr), "Oran.Apples are sweet!?"));
 
-        const vt_str_t sstack = vt_str_create_static("hi this is a test hi, world hi");
-        assert(vt_str_can_find(&sstack, "hi") == 3);
+        const vt_str_t sstack = vt_str_create_static("hi t_hi_s is a test hi, world hi");
+        printf("%s | len: %zu\n", vt_str_z(&sstack), vt_str_len(&sstack));
+        printf("%zu -------\n", vt_str_can_find(vt_str_z(&sstack), "hi"));
+        assert(vt_str_can_find(vt_str_z(&sstack), "hi") == 4);
 
         vt_str_shrink(mystr);
         assert(vt_str_len(mystr) == 23);
@@ -88,11 +91,9 @@ int32_t main(void) {
     // insert, insertf, insert_n
     vt_str_t *tmp_str = vt_str_create("<defs></defs>", alloctr); {
         vt_str_insert(tmp_str, "[]", 6);
-        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[]</defs>"));
 
         vt_str_insert_n(tmp_str, "123456789", 7, 3);
-        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[123]</defs>"));
 
         vt_str_insert(tmp_str, "[", 7);
@@ -100,15 +101,12 @@ int32_t main(void) {
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[[123]]</defs>"));
 
         vt_str_insertf(tmp_str, 13, "%s", "[[456]]");
-        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[[123]][[456]]</defs>"));
 
         vt_str_insert_n(tmp_str, "1234567890", 13, 3);
-        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[[123]]123[[456]]</defs>"));
 
         vt_str_insert_n(tmp_str, "4567890", 16, 3);
-        printf("%s | len: %zu\n", vt_str_z(tmp_str), vt_str_len(tmp_str));
         assert(vt_str_equals(vt_str_z(tmp_str), "<defs>[[123]]123456[[456]]</defs>"));
 
         vt_str_insert_n(tmp_str, "7890", 19, 3);

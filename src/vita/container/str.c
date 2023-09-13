@@ -697,22 +697,25 @@ const char *vt_str_find(const char *const z, const char *sub) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(strlen(sub) <= strlen(z), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     return strstr(z, sub);
 }
 
-size_t vt_str_can_find(const vt_str_t *const s, const char *z) {
+size_t vt_str_can_find(const char *const z, const char *sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // count the number of substring instances in strbuf
+    // substring (needle) cannot be longer than z (haystack)
+    const size_t subLen = strlen(sub);
+    VT_ENFORCE(subLen <= strlen(z), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
     size_t count = 0;
-    const size_t zLen = strlen(z);
-    const char *p = s->ptr;
-    while((p = strstr(p + zLen, z)) != NULL) {
+    const char *p = z;
+    while((p = strstr(p, sub)) != NULL) {
         count++;
+        p += subLen;
     }
 
     return count;
@@ -725,7 +728,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if s contains sep substring
-    const size_t strInstances = vt_str_can_find(s, sep);
+    const size_t strInstances = vt_str_can_find(vt_str_z(s), sep);
     if (!strInstances) {
         return NULL;
     }
@@ -794,13 +797,13 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
     VT_DEBUG_ASSERT(zr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find zl - left substring
-    const char *const lsub = vt_str_find(z, zl);
+    const char *const lsub = strstr(z, zl);
     if (lsub == NULL) {
         return NULL;
     }
 
     // find r - right substring
-    const char *const rsub = vt_str_find(z, zr);
+    const char *const rsub = strstr(z, zr);
     if (rsub == NULL) {
         return NULL;
     }
@@ -832,7 +835,7 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create vt_str_t if needed
-    vt_str_t *st = (s == NULL) 
+    vt_str_t *st = (s == NULL)
         ? vt_str_create_len(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
         : s;
     vt_str_clear(st);
@@ -985,6 +988,17 @@ bool vt_str_equals(const char *const z1, const char *const z2) {
     }
 
     return !strncmp(z1, z2, z1Len);
+}
+
+bool vt_str_equals_n(const char *const z1, const char *const z2, const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z1 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(n <= strlen(z1), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(n <= strlen(z2), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    return !strncmp(z1, z2, n);
 }
 
 bool vt_str_starts_with(const char *const z, const char *const sub) {
