@@ -33,10 +33,10 @@
 enum VitaLogLevel {
     vt_log_info,    // write to file/stderr, move on
     vt_log_warn,    // write to file/stderr, move on
-    vt_log_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
-    vt_log_error,   // write to file/stderr, exit program
+    vt_log_debug,   // write to file/stderr, move on
+    vt_log_error,   // write to file/stderr, move on
     vt_log_fatal,   // write to file/stderr, exit program
-    vt_log_assert,  // write to file/stderr if assertion fails, move on
+    vt_log_assert,  // write to file/stderr, exit program
     vt_log_count    // number of elements
 };
 
