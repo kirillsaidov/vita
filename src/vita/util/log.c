@@ -15,12 +15,12 @@ void vt_log_redirect_level_output(enum VitaLogLevel vt_log_level, const char *co
     VT_DEBUG_ASSERT(vt_log_level < vt_log_count, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     
     // update log filenames
-    strncpy(vt_log_filenames[vt_log_level], zfilename, PATH_MAX-1);
+    strncpy(vt_log_filenames[vt_log_level], zfilename == NULL ? "\0" : zfilename, PATH_MAX-1);
 }
 
 void vt_log_redirect_all_output(const char *const zfilename) {
     for (size_t i = 0; i < vt_log_count; i++) {
-        strncpy(vt_log_filenames[i], zfilename, PATH_MAX-1);
+        strncpy(vt_log_filenames[i], zfilename == NULL ? "\0" : zfilename, PATH_MAX-1);
     }
 }
 

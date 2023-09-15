@@ -25,6 +25,7 @@ int32_t main(void) {
     //VT_LOG_FATAL("Must crash after logging this message."); // exits after logging the message
     
     // --- set custom file to each log level
+    vt_log_redirect_all_output(NULL);
     // vt_log_redirect_level_output(ll_info, "src/test_vt_log_info.log");
     // vt_log_redirect_level_output(ll_error, "src/test_vt_log_error.log");
 
