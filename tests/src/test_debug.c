@@ -10,6 +10,13 @@ int32_t main(void) {
 
     VT_CHECK(1 == 2, "If you read this, then the condition failed(%s)!", "\\:-:/");
     VT_DEBUG_PRINTF("This is a DEBUG message(%d)!\n", 123);
+
+    VT_NOTE("This is a note.");
+    VT_REQUIRED("AAA module is required to run this.");
+
+    // exits the program
+    // VT_TODO("Will be added later.");
+    // VT_UNIMPLEMENTED("Wait for the next release.");
     
     return 0;
 }
