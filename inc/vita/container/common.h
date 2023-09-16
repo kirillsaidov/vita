@@ -8,8 +8,15 @@
     - vt_array_has_space
     - vt_array_elsize
     - vt_array_has_alloctr
+    - vt_array_set
+    - vt_array_get
+    - vt_array_slide_front
+    - vt_array_slide_back
+    - vt_array_slide_reset
     - vt_index_2d_to_1d
     - vt_index_1d_to_2d
+    - vt_index_3d_to_1d
+    - vt_index_1d_to_3d        
 */
 
 #include "../core/core.h"
@@ -82,6 +89,20 @@ extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 */
 extern bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat);
 
+/** Returns value at index
+    @param vbat VitaBaseArrayType instance
+    @param at index
+    @returns void*
+*/
+extern void *vt_array_get(const struct VitaBaseArrayType *const vbat, const size_t at);
+
+/** Assigns a new value at an index
+    @param vbat VitaBaseArrayType instance
+    @param val value
+    @param at index to set the value
+*/
+extern void vt_array_set(const struct VitaBaseArrayType *const vbat, const void *const val, const size_t at);
+
 /** Slides through the container elements one by one starting from the begining
     @param vbat VitaBaseArrayType instance
     @returns container ptr head pointing to next element from the start
@@ -119,4 +140,23 @@ extern size_t vt_index_2d_to_1d(const size_t row, const size_t col, const size_t
 */
 extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
 
+/** Maps a 3d index to 1d index
+    @param row row index
+    @param col col index
+    @param depth depth index
+    @param ncols number of columns (horizontal width)
+    @returns size_t 1d index
+*/
+extern size_t vt_index_3d_to_1d(const size_t row, const size_t col, const size_t ncols);
+
+/** Maps a 1d index to 2d index
+    @param row row index to save the value
+    @param col col index to save the value
+    @param idx 1d index to convert to 2d
+    @param ncols number of columns (horizontal width)
+*/
+extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
+
+
+vt_index_3d_to_1d
 #endif // VITA_CONTAINER_COMMON_H

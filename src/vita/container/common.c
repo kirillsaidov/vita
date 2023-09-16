@@ -74,6 +74,38 @@ bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat) {
     return !(vbat->alloctr == NULL);
 }
 
+void *vt_array_get(const struct VitaBaseArrayType *const vbat, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(
+        at < vbat->len,
+        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
+        at, 
+        vbat->len
+    );
+
+    return ((char*)(vbat->ptr) + at * vbat->elsize);
+}
+
+void vt_array_set(const struct VitaBaseArrayType *const vbat, const void *const val, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(
+        at < vbat->len,
+        "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
+        at, 
+        vbat->len
+    );
+
+    // copy val data to vt_str_t
+    memcpy(((char*)(vbat->ptr) + at * vbat->elsize), val, vbat->elsize);
+}
+
 void *vt_array_slide_front(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
     VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
