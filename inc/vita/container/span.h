@@ -6,6 +6,8 @@
     - vt_span_from_to
     - vt_span_len
     - vt_span_get
+    - vt_span_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_span_set
     - vt_span_setT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
 */
 
@@ -26,7 +28,7 @@ typedef struct {
 */
 extern vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsize);
 
-/** Creates a span from raw data of T* in range [from_idx; to_idx]
+/** Creates a span from raw data of T* in range [from_idx; to_idx)
     @param ptr data
     @param from_idx from index
     @param to_idx to index
@@ -48,19 +50,38 @@ extern size_t vt_span_len(const vt_span_t span);
 */
 extern void *vt_span_get(const vt_span_t span, const size_t at);
 
-/** Assigns a new value at an index
+/** Returns value at index
     @param span vt_span_t instance
-    @param val value
-    @param at index to set the value
+    @param at index
+    @returns value
 */
-extern void vt_span_set(vt_span_t *const span, const void *const val, const size_t at);
+#define VT_PROTOTYPE_SPAN_GET(T, t) extern T vt_span_get##t(const vt_span_t span, const size_t at)
+VT_PROTOTYPE_SPAN_GET(int8_t, i8);
+VT_PROTOTYPE_SPAN_GET(uint8_t, u8);
+VT_PROTOTYPE_SPAN_GET(int16_t, i16);
+VT_PROTOTYPE_SPAN_GET(uint16_t, u16);
+VT_PROTOTYPE_SPAN_GET(int32_t, i32);
+VT_PROTOTYPE_SPAN_GET(uint32_t, u32);
+VT_PROTOTYPE_SPAN_GET(int64_t, i64);
+VT_PROTOTYPE_SPAN_GET(uint64_t, u64);
+VT_PROTOTYPE_SPAN_GET(float, f);
+VT_PROTOTYPE_SPAN_GET(double, d);
+VT_PROTOTYPE_SPAN_GET(real, r);
+#undef VT_PROTOTYPE_SPAN_GET
 
 /** Assigns a new value at an index
     @param span vt_span_t instance
     @param val value
     @param at index to set the value
 */
-#define VT_PROTOTYPE_SPAN_SET(T, t) extern void vt_span_set##t(vt_span_t *const span, const T val, const size_t at)
+extern void vt_span_set(vt_span_t span, const void *const val, const size_t at);
+
+/** Assigns a new value at an index
+    @param span vt_span_t instance
+    @param val value
+    @param at index to set the value
+*/
+#define VT_PROTOTYPE_SPAN_SET(T, t) extern void vt_span_set##t(vt_span_t span, const T val, const size_t at)
 VT_PROTOTYPE_SPAN_SET(int8_t, i8);
 VT_PROTOTYPE_SPAN_SET(uint8_t, u8);
 VT_PROTOTYPE_SPAN_SET(int16_t, i16);
