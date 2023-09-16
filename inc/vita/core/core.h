@@ -93,7 +93,7 @@ enum VitaTypeInfo {
     VT_TYPE_COUNT     // number of elements
 };
 
-// float, double, real (long double alias)
+// float, double, real
 typedef long double real;
 
 // removing elements from array
@@ -123,27 +123,6 @@ enum VitaStatus {
     VT_i_GENERATE_VITA_STATUS(X)
 };
 #undef X
-
-// see allocator/mallocator.h
-struct VitaBaseAllocatorType;
-
-// base array type for all array-like primitives
-struct VitaBaseArrayType {
-    // data pointers
-    union {
-        void *ptr;
-        void **ptr2;
-    };
-
-    // allocator: if `NULL`, then calloc/realloc/free is used
-    struct VitaBaseAllocatorType *alloctr;
-
-    // data information
-    size_t len;         // container length
-    size_t capacity;    // container capacity
-    size_t elsize;      // container element size
-    size_t slider_idx;  // container slider that adjusts where ptr points to
-};
 
 /* -------------- MEMORY MANAGEMENT -------------- */
 /**
