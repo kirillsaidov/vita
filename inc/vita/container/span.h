@@ -3,6 +3,7 @@
 
 /** SPAN MODULE (view)
     - vt_span_from
+    - vt_span_from_to
     - vt_span_len
     - vt_span_get
     - vt_span_setT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
@@ -18,10 +19,21 @@ typedef struct {
 } vt_span_t;
 
 /** Creates a span from raw data of T*
-    @param z raw C string
-    @returns vt_str_t
+    @param ptr data
+    @param length ditto
+    @param elsize element size
+    @returns vt_span_t
 */
 extern vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsize);
+
+/** Creates a span from raw data of T* in range [from_idx; to_idx]
+    @param ptr data
+    @param from_idx from index
+    @param to_idx to index
+    @param elsize element size
+    @returns vt_span_t
+*/
+extern vt_span_t vt_span_from_to(void *ptr, const size_t from_idx, const size_t to_idx, const size_t elsize);
 
 /** Returns vt_span_t length
     @param span vt_span_t instance

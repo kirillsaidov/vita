@@ -8,6 +8,8 @@ vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsize) {
     };
 }
 
+vt_span_t vt_span_from_to(void *ptr, const size_t from_idx, const size_t to_idx, const size_t elsize);
+
 size_t vt_span_len(const vt_span_t span) {
     return span.instance.len;
 }
