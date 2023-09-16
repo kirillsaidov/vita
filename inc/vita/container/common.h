@@ -144,19 +144,20 @@ extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t
     @param row row index
     @param col col index
     @param depth depth index
+    @param nrows number of rows (vertical height)
     @param ncols number of columns (horizontal width)
     @returns size_t 1d index
 */
-extern size_t vt_index_3d_to_1d(const size_t row, const size_t col, const size_t ncols);
+extern size_t vt_index_3d_to_1d(const size_t row, const size_t col, const size_t depth, const size_t nrows, const size_t ncols);
 
 /** Maps a 1d index to 2d index
     @param row row index to save the value
     @param col col index to save the value
-    @param idx 1d index to convert to 2d
+    @param depth depth index to save the value
+    @param idx 1d index to convert to 3d
+    @param nrows number of rows (vertical height)
     @param ncols number of columns (horizontal width)
 */
-extern void vt_index_1d_to_2d(size_t *const row, size_t *const col, const size_t idx, const size_t ncols);
+extern void vt_index_1d_to_3d(size_t *const row, size_t *const col, size_t *const depth, const size_t idx, const size_t nrows, const size_t ncols);
 
-
-vt_index_3d_to_1d
 #endif // VITA_CONTAINER_COMMON_H
