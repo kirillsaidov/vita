@@ -7,9 +7,10 @@ rm -rf bin;
 declare -a tests=( \
     "test_core" \
     "test_mallocator" \
-    "test_str" \
     "test_vec" \
+    "test_str" \
     "test_plist" \
+    "test_span" \
     "test_path" \
     "test_fileio" \
     "test_log" \
