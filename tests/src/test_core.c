@@ -14,7 +14,7 @@ int32_t main(void) {
     // convert from 1d to 2d | idx_2d = 5
     row = col = 999;
     vt_index_1d_to_2d(&row, &col, idx_2d, ncols);
-    assert(row == 1); 
+    assert(row == 1);
     assert(col == 0);
 
     // convert 3d to 1d | (row, col, depth) = (1, 0, 1)
@@ -26,6 +26,7 @@ int32_t main(void) {
     assert(row == 1); 
     assert(col == 0);
     assert(depth == 1);
-    
+
     return 0;
 }
+
