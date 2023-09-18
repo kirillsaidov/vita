@@ -61,6 +61,7 @@
 #define VT_STRING_OF(x) VT_i_STR_EXPAND(x)  // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
 #define VT_FOREACH(iter, from, to) for (size_t iter = from; iter < to; iter++)
+#define VT_FOREACH_R(iter, from, to) for (size_t iter = to; iter > from; iter--)
 
 // data types for internal usage
 enum VitaTypeInfo {
