@@ -4,7 +4,7 @@
 /** PATH MODULE
     - vt_path_build
     - vt_path_build_n
-    - vt_path_getcwd
+    - vt_path_get_cwd
     - vt_path_exists
     - vt_path_is_dir
     - vt_path_is_file
@@ -80,7 +80,7 @@ extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
 
     @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
 */
-extern vt_str_t *vt_path_getcwd(struct VitaBaseAllocatorType *alloctr);
+extern vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr);
 
 /** Checks if path exists
     @param z path
