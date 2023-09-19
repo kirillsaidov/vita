@@ -141,7 +141,7 @@ void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at
     }
 
     // shift values by one value to the end of the vt_vec_t
-    memmove(((char*)(p->ptr2) + (at + 1) * p->elsize), ((char*)(p->ptr2) + at * p->elsize), ((p->len - at) * p->elsize));
+    vt_memmove(((char*)(p->ptr2) + (at + 1) * p->elsize), ((char*)(p->ptr2) + at * p->elsize), ((p->len - at) * p->elsize));
 
     // copy the str contents to str from the specified index
     ((char**)p->ptr2)[at] = (char*)ptr;
@@ -245,7 +245,7 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
 
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
-        memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
+        vt_memmove((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (at + 1) * p->elsize, (p->len - at) * p->elsize);
     } else {
         vt_gswap((char**)(p->ptr2) + at * p->elsize, (char**)(p->ptr2) + (p->len - 1) * p->elsize, p->elsize);
     }

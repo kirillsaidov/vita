@@ -56,9 +56,13 @@ void vt_free(void *ptr) {
     free(ptr);
 }
 
-void vt_memmove(void *dest, const void *const src, const size_t bytes) {
+void *vt_memmove(void *dest, const void *const src, const size_t bytes) {
     assert(src != NULL);
-    assert(bytes > 0);
+
+    // do nothing
+    if(bytes == 0) {
+        return dest;
+    }
 
     // allocate if NULL is passed
     if (dest == NULL) {
@@ -67,6 +71,8 @@ void vt_memmove(void *dest, const void *const src, const size_t bytes) {
 
     // copy data
     memmove(dest, src, bytes);
+
+    return dest;
 }
 
 /* ------------- OTHER FUNCTIONALITY ------------- */

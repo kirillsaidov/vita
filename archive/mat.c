@@ -112,7 +112,7 @@ mat_t *mat_from(const void *const ptr, const size_t rows, const size_t cols, con
     }
 
     // copy values
-    memmove(m->ptr, ptr, rows * cols * elsize);
+    vt_memmove(m->ptr, ptr, rows * cols * elsize);
     m->rows = rows;
     m->cols = cols;
 

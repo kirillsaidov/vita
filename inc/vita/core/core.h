@@ -184,11 +184,12 @@ extern void vt_free(void *ptr);
 /** Copies data from source to destination memory buffer
     @param dest pointer to destination memory address
     @param src pointer to source memory address
+    @returns dest: a pointer to the destination
 
     @note exits upon failure
     @note if `dest == NULL`, then destination is allocated with size of `bytes`
 */
-extern void vt_memmove(void *dest, const void *const src, const size_t bytes);
+extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
