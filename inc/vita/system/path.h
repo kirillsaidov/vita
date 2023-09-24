@@ -82,9 +82,9 @@ extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
 */
 extern vt_str_t *vt_path_getcwd(struct VitaBaseAllocatorType *alloctr);
 
-/** Checks if path exists
+/** Checks if path or file exists
     @param z path
-    @returns `true` if directory exists
+    @returns `true` if directory or file exists
 */
 extern bool vt_path_exists(const char *const z);
 
