@@ -218,7 +218,7 @@ void vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
     );
 
     // copy val data to vt_str_t
-    memcpy(((char*)(v->ptr) + at * v->elsize), val, v->elsize);
+    vt_array_set(v, val, at);
 }
 
 #define VT_INSTANTIATE_VEC_SET(T, t)                                      \
@@ -250,7 +250,7 @@ void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
         v->len
     );
 
-    return ((char*)(v->ptr) + at * v->elsize);
+    return vt_array_get(v, at);
 }
 
 #define VT_INSTANTIATE_VEC_GET(T, t)                            \
@@ -289,7 +289,7 @@ void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
     }
 
     // shift values by one value to the end of the vt_vec_t
-    memmove(((char*)(v->ptr) + (at + 1) * v->elsize), ((char*)(v->ptr) + at * v->elsize), ((v->len - at) * v->elsize));
+    vt_memmove(((char*)(v->ptr) + (at + 1) * v->elsize), ((char*)(v->ptr) + at * v->elsize), ((v->len - at) * v->elsize));
 
     // copy the str contents to str from the specified index
     memcpy(((char*)(v->ptr) + at * v->elsize), val, v->elsize);
@@ -330,7 +330,7 @@ void vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStra
 
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
-        memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at) * v->elsize);
+        vt_memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at) * v->elsize);
     } else {
         vt_gswap((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (v->len - 1) * v->elsize, v->elsize);
     }

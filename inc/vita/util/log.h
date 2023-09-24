@@ -33,10 +33,10 @@
 enum VitaLogLevel {
     vt_log_info,    // write to file/stderr, move on
     vt_log_warn,    // write to file/stderr, move on
-    vt_log_debug,   // write to file/stderr if NDEBUG macro is not defined, move on
-    vt_log_error,   // write to file/stderr, exit program
+    vt_log_debug,   // write to file/stderr, move on
+    vt_log_error,   // write to file/stderr, move on
     vt_log_fatal,   // write to file/stderr, exit program
-    vt_log_assert,  // write to file/stderr if assertion fails, move on
+    vt_log_assert,  // write to file/stderr, exit program
     vt_log_count    // number of elements
 };
 
@@ -70,7 +70,7 @@ enum VitaLogLevel {
     @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 
-    @note if `NULL` is specified, redirects to stdout
+    @note if `NULL` is specified, redirects to stderr
 */
 extern void vt_log_redirect_level_output(enum VitaLogLevel vt_log_level, const char *const filename);
 
@@ -78,7 +78,7 @@ extern void vt_log_redirect_level_output(enum VitaLogLevel vt_log_level, const c
     @param vt_log_level enum VitaLogLevel (if invalid vt_log_level is specified, VT_LOG_INFO is used)
     @param filename file name to log to
 
-    @note if `NULL` is specified, redirects to stdout
+    @note if `NULL` is specified, redirects to stderr
 */
 extern void vt_log_redirect_all_output(const char *const filename);
 

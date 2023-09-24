@@ -66,7 +66,7 @@ typedef struct VitaBaseAllocatorType vt_mallocator_t;
 */
 extern vt_mallocator_t *vt_mallocator_create(void);
 
-/** Destroys a mallocator object
+/** Frees all allocated memory and destroys the mallocator object
     @param alloctr vt_mallocator_t object
 */
 extern void vt_mallocator_destroy(vt_mallocator_t *alloctr);

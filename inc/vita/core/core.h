@@ -60,7 +60,15 @@
 #define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
 #define VT_STRING_OF(x) VT_i_STR_EXPAND(x)  // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
+
+// foreach
 #define VT_FOREACH(iter, from, to) for (size_t iter = from; iter < to; iter++)
+
+// foreach reverse
+#define VT_FOREACH_R(iter, from, to) for (size_t iter = to; iter > from; iter--)
+
+// foreach with step
+#define VT_FOREACH_STEP(iter, from, to, step) for (size_t iter = from; iter < to; iter += step)
 
 // data types for internal usage
 enum VitaTypeInfo {
@@ -93,7 +101,7 @@ enum VitaTypeInfo {
     VT_TYPE_COUNT     // number of elements
 };
 
-// float, double, real (long double alias)
+// float, double, real
 typedef long double real;
 
 // removing elements from array
@@ -123,27 +131,6 @@ enum VitaStatus {
     VT_i_GENERATE_VITA_STATUS(X)
 };
 #undef X
-
-// see allocator/mallocator.h
-struct VitaBaseAllocatorType;
-
-// base array type for all array-like primitives
-struct VitaBaseArrayType {
-    // data pointers
-    union {
-        void *ptr;
-        void **ptr2;
-    };
-
-    // allocator: if `NULL`, then calloc/realloc/free is used
-    struct VitaBaseAllocatorType *alloctr;
-
-    // data information
-    size_t len;         // container length
-    size_t capacity;    // container capacity
-    size_t elsize;      // container element size
-    size_t slider_idx;  // container slider that adjusts where ptr points to
-};
 
 /* -------------- MEMORY MANAGEMENT -------------- */
 /**
@@ -197,11 +184,12 @@ extern void vt_free(void *ptr);
 /** Copies data from source to destination memory buffer
     @param dest pointer to destination memory address
     @param src pointer to source memory address
+    @returns dest: a pointer to the destination
 
     @note exits upon failure
     @note if `dest == NULL`, then destination is allocated with size of `bytes`
 */
-extern void vt_memmove(void *dest, const void *const src, const size_t bytes);
+extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 

@@ -50,8 +50,6 @@ int32_t main(void) {
         assert(vt_str_equals(vt_str_z(mystr), "Oran.Apples are sweet!?"));
 
         const vt_str_t sstack = vt_str_create_static("hi t_hi_s is a test hi, world hi");
-        printf("%s | len: %zu\n", vt_str_z(&sstack), vt_str_len(&sstack));
-        printf("%zu -------\n", vt_str_can_find(vt_str_z(&sstack), "hi"));
         assert(vt_str_can_find(vt_str_z(&sstack), "hi") == 4);
 
         vt_str_shrink(mystr);
@@ -153,11 +151,13 @@ int32_t main(void) {
 
         vt_str_clear(sto);
         vt_str_append(sto, ";My name is Kirillos;How are you?;let's play;");
+
         vt_plist_t *p = vt_str_split(NULL, sto, ";"); {
             assert(vt_plist_len(p) == 3);
 
             // free each vt_str_t in vt_plist_t
             vt_plist_apply(p, print_str);
+
         } vt_plist_destroy(p);
 
         vt_str_t *spf = vt_str_pop_get_first(NULL, sto, "Kirillos"); {
@@ -169,6 +169,7 @@ int32_t main(void) {
         } vt_str_destroy(spl);
 
         assert(vt_str_equals(vt_str_z(sto), ";How are "));
+
         vt_str_t *_s__ = vt_str_create("hello world of world of wonders!", alloctr); {
             vt_str_t *_s_ = vt_str_pop_get_last(NULL, _s__, "world"); {
                 assert(vt_str_equals(vt_str_z(_s_), " of wonders!"));
@@ -184,7 +185,7 @@ int32_t main(void) {
     assert(vt_str_len(s_strip) == 12);
     assert(vt_str_equals(vt_str_z(s_strip), "hello, world"));
     vt_str_destroy(s_strip);
-
+    
     s_strip = vt_str_create("\n  ..,!  hello, world  ;;-!  \t\n", alloctr);
     vt_str_strip_punct(s_strip);
     assert(vt_str_len(s_strip) == 12);

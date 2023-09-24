@@ -62,13 +62,13 @@ extern vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorTyp
 
 /** Returns vt_vec_t length
     @param v vt_vec_t instance
-    @returns vt_vec_t length
+    @returns size_t length
 */
 extern size_t vt_vec_len(const vt_vec_t *const v);
 
 /** Returns vt_vec_t capacity
     @param v vt_vec_t instance
-    @returns vt_vec_t capacity
+    @returns size_t capacity
 */
 extern size_t vt_vec_capacity(const vt_vec_t *const v);
 
@@ -189,7 +189,7 @@ VT_PROTOTYPE_VEC_SET(real, r);
     @param v vt_vec_t instance
     @param at index
 
-    @returns value (depends on data type)
+    @returns void*
 */
 extern void* vt_vec_get(const vt_vec_t *const v, const size_t at);
 

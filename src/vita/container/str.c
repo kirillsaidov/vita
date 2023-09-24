@@ -248,7 +248,7 @@ enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     }
 
     // copy z data to vt_str_t
-    memmove(s->ptr, z, (n * s->elsize));
+    vt_memmove(s->ptr, z, (n * s->elsize));
 
     // add the '\0' terminator
     ((char*)s->ptr)[n] = '\0';
@@ -299,7 +299,7 @@ void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     }
 
     // copy z to vt_str_t
-    memmove((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
+    vt_memmove((char*)(s->ptr) + s->len * s->elsize, z, n * s->elsize);
 
     // set new length
     s->len += n;
@@ -329,10 +329,10 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     }
 
     // shift the end of string from the specified index `at` to `at + zLen` in str
-    memmove((char*)(s->ptr) + (at + zLen) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
+    vt_memmove((char*)(s->ptr) + (at + zLen) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
 
     // copy the str contents to str from the specified index
-    memmove((char*)(s->ptr) + at * s->elsize, z, zLen * s->elsize);
+    vt_memmove((char*)(s->ptr) + at * s->elsize, z, zLen * s->elsize);
 
     // set new length
     s->len += zLen;
@@ -407,10 +407,10 @@ void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const si
     }
 
     // move everyting between [at; at + n) by n
-    memmove((char*)(s->ptr) + (at + n) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
+    vt_memmove((char*)(s->ptr) + (at + n) * s->elsize, (char*)(s->ptr) + at * s->elsize, (s->len - at) * s->elsize);
 
     // insert n elements of z between [at; at + n)
-    memmove((char*)(s->ptr) + at * s->elsize, z, n * s->elsize);
+    vt_memmove((char*)(s->ptr) + at * s->elsize, z, n * s->elsize);
 
     // set new length
     s->len += n;
@@ -472,7 +472,7 @@ void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     }
 
     // shift the characters in string from index `from + n` to `from` in strbuf
-    memmove((char*)(s->ptr) + from * s->elsize, (char*)(s->ptr) + (from + n) * s->elsize, (s->len - (from + n)) * s->elsize);
+    vt_memmove((char*)(s->ptr) + from * s->elsize, (char*)(s->ptr) + (from + n) * s->elsize, (s->len - (from + n)) * s->elsize);
 
     // set new length
     s->len -= n;
@@ -499,7 +499,7 @@ enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
     const size_t diff = (size_t)(((char*)(s->ptr) + s->len * s->elsize) - (sub + zLen * s->elsize));
 
     // shift the characters to the left of the string by the substring length
-    memmove(sub, (sub + zLen * s->elsize), diff * s->elsize);
+    vt_memmove(sub, (sub + zLen * s->elsize), diff * s->elsize);
 
     // set new length
     s->len -= zLen;
@@ -627,7 +627,7 @@ void vt_str_strip(vt_str_t *const s) {
     }
 
     // move string to the begining
-    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
+    vt_memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';
@@ -661,7 +661,7 @@ void vt_str_strip_punct(vt_str_t *const s) {
     }
 
     // move string to the begining
-    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
+    vt_memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';
@@ -721,7 +721,7 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     }
 
     // move string to the begining
-    memmove(s->ptr, (char*)(s->ptr) + offset, *len);
+    vt_memmove(s->ptr, (char*)(s->ptr) + offset, *len);
 
     // update end
     ((char*)(s->ptr))[*len] = '\0';

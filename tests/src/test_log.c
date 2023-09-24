@@ -15,16 +15,17 @@ int32_t main(void) {
     VT_LOG_ERROR("[s] Error: %s", "testing...");
 
     // -- outputs to 'logger' file
-    // FIXME: fails to log to a file after setting all lob_levels to that file
+    // FIXME: fails to log to a file after setting all log_levels to that file
     vt_log_redirect_all_output(logger_filename);
     VT_LOG_INFO("[f] This is an info test.");
     VT_LOG_WARN("[f] Testing %s formatter.", "LOG");
     VT_LOG_DEBUG("[f] Testing: debugging = %s, %s", "debug msg", "debug2");
     VT_LOG_ERROR("[f] Error: %s", "testing...");
 
-    //VT_LOG_FATAL("Must crash after logging this message."); // exits after logging the message
+    // VT_LOG_FATAL("Must crash after logging this message."); // exits after logging the message
     
     // --- set custom file to each log level
+    vt_log_redirect_all_output(NULL);
     // vt_log_redirect_level_output(ll_info, "src/test_vt_log_info.log");
     // vt_log_redirect_level_output(ll_error, "src/test_vt_log_error.log");
 
@@ -42,7 +43,7 @@ int32_t main(void) {
 
     // log assert
     VT_LOG_ASSERT(1, "%s\n", "Hello, world!"); // does not print to stderr
-    // VT_LOG_ASSERT(0, "%s\n", "Hello, world!"); // prints to stderr
+    // VT_LOG_ASSERT(0, "%s\n", "Hello, world!"); // prints to stderr, crashes
 
     return 0;
 }

@@ -24,7 +24,7 @@ vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     return st;
 }
 
-vt_str_t *vt_path_getcwd(struct VitaBaseAllocatorType *alloctr) {
+vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr) {
     return vt_str_take_ownership(getcwd(NULL, 0), alloctr);
 }
 

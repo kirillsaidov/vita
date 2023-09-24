@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "../../inc/vita/system/path.h"
 
-#define FILES_IN_DIR 15
+#define FILES_IN_DIR 16
 
 // helper functions
 void free_str(void *ptr, size_t i);
@@ -42,7 +42,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello\\world\\media\\dev"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(alloctr); {
+        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
         } vt_str_destroy(cwd);
 
@@ -68,7 +68,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(alloctr); {
+        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_destroy(cwd);
 
@@ -93,7 +93,7 @@ void test_path(void) {
         assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_getcwd(alloctr); {
+        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
             assert(vt_str_equals(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests"));
         } vt_str_destroy(cwd);
 

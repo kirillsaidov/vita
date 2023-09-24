@@ -58,9 +58,9 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include "common.h"
-#include "../container/plist.h"
+#include "plist.h"
 
-// temporary buffer size for char[]
+// temporary buffer size
 #define VT_STR_TMP_BUFFER_SIZE 1024
 
 // see core/core.h for definition
@@ -70,7 +70,7 @@ typedef struct VitaBaseArrayType vt_str_t;
     @param z raw C string
     @returns vt_str_t
 */
-vt_str_t vt_str_create_static(const char *const z);
+extern vt_str_t vt_str_create_static(const char *const z);
 
 /** Creates a new dynamic string from a raw C string (allocates additional memory for '\0')
     @param z raw C string
@@ -135,13 +135,13 @@ extern const char *vt_str_z(const vt_str_t *const s);
 
 /** Returns vt_str_t length
     @param s vt_str_t instance
-    @returns vt_str_t length
+    @returns size_t length
 */
 extern size_t vt_str_len(const vt_str_t *const s);
 
 /** Returns vt_str_t capacity
     @param s vt_str_t instance
-    @returns vt_str_t capacity
+    @returns size_t capacity
 */
 extern size_t vt_str_capacity(const vt_str_t *const s);
 
