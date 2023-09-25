@@ -19,9 +19,13 @@
     - vt_datetime_find_days_in_month
     - vt_datetime_find_days_in_year
     - vt_datetime_is_leap_year
-    - vt_datetime_as_secs
-    - vt_datetime_add
-    - vt_datetime_subtract
+    - vt_datetime_to_secs
+    - vt_datetime_from_secs
+    - vt_datetime_op
+    - vt_datetime_diff_secs
+    - vt_datetime_diff_minutes
+    - vt_datetime_diff_hours
+    - vt_datetime_diff_days
     - vt_datetime_diff
 */
 
@@ -235,9 +239,46 @@ extern struct VitaDateTime vt_datetime_from_secs(const time_t secs);
 */
 extern struct VitaDateTime vt_datetime_op(const struct VitaDateTime vdt, const struct VitaDateTime delta);
 
+/** Returns difference between two datetime stamps in seconds
+    @param vdt1 valid datetime
+    @param vdt2 valid datetime
+    @returns time_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern time_t vt_datetime_diff_secs(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2);
+
+/** Returns difference between two datetime stamps in minutes
+    @param vdt1 valid datetime
+    @param vdt2 valid datetime
+    @returns time_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern time_t vt_datetime_diff_minutes(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2);
+
+/** Returns difference between two datetime stamps in hours
+    @param vdt1 valid datetime
+    @param vdt2 valid datetime
+    @returns time_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern time_t vt_datetime_diff_hours(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2);
+
+/** Returns difference between two datetime stamps in days
+    @param vdt1 valid datetime
+    @param vdt2 valid datetime
+    @returns time_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern time_t vt_datetime_diff_days(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2);
+
 /** Returns difference between two datetime stamps
-    @param vdt VitaDateTime struct
-    @returns int64_t seconds
+    @param vdt1 valid datetime
+    @param vdt2 valid datetime
+    @returns delta datetime (days, hours, minutes, seconds)
 
     @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
 */

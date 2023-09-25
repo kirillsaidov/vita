@@ -253,10 +253,39 @@ struct VitaDateTime vt_datetime_op(const struct VitaDateTime vdt, const struct V
     return vt_datetime_tm_to_vdt(stm);
 }
 
+time_t vt_datetime_diff_secs(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
+    return vt_datetime_to_secs(vdt1) - vt_datetime_to_secs(vdt2);
+}
+
+time_t vt_datetime_diff_minutes(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
+    return vt_datetime_diff_secs(vdt1, vdt2) / 60;
+}
+
+time_t vt_datetime_diff_hours(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
+    return vt_datetime_diff_minutes(vdt1, vdt2) / 60;
+}
+
+time_t vt_datetime_diff_days(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
+    return vt_datetime_diff_hours(vdt1, vdt2) / 24;
+}
+
 struct VitaDateTime vt_datetime_diff(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
-    const time_t s1 = vt_datetime_to_secs(vdt1);
-    const time_t s2 = vt_datetime_to_secs(vdt2);
-    return vt_datetime_from_secs(s1 - s2);
+    // find datetime diff
+    const time_t diff_secs = vt_datetime_diff_secs(vdt1, vdt2);
+
+    // calculate delta
+    const float secs_in_one_day = 86400;
+    const time_t days = diff_secs/secs_in_one_day;
+    const time_t hours = (diff_secs/secs_in_one_day - days)*24;
+    const time_t minutes = ((diff_secs/secs_in_one_day - days)*24 - hours)*60;
+    const time_t secs = (((diff_secs/secs_in_one_day - days)*24 - hours)*60 - minutes)*60;
+
+    return (struct VitaDateTime) {
+        .second = secs,
+        .minute = minutes,
+        .hour = hours,
+        .month_day = days
+    };
 }
 
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
