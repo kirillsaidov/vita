@@ -19,6 +19,10 @@
     - vt_datetime_find_days_in_month
     - vt_datetime_find_days_in_year
     - vt_datetime_is_leap_year
+    - vt_datetime_as_secs
+    - vt_datetime_add
+    - vt_datetime_subtract
+    - vt_datetime_diff
 */
 
 #include "../core/core.h"
@@ -209,5 +213,34 @@ extern bool vt_datetime_is_valid_text_iso(const char *const timebuf);
     @note checks if format is valid, does not check for correct values in timestamp itself
 */
 extern bool vt_datetime_is_valid_text_iso_ext(const char *const timebuf);
+
+/** Returns datetime in seconds
+    @param vdt VitaDateTime struct
+    @returns time_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern time_t vt_datetime_to_secs(const struct VitaDateTime vdt);
+
+/** Converts seconds to vita datetime structure representation
+    @param secs seconds
+    @returns struct VitaDateTime
+*/
+extern struct VitaDateTime vt_datetime_from_secs(const time_t secs);
+
+/** Perform addition/substraction operation on datetime
+    @param vdt valid datetime
+    @param delta delta time
+    @returns struct VitaDateTime (vdt + delta)
+*/
+extern struct VitaDateTime vt_datetime_op(const struct VitaDateTime vdt, const struct VitaDateTime delta);
+
+/** Returns difference between two datetime stamps
+    @param vdt VitaDateTime struct
+    @returns int64_t seconds
+
+    @note if year is invalid, VT_DATETIME_MIN_YEAR_RANGE(1900) is used
+*/
+extern struct VitaDateTime vt_datetime_diff(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2);
 
 #endif // VITA_TIME_DATETIME_H

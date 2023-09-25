@@ -1,7 +1,7 @@
 #include "vita/time/datetime.h"
 
-static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm);
-static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt);
+static struct VitaDateTime vt_datetime_tm_to_vdt(const struct tm stm);
+static struct tm vt_datetime_vdt_to_tm(const struct VitaDateTime vdt);
 static void vt_datetime_to_text_fmt(const struct VitaDateTime vdt, char *timebuf, const size_t len, const char *fmt);
 static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const char *fmt);
 static bool vt_datetime_is_valid_fmt(const char *const timebuf, const char *const fmt, const size_t len);
@@ -226,13 +226,46 @@ bool vt_datetime_is_valid_text_iso_ext(const char *const timebuf) {
     return vt_datetime_is_valid_fmt(timebuf, fmt, sizeof(fmt));
 }
 
+time_t vt_datetime_to_secs(const struct VitaDateTime vdt) {
+    const struct tm stm = vt_datetime_vdt_to_tm(vdt);
+    return mktime((struct tm*)&stm);
+}
+
+struct VitaDateTime vt_datetime_from_secs(const time_t secs) {
+    const struct tm stm = *localtime(&secs);
+    return vt_datetime_tm_to_vdt(stm);
+}
+
+struct VitaDateTime vt_datetime_op(const struct VitaDateTime vdt, const struct VitaDateTime delta){
+    struct tm stm = vt_datetime_vdt_to_tm(vdt);
+
+    // add delta
+    stm.tm_year += delta.year;
+    stm.tm_mon += delta.month;
+    stm.tm_mday += delta.month_day;
+    stm.tm_hour += delta.hour;
+    stm.tm_min += delta.minute;
+    stm.tm_sec += delta.second;
+
+    // correct for delta
+    mktime(&stm);
+
+    return vt_datetime_tm_to_vdt(stm);
+}
+
+struct VitaDateTime vt_datetime_diff(const struct VitaDateTime vdt1, const struct VitaDateTime vdt2) {
+    const time_t s1 = vt_datetime_to_secs(vdt1);
+    const time_t s2 = vt_datetime_to_secs(vdt2);
+    return vt_datetime_from_secs(s1 - s2);
+}
+
 /* ---------------------- PRIVATE FUNCTIONS ---------------------- */
 
 /** Converts from `tm` to `VitaDateTime` datetime format
     @param stm tm struct
     @returns struct VitaDateTime
 */
-static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm) {
+static struct VitaDateTime vt_datetime_tm_to_vdt(const struct tm stm) {
     /** struct tm variables range:
         year        years passed since VT_DATETIME_MIN_YEAR_RANGE | + VT_DATETIME_MIN_YEAR_RANGE = YYYY
         month       [0, 11] | + 1 = [1, 12]
@@ -261,9 +294,9 @@ static struct VitaDateTime vt_datetime_tm_to_vdt(struct tm stm) {
     @param vdt VitaDateTime struct
     @returns struct tm
 */
-static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
+static struct tm vt_datetime_vdt_to_tm(const struct VitaDateTime vdt) {
     return (struct tm) {
-        .tm_year = vdt.year - VT_DATETIME_MIN_YEAR_RANGE,
+        .tm_year = vdt.year ? (vdt.year - VT_DATETIME_MIN_YEAR_RANGE) : VT_DATETIME_MIN_YEAR_RANGE,
         .tm_mon = vdt.month - 1,
         .tm_mday = vdt.month_day,
         .tm_hour = vdt.hour, 
@@ -271,7 +304,7 @@ static struct tm vt_datetime_vdt_to_tm(struct VitaDateTime vdt) {
         .tm_sec = vdt.second,
         .tm_wday = (vdt.week_day == 7) ? 0 : vdt.week_day,
         .tm_yday = vdt.year_day - 1,
-        .tm_isdst = -1
+        .tm_isdst = 0
     };
 }
 
@@ -312,7 +345,7 @@ static struct VitaDateTime vt_datetime_from_text_fmt(const char *timebuf, const 
     // adjust
     stm.tm_year -= VT_DATETIME_MIN_YEAR_RANGE;
     stm.tm_mon -= 1;
-    stm.tm_isdst = -1;
+    stm.tm_isdst = 0;
 
     return vt_datetime_tm_to_vdt(stm);
 }
