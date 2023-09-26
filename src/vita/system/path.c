@@ -157,7 +157,6 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     vt_plist_t *pl = (p == NULL) 
         ? vt_plist_create(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL)
         : p;
-    vt_plist_clear(pl);
 
     // get directory contents
     vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, pl->alloctr);
@@ -178,16 +177,16 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_append(st, PATH_SEPARATOR);
         vt_str_append(st, dirtree->d_name);
 
-        // save directory name
-        vt_str_t *d_name = vt_str_create(dirtree->d_name, pl->alloctr);
-
-        // push directory name to list
-        vt_plist_push(pl, d_name);
-
         // check if current path is a directory; if false, then break
         if (vt_path_is_dir(vt_str_z(st)) && vt_path_listdir_recurse(pl, vt_str_z(st), ignoreDotFiles) == NULL) {
             break;
         }
+
+        // save directory name
+        vt_str_t *d_name = vt_str_dup(st);
+
+        // push directory name to list
+        vt_plist_push(pl, d_name);
 
         // reset vt_str_t
         vt_str_clear(st);
@@ -366,6 +365,7 @@ bool vt_path_rmdir_recurse(const char *const z) {
     // return value
     bool status = true;
 
+
     // get all files in a directory
     // if none are found, delete the directory and return
     vt_plist_t *dir_list = vt_path_listdir_recurse(NULL, z, false);
@@ -376,24 +376,27 @@ bool vt_path_rmdir_recurse(const char *const z) {
     
     // iterate starting from the end and remove each element
     // checking its type
-    const char *zpath = NULL;
-    while((zpath = vt_plist_pop_get(dir_list)) != NULL) {
+    vt_str_t *path = NULL;
+    while((path = vt_plist_slide_front(dir_list)) != NULL) {
+        // prepend the dir structure
+
         // remove file/directory
-        status = vt_path_is_dir(zpath) ? vt_path_rmdir(zpath) : vt_path_remove(zpath);
+        status = vt_path_is_dir(vt_str_z(path)) ? vt_path_rmdir_recurse(vt_str_z(path)) : vt_path_remove(vt_str_z(path));
 
         // check status
         if (!status) {
             goto vt_path_rmdir_recurse_cleanup__;
         }  
     }
+    vt_path_rmdir(z); // remove the folder when done with its contents
 
 vt_path_rmdir_recurse_cleanup__:
     // free all strings in dir_list
     if (dir_list != NULL) {
         const size_t dirLen = vt_plist_len(dir_list);
         for (size_t i = 0; i < dirLen; i++) {
-            zpath = vt_plist_get(dir_list, i);
-            VT_FREE((void*)zpath);
+            vt_str_t *path = vt_plist_get(dir_list, i);
+            vt_str_destroy(path);
         }
 
         // free dir_list itself

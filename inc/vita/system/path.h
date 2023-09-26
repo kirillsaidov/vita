@@ -156,7 +156,7 @@ extern bool vt_path_mkdir_parents(const char *const z);
 */
 extern bool vt_path_rmdir(const char *const z);
 
-/** Deletes an directory and its contents
+/** Deletes a directory and its contents
     @param z a raw C string
     @returns `true` upon success, `false` otherwise
 */
@@ -169,8 +169,8 @@ extern bool vt_path_rmdir_recurse(const char *const z);
 extern bool vt_path_remove(const char *const z);
 
 /** Rename/move a directory/file
-    @param z1 file/directory
-    @param z2 new file/directory
+    @param z1 old file/directory name
+    @param z2 new file/directory name
 
     @returns `true` upon success, `false` otherwise
 */
