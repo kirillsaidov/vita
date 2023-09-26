@@ -37,8 +37,8 @@
     #include <direct.h>
     #include <windows.h>
     
-    #define PATH_SEPARATOR "\\"
-    #define DIR_PERMISSIONS NULL
+    #define VT_PATH_SEPARATOR "\\"
+    #define VT_DIR_PERMISSIONS NULL
 
     #define getcwd _getcwd
     #define mkdir CreateDirectory
@@ -53,8 +53,8 @@
     #include <dirent.h>
     #include <libgen.h>
 
-    #define PATH_SEPARATOR "/"
-    #define DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
+    #define VT_PATH_SEPARATOR "/"
+    #define VT_DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif
 
 /** Builds path from raw C strings

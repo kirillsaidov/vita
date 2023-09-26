@@ -90,6 +90,7 @@ void test_path(void) {
         // vt_path_mkdir_parents("/hello/world/of/my/"); // works
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
+        printf("PATH: %s\n", vt_str_z(s));
         assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
@@ -109,6 +110,13 @@ void test_path(void) {
         vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
             assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
+
+        vt_str_t *new_s = vt_str_create("file.txt", alloctr);
+        {
+            vt_path_basename(new_s, vt_str_z(new_s));
+            assert(vt_str_equals(vt_str_z(new_s), "file.txt"));
+        }
+        vt_str_destroy(new_s);
 
         // make directories
         // vt_path_mkdir("hello_test_dir"); // works
