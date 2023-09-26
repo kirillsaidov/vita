@@ -111,7 +111,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
 
     // get directory contents
     struct dirent *dirtree = NULL;
-    while((dirtree = readdir(dir)) != NULL) {
+    while ((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
         if ((ignoreDotFiles && dirtree->d_name[0] == '.') ||
             vt_str_equals(dirtree->d_name, ".") || 
@@ -161,7 +161,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     // get directory contents
     vt_str_t *st = vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, pl->alloctr);
     struct dirent *dirtree = NULL;
-    while((dirtree = readdir(dir)) != NULL) {
+    while ((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
         if ((ignoreDotFiles && dirtree->d_name[0] == '.') ||
             vt_str_equals(dirtree->d_name, ".") || 
@@ -377,7 +377,7 @@ bool vt_path_rmdir_recurse(const char *const z) {
     // iterate starting from the end and remove each element
     // checking its type
     vt_str_t *path = NULL;
-    while((path = vt_plist_slide_front(dir_list)) != NULL) {
+    while ((path = vt_plist_slide_front(dir_list)) != NULL) {
         // prepend the dir structure
 
         // remove file/directory
@@ -517,7 +517,7 @@ void vt_path_pop(char *const z) {
     }
 
     // pop dir entry, step back the dir tree
-    while(zlen > 0) {
+    while (zlen > 0) {
         if (z[zlen-1] == PATH_SEPARATOR[0]) {
             z[zlen-1] = '\0';
             return;
@@ -542,7 +542,7 @@ void vt_path_validate(char *const z) {
         '\\';
     #endif
 
-    while(zlen > 0) {
+    while (zlen > 0) {
         if (z[zlen-1] == need_fix_path_sep) {
             z[zlen-1] = PATH_SEPARATOR[0];
         }

@@ -60,7 +60,7 @@ void *vt_memmove(void *dest, const void *const src, const size_t bytes) {
     assert(src != NULL);
 
     // do nothing
-    if(bytes == 0) {
+    if (bytes == 0) {
         return dest;
     }
 

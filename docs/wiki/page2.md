@@ -216,7 +216,7 @@ vt_plist_reserve(p, 5);
 
 // iteration: you can use for loop or sliders (available for `vt_str_t` and `vt_vec_t` as well)
 char *z = NULL;
-while((z = vt_plist_slide_front(p)) != NULL) {
+while ((z = vt_plist_slide_front(p)) != NULL) {
     printf("%s\n", z);
 }
 /* OUTPUT:

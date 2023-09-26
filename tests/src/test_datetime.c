@@ -108,6 +108,9 @@ int32_t main(void) {
     assert(vdt_diff.hour == 22);
     assert(vdt_diff.month_day == 5);
 
+    printf("====> expri: %ld\n", vt_datetime_to_secs(vt_datetime_from_text("2023-09-25 13:30:00")));
+
+
     return 0;
 }
 

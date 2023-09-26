@@ -428,7 +428,7 @@ void vt_str_insert_before(vt_str_t *const s, const char *const sub, const char *
 
     // find the substring
     const int64_t idx = vt_str_index_find(s, sub);
-    if(idx < 0) {
+    if (idx < 0) {
         return;
     }
 
@@ -445,7 +445,7 @@ void vt_str_insert_after(vt_str_t *const s, const char *const sub, const char *c
 
     // find the substring
     const int64_t idx = vt_str_index_find(s, sub);
-    if(idx < 0) {
+    if (idx < 0) {
         return;
     }
 
@@ -520,7 +520,7 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     const size_t zLen = strlen(z);
     char *p = strstr(s->ptr, z);
     char *lastInstance = p;
-    while((p = strstr(p + zLen, z)) != NULL) {
+    while ((p = strstr(p + zLen, z)) != NULL) {
         lastInstance = p;
     }
 
@@ -545,7 +545,7 @@ enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z) {
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove all instances of substring
-    while(vt_str_remove_first(s, z) == VT_STATUS_OPERATION_SUCCESS);
+    while (vt_str_remove_first(s, z) == VT_STATUS_OPERATION_SUCCESS);
 
     return VT_STATUS_OPERATION_SUCCESS;
 }
@@ -611,7 +611,7 @@ void vt_str_strip(vt_str_t *const s) {
     const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
-    while(isspace(*curr)) {
+    while (isspace(*curr)) {
         offset++;
         curr = p + offset;
     }
@@ -621,7 +621,7 @@ void vt_str_strip(vt_str_t *const s) {
 
     // strip tailing whitespace and control symbols
     curr = p + (*len + offset - 1);
-    while(isspace(*curr)) {
+    while (isspace(*curr)) {
         (*len)--;
         curr = p + (*len + offset - 1);
     }
@@ -645,7 +645,7 @@ void vt_str_strip_punct(vt_str_t *const s) {
     const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
-    while(isspace(*curr) || ispunct(*curr)) {
+    while (isspace(*curr) || ispunct(*curr)) {
         offset++;
         curr = p + offset;
     }
@@ -655,7 +655,7 @@ void vt_str_strip_punct(vt_str_t *const s) {
 
     // strip tailing whitespace and control symbols
     curr = p + (*len + offset - 1);
-    while(isspace(*curr) || ispunct(*curr)) {
+    while (isspace(*curr) || ispunct(*curr)) {
         (*len)--;
         curr = p + (*len + offset - 1);
     }
@@ -682,7 +682,7 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     const char *curr = p + offset;
 
     // strip leading whitespace and control symbols
-    while(!stop) {
+    while (!stop) {
         for (size_t i = 0; i < cLen; i++) {
             if (*curr == c[i]) {
                 offset++;
@@ -704,7 +704,7 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     // strip tailing whitespace and control symbols
     stop = false;
     curr = p + (*len + offset - 1);
-    while(!stop) {
+    while (!stop) {
         for (size_t i = 0; i < cLen; i++) {
             if (*curr == c[i]) {
                 (*len)--;
@@ -747,7 +747,7 @@ size_t vt_str_can_find(const char *const z, const char *sub) {
 
     size_t count = 0;
     const char *p = z;
-    while((p = strstr(p, sub)) != NULL) {
+    while ((p = strstr(p, sub)) != NULL) {
         count++;
         p += subLen;
     }
@@ -789,7 +789,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
     const size_t sepLen = strlen(sep);
     const char *head = s->ptr;
     const char *current = head;
-    while(true) {
+    while (true) {
         // find sep
         current = strstr(head, sep);
 
@@ -976,7 +976,7 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     // find the last instance of sep
     const char *p = strstr(s->ptr, sep);
     const char *lastInstance = p;
-    while((p = strstr(p + sepLen, sep)) != NULL) {
+    while ((p = strstr(p + sepLen, sep)) != NULL) {
         lastInstance = p;
     }
 
@@ -1124,7 +1124,7 @@ int64_t vt_str_index_find(const vt_str_t *const s, const char *sub) {
 
     // find substring
     const char *sub_start = vt_str_find(vt_str_z(s), sub);
-    if(sub_start == NULL) {
+    if (sub_start == NULL) {
         return -1;
     }
 

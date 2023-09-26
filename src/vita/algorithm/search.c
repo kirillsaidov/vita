@@ -25,7 +25,7 @@
 //     size_t end = len - 1;
     
 //     // binary search
-//     while(start <= end) {
+//     while (start <= end) {
 //         // find the middle index
 //         int64_t index = start + (end - start)/2;
         

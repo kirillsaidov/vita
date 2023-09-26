@@ -36,13 +36,13 @@ int32_t main(const int32_t argc, const char *argv[]) {
 
     // parse args and opts
     const int8_t parse_status = vt_argopt_parse(argc, argv, optc, optv, NULL);
-    if(parse_status < 0) {
+    if (parse_status < 0) {
         printf("See 'argopt -h' for more info!\n");
         goto cleanup;
     }
 
     // display help manual
-    if(parse_status == VT_ARGOPT_PARSE_HELP_WANTED) {
+    if (parse_status == VT_ARGOPT_PARSE_HELP_WANTED) {
         vt_argopt_print_help(
             "downloader v0.3.0 -- easy video downloader",                    // header
             "Example: downloader --link your_url --save save/dir --verbose", // footer
