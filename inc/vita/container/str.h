@@ -319,20 +319,20 @@ extern void vt_str_strip_punct(vt_str_t *const s);
 extern void vt_str_strip_c(vt_str_t *const s, const char *const c);
 
 /** Find a substring
-    @param z haystack
+    @param s vt_str_t haystack
     @param sub substring needle
 
     @returns pointer to the begining of a substring in a string, or `NULL` upon failure
 */
-extern const char *vt_str_find(const char *const z, const char *sub);
+extern const char *vt_str_find(const vt_str_t *const s, const char *sub);
 
 /** Checks if vt_str_t contains a substring
-    @param z haystack
+    @param s vt_str_t haystack
     @param sub substring needle
 
     @returns number of substring instances (needles) in haystack
 */
-extern size_t vt_str_can_find(const char *const z, const char *sub);
+extern size_t vt_str_can_find(const vt_str_t *const s, const char *sub);
 
 /** Splits a string given a separator into substrings
     @param p vt_plist_t instance, if `NULL` allocates
@@ -416,20 +416,20 @@ extern bool vt_str_equals_n(const char *const z1, const char *const z2, const si
 extern bool vt_str_equals(const vt_str_t *const s1, const vt_str_t *const s2);
 
 /** Checks if a raw C string starts with a substring
-    @param z raw C string
+    @param s vt_str_t
     @param sub raw C substring
 
     @returns `true` if z starts with sub
 */
-extern bool vt_str_starts_with(const char *const z, const char *const sub);
+extern bool vt_str_starts_with(const vt_str_t *const s, const char *const sub);
 
 /** Checks if a raw C string ends with a substring
-    @param z raw C string
+    @param s vt_str_t
     @param sub raw C substring
 
     @returns `true` if z ends with sub
 */
-extern bool vt_str_ends_with(const char *const z, const char *const sub);
+extern bool vt_str_ends_with(const vt_str_t *const s, const char *const sub);
 
 /** Applies a user specified function upon each char
     @param s vt_str_t
@@ -438,12 +438,10 @@ extern bool vt_str_ends_with(const char *const z, const char *const sub);
 extern void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t));
 
 /** Checks if the entire string is a number
-    @param z raw C string
-    @param max_len max len to top checking (internally it uses strnlen)
-
+    @param s vt_str_t
     @returns true upon z being a number
 */
-extern bool vt_str_is_numeric(const char *const z, const size_t max_len);
+extern bool vt_str_is_numeric(const vt_str_t *const s);
 
 /** Converts characters to uppercase
     @param s vt_str_t

@@ -207,7 +207,7 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if path separator is present
-    if (!vt_str_can_find(vt_str_z(s), VT_PATH_SEPARATOR)) {
+    if (!vt_str_can_find(s, VT_PATH_SEPARATOR)) {
         return s;
     }
 
@@ -507,28 +507,28 @@ void vt_path_pop(char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // calculate length
-    size_t zlen = strlen(z);
+    // create vt_str_t
+    vt_str_t s = vt_str_create_static(z);
     
     // check if path ends with path separator
-    if (z[zlen-1] == VT_PATH_SEPARATOR[0]) {
-        z[zlen-1] = '\0';
+    size_t len = vt_str_len(&s);
+    if (z[len-1] == VT_PATH_SEPARATOR[0]) {
+        z[len-1] = '\0';
         return;
     }
 
     // check if path contains path separator, if it does not, return
-    if (vt_str_find(z, VT_PATH_SEPARATOR) == NULL) {
+    if (vt_str_find(&s, VT_PATH_SEPARATOR) == NULL) {
         return;
     }
 
     // pop dir entry, step back the dir tree
-    while (zlen > 0) {
-        if (z[zlen-1] == VT_PATH_SEPARATOR[0]) {
-            z[zlen-1] = '\0';
+    while (len > 0) {
+        if (z[len-1] == VT_PATH_SEPARATOR[0]) {
+            z[len-1] = '\0';
             return;
         }
-
-        zlen--;
+        len--;
     }
 }
 

@@ -11,8 +11,8 @@ int32_t main(void) {
 
     const vt_str_t static_s = vt_str_create_static("hello, world");
     assert(vt_str_equals_z(vt_str_z(&static_s), "hello, world"));
-    assert(vt_str_starts_with(vt_str_z(&static_s), "hello"));
-    assert(vt_str_ends_with(vt_str_z(&static_s), "world"));
+    assert(vt_str_starts_with((&static_s), "hello"));
+    assert(vt_str_ends_with((&static_s), "world"));
 
     // operations
     vt_str_t* mystr = vt_str_create("hello, world!", alloctr); {
@@ -45,12 +45,12 @@ int32_t main(void) {
 
         vt_str_remove(mystr, 4, 3);
         vt_str_remove_first(mystr, "Watermellon is red");
-        assert(vt_str_can_find(vt_str_z(mystr), "sweet") == 1);
-        assert(vt_str_can_find(vt_str_z(mystr), "Oran") == 1);
+        assert(vt_str_can_find(mystr, "sweet") == 1);
+        assert(vt_str_can_find(mystr, "Oran") == 1);
         assert(vt_str_equals_z(vt_str_z(mystr), "Oran.Apples are sweet!?"));
 
         const vt_str_t sstack = vt_str_create_static("hi t_hi_s is a test hi, world hi");
-        assert(vt_str_can_find(vt_str_z(&sstack), "hi") == 4);
+        assert(vt_str_can_find(&sstack, "hi") == 4);
 
         vt_str_shrink(mystr);
         assert(vt_str_len(mystr) == 23);
@@ -237,13 +237,13 @@ int32_t main(void) {
     s_strip = vt_str_create("hello, world!", alloctr);
     vt_str_to_uppercase(s_strip);
     assert(vt_str_equals_z(vt_str_z(s_strip), "HELLO, WORLD!"));
-    assert(!vt_str_is_numeric(vt_str_z(s_strip), 256));
+    assert(!vt_str_is_numeric(s_strip));
     
     vt_str_set(s_strip, "123");
-    assert(vt_str_is_numeric(vt_str_z(s_strip), 256));
+    assert(vt_str_is_numeric(s_strip));
 
     vt_str_set(s_strip, "564.025");
-    assert(vt_str_is_numeric(vt_str_z(s_strip), 256));
+    assert(vt_str_is_numeric(s_strip));
     vt_str_destroy(s_strip);
 
     vt_str_t *sbetween = vt_str_split_between(NULL, "https :1.8.8.8@ world", ":", "@");
