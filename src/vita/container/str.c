@@ -1107,16 +1107,29 @@ bool vt_str_is_numeric(const char *const z, const size_t max_len) {
     return true;
 }
 
-void vt_str_capitalize(vt_str_t *const s) {
+void vt_str_to_uppercase(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    // capitalize
+    // to uppercase
     char *const z = s->ptr;
     const size_t zLen = vt_str_len(s);
     for (size_t i = 0; i < zLen; i++) {
         z[i] = toupper(z[i]);
+    }
+}
+
+void vt_str_to_lowercase(vt_str_t *const s) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // to lowercase
+    char *const z = s->ptr;
+    const size_t zLen = vt_str_len(s);
+    for (size_t i = 0; i < zLen; i++) {
+        z[i] = tolower(z[i]);
     }
 }
 

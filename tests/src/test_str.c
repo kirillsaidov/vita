@@ -235,7 +235,7 @@ int32_t main(void) {
     vt_str_destroy(s_strip);
 
     s_strip = vt_str_create("hello, world!", alloctr);
-    vt_str_capitalize(s_strip);
+    vt_str_to_uppercase(s_strip);
     assert(vt_str_equals_z(vt_str_z(s_strip), "HELLO, WORLD!"));
     assert(!vt_str_is_numeric(vt_str_z(s_strip), 256));
     

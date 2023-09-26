@@ -94,7 +94,7 @@ vt_str_strip("  hello, world\n   ");        // strips leading and tailing whites
 vt_str_strip_punct(",. \n hello, world!");  // strips leading and tailing punctuation marks + whitespace and control symbols
 ```
 
-There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_capitalize`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or [test_str.c](../../tests/src/test_str.c) files.
+There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_to_uppercase`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or [test_str.c](../../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vt_vec_t`
 ```c

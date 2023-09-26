@@ -47,7 +47,7 @@
     - vt_str_ends_with
     - vt_str_apply
     - vt_str_is_numeric
-    - vt_str_capitalize
+    - vt_str_to_uppercase
     - vt_str_index_of
     - vt_str_index_find
     - vt_str_slide_front
@@ -445,10 +445,15 @@ extern void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t));
 */
 extern bool vt_str_is_numeric(const char *const z, const size_t max_len);
 
-/** Capitalizes a string
+/** Converts characters to uppercase
     @param s vt_str_t
 */
-extern void vt_str_capitalize(vt_str_t *const s);
+extern void vt_str_to_uppercase(vt_str_t *const s);
+
+/** Converts characters to lowercase
+    @param s vt_str_t
+*/
+extern void vt_str_to_lowercase(vt_str_t *const s);
 
 /** Returns the index of a first occurance of character in a string
     @param s vt_str_t
