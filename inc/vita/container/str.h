@@ -42,7 +42,7 @@
     - vt_str_split_between
     - vt_str_pop_get_first
     - vt_str_pop_get_last
-    - vt_str_equals
+    - vt_str_equals_z
     - vt_str_starts_with
     - vt_str_ends_with
     - vt_str_apply
@@ -396,7 +396,7 @@ extern vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char
 
     @returns `true` if z1 == z2
 */
-extern bool vt_str_equals(const char *const z1, const char *const z2);
+extern bool vt_str_equals_z(const char *const z1, const char *const z2);
 
 /** Checks if N characters of C strings are the same
     @param z1 raw C string
@@ -406,6 +406,14 @@ extern bool vt_str_equals(const char *const z1, const char *const z2);
     @returns `true` if z1[0..n] == z2[0..n]
 */
 extern bool vt_str_equals_n(const char *const z1, const char *const z2, const size_t n);
+
+/** Checks if two strings are equal
+    @param z1 raw C string
+    @param z2 raw C string
+
+    @returns `true` if z1 == z2
+*/
+extern bool vt_str_equals(const vt_str_t *const s1, const vt_str_t *const s2);
 
 /** Checks if a raw C string starts with a substring
     @param z raw C string

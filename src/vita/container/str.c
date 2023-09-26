@@ -923,6 +923,7 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
+    // check sep len is valid
     const size_t sepLen = strlen(sep);
     if (!vt_str_len(s) || !sepLen) {
         return sr;
@@ -965,8 +966,15 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
+    // check sep len is valid
     const size_t sepLen = strlen(sep);
     if (!vt_str_len(s) || !sepLen) {
+        return sr;
+    }
+
+    // check if s contains sep substring
+    const char *const tempStr = strstr(s->ptr, sep);
+    if (tempStr == NULL) {
         return sr;
     }
 
@@ -1007,17 +1015,17 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
     return spop;
 }
 
-bool vt_str_equals(const char *const z1, const char *const z2) {
+bool vt_str_equals_z(const char *const z1, const char *const z2) {
     // check for invalid input
     VT_DEBUG_ASSERT(z1 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    const size_t z1Len = strlen(z1);
-    if (z1Len != strlen(z2)) {
+    const size_t len = strlen(z1);
+    if (len != strlen(z2)) {
         return false;
     }
 
-    return !strncmp(z1, z2, z1Len);
+    return !strncmp(z1, z2, len);
 }
 
 bool vt_str_equals_n(const char *const z1, const char *const z2, const size_t n) {
@@ -1029,6 +1037,19 @@ bool vt_str_equals_n(const char *const z1, const char *const z2, const size_t n)
     VT_ENFORCE(n <= strlen(z2), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     return !strncmp(z1, z2, n);
+}
+
+bool vt_str_equals(const vt_str_t *const s1, const vt_str_t *const s2) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s1 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    const size_t len = vt_str_len(s1);
+    if (len != vt_str_len(s2)) {
+        return false;
+    }
+
+    return !strncmp(vt_str_z(s1), vt_str_z(s2), len);
 }
 
 bool vt_str_starts_with(const char *const z, const char *const sub) {
