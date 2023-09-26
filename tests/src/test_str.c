@@ -273,6 +273,12 @@ int32_t main(void) {
         assert(idx == 14);
     } vt_str_destroy(ntmp_str);
 
+    vt_str_t *new_s = vt_str_create("file.txt", alloctr);
+    {
+        //
+    }
+    vt_str_destroy(new_s);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }

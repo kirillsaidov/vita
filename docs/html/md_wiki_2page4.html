@@ -166,7 +166,7 @@ Checking directory info</h2>
 <div class="line">vt_path_pop(zpath);</div>
 <div class="line">assert(vt_str_equals(zpath, <span class="stringliteral">&quot;media&quot;</span>));</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// validate path for correct PATH_SEPARATOR and fix it</span></div>
+<div class="line"><span class="comment">// validate path for correct VT_PATH_SEPARATOR and fix it</span></div>
 <div class="line">zpath = <span class="stringliteral">&quot;media\\dev\\main.c&quot;</span>;</div>
 <div class="line">vt_path_validate(zpath);</div>
 <div class="line">assert(vt_str_equals(zpath, <span class="stringliteral">&quot;media/dev/main.c&quot;</span>)); <span class="comment">// if on unix</span></div>

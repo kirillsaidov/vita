@@ -870,9 +870,8 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
 
     // create vt_str_t if needed
     vt_str_t *st = (s == NULL)
-        ? vt_str_create_len(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
+        ? vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
         : s;
-    vt_str_clear(st);
 
     // append the first part
     vt_str_append(st, vt_plist_get(p, 0));
@@ -894,9 +893,8 @@ vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n
 
     // create a new vt_str_t instance
     vt_str_t *st = (s == NULL) 
-        ? vt_str_create_len(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
+        ? vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
         : s;
-    vt_str_clear(st);
 
     // append
     va_list args;
@@ -944,9 +942,8 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
 
     // create vt_str_t instance
     vt_str_t *spop = (sr == NULL) 
-        ? vt_str_create_len(copyLen, NULL) 
+        ? vt_str_create_capacity(copyLen, NULL) 
         : sr;
-    vt_str_clear(spop);
 
     // if not enough space, reserve more
     if (vt_str_len(spop) < copyLen) {
@@ -993,9 +990,8 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
 
     // create vt_str_t instance
     vt_str_t *spop = (sr == NULL) 
-        ? vt_str_create_len(copyLen, NULL) 
+        ? vt_str_create_capacity(copyLen, NULL) 
         : sr;
-    vt_str_clear(spop);
 
     // if not enough space, reserve more
     if (vt_str_len(spop) < copyLen) {

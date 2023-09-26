@@ -1,7 +1,7 @@
 #include "vita/system/path.h"
 
 vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
-    return vt_str_join(s, PATH_SEPARATOR, p);
+    return vt_str_join(s, VT_PATH_SEPARATOR, p);
 }
 
 vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
@@ -16,7 +16,7 @@ vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     va_end(args);
     
     // join
-    vt_str_t *st = vt_str_join(s, PATH_SEPARATOR, p);
+    vt_str_t *st = vt_str_join(s, VT_PATH_SEPARATOR, p);
 
     // cleanup
     vt_plist_destroy(p);
@@ -174,7 +174,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_append(st, z);
 
         // append the next path listed (my_path + / + next_path)
-        vt_str_append(st, PATH_SEPARATOR);
+        vt_str_append(st, VT_PATH_SEPARATOR);
         vt_str_append(st, dirtree->d_name);
 
         // check if current path is a directory; if false, then break
@@ -206,6 +206,11 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
+    // check if path separator is present
+    if (!vt_str_can_find(vt_str_z(s), VT_PATH_SEPARATOR)) {
+        return s;
+    }
+
     // create a new vt_str_t instance
     vt_str_t *st = (s == NULL)
         ? vt_str_create_len(strlen(z), NULL) 
@@ -215,7 +220,7 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     const char *ptr = NULL;
     const size_t sLen = vt_str_len(st);
     for (size_t i = sLen - 1; i > 0; i--) {
-        if (z[i] == PATH_SEPARATOR[0] && i != sLen - 1) {
+        if (z[i] == VT_PATH_SEPARATOR[0] && i != sLen - 1) {
             ptr = &z[i+1];
             break;
         }
@@ -242,7 +247,7 @@ bool vt_path_mkdir(const char *const z) {
         return true;
     }
 
-    int status = mkdir(z, DIR_PERMISSIONS);
+    int status = mkdir(z, VT_DIR_PERMISSIONS);
     /* Permissions (on unix):
         S_IRWXU - 00700 user (file owner) has read, write and execute permission
         S_IRWXG - 00070 group has read, write and execute permission
@@ -291,7 +296,7 @@ bool vt_path_mkdir_parents(const char *const z) {
     }
 
     // split string into directories
-    dir_list = vt_str_split(NULL, s, PATH_SEPARATOR);
+    dir_list = vt_str_split(NULL, s, VT_PATH_SEPARATOR);
     if (dir_list == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
@@ -307,7 +312,7 @@ bool vt_path_mkdir_parents(const char *const z) {
         
         // append it to the full path
         vt_str_append(sfull, vt_str_z(sdir));
-        vt_str_append(sfull, PATH_SEPARATOR);
+        vt_str_append(sfull, VT_PATH_SEPARATOR);
         
         // make that directory
         vt_path_mkdir(vt_str_z(sfull));
@@ -506,19 +511,19 @@ void vt_path_pop(char *const z) {
     size_t zlen = strlen(z);
     
     // check if path ends with path separator
-    if (z[zlen-1] == PATH_SEPARATOR[0]) {
+    if (z[zlen-1] == VT_PATH_SEPARATOR[0]) {
         z[zlen-1] = '\0';
         return;
     }
 
     // check if path contains path separator, if it does not, return
-    if (vt_str_find(z, PATH_SEPARATOR) == NULL) {
+    if (vt_str_find(z, VT_PATH_SEPARATOR) == NULL) {
         return;
     }
 
     // pop dir entry, step back the dir tree
     while (zlen > 0) {
-        if (z[zlen-1] == PATH_SEPARATOR[0]) {
+        if (z[zlen-1] == VT_PATH_SEPARATOR[0]) {
             z[zlen-1] = '\0';
             return;
         }
@@ -544,7 +549,7 @@ void vt_path_validate(char *const z) {
 
     while (zlen > 0) {
         if (z[zlen-1] == need_fix_path_sep) {
-            z[zlen-1] = PATH_SEPARATOR[0];
+            z[zlen-1] = VT_PATH_SEPARATOR[0];
         }
 
         zlen--;

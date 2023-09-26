@@ -105,7 +105,7 @@ if (file_size < 0) {
 vt_path_pop(zpath);
 assert(vt_str_equals(zpath, "media"));
 
-// validate path for correct PATH_SEPARATOR and fix it
+// validate path for correct VT_PATH_SEPARATOR and fix it
 zpath = "media\\dev\\main.c";
 vt_path_validate(zpath);
 assert(vt_str_equals(zpath, "media/dev/main.c")); // if on unix
