@@ -53,16 +53,16 @@ char timebuf[VT_DATETIME_BUFFER_SIZE] = {0};
 
 // convert datetime object to its string representation
 vt_datetime_to_text(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);
-assert(vt_str_equals(timebuf, "2023-01-01 11:24:56"));
+assert(vt_str_equals_z(timebuf, "2023-01-01 11:24:56"));
 
 vt_datetime_to_text_iso(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);
-assert(vt_str_equals(timebuf, "20230101T112456"));
+assert(vt_str_equals_z(timebuf, "20230101T112456"));
 
 vt_datetime_to_text_iso_ext(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);
-assert(vt_str_equals(timebuf, "2023-01-01T11:24:56"));
+assert(vt_str_equals_z(timebuf, "2023-01-01T11:24:56"));
 
 vt_datetime_to_text_pretty(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);
-assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
+assert(vt_str_equals_z(timebuf, "Sun Jan  1 11:24:56 2023"));
 ```
 
 ### Convert string to datetime

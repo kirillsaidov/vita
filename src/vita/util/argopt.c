@@ -19,7 +19,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
     int8_t parse_status = VT_ARGOPT_PARSE_SUCCESS;
 
     // if help wanted
-    if (argc == 2 && (argv[1][0] == '?' || vt_str_equals(argv[1], "-h") || vt_str_equals(argv[1], "--help"))) {
+    if (argc == 2 && (argv[1][0] == '?' || vt_str_equals_z(argv[1], "-h") || vt_str_equals_z(argv[1], "--help"))) {
         return VT_ARGOPT_PARSE_HELP_WANTED;
     }
 
@@ -47,7 +47,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
             // Case 1
             if (vt_str_len(s_opt_split)) {
                 // check if option is known
-                if (vt_str_equals(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals(vt_str_z(s_opt_split), opt->optionShort)) {
+                if (vt_str_equals_z(vt_str_z(s_opt_split), opt->optionLong) || vt_str_equals_z(vt_str_z(s_opt_split), opt->optionShort)) {
                     vt_argopt_assign_value(opt, vt_str_z(s_arg_value), alloctr);
 
                     // reset to NULL, since it was recognized
@@ -56,7 +56,7 @@ int8_t vt_argopt_parse(const size_t argc, const char **const argv, const size_t 
                 }
             } else { // Case 2:
                 // check if option is known
-                if (vt_str_equals(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals(vt_str_z(s_arg_value), opt->optionShort)) {
+                if (vt_str_equals_z(vt_str_z(s_arg_value), opt->optionLong) || vt_str_equals_z(vt_str_z(s_arg_value), opt->optionShort)) {
                     if (i + 1 < argc && argv[i+1][0] != '-') {
                         vt_argopt_assign_value(opt, argv[++i], alloctr);
                     } else {
@@ -185,7 +185,7 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
         
         // bool, char, vt_str, vt_str_z
         case VT_TYPE_BOOL:
-            *(bool*)(opt->optionValue) = (value[0] == '1' || vt_str_equals(value, "true") ? true : false);
+            *(bool*)(opt->optionValue) = (value[0] == '1' || vt_str_equals_z(value, "true") ? true : false);
             break;
         case VT_TYPE_CHAR:
             *(char*)(opt->optionValue) = value[0];

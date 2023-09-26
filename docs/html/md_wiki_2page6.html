@@ -126,16 +126,16 @@ Convert datetime to string</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// convert datetime object to its string representation</span></div>
 <div class="line">vt_datetime_to_text(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);</div>
-<div class="line">assert(vt_str_equals(timebuf, <span class="stringliteral">&quot;2023-01-01 11:24:56&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(timebuf, <span class="stringliteral">&quot;2023-01-01 11:24:56&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line">vt_datetime_to_text_iso(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);</div>
-<div class="line">assert(vt_str_equals(timebuf, <span class="stringliteral">&quot;20230101T112456&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(timebuf, <span class="stringliteral">&quot;20230101T112456&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line">vt_datetime_to_text_iso_ext(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);</div>
-<div class="line">assert(vt_str_equals(timebuf, <span class="stringliteral">&quot;2023-01-01T11:24:56&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(timebuf, <span class="stringliteral">&quot;2023-01-01T11:24:56&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line">vt_datetime_to_text_pretty(custom_time, timebuf, VT_DATETIME_BUFFER_SIZE);</div>
-<div class="line">assert(vt_str_equals(timebuf, <span class="stringliteral">&quot;Sun Jan  1 11:24:56 2023&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(timebuf, <span class="stringliteral">&quot;Sun Jan  1 11:24:56 2023&quot;</span>));</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
 Convert string to datetime</h2>
 <div class="fragment"><div class="line"><span class="comment">// convert string time representation to datetime object</span></div>

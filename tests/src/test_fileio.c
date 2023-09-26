@@ -27,7 +27,7 @@ void test_filewrite(void) {
 
         vt_str_t sbuf_check = vt_str_create_static("hello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test\r\nhello, world\r\nthis is a new day\r\n12345 test");
         vt_str_t *ss = vt_file_read("other\\test_file3.txt", alloctr); {
-            assert(vt_str_equals(vt_str_z(ss), vt_str_z(&sbuf_check)));
+            assert(vt_str_equals_z(vt_str_z(ss), vt_str_z(&sbuf_check)));
         } vt_str_destroy(ss);
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL
@@ -46,7 +46,7 @@ void test_filewrite(void) {
 
         vt_str_t sbuf_check = vt_str_create_static("hello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test\nhello, world\nthis is a new day\n12345 test");
         vt_str_t *ss = vt_file_read("other/test_file3.txt", alloctr); {
-            assert(vt_str_equals(vt_str_z(ss), vt_str_z(&sbuf_check)));
+            assert(vt_str_equals_z(vt_str_z(ss), vt_str_z(&sbuf_check)));
         } vt_str_destroy(ss);
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL

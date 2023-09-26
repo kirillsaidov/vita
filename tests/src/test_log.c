@@ -5,7 +5,7 @@
 int32_t main(void) {
     const char *const logger_filename = "other/test_logger.log";
 
-    assert(vt_str_equals(vt_log_get_level_str(vt_log_fatal), "FATAL"));
+    assert(vt_str_equals_z(vt_log_get_level_str(vt_log_fatal), "FATAL"));
     // vt_log_get_level_str(vt_log_count) // fails constraint [ arg < vt_log_count ] 
 
     // --- outputs to stderr

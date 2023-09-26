@@ -56,7 +56,7 @@ int main(void) {
         vt_plist_t *pcopy = vt_plist_dup(p, alloctr); {
             assert(vt_plist_len(pcopy) == vt_plist_len(p));
             assert(vt_plist_get(pcopy, 0) == vt_plist_get(p, 0));
-            assert(vt_str_equals(vt_plist_get(pcopy, 0), "hello"));
+            assert(vt_str_equals_z(vt_plist_get(pcopy, 0), "hello"));
         } vt_plist_destroy(pcopy);
 
         // resize

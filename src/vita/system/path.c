@@ -114,8 +114,8 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
     while ((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
         if ((ignoreDotFiles && dirtree->d_name[0] == '.') ||
-            vt_str_equals(dirtree->d_name, ".") || 
-            vt_str_equals(dirtree->d_name, "..")) 
+            vt_str_equals_z(dirtree->d_name, ".") || 
+            vt_str_equals_z(dirtree->d_name, "..")) 
         {
             continue;
         }
@@ -164,8 +164,8 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     while ((dirtree = readdir(dir)) != NULL) {
         // ignore "." and ".." directories
         if ((ignoreDotFiles && dirtree->d_name[0] == '.') ||
-            vt_str_equals(dirtree->d_name, ".") || 
-            vt_str_equals(dirtree->d_name, "..")) 
+            vt_str_equals_z(dirtree->d_name, ".") || 
+            vt_str_equals_z(dirtree->d_name, "..")) 
         {
             continue;
         }

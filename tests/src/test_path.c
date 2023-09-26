@@ -39,11 +39,11 @@ void test_path(void) {
 
     #if defined(_WIN32) || defined(_WIN64)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_str_z(s), "hello\\world\\media\\dev"));
+        assert(vt_str_equals_z(vt_str_z(s), "hello\\world\\media\\dev"));
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
+            assert(vt_str_equals_z(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
         } vt_str_destroy(cwd);
 
         assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
@@ -57,7 +57,7 @@ void test_path(void) {
         } vt_plist_destroy(pdir);
 
         vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt", alloctr); {
-            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
         // make directories
@@ -65,11 +65,11 @@ void test_path(void) {
         // vt_path_mkdir_parents("\\hello\\world\\of\\my\\"); // works
     #elif defined(__linux__)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
+        assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
+            assert(vt_str_equals_z(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
         } vt_str_destroy(cwd);
 
         assert(vt_path_exists("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
@@ -82,7 +82,7 @@ void test_path(void) {
         } vt_plist_destroy(pdir);
 
         vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
-            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
         // make directories
@@ -91,11 +91,11 @@ void test_path(void) {
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         printf("PATH: %s\n", vt_str_z(s));
-        assert(vt_str_equals(vt_str_z(s), "hello/world/media/dev"));
+        assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
         vt_str_destroy(s);
 
         vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests"));
+            assert(vt_str_equals_z(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests"));
         } vt_str_destroy(cwd);
 
         assert(vt_path_exists("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
@@ -108,13 +108,13 @@ void test_path(void) {
         } vt_plist_destroy(pdir);
 
         vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
-            assert(vt_str_equals(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
         vt_str_t *new_s = vt_str_create("file.txt", alloctr);
         {
             vt_path_basename(new_s, vt_str_z(new_s));
-            assert(vt_str_equals(vt_str_z(new_s), "file.txt"));
+            assert(vt_str_equals_z(vt_str_z(new_s), "file.txt"));
         }
         vt_str_destroy(new_s);
 
@@ -137,14 +137,14 @@ void test_expand_tilda(void) {
     vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2, alloctr);    
     {   
         #if defined(_WIN32) || defined(_WIN64)
-            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
+            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
         #elif defined(__linux__)
-            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/home/kiril/hello"));
+            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/home/kiril/hello"));
         #else
-            assert(vt_str_equals(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
+            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
         #endif
 
-        assert(vt_str_equals(vt_str_z(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
+        assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
     }
     vt_str_destroy(s_vt_path_tilda1);
     vt_str_destroy(s_vt_path_tilda2);
@@ -155,11 +155,11 @@ void test_selfpath(void) {
     VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
 
     #if defined(_WIN32) || defined(_WIN64)
-        assert(vt_str_equals(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\bin\\test_path.exe"));
+        assert(vt_str_equals_z(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\bin\\test_path.exe"));
     #elif defined(__linux__)
-        assert(vt_str_equals(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
+        assert(vt_str_equals_z(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #else
-        assert(vt_str_equals(vt_str_z(selfpath), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
+        assert(vt_str_equals_z(vt_str_z(selfpath), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
     
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_str_z(selfpath));
@@ -171,31 +171,31 @@ void test_path_pop(void) {
 
     #if defined(_WIN32) || defined(_WIN64)
         vt_path_validate((char *const)vt_str_z(path));
-        assert(vt_str_equals(vt_str_z(path), ".\\hello\\world\\bin"));
+        assert(vt_str_equals_z(vt_str_z(path), ".\\hello\\world\\bin"));
 
         vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals(vt_str_z(path), ".\\hello\\world"));
+        assert(vt_str_equals_z(vt_str_z(path), ".\\hello\\world"));
         assert(vt_str_validate_len(path) == 13);
 
         vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals(vt_str_z(path), ".\\hello"));
+        assert(vt_str_equals_z(vt_str_z(path), ".\\hello"));
         assert(vt_str_validate_len(path) == 7);
     #else
         vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals(vt_str_z(path), "./hello/world"));
+        assert(vt_str_equals_z(vt_str_z(path), "./hello/world"));
         assert(vt_str_validate_len(path) == 13);
 
         vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals(vt_str_z(path), "./hello"));
+        assert(vt_str_equals_z(vt_str_z(path), "./hello"));
         assert(vt_str_validate_len(path) == 7);
     #endif
 
     vt_path_pop((char *const)vt_str_z(path));
-    assert(vt_str_equals(vt_str_z(path), "."));
+    assert(vt_str_equals_z(vt_str_z(path), "."));
     assert(vt_str_validate_len(path) == 1);
 
     vt_path_pop((char *const)vt_str_z(path));
-    assert(vt_str_equals(vt_str_z(path), "."));
+    assert(vt_str_equals_z(vt_str_z(path), "."));
     assert(vt_str_validate_len(path) == 1);
 
     vt_str_destroy(path);

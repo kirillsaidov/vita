@@ -89,15 +89,15 @@ Path manipulation</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// path concatenation</span></div>
 <div class="line"><a class="code hl_struct" href="struct_vita_base_array_type.html">vt_str_t</a> *my_path = vt_path_build(NULL, 2, <span class="stringliteral">&quot;photos&quot;</span>, <span class="stringliteral">&quot;mountains.jpg&quot;</span>);</div>
-<div class="line">assert(vt_str_equals(vt_str_z(my_path), <span class="stringliteral">&quot;photos/mountains.jpg&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(vt_str_z(my_path), <span class="stringliteral">&quot;photos/mountains.jpg&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// extracting basename from path</span></div>
 <div class="line">my_path = vt_path_basename(my_path, <span class="stringliteral">&quot;photos/mountains.jpg&quot;</span>);</div>
-<div class="line">assert(vt_str_equals(vt_str_z(my_path), <span class="stringliteral">&quot;mountains.jpg&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(vt_str_z(my_path), <span class="stringliteral">&quot;mountains.jpg&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// expands tilda `~` to HOMEPATH both on Unix and Windows</span></div>
 <div class="line"><a class="code hl_struct" href="struct_vita_base_array_type.html">vt_str_t</a> *path_expanded = vt_path_expand_tilda(<span class="stringliteral">&quot;~/media/dev&quot;</span>, alloctr);  <span class="comment">// if alloctr == NULL, uses plain calloc/free</span></div>
-<div class="line">assert(vt_str_equals(vt_str_z(path_expanded), <span class="stringliteral">&quot;/home/userX/media/dev&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(vt_str_z(path_expanded), <span class="stringliteral">&quot;/home/userX/media/dev&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// get your EXE path</span></div>
 <div class="line"><a class="code hl_struct" href="struct_vita_base_array_type.html">vt_str_t</a> *selfpath = vt_path_get_this_exe_location(alloctr);             <span class="comment">// if alloctr == NULL, uses plain calloc/free</span></div>
@@ -164,12 +164,12 @@ Checking directory info</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// remove the last path segment</span></div>
 <div class="line">vt_path_pop(zpath);</div>
-<div class="line">assert(vt_str_equals(zpath, <span class="stringliteral">&quot;media&quot;</span>));</div>
+<div class="line">assert(vt_str_equals_z(zpath, <span class="stringliteral">&quot;media&quot;</span>));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// validate path for correct VT_PATH_SEPARATOR and fix it</span></div>
 <div class="line">zpath = <span class="stringliteral">&quot;media\\dev\\main.c&quot;</span>;</div>
 <div class="line">vt_path_validate(zpath);</div>
-<div class="line">assert(vt_str_equals(zpath, <span class="stringliteral">&quot;media/dev/main.c&quot;</span>)); <span class="comment">// if on unix</span></div>
+<div class="line">assert(vt_str_equals_z(zpath, <span class="stringliteral">&quot;media/dev/main.c&quot;</span>)); <span class="comment">// if on unix</span></div>
 </div><!-- fragment --><p>For more details, please refer to <a href="../../tests/src/test_path.c">test_fileio.c</a> files.</p>
 <p><b>[ <a class="el" href="md_wiki_2page3.html">Back</a> | <a class="el" href="md_wiki_2page5.html">Next</a> ]</b> </p>
 </div></div><!-- contents -->

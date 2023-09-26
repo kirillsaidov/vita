@@ -64,7 +64,7 @@ vt_str_destroy(str_heap_alloced);
 ### String operations
 ```c
 // comparing strings
-assert(vt_str_equals(vt_str_z(str), "hello, world"));
+assert(vt_str_equals_z(vt_str_z(str), "hello, world"));
 
 // checking if string is a numeric value
 const size_t max_check_len = 256;

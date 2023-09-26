@@ -76,8 +76,8 @@ int32_t main(void) {
     
     // check
     assert(parse_status == VT_ARGOPT_PARSE_ERROR);
-    assert(vt_str_equals(vt_str_z(rpath), "../temp"));
-    assert(vt_str_equals(vt_str_z(wpath), "./docs/dw/data/"));
+    assert(vt_str_equals_z(vt_str_z(rpath), "../temp"));
+    assert(vt_str_equals_z(vt_str_z(wpath), "./docs/dw/data/"));
     assert(intensity == (float)0.7);
     assert(polarity == (float)0.35);
     assert(volume == 83);

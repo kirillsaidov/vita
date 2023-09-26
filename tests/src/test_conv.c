@@ -14,10 +14,10 @@ int32_t main(void) {
 
     char buf[36];
     vt_conv_i64_to_str(buf, 36, 123456);
-    assert(vt_str_equals(buf, "123456"));
+    assert(vt_str_equals_z(buf, "123456"));
 
     vt_conv_d_to_str(buf, 36, 123456.123456);
-    assert(vt_str_equals(buf, "123456.123456"));
+    assert(vt_str_equals_z(buf, "123456.123456"));
 
     return 0;
 }

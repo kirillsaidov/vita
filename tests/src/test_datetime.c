@@ -23,18 +23,18 @@ int32_t main(void) {
 
     // ****** test datetime conversion TO string ****** //
     vt_datetime_to_text(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
-    assert(vt_str_equals(timebuf, "2023-01-01 11:24:56"));
+    assert(vt_str_equals_z(timebuf, "2023-01-01 11:24:56"));
 
     vt_datetime_to_text_iso(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
-    assert(vt_str_equals(timebuf, "20230101T112456"));
+    assert(vt_str_equals_z(timebuf, "20230101T112456"));
 
     vt_datetime_to_text_iso_ext(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
-    assert(vt_str_equals(timebuf, "2023-01-01T11:24:56"));
+    assert(vt_str_equals_z(timebuf, "2023-01-01T11:24:56"));
     memset(timebuf, '\0', VT_DATETIME_BUFFER_SIZE);
 
     vt_datetime_to_text_pretty(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
     VT_DEBUG_PRINTF("%s\n", timebuf);
-    assert(vt_str_equals(timebuf, "Sun Jan  1 11:24:56 2023"));
+    assert(vt_str_equals_z(timebuf, "Sun Jan  1 11:24:56 2023"));
 
     // check week day
     assert(vt_datetime_find_week_day((const struct VitaDateTime) {.year = 2023, .month = 5, .month_day = 15}) == 1);
@@ -91,12 +91,12 @@ int32_t main(void) {
     const time_t secs_vdt2 = vt_datetime_to_secs(vdt2) + 6 * secs_in_one_day; // add 6 days
     struct VitaDateTime vdt2_new = vt_datetime_from_secs(secs_vdt2);
     vt_datetime_to_text(vdt2_new, timebuf, VT_DATETIME_BUFFER_SIZE);
-    assert(vt_str_equals(timebuf, "2023-05-25 20:31:01"));
+    assert(vt_str_equals_z(timebuf, "2023-05-25 20:31:01"));
 
     // add 2 days and 9 minutes, substract 2 hours and 1 second
     struct VitaDateTime vdt3 = vt_datetime_op(vdt2, (struct VitaDateTime) { .month_day = 6, .hour = -2, .minute = 9, .second = -1 });
     vt_datetime_to_text(vdt3, timebuf, VT_DATETIME_BUFFER_SIZE);
-    assert(vt_str_equals(timebuf, "2023-05-25 18:40:00"));
+    assert(vt_str_equals_z(timebuf, "2023-05-25 18:40:00"));
 
     struct VitaDateTime vdt4 = vt_datetime_from_text("2023-05-25 18:40:00");
     struct VitaDateTime vdt5 = vt_datetime_from_text("2023-05-19 20:31:01");

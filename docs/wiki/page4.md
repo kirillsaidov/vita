@@ -14,16 +14,16 @@
 // path concatenation
 // If NULL is passed, allocates a new instance, otherwise the said instance is used and returned
 vt_str_t *my_path = vt_path_build(NULL, 2, "photos", "mountains.jpg"); 
-assert(vt_str_equals(vt_str_z(my_path), "photos/mountains.jpg"));
+assert(vt_str_equals_z(vt_str_z(my_path), "photos/mountains.jpg"));
 
 // extracting basename from path
 // If my_path is NULL, allocates a new instance, otherwise the said instance is used and returned
 my_path = vt_path_basename(my_path, "photos/mountains.jpg");
-assert(vt_str_equals(vt_str_z(my_path), "mountains.jpg"));
+assert(vt_str_equals_z(vt_str_z(my_path), "mountains.jpg"));
 
 // expands tilda `~` to HOMEPATH both on Unix and Windows
 vt_str_t *path_expanded = vt_path_expand_tilda("~/media/dev", alloctr);  // if alloctr == NULL, uses plain calloc/free
-assert(vt_str_equals(vt_str_z(path_expanded), "/home/userX/media/dev"));
+assert(vt_str_equals_z(vt_str_z(path_expanded), "/home/userX/media/dev"));
 
 // get your EXE path
 vt_str_t *selfpath = vt_path_get_this_exe_location(alloctr);             // if alloctr == NULL, uses plain calloc/free
@@ -103,12 +103,12 @@ if (file_size < 0) {
 
 // remove the last path segment
 vt_path_pop(zpath);
-assert(vt_str_equals(zpath, "media"));
+assert(vt_str_equals_z(zpath, "media"));
 
 // validate path for correct VT_PATH_SEPARATOR and fix it
 zpath = "media\\dev\\main.c";
 vt_path_validate(zpath);
-assert(vt_str_equals(zpath, "media/dev/main.c")); // if on unix
+assert(vt_str_equals_z(zpath, "media/dev/main.c")); // if on unix
 ```
 
 For more details, please refer to [test_fileio.c](../../tests/src/test_path.c) files.

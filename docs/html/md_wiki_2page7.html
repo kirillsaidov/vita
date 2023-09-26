@@ -111,7 +111,7 @@ Logger setup</h2>
 <div class="line">vt_log_redirect_all_output(log_file);</div>
 <div class="line">vt_log_redirect_all_output(NULL);                  <span class="comment">// reset</span></div>
 </div><!-- fragment --><p>You can also get log level string: </p><div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *log_level_str = vt_log_get_level_str(vt_log_info);</div>
-<div class="line">assert(vt_str_equals(<span class="stringliteral">&quot;INFO&quot;</span>, log_level_str));</div>
+<div class="line">assert(vt_str_equals_z(<span class="stringliteral">&quot;INFO&quot;</span>, log_level_str));</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
 Logging to &lt;tt&gt;stderr&lt;/tt&gt;</h2>
 <div class="fragment"><div class="line"><span class="comment">// log to stderr unless you specified otherwise above</span></div>
