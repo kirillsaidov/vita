@@ -38,7 +38,7 @@ vt_str_append(str, "hello, world!");                     // appends "hello, worl
 vt_str_appendf(str, "%s!", "hello, world");              // appends "hello, world!"
 
 // create a copy
-vt_str_t *str_copy = vt_str_dup(str, alloctr);           // if alloctr == NULL, uses plain calloc/free
+vt_str_t *str_copy = vt_str_dup(str);
 
 /* taking memory ownership from custom allocated block of data
     if alloctr == NULL, assumes plain calloc/free were used to allocate this data,
