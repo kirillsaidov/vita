@@ -43,11 +43,14 @@
     - vt_str_pop_get_first
     - vt_str_pop_get_last
     - vt_str_equals_z
+    - vt_str_equals_n
+    - vt_str_equals
     - vt_str_starts_with
     - vt_str_ends_with
     - vt_str_apply
     - vt_str_is_numeric
     - vt_str_to_uppercase
+    - vt_str_to_lowercase
     - vt_str_index_of
     - vt_str_index_find
     - vt_str_slide_front
