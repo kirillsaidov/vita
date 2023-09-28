@@ -1,12 +1,15 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 
 # project name init
-project(vita
-    VERSION 1.0
+project(
+    vita
+    VERSION 0.5.0
     DESCRIPTION "Vita - a custom C library for memory management, string manipulation and more."
-    LANGUAGES C)
+    LANGUAGES C
+)
 
 # setting default build type
+set(CMAKE_C_STANDARD 11)
 set(DEFAULT_BUILD_TYPE "Debug")
 set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra -Wreturn-type -Wswitch -Wunused -Werror -O2")
 # set(DEFAULT_BUILD_TYPE "Release")
