@@ -101,6 +101,52 @@ vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType
     return sbuffer;
 }
 
+const char *vt_file_read_to_buffer(const char *const filename, char *const buffer, const size_t buffer_len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(filename != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(buffer != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(buffer_len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // open file
+    FILE *fp = 
+    #if defined(_WIN32) || defined(_WIN64)
+        fopen(filename, "rb");
+    #else
+        fopen(filename, "r");
+    #endif
+    if (fp == NULL) {
+        VT_DEBUG_PRINTF("%s: Failed to open <%s>!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), filename);
+        return NULL;
+    }
+
+    // get file size
+    const int64_t fsize = vt_path_get_file_size(filename);
+    if (fsize < 0) {
+        VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+
+        fclose(fp);
+        return NULL;
+    }
+
+    // copy file contents into the buffer
+    const size_t bytes_read = fread(buffer, sizeof(char), buffer_len <= (size_t)fsize ? buffer_len : fsize, fp);
+    if (bytes_read != (buffer_len <= (size_t)fsize ? buffer_len : fsize)) {
+        VT_DEBUG_PRINTF(
+            "%s: Failed to read file data! Inconsistent read (%zu) != file size (%zu) bytes\n", 
+            vt_status_to_str(VT_STATUS_OPERATION_FAILURE),
+            bytes_read,
+            buffer_len <= (size_t)fsize ? buffer_len : fsize
+        );
+        fclose(fp);
+        return NULL;
+    }
+
+    // close file
+    fclose(fp);
+
+    return buffer;
+}
+
 bool vt_file_write(const char *const filename, const char *const buffer) {
     // check for invalid input
     VT_DEBUG_ASSERT(buffer != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));

@@ -53,6 +53,11 @@ void test_filewrite(void) {
         vt_file_writef("other/test_file4.txt", "%s, %s\n", "hello", "world");
     #endif
 
+    // read into buffer
+    char buf[512] = {0};
+    vt_file_read_to_buffer("other/test_file2.txt", buf, sizeof(buf));
+    assert(vt_str_equals_z(buf, "hello, world\nthis is a new day\n12345 test")); 
+
     vt_mallocator_destroy(alloctr);
 }
 
