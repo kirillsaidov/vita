@@ -99,17 +99,13 @@ bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
-bool vt_gswap(void* a, void* b, const size_t elsize) {
-    // checks
+void vt_gswap(void* a, void* b, const size_t elsize) {
     assert(a != NULL);
     assert(b != NULL);
     assert(elsize != 0);
 
     // allocate a temporary variable
-    void* temp = VT_CALLOC(elsize);
-    if (temp == NULL) {
-        return false;
-    }
+    void *temp = VT_CALLOC(elsize);
 
     // swap values
     memcpy(temp, a, elsize);    // copy a to temp
@@ -118,8 +114,16 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 
     // free temporary variable
     VT_FREE(temp);
+}
 
-    return true;
+void vt_pswap(void **a, void **b) {
+    assert(a != NULL);
+    assert(b != NULL);
+
+    // swap values
+    void *temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 const char *vt_status_to_str(const enum VitaStatus e) {

@@ -214,14 +214,18 @@ extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
-/** Generic swap
+/** Generic value swap
     @param a first value
     @param b second value
     @param elsize element size
-
-    @returns `true` upon success
 */
-extern bool vt_gswap(void* a, void* b, const size_t elsize);
+extern void vt_gswap(void *a, void *b, const size_t elsize);
+
+/** Pointer swap
+    @param a first value
+    @param b second value
+*/
+extern void vt_pswap(void **a, void **b);
 
 /** Returns a vita error string from vita error code
     @param e vita error code
