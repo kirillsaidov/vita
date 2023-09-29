@@ -2,7 +2,7 @@
 
 // generate vita error strings
 #define X(a) VT_STRING_OF(a),
-static const char *const vita_error_str[] = {
+static const char *const vt_error_str[] = {
     VT_i_GENERATE_VITA_STATUS(X)
 };
 #undef X
@@ -102,7 +102,7 @@ bool vt_gswap(void* a, void* b, const size_t elsize) {
 
 const char *vt_status_to_str(const enum VitaStatus e) {
     if (e < VT_STATUS_COUNT) {
-        return vita_error_str[e];
+        return vt_error_str[e];
     }
 
     return NULL;
