@@ -184,12 +184,33 @@ extern void vt_free(void *ptr);
 /** Copies data from source to destination memory buffer
     @param dest pointer to destination memory address
     @param src pointer to source memory address
+    @param bytes number of bytes to copy
     @returns dest: a pointer to the destination
 
-    @note exits upon failure
-    @note if `dest == NULL`, then destination is allocated with size of `bytes`
+    @note asserts upon failure
 */
 extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
+
+/** Copies data from source to destination memory buffer 
+    @param dest pointer to destination memory address
+    @param src pointer to source memory address
+    @param bytes number of bytes to copy
+    @returns dest: a pointer to the destination
+
+    @note asserts upon failure
+    @note buffers must not intersect
+*/
+extern void *vt_memcopy(void *dest, const void *const src, const size_t bytes);
+
+/** Compares the first count bytes of the objects pointed to by `lhs` and `rhs`
+    @param lhs pointer to first object
+    @param rhs pointer to second object
+    @param bytes number of bytes to compare
+    @returns true if `lhs` and `rhs` are equal
+
+    @note asserts upon failure
+*/
+extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
