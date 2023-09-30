@@ -48,7 +48,7 @@ vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const 
     };
 
     // default initiaze it to whitespace
-    memset(s->ptr, ' ', s->len);
+    vt_memset(s->ptr, ' ', s->len);
 
     return s;
 }

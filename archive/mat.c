@@ -181,7 +181,7 @@ enum VitaStatus mat_clear(mat_t *const m) {
     }
 
     // set values to 0
-    memset(m->ptr, 0, m->rows * m->cols * m->elsize);
+    vt_memset(m->ptr, 0, m->rows * m->cols * m->elsize);
 
     return VT_STATUS_OPERATION_SUCCESS;
 }

@@ -202,6 +202,16 @@ extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
 */
 extern void *vt_memcopy(void *dest, const void *const src, const size_t bytes);
 
+/** Sets block of memory pointed by `ptr` to the specified value 
+    @param ptr pointer to memory address
+    @param value value to be set
+    @param bytes number of bytes to set
+    @returns ptr
+
+    @note asserts upon failure
+*/
+extern void *vt_memset(void *ptr, const int32_t value, const size_t bytes);
+
 /** Compares the first count bytes of the objects pointed to by `lhs` and `rhs`
     @param lhs pointer to first object
     @param rhs pointer to second object

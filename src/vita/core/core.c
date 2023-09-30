@@ -86,6 +86,20 @@ void *vt_memcopy(void *dest, const void *const src, const size_t bytes) {
     return dest;
 }
 
+void *vt_memset(void *ptr, const int32_t value, const size_t bytes) {
+    assert(ptr != NULL);
+
+    // do nothing
+    if (bytes == 0) {
+        return ptr;
+    }
+
+    // set value
+    memset(ptr, value, bytes);
+
+    return ptr;
+}
+
 bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
     assert(lhs != NULL);
     assert(rhs != NULL);

@@ -30,7 +30,7 @@ int32_t main(void) {
 
     vt_datetime_to_text_iso_ext(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
     assert(vt_str_equals_z(timebuf, "2023-01-01T11:24:56"));
-    memset(timebuf, '\0', VT_DATETIME_BUFFER_SIZE);
+    vt_memset(timebuf, '\0', VT_DATETIME_BUFFER_SIZE);
 
     vt_datetime_to_text_pretty(vdt, timebuf, VT_DATETIME_BUFFER_SIZE);
     VT_DEBUG_PRINTF("%s\n", timebuf);
