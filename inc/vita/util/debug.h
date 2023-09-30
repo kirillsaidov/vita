@@ -44,8 +44,8 @@
 // leave a note, move on
 #define VT_NOTE(...) vt_debug_assert(false, "!", "NOTE", false, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
-// output important information, move on
-#define VT_REQUIRED(...) vt_debug_assert(false, "!", "REQUIRED", false, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
+// output preconditions, then quit
+#define VT_REQUIRED(...) vt_debug_assert(false, "!", "REQUIRED", true, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)
 
 // output msg, then quit
 #define VT_TODO(...) vt_debug_assert(false, "!", "TODO", true, __SOURCE_FILENAME__, __func__, __LINE__, __VA_ARGS__)

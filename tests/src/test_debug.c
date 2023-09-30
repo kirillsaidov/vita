@@ -12,7 +12,7 @@ int32_t main(void) {
     VT_DEBUG_PRINTF("This is a DEBUG message(%d)!\n", 123);
 
     VT_NOTE("This is a note.");
-    VT_REQUIRED("AAA module is required to run this.");
+    // VT_REQUIRED("AAA module is required to run this."); // outputs msg and exits
 
     // exits the program
     // VT_TODO("Will be added later.");
