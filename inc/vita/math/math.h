@@ -60,6 +60,14 @@ extern float vt_math_random_f32(const uint32_t ubound);
 
     @returns random float value
 */
-extern float vt_math_random_f32_uniform(float lbound, float ubound);
+extern float vt_math_random_f32_uniform(const float lbound, const float ubound);
+
+/** Generates a random float value from normal distribution
+    @param mean mu
+    @param std sigma
+
+    @returns random float value
+*/
+extern float vt_math_random_f32_normal(const float mean, const float std);
 
 #endif // VITA_MATH_H

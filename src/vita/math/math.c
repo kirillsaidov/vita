@@ -61,7 +61,34 @@ float vt_math_random_f32(const uint32_t bound) {
     return bound * fabs(randval);
 }
 
-float vt_math_random_f32_uniform(float lbound, float ubound) {
+float vt_math_random_f32_uniform(const float lbound, const float ubound) {
     const float randval = sin(vt_math_random_u64() * vt_math_random_u64());
     return lbound + (ubound - lbound) * fabs(randval);
 }
+
+float vt_math_random_f32_normal(const float mean, const float std) {
+    float U1, U2, W, mult;
+    static float X1, X2;
+    static bool call = 0;
+
+    if (call == 1) {
+        call = !call;
+        return (mean + std * X2);
+    }
+
+    do {
+        U1 = -1 + (vt_math_random_f32(RAND_MAX) / RAND_MAX) * 2;
+        U2 = -1 + (vt_math_random_f32(RAND_MAX) / RAND_MAX) * 2;
+        W = pow(U1, 2) + pow(U2, 2);
+    }
+    while (W >= 1 || W == 0);
+
+    mult = sqrt((-2 * log(W)) / W);
+    X1 = U1 * mult;
+    X2 = U2 * mult;
+
+    call = !call;
+
+    return (mean + std * X1);
+}
+
