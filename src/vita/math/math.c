@@ -66,14 +66,14 @@ float vt_math_random_f32_uniform(const float lbound, const float ubound) {
     return lbound + (ubound - lbound) * fabs(randval);
 }
 
-float vt_math_random_f32_normal(const float mean, const float std) {
+float vt_math_random_f32_normal(const float mu, const float std) {
     float U1, U2, W, mult;
     static float X1, X2;
     static bool call = 0;
 
     if (call == 1) {
         call = !call;
-        return (mean + std * X2);
+        return (mu + std * X2);
     }
 
     do {
@@ -89,6 +89,6 @@ float vt_math_random_f32_normal(const float mean, const float std) {
 
     call = !call;
 
-    return (mean + std * X1);
+    return (mu + std * X1);
 }
 
