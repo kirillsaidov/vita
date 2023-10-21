@@ -25,6 +25,10 @@ int main(void) {
         printf("%f\n", vt_math_random_f32_uniform(0, 1));
         // printf("%llu\n", vt_math_random_u64());
     }
+
+    // aprox. equal
+    assert(vt_math_is_close(10, 9.9, 0.11));
+    assert(vt_math_is_close(0.5, 0.49, 0.01));
     
     return 0;
 }

@@ -57,7 +57,6 @@ extern float vt_math_random_f32(const uint32_t ubound);
 /** Generates a random float value in range [lbound; ubound); approximately 'uniformely distributed' 
     @param lbound lower bound
     @param ubound upper bound
-
     @returns random float value
 */
 extern float vt_math_random_f32_uniform(const float lbound, const float ubound);
@@ -65,9 +64,18 @@ extern float vt_math_random_f32_uniform(const float lbound, const float ubound);
 /** Generates a random float value from normal distribution
     @param mu mean
     @param std sigma
-
     @returns random float value
 */
 extern float vt_math_random_f32_normal(const float mu, const float std);
+
+/** Checks if values are equal within a tolerance
+    @param lhs input value
+    @param rhs reference value
+    @param rtol relative tolerance value (-1 for automatic selection)
+    @returns random float value
+    
+    @note if `rtol<0`, then `__FLT_EPSILON__` is used
+*/
+extern bool vt_math_is_close(const float lhs, const float rhs, const float rtol);
 
 #endif // VITA_MATH_H

@@ -92,3 +92,7 @@ float vt_math_random_f32_normal(const float mu, const float std) {
     return (mu + std * X1);
 }
 
+bool vt_math_is_close(const float lhs, const float rhs, const float rtol) {
+    return fabs(lhs - rhs) < fabs(rtol);
+}
+
