@@ -6,6 +6,9 @@ int32_t main(void) {
         (int32_t)vt_conv_str_to_i64("123") == 123
     );
     assert(
+        (int32_t)vt_conv_str_to_i64("00123") == 123
+    );
+    assert(
         (uint64_t)vt_conv_str_to_u64("985454325454") == 985454325454
     );
     assert(
