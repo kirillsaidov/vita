@@ -62,6 +62,7 @@
 #include <stdarg.h>
 #include "common.h"
 #include "plist.h"
+#include "span.h"
 
 // temporary buffer size
 #define VT_STR_TMP_BUFFER_SIZE 1024
@@ -342,7 +343,7 @@ extern size_t vt_str_can_find(const vt_str_t *const s, const char *sub);
     @param s vt_str_t instance
     @param sep seperator string
 
-    @returns `vt_plist_t` of `vt_str_t`, `NULL` upon failure
+    @returns `vt_plist_t` of `vt_str_t*`, `NULL` upon failure
 */
 extern vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep);
 

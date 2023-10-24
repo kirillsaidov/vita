@@ -1,12 +1,10 @@
 #include "vita/container/common.h"
 
 struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloctr) {
-    if (alloctr == NULL) {
-        return (struct VitaBaseArrayType*)VT_CALLOC(sizeof(struct VitaBaseArrayType));
-    }
-
-    // use allocator
-    struct VitaBaseArrayType *vbat = (struct VitaBaseArrayType*)VT_ALLOCATOR_ALLOC(alloctr, sizeof(struct VitaBaseArrayType));
+    struct VitaBaseArrayType *vbat = (struct VitaBaseArrayType*)(alloctr
+        ? VT_ALLOCATOR_ALLOC(alloctr, sizeof(struct VitaBaseArrayType))
+        : VT_CALLOC(sizeof(struct VitaBaseArrayType))
+    );
     vbat->alloctr = alloctr;
 
     return vbat;
