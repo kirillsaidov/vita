@@ -124,6 +124,44 @@ int main(void) {
         }
     } vt_vec_destroy(vecmat);
 
+    // testing element removal
+    vt_vec_t *myvec = vt_vec_create(7, sizeof(int32_t), alloctr);
+    {
+        vt_vec_pushi32(myvec, 1);
+        vt_vec_pushi32(myvec, 2);
+        vt_vec_pushi32(myvec, 3);
+        vt_vec_pushi32(myvec, 4);
+        vt_vec_pushi32(myvec, 5);
+        vt_vec_pushi32(myvec, 6);
+        vt_vec_pushi32(myvec, 7);
+        assert(vt_vec_len(myvec) == 7);
+        assert(vt_vec_geti32(myvec, 0) == 1);
+
+        vt_vec_remove(myvec, 0, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_vec_geti32(myvec, 0) == 2);
+        assert(vt_vec_len(myvec) == 6);
+
+        vt_vec_remove(myvec, 0, VT_REMOVE_STRATEGY_FAST);
+        assert(vt_vec_geti32(myvec, 0) == 7);
+        assert(vt_vec_len(myvec) == 5);
+
+        vt_vec_remove(myvec, vt_vec_len(myvec) - 1, VT_REMOVE_STRATEGY_FAST);
+        assert(vt_vec_geti32(myvec, vt_vec_len(myvec) - 1) == 5);
+        assert(vt_vec_len(myvec) == 4);
+
+        vt_vec_remove(myvec, vt_vec_len(myvec) - 1, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_vec_geti32(myvec, vt_vec_len(myvec) - 1) == 4);
+        assert(vt_vec_len(myvec) == 3);
+
+        vt_vec_resize(myvec, 1);
+        assert(vt_vec_geti32(myvec, 0) == 7);
+        assert(vt_vec_len(myvec) == 1);
+
+        vt_vec_remove(myvec, 0, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_vec_len(myvec) == 0);
+    }
+    vt_vec_destroy(myvec);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }
