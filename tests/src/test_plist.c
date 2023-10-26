@@ -2,6 +2,7 @@
 
 #include "../../inc/vita/container/str.h"
 #include "../../inc/vita/container/plist.h"
+#include "../../inc/vita/util/log.h"
 
 int main(void) {
     vt_mallocator_t *alloctr = vt_mallocator_create();
@@ -10,6 +11,10 @@ int main(void) {
     char *h = "hello";
     char *w = "world";
     char *t = "temp";
+    char *a = "Aaaa";
+    char *b = "Bbbb";
+    char *c = "Cccc";
+    char *d = "Dddd";
     
     vt_plist_t *p = vt_plist_create(5, alloctr); {
         assert(vt_plist_len(p) == 0);
@@ -66,16 +71,44 @@ int main(void) {
         assert(vt_plist_len(p) == 3);
     } vt_plist_destroy(p);
 
-    // test removing 0th element
+    // testing elements removal
     vt_plist_t *list = vt_plist_create(1, alloctr);
     {
+        // push items
+        vt_plist_push(list, a);
+        vt_plist_push(list, b);
+        vt_plist_push(list, c);
+        vt_plist_push(list, d);
         vt_plist_push(list, h);
         vt_plist_push(list, w);
         vt_plist_push(list, t);
+        assert(vt_plist_len(list) == 7);
+        assert(vt_plist_get(list, 0) == a);
+
+        vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_plist_get(list, 0) != NULL);
+        printf("value(0): %s\n", vt_plist_get(list, 0));
+        assert(vt_plist_get(list, 0) == b);
+        assert(vt_plist_len(list) == 6);
 
         vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_FAST);
-        assert(vt_plist_len(list) == 0);
-        assert(vt_plist_capacity(list) == 1);
+        assert(vt_plist_get(list, 0) != NULL);
+        printf("value(0): %s\n", vt_plist_get(list, 0));
+        assert(vt_plist_get(list, 0) == t);
+        assert(vt_plist_len(list) == 5);
+
+        vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_plist_get(list, 0) != NULL);
+        printf("value(0): %s\n", vt_plist_get(list, 0));
+        assert(vt_plist_get(list, 0) == c);
+        assert(vt_plist_len(list) == 4);
+
+        vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_FAST);
+        assert(vt_plist_get(list, 0) != NULL);
+        printf("value(0): %s\n", vt_plist_get(list, 0));
+        assert(vt_plist_get(list, 0) == w);
+        assert(vt_plist_get(list, 1) == d);
+        assert(vt_plist_len(list) == 3);
     }
     vt_plist_destroy(list);
 
