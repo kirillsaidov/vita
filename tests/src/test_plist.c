@@ -87,25 +87,21 @@ int main(void) {
 
         vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_STABLE);
         assert(vt_plist_get(list, 0) != NULL);
-        printf("value(0): %s\n", vt_plist_get(list, 0));
         assert(vt_plist_get(list, 0) == b);
         assert(vt_plist_len(list) == 6);
 
         vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_FAST);
         assert(vt_plist_get(list, 0) != NULL);
-        printf("value(0): %s\n", vt_plist_get(list, 0));
         assert(vt_plist_get(list, 0) == t);
         assert(vt_plist_len(list) == 5);
 
         vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_STABLE);
         assert(vt_plist_get(list, 0) != NULL);
-        printf("value(0): %s\n", vt_plist_get(list, 0));
         assert(vt_plist_get(list, 0) == c);
         assert(vt_plist_len(list) == 4);
 
         vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_FAST);
         assert(vt_plist_get(list, 0) != NULL);
-        printf("value(0): %s\n", vt_plist_get(list, 0));
         assert(vt_plist_get(list, 0) == w);
         assert(vt_plist_get(list, 1) == d);
         assert(vt_plist_get(list, 2) == h);
