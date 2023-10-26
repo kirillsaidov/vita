@@ -6,13 +6,15 @@
 int main(void) {
     vt_mallocator_t *alloctr = vt_mallocator_create();
 
+    // elements
+    char *h = "hello";
+    char *w = "world";
+    char *t = "temp";
+    
     vt_plist_t *p = vt_plist_create(5, alloctr); {
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 5);
 
-        char *h = "hello";
-        char *w = "world";
-        char *t = "temp";
         vt_plist_push(p, h);
         vt_plist_push(p, w);
         assert(vt_plist_len(p) == 2);
@@ -63,6 +65,19 @@ int main(void) {
         vt_plist_resize(p, 3);
         assert(vt_plist_len(p) == 3);
     } vt_plist_destroy(p);
+
+    // test removing 0th element
+    vt_plist_t *list = vt_plist_create(1, alloctr);
+    {
+        vt_plist_push(list, h);
+        vt_plist_push(list, w);
+        vt_plist_push(list, t);
+
+        vt_plist_remove(list, 0, VT_REMOVE_STRATEGY_FAST);
+        assert(vt_plist_len(list) == 0);
+        assert(vt_plist_capacity(list) == 1);
+    }
+    vt_plist_destroy(list);
 
     vt_mallocator_destroy(alloctr);
     return 0;
