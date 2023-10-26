@@ -108,7 +108,16 @@ int main(void) {
         printf("value(0): %s\n", vt_plist_get(list, 0));
         assert(vt_plist_get(list, 0) == w);
         assert(vt_plist_get(list, 1) == d);
+        assert(vt_plist_get(list, 2) == h);
         assert(vt_plist_len(list) == 3);
+
+        vt_plist_shrink(list);
+        assert(vt_plist_len(list) == 3);
+        assert(vt_plist_capacity(list) == 3);
+
+        vt_plist_remove(list, vt_plist_len(list) - 1, VT_REMOVE_STRATEGY_STABLE);
+        assert(vt_plist_len(list) == 2);
+        assert(vt_plist_capacity(list) == 3);
     }
     vt_plist_destroy(list);
 

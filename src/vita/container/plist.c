@@ -243,17 +243,11 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
         p->len
     );
 
-    // if remove 1st element, just pop
-    if (p->len == 1 && at == 0) {
-        vt_plist_pop(p);
-        return;
-    }
-
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
-        vt_memmove(&p->ptr2[at], &p->ptr2[at + 1], (p->len - at) * p->elsize);
+        vt_memmove(&p->ptr2[at], &p->ptr2[at + 1], (p->len - at - 1) * p->elsize);
     } else {
-        vt_gswap(&p->ptr2[at], &p->ptr2[p->len - 1], p->elsize);
+        vt_pswap(&p->ptr2[at], &p->ptr2[p->len - 1]);
     }
 
     // update length
