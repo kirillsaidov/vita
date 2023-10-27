@@ -78,4 +78,18 @@ extern float vt_math_random_f32_normal(const float mu, const float std);
 */
 extern bool vt_math_is_close(const float lhs, const float rhs, const float rtol);
 
+/** Find greatest common divisor (GCD)
+    @param a first value
+    @param b second value
+    @returns gcd of `a` and `b`
+*/
+extern int64_t vt_math_gcd(const int64_t a, const int64_t b);
+
+/** Find least common multiple (LCM)
+    @param a first value
+    @param b second value
+    @returns lcm of `a` and `b`
+*/
+extern int64_t vt_math_lcm(int64_t a, int64_t b);
+
 #endif // VITA_MATH_H

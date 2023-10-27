@@ -96,3 +96,22 @@ bool vt_math_is_close(const float lhs, const float rhs, const float rtol) {
     return fabs(lhs - rhs) < fabs(rtol);
 }
 
+int64_t vt_math_gcd(const int64_t a, const int64_t b) {
+    int64_t rem, low_val, high_val;
+    low_val = a >= b ? b : a;
+    high_val = a >= b ? a : b;
+
+    // find gcd
+    do {
+        rem = high_val % low_val;
+        high_val = low_val;
+        low_val = rem;
+    } while (rem != 0);
+
+    return high_val;
+}
+
+int64_t vt_math_lcm(int64_t a, int64_t b) {
+    return a / vt_math_gcd(a, b) * b;
+}
+
