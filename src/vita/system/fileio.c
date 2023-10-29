@@ -129,13 +129,13 @@ const char *vt_file_read_to_buffer(const char *const filename, char *const buffe
     }
 
     // copy file contents into the buffer
-    const size_t bytes_read = fread(buffer, sizeof(char), buffer_len <= (size_t)fsize ? buffer_len : fsize, fp);
-    if (bytes_read != (buffer_len <= (size_t)fsize ? buffer_len : fsize)) {
+    const size_t bytes_read = fread(buffer, sizeof(char), buffer_len <= (size_t)fsize ? buffer_len : (size_t)fsize, fp);
+    if (bytes_read != (buffer_len <= (size_t)fsize ? buffer_len : (size_t)fsize)) {
         VT_DEBUG_PRINTF(
             "%s: Failed to read file data! Inconsistent read (%zu) != file size (%zu) bytes\n", 
             vt_status_to_str(VT_STATUS_OPERATION_FAILURE),
             bytes_read,
-            buffer_len <= (size_t)fsize ? buffer_len : fsize
+            buffer_len <= (size_t)fsize ? buffer_len : (size_t)fsize
         );
         fclose(fp);
         return NULL;

@@ -32,6 +32,12 @@ void test_filewrite(void) {
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL
         vt_file_writef("other\\test_file4.txt", "%s, %s\n", "hello", "world");
+
+        // read into buffer
+        char buf[512] = {0};
+        vt_file_read_to_buffer("other/test_file2.txt", buf, sizeof(buf));
+        assert(vt_str_equals_z(buf, "hello, world\r\nthis is a new day\r\n12345 test")); 
+
     #else
         vt_str_t *s = vt_file_read("other/test_file.txt", alloctr); {
             assert(s != NULL);
@@ -51,12 +57,12 @@ void test_filewrite(void) {
 
         // vt_file_writef(NULL, "%s, %s\n", "hello", "world"); // error, filename is NULL
         vt_file_writef("other/test_file4.txt", "%s, %s\n", "hello", "world");
-    #endif
 
-    // read into buffer
-    char buf[512] = {0};
-    vt_file_read_to_buffer("other/test_file2.txt", buf, sizeof(buf));
-    assert(vt_str_equals_z(buf, "hello, world\nthis is a new day\n12345 test")); 
+        // read into buffer
+        char buf[512] = {0};
+        vt_file_read_to_buffer("other/test_file2.txt", buf, sizeof(buf));
+        assert(vt_str_equals_z(buf, "hello, world\nthis is a new day\n12345 test")); 
+    #endif
 
     vt_mallocator_destroy(alloctr);
 }
