@@ -60,9 +60,21 @@ void test_path(void) {
             assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
-        // make directories
-        // vt_path_mkdir("hello_test_dir"); // works
-        // vt_path_mkdir_parents("\\hello\\world\\of\\my\\"); // works
+        // make a directory
+        vt_path_mkdir("hello_test_dir");
+        assert(vt_path_exists("hello_test_dir"));
+
+        // make nested directories
+        vt_path_mkdir_parents("hello\\world\\of\\my\\");
+        assert(vt_path_exists("hello\\world\\of\\my\\"));
+
+        // remove a directory
+        vt_path_rmdir("hello_test_dir");
+        assert(!vt_path_exists("hello_test_dir"));
+
+        // remove nested directories
+        vt_path_rmdir_recurse("hello\\world\\of\\my\\");
+        assert(!vt_path_exists("hello\\world\\of\\my\\"));
     #elif defined(__linux__)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
@@ -85,9 +97,21 @@ void test_path(void) {
             assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
         } vt_str_destroy(sbasename);
 
-        // make directories
-        // vt_path_mkdir("hello_test_dir"); // works
-        // vt_path_mkdir_parents("/hello/world/of/my/"); // works
+        // make a directory
+        vt_path_mkdir("hello_test_dir");
+        assert(vt_path_exists("hello_test_dir"));
+
+        // make nested directories
+        vt_path_mkdir_parents("hello/world/of/my/");
+        assert(vt_path_exists("hello/world/of/my/"));
+
+        // remove a directory
+        vt_path_rmdir("hello_test_dir");
+        assert(!vt_path_exists("hello_test_dir"));
+
+        // remove nested directories
+        vt_path_rmdir_recurse("hello/world/of/my/");
+        assert(!vt_path_exists("hello/world/of/my/"));
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         printf("PATH: %s\n", vt_str_z(s));
@@ -118,9 +142,21 @@ void test_path(void) {
         }
         vt_str_destroy(new_s);
 
-        // make directories
-        // vt_path_mkdir("hello_test_dir"); // works
-        // vt_path_mkdir_parents("/hello/world/of/my/"); // works
+        // make a directory
+        vt_path_mkdir("hello_test_dir");
+        assert(vt_path_exists("hello_test_dir"));
+
+        // make nested directories
+        vt_path_mkdir_parents("hello/world/of/my/");
+        assert(vt_path_exists("hello/world/of/my/"));
+
+        // remove a directory
+        vt_path_rmdir("hello_test_dir");
+        assert(!vt_path_exists("hello_test_dir"));
+
+        // remove nested directories
+        vt_path_rmdir_recurse("hello/world/of/my/");
+        assert(!vt_path_exists("hello/world/of/my/"));
     #endif
     
     // rename file/dirs

@@ -320,20 +320,20 @@ bool vt_path_mkdir_parents(const char *const z) {
 
 vt_label_path_mkdir_parents__:
     // free the strings
-    if (s != NULL) { vt_str_destroy(s); }
-    if (sfull != NULL) { vt_str_destroy(sfull); }
+    if (s) { vt_str_destroy(s); }
+    if (sfull) { vt_str_destroy(sfull); }
     
     // free all strings in dir_list
-    if (dir_list != NULL) {
+    if (dir_list) {
         dirLen = vt_plist_len(dir_list);
         for (size_t i = 0; i < dirLen; i++) {
             s = (vt_str_t*)(vt_plist_get(dir_list, i));
             vt_str_destroy(s);
         }
-    }
 
-    // free dir_list itself
-    if (dir_list != NULL) { vt_plist_destroy(dir_list); }
+        // free dir_list itself
+        vt_plist_destroy(dir_list);
+    }
     
     return status;
 }
