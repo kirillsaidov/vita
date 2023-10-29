@@ -26,6 +26,12 @@ int main(void) {
         // printf("%llu\n", vt_math_random_u64());
     }
 
+    printf("INT in range %% 255:\n");
+    VT_FOREACH(i, 0, N_GEN) {
+        printf("%zu\n", vt_math_random_u64() % 255 + 1);
+        // printf("%llu\n", vt_math_random_u64());
+    }
+
     // aprox. equal
     assert(vt_math_is_close(10, 9.9, 0.11));
     assert(vt_math_is_close(0.5, 0.49, 0.01));
