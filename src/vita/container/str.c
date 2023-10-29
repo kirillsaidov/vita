@@ -599,6 +599,75 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     s->ptr = sdup;
 }
 
+void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check length and do nothing if empty
+    const size_t subLen = strlen(sub);
+    const size_t rsubLen = strlen(rsub);
+    if (!subLen || !rsubLen) return;
+
+    // find number of instances to be replaced
+    const char *ptr = NULL;
+    while ((ptr = vt_str_find(s, sub))) {
+        const ptrdiff_t at_idx = ptr - vt_str_z(s);
+        vt_str_remove(s, at_idx, subLen);
+        vt_str_insert(s, rsub, at_idx);
+    }
+}
+
+void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *const rsub) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check length and do nothing if empty
+    const size_t subLen = strlen(sub);
+    const size_t rsubLen = strlen(rsub);
+    if (!subLen || !rsubLen) return;
+
+    // find number of instances to be replaced
+    const char *const ptr = vt_str_find(s, sub);
+    if (ptr) {
+        const ptrdiff_t at_idx = ptr - vt_str_z(s);
+        vt_str_remove(s, at_idx, subLen);
+        vt_str_insert(s, rsub, at_idx);
+    }
+}
+
+void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *const rsub) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check length and do nothing if empty
+    const size_t subLen = strlen(sub);
+    const size_t rsubLen = strlen(rsub);
+    if (!subLen || !rsubLen) return;
+
+    // find the last instance of sep
+    const char *ptr = strstr(s->ptr, sub);
+    const char *lastInstance = ptr;
+    while ((ptr = strstr(ptr + subLen, sub))) {
+        lastInstance = ptr;
+    }
+
+    // find number of instances to be replaced
+    if (lastInstance) {
+        const ptrdiff_t at_idx = lastInstance - vt_str_z(s);
+        vt_str_remove(s, at_idx, subLen);
+        vt_str_insert(s, rsub, at_idx);
+    }
+}
+
 void vt_str_replace_c(vt_str_t *const s, const char *const c, const char *const r) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));

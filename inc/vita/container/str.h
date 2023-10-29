@@ -307,6 +307,27 @@ extern enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z);
 */
 extern void vt_str_remove_c(vt_str_t *const s, const char *const c);
 
+/** Replace all encountered substrings with the user specified one
+    @param s vt_str_t instance
+    @param sub substring to be replaced
+    @param rsub substring to replace with
+*/
+extern void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub);
+
+/** Replace first encountered substring with the user specified one
+    @param s vt_str_t instance
+    @param sub substring to be replaced
+    @param rsub substring to replace with
+*/
+extern void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *const rsub);
+
+/** Replace last encountered substring with the user specified one
+    @param s vt_str_t instance
+    @param sub substring to be replaced
+    @param rsub substring to replace with
+*/
+extern void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *const rsub);
+
 /** Replace all encountered characters with the specified character
     @param s vt_str_t instance
     @param c characters to be replaced

@@ -293,11 +293,25 @@ int32_t main(void) {
     vt_str_destroy(s1);
 
     // replace
-    vt_str_t *text = vt_str_create("apple;orange;potato;mango;strawberry;papaya;kiwi", NULL);
+    vt_str_t *text = vt_str_create(";apple;orange;potato;mango;strawberry;papaya;kiwi;", NULL);
     {
+        // replace chars
         vt_str_replace_c(text, ";aot", ",AO");
-        printf("%s\n", vt_str_z(text));
-        assert(vt_str_equals_z(vt_str_z(text), "Apple,OrAnge,pOOAOO,mAngO,sOrAwberry,pApAyA,kiwi"));
+        assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge,pOOAOO,mAngO,sOrAwberry,pApAyA,kiwi,"));
+
+        // replace all substrings
+        vt_str_replace(text, ",", ";");
+        assert(vt_str_equals_z(vt_str_z(text), ";Apple;OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA;kiwi;"));
+
+        // replace first substrings
+        vt_str_replace_first(text, ";", ",");
+        vt_str_replace_first(text, ";", ",");
+        assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA;kiwi;"));
+
+        // replace last substrings
+        vt_str_replace_last(text, ";", ",");
+        vt_str_replace_last(text, ";", ",");
+        assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA,kiwi,"));
     }
     vt_str_destroy(text);
 
