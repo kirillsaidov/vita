@@ -46,14 +46,14 @@ float vt_math_isqrt_carmack(float v) {
 
 uint64_t vt_math_random_u64(void) {
     static int8_t random_func_is_init = 0;
-    static uint64_t random_func_x = 0;
+    static time_t random_time = 0;
     if (!random_func_is_init) {
-        random_func_x = time(NULL);
+        random_time = time(NULL);
         random_func_is_init = 1;
     }
 
-    random_func_x = (0x343FDULL * random_func_x + 0x269EC3ULL) % 0xFFFFFFFFULL;
-    return (random_func_x & 0x3FFF8000) >> 15;
+    random_time = (0x343FDULL * random_time + 0x269EC3ULL) % 0xFFFFFFFFULL;
+    return (random_time & 0x3FFF8000) >> 15;
 }
 
 float vt_math_random_f32(const uint32_t bound) {
