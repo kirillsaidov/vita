@@ -599,6 +599,34 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     s->ptr = sdup;
 }
 
+void vt_str_replace_c(vt_str_t *const s, const char *const c, const char *const r) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(r != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check length
+    const size_t rLen = strlen(r);
+    const size_t cLen = strlen(c);
+    VT_ENFORCE(rLen <= cLen, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // do nothing if empty
+    if (!rLen || !cLen) return;
+
+    // iterate over the string
+    char *const ptr = s->ptr;
+    const size_t sLen = vt_str_len(s);
+    VT_FOREACH(i, 0, sLen) {
+        VT_FOREACH(j, 0, cLen) {
+            if (ptr[i] == c[j]) {
+                ptr[i] = j < rLen ? r[j] : r[rLen - 1];
+                break;
+            }
+        }
+    }
+}
+
 void vt_str_strip(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));

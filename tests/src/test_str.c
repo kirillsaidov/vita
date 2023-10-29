@@ -292,6 +292,15 @@ int32_t main(void) {
     }
     vt_str_destroy(s1);
 
+    // replace
+    vt_str_t *text = vt_str_create("apple;orange;potato;mango;strawberry;papaya;kiwi", NULL);
+    {
+        vt_str_replace_c(text, ";aot", ",AO");
+        printf("%s\n", vt_str_z(text));
+        assert(vt_str_equals_z(vt_str_z(text), "Apple,OrAnge,pOOAOO,mAngO,sOrAwberry,pApAyA,kiwi"));
+    }
+    vt_str_destroy(text);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }

@@ -33,6 +33,7 @@
     - vt_str_remove_first
     - vt_str_remove_all
     - vt_str_remove_c
+    - vt_str_replace_c
     - vt_str_strip
     - vt_str_strip_punct
     - vt_str_strip_c
@@ -302,9 +303,22 @@ extern enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z);
 
 /** Removes all encountered characters specified by the user from vt_str_t
     @param s vt_str_t instance
-    @param c characters to remove one after another: "\\n ," => remove new line, whitespace, comma
+    @param c characters to remove one after another: "\n ," => remove new line, whitespace, comma
 */
 extern void vt_str_remove_c(vt_str_t *const s, const char *const c);
+
+/** Replace all encountered characters with the specified character
+    @param s vt_str_t instance
+    @param c characters to be replaced
+    @param r characters that should be used instead
+
+    @attention assert(strlen(r) <= strlen(c));
+    
+    @note usage case 1: `c='a'`, `r='1'` => replace `'a':'1'`
+    @note usage case 2: `c='abc'`, `r='123'` => replace `'a':'1', 'b':'2', 'c':'3'`
+    @note usage case 2: `c='abcd'`, `r='12'` => replace `'a':'1', 'b':'2', 'c':'2', 'd':'2'`
+*/
+extern void vt_str_replace_c(vt_str_t *const s, const char *const c, const char *const r);
 
 /** Strips leading and tailing whitespace and control symbols
     @param s vt_str_t instance
