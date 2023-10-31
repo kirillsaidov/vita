@@ -908,7 +908,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
                 vt_str_destroy(tempStr);
                 return p;
             }
-            vt_plist_push(p, tempStr);
+            vt_plist_push_back(p, tempStr);
             
             // update head
             head = current + sepLen;

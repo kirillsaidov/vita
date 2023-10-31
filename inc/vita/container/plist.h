@@ -13,10 +13,12 @@
     - vt_plist_clear
     - vt_plist_set
     - vt_plist_get
-    - vt_plist_push
+    - vt_plist_push_front
+    - vt_plist_push_back
     - vt_plist_pop
     - vt_plist_pop_get
     - vt_plist_remove
+    - vt_plist_remove_element
     - vt_plist_slide_front
     - vt_plist_slide_back
     - vt_plist_slide_reset
@@ -126,11 +128,17 @@ extern void vt_plist_set(vt_plist_t *const p, const void *const ptr, const size_
 */
 extern void *vt_plist_get(const vt_plist_t *const p, const size_t at);
 
+/** Push value at the begining
+    @param p vt_plist_t pointer
+    @param ptr pointer value
+*/
+extern void vt_plist_push_front(vt_plist_t *const p, const void *const ptr);
+
 /** Push value at the end
     @param p vt_plist_t pointer
     @param ptr pointer value
 */
-extern void vt_plist_push(vt_plist_t *const p, const void *const ptr);
+extern void vt_plist_push_back(vt_plist_t *const p, const void *const ptr);
 
 /** Pop the last value from the end
     @param p vt_plist_t pointer

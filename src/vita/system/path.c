@@ -11,7 +11,7 @@ vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
     for (size_t i = 0; i < n; i++) {
         // get next item
         char *z = va_arg(args, char*);
-        vt_plist_push(p, z);
+        vt_plist_push_back(p, z);
     }
     va_end(args);
     
@@ -124,7 +124,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
         vt_str_t *d_name = vt_str_create(dirtree->d_name, pl->alloctr);
 
         // push directory name to vt_plist_t
-        vt_plist_push(pl, d_name);
+        vt_plist_push_back(pl, d_name);
     }
 
     // close dir
@@ -186,7 +186,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_t *d_name = vt_str_dup(st);
 
         // push directory name to list
-        vt_plist_push(pl, d_name);
+        vt_plist_push_back(pl, d_name);
 
         // reset vt_str_t
         vt_str_clear(st);

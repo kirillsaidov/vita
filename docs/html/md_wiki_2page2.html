@@ -256,8 +256,8 @@ A list of pointers with &lt;tt&gt;vt_plist_t&lt;/tt&gt;</h2>
 <div class="line"><span class="keywordtype">char</span> *w = strdup(<span class="stringliteral">&quot;world&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// add/remove data</span></div>
-<div class="line">vt_plist_push(p, h);</div>
-<div class="line">vt_plist_push(p, w);</div>
+<div class="line">vt_plist_push_back(p, h);</div>
+<div class="line">vt_plist_push_back(p, w);</div>
 <div class="line">vt_plist_remove(p, 0, VT_REMOVE_STRATEGY_FAST);</div>
 <div class="line"> </div>
 <div class="line">assert(vt_plist_len(p) == 1);</div>

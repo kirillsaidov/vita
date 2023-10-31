@@ -20,8 +20,8 @@ int main(void) {
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 5);
 
-        vt_plist_push(p, h);
-        vt_plist_push(p, w);
+        vt_plist_push_back(p, h);
+        vt_plist_push_back(p, w);
         assert(vt_plist_len(p) == 2);
         assert(vt_plist_capacity(p) == 5);
         assert(vt_plist_has_space(p) == 3);
@@ -42,12 +42,12 @@ int main(void) {
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 7);
 
-        vt_plist_push(p, h);
-        vt_plist_push(p, w);
-        vt_plist_push(p, h);
-        vt_plist_push(p, w);
-        vt_plist_push(p, h);
-        vt_plist_push(p, w);
+        vt_plist_push_back(p, h);
+        vt_plist_push_back(p, w);
+        vt_plist_push_back(p, h);
+        vt_plist_push_back(p, w);
+        vt_plist_push_back(p, h);
+        vt_plist_push_back(p, w);
 
         void *i = NULL;
         while ((i = vt_array_slide_front(p)) != NULL) {
@@ -75,13 +75,13 @@ int main(void) {
     vt_plist_t *list = vt_plist_create(1, alloctr);
     {
         // push items
-        vt_plist_push(list, a);
-        vt_plist_push(list, b);
-        vt_plist_push(list, c);
-        vt_plist_push(list, d);
-        vt_plist_push(list, h);
-        vt_plist_push(list, w);
-        vt_plist_push(list, t);
+        vt_plist_push_back(list, a);
+        vt_plist_push_back(list, b);
+        vt_plist_push_back(list, c);
+        vt_plist_push_back(list, d);
+        vt_plist_push_back(list, h);
+        vt_plist_push_back(list, w);
+        vt_plist_push_back(list, t);
         assert(vt_plist_len(list) == 7);
         assert(vt_plist_get(list, 0) == a);
 

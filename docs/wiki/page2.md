@@ -201,8 +201,8 @@ char *h = strdup("hello");
 char *w = strdup("world");
 
 // add/remove data
-vt_plist_push(p, h);
-vt_plist_push(p, w);
+vt_plist_push_back(p, h);
+vt_plist_push_back(p, w);
 vt_plist_remove(p, 0, VT_REMOVE_STRATEGY_FAST);
 
 assert(vt_plist_len(p) == 1);

@@ -191,7 +191,17 @@ void *vt_plist_get(const vt_plist_t *const p, const size_t at) {
     return p->ptr2[at];
 }
 
-void vt_plist_push(vt_plist_t *const p, const void *ptr) {
+void vt_plist_push_front(vt_plist_t *const p, const void *const ptr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    if (vt_plist_len(p)) vt_plist_insert(p, ptr, 0);
+    else vt_plist_push_back(p, ptr);
+}
+
+void vt_plist_push_back(vt_plist_t *const p, const void *ptr) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
