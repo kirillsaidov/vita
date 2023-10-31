@@ -254,6 +254,18 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
     p->len--;
 }
 
+void vt_plist_remove_element(vt_plist_t *const p, const void *const ptr, const enum VitaRemoveStrategy rs) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(rs < VT_REMOVE_STRATEGY_COUNT, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // find element and remove element
+    const int64_t idx = vt_plist_can_find(p, ptr);
+    if (idx >= 0) vt_plist_remove(p, idx, rs);
+}
+
 int64_t vt_plist_can_find(const vt_plist_t *const p, const void *const ptr) {
     // check for invalid input
     VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
