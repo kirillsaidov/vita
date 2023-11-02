@@ -25,7 +25,7 @@
     - vt_plist_apply
 */
 
-#include "common.h"
+#include "vita/container/common.h"
 
 // new pointer list type
 typedef struct VitaBaseArrayType vt_plist_t;

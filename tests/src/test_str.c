@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdint.h>
 
-#include "../../inc/vita/container/str.h"
+#include "vita/container/str.h"
 
 void print_str(void *ptr, size_t i);
 void apply_func(char *c, size_t i);

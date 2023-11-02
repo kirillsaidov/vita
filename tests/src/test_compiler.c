@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "../../inc/vita/core/compiler.h"
-#include "../../inc/vita/container/str.h"
+#include "vita/core/compiler.h"
+#include "vita/container/str.h"
 
 int32_t main(void) {    
     const vt_version_t v = vt_compiler_get_version();

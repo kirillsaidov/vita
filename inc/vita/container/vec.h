@@ -29,7 +29,7 @@
     - vt_vec_apply
 */
 
-#include "common.h"
+#include "vita/container/common.h"
 
 // see core/core.h for definition
 typedef struct VitaBaseArrayType vt_vec_t;

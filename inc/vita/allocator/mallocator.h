@@ -19,8 +19,8 @@
     - vt_mallocator_print_stats
 */
 
-#include "../core/core.h"
-#include "../util/debug.h"
+#include "vita/core/core.h"
+#include "vita/util/debug.h"
 
 // macros
 #define VT_ALLOCATOR_ALLOC(alloctr, bytes) alloctr->alloc(alloctr, bytes, __SOURCE_FILENAME__, __func__, __LINE__)

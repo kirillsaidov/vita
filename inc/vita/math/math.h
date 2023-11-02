@@ -12,7 +12,7 @@
 */
 
 #include <math.h>
-#include "../core/core.h"
+#include "vita/core/core.h"
 
 /** Checks if a natural number is a palindrome
     @param num input number

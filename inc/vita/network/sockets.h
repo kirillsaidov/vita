@@ -6,6 +6,9 @@
     - vt_socket_quit
 */
 
+#include "vita/core/core.h"
+#include "vita/util/debug.h"
+
 #if defined(_WIN32) || defined(_WIN64)
     #include <winsock2.h>
 #else
@@ -13,8 +16,6 @@
     #include <sys/socket.h>
     #include <unistd.h>
 #endif
-
-#include "../core/core.h"
 
 // custom socket type
 typedef int64_t vt_socket_t;

@@ -1,5 +1,5 @@
-#include "../../inc/vita/core/conv.h"
-#include "../../inc/vita/container/str.h"
+#include "vita/core/conv.h"
+#include "vita/container/str.h"
 
 int32_t main(void) {
     assert(

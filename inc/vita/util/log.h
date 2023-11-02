@@ -25,9 +25,9 @@
     - vt_log
 */
 
-#include "../core/core.h"
-#include "../system/fileio.h"
-#include "../time/datetime.h"
+#include "vita/core/core.h"
+#include "vita/system/fileio.h"
+#include "vita/time/datetime.h"
 
 // Log levels
 enum VitaLogLevel {

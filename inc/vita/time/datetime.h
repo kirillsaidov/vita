@@ -29,8 +29,8 @@
     - vt_datetime_diff
 */
 
-#include "../core/core.h"
-#include "../util/debug.h"
+#include "vita/core/core.h"
+#include "vita/util/debug.h"
 
 #if defined(_WIN32) || defined(_WIN64)
     #define asctime(timebuf, timebuf_size, tm) asctime_s(timebuf, timebuf_size, tm)

@@ -61,9 +61,8 @@
 
 #include <ctype.h>
 #include <stdarg.h>
-#include "common.h"
-#include "plist.h"
-#include "span.h"
+#include "vita/container/common.h"
+#include "vita/container/plist.h"
 
 // temporary buffer size
 #define VT_STR_TMP_BUFFER_SIZE 1024

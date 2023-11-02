@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../inc/vita/util/log.h"
+#include "vita/util/log.h"
 
 int32_t main(void) {
     const char *const logger_filename = "other/test_logger.log";

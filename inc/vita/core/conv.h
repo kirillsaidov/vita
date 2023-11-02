@@ -25,8 +25,8 @@
 */
 
 #include <inttypes.h>
-#include "../core/core.h"
-#include "../container/str.h"
+#include "vita/core/core.h"
+#include "vita/container/str.h"
 
 #define VT_MAX_PRECISION 48
 

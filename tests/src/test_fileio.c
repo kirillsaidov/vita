@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "../../inc/vita/system/fileio.h"
+#include "vita/system/fileio.h"
 
 void test_filewrite(void);
 

@@ -5,7 +5,7 @@
     - vt_version_get
 */
 
-#include "core.h"
+#include "vita/core/core.h"
 
 // defines
 #define VT_VITA_VERSION_MAJOR 0

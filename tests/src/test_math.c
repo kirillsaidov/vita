@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../../inc/vita/math/math.h"
+#include "vita/math/math.h"
 
 #define N_GEN 5
 

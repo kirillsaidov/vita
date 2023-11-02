@@ -24,9 +24,9 @@
     - vt_path_validate
 */
 
-#include "../core/core.h"
-#include "../container/str.h"
-#include "../container/plist.h"
+#include "vita/core/core.h"
+#include "vita/container/str.h"
+#include "vita/container/plist.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

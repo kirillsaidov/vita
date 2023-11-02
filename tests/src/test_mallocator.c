@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "../../inc/vita/allocator/mallocator.h"
+#include "vita/allocator/mallocator.h"
 
 int32_t main(void) {
     vt_mallocator_t *alloctr = vt_mallocator_create();

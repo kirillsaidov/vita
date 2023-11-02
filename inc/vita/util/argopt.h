@@ -6,13 +6,12 @@
     - vt_argopt_print_help
 */
 
-#include <stdarg.h>
-
-#include "../core/conv.h"
-#include "../container/str.h"
-#include "../container/plist.h"
-#include "../algorithm/comparison.h"
-#include "../util/debug.h"
+#include "vita/core/core.h"
+#include "vita/core/conv.h"
+#include "vita/container/str.h"
+#include "vita/container/plist.h"
+#include "vita/algorithm/comparison.h"
+#include "vita/util/debug.h"
 
 #define VT_ARGOPT_PARSE_SUCCESS 0
 #define VT_ARGOPT_PARSE_HELP_WANTED 1

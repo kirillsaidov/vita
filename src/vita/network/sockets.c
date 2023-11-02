@@ -3,7 +3,10 @@
 bool vt_socket_init(void) {
     #if defined(_WIN32) || defined(_WIN64)
         WSADATA wsa;
-        return (WSAStartup(MAKEWORD(2, 0), &wsa) == 0);
+        if (WSAStartup(MAKEWORD(2, 0), &wsa) != 0) {
+            VT_DEBUG_PRINTF("%s: Failed to initialize sockets!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            return false;
+        }
     #endif
 
     return true;
@@ -11,7 +14,10 @@ bool vt_socket_init(void) {
 
 bool vt_socket_quit(void) {
     #if defined(_WIN32) || defined(_WIN64)
-        return (WSACleanup() == 0);
+        if (WSACleanup() != 0) {
+            VT_DEBUG_PRINTF("%s: Failed to quit sockets!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            return false;
+        }
     #endif
 
     return true;
@@ -28,12 +34,14 @@ vt_socket_t vt_socket_startup_server(const int32_t type, const int32_t port, con
     // create socket
     const vt_socket_t sock_fd = socket(AF_INET, type, 0);
     if(sock_fd == VT_SOCKET_STATUS_INVALID) {
+        VT_DEBUG_PRINTF("%s: Failed to create a server socket!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_INVALID;
     }
 
     // set socket options
     const int32_t opt = 1;
     if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(int)) < 0) {
+        VT_DEBUG_PRINTF("%s: Failed to set socket options!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_ERROR_OPTIONS;
     }
 
@@ -45,11 +53,15 @@ vt_socket_t vt_socket_startup_server(const int32_t type, const int32_t port, con
 
     // forcefully bind the server socket address
     if (bind(sock_fd, (struct sockaddr*)&server, sizeof(server)) < 0) {
+        VT_DEBUG_PRINTF("%s: Failed to bind the socket!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_ERROR_BIND;
     }
 
     // listen
-    if (type == SOCK_STREAM && listen(sock_fd , backlog) < 0) return VT_SOCKET_STATUS_ERROR_LISTEN;
+    if (type == SOCK_STREAM && listen(sock_fd , backlog) < 0) {
+        VT_DEBUG_PRINTF("%s: Error listening for connections!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_SOCKET_STATUS_ERROR_LISTEN;
+    }
 
     return sock_fd;
 }
@@ -58,6 +70,7 @@ vt_socket_t vt_socket_startup_client(const int32_t type, const struct VitaSocket
     // create socket
     const vt_socket_t sock_fd = socket(AF_INET, type, 0);
     if (sock_fd == VT_SOCKET_STATUS_INVALID) {
+        VT_DEBUG_PRINTF("%s: Failed to create a client socket!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_INVALID;
     }
 
@@ -69,6 +82,7 @@ vt_socket_t vt_socket_startup_client(const int32_t type, const struct VitaSocket
 
     // connect to remote server
     if (connect(sock_fd, (struct sockaddr*)&server, sizeof(server)) < 0) {
+        VT_DEBUG_PRINTF("%s: Failed to connect to server!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_ERROR_CONNECT;
     }
 
@@ -85,6 +99,7 @@ vt_socket_t vt_socket_accept_client(vt_socket_t sock_fd) {
 
     // check for errors
     if (client_sock_fd == VT_SOCKET_STATUS_INVALID) {
+        VT_DEBUG_PRINTF("%s: Error accepting connections!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_INVALID;
     }
 
@@ -93,10 +108,18 @@ vt_socket_t vt_socket_accept_client(vt_socket_t sock_fd) {
 
 bool vt_socket_close(const vt_socket_t sock_fd) {
     #if defined(_WIN32) || defined(_WIN64)
-        return (closesocket(sock_fd) == 0);
+        if (closesocket(sock_fd) != 0) {
+            VT_DEBUG_PRINTF("%s: Failed to close the socket!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            return false;
+        }
     #else
-        return (close(sock_fd) == 0);
+        if (close(sock_fd) != 0) {
+            VT_DEBUG_PRINTF("%s: Failed to close the socket!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            return false;
+        }
     #endif
+
+    return true;
 }
 
 int64_t vt_socket_send(const vt_socket_t sock_fd, const char *const data_buf, const size_t data_len) {
@@ -104,8 +127,12 @@ int64_t vt_socket_send(const vt_socket_t sock_fd, const char *const data_buf, co
     const int64_t size_sent = send(sock_fd, data_buf, data_len, 0);
 
     // check for errors
-    if (size_sent < 0) return VT_SOCKET_STATUS_ERROR_SEND;
-    else return size_sent;
+    if (size_sent < 0) {
+        VT_DEBUG_PRINTF("%s: Error sending data packet!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_SOCKET_STATUS_ERROR_SEND;
+    }
+    
+    return size_sent;
 }
 
 int64_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddress address, const char *const data_buf, const size_t data_len) {
@@ -119,8 +146,12 @@ int64_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddr
     const int64_t size_sent = sendto(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&dst_addr, sizeof(dst_addr));
     
     // check for errors
-    if (size_sent < 0) return VT_SOCKET_STATUS_ERROR_SEND;
-    else return size_sent;
+    if (size_sent < 0) {
+        VT_DEBUG_PRINTF("%s: Error sending data packet!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_SOCKET_STATUS_ERROR_SEND;
+    }
+    
+    return size_sent;
 }
 
 int64_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const size_t data_len) {
@@ -128,8 +159,12 @@ int64_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const
     const int64_t size_received = recv(sock_fd, data_buf, data_len, 0);
 
     // check for errors
-    if (size_received < 0) return VT_SOCKET_STATUS_ERROR_RECEIVE;
-    else return size_received;
+    if (size_received < 0) {
+        VT_DEBUG_PRINTF("%s: Error receiving data packet!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_SOCKET_STATUS_ERROR_RECEIVE;
+    }
+    
+    return size_received;
 }
 
 int64_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddress *const address, char *data_buf, const size_t data_len) {
@@ -141,7 +176,10 @@ int64_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddre
     const int64_t size_received = recvfrom(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&src_addr, &addrlen);
     
     // check for errors
-    if (size_received < 0) return VT_SOCKET_STATUS_ERROR_RECEIVE;
+    if (size_received < 0) {
+        VT_DEBUG_PRINTF("%s: Error receiving data packet!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return VT_SOCKET_STATUS_ERROR_RECEIVE;
+    }
 
     // update the source's address details
     address->port = src_addr.sin_port;

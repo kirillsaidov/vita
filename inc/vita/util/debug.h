@@ -20,9 +20,10 @@
     - vt_debug_disable_output
 */
 
+#include "vita/core/core.h"
+#include "vita/time/datetime.h"
+
 #include <math.h>
-#include "../core/core.h"
-#include "../time/datetime.h"
 
 /**************** ERROR HANDLING ****************/
 #if !defined(NDEBUG)

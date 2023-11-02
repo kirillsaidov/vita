@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../../inc/vita/util/argopt.h"
+#include "vita/util/argopt.h"
 
 int32_t main(void) {
     vt_mallocator_t *alloctr = vt_mallocator_create();

@@ -1,8 +1,8 @@
 #include <assert.h>
 
-#include "../../inc/vita/container/str.h"
-#include "../../inc/vita/container/plist.h"
-#include "../../inc/vita/util/log.h"
+#include "vita/container/str.h"
+#include "vita/container/plist.h"
+#include "vita/util/log.h"
 
 int main(void) {
     vt_mallocator_t *alloctr = vt_mallocator_create();

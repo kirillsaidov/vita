@@ -5,7 +5,7 @@
     - vt_compiler_get_version
 */
 
-#include "version.h"
+#include "vita/core/version.h"
 
 enum VitaCompilerID {
     VT_COMPILER_ID_GCC,

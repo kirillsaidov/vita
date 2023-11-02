@@ -19,9 +19,9 @@
     - vt_index_1d_to_3d        
 */
 
-#include "../core/core.h"
-#include "../util/debug.h"
-#include "../allocator/mallocator.h"
+#include "vita/core/core.h"
+#include "vita/util/debug.h"
+#include "vita/allocator/mallocator.h"
 
 // base array type for all array-like primitives
 struct VitaBaseArrayType {

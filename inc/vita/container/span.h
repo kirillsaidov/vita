@@ -11,10 +11,10 @@
     - vt_span_setT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
 */
 
-#include "common.h"
-#include "vec.h"
-#include "str.h"
-#include "plist.h"
+#include "vita/container/common.h"
+#include "vita/container/vec.h"
+#include "vita/container/str.h"
+#include "vita/container/plist.h"
 
 // A reference type of contiguous sequence of values of type T. 
 // It never allocates, nor deallocates anything and does not keep smart pointers alive.

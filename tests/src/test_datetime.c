@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "../../inc/vita/container/str.h"
-#include "../../inc/vita/time/datetime.h"
+#include "vita/container/str.h"
+#include "vita/time/datetime.h"
 
 int32_t main(void) {
     char timebuf[VT_DATETIME_BUFFER_SIZE] = {0};

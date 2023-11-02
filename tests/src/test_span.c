@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "../../inc/vita/container/vec.h"
-#include "../../inc/vita/container/span.h"
+#include "vita/container/vec.h"
+#include "vita/container/span.h"
 
 int32_t main(void) {
     char buffer[512] = "1234567890 hello, world 1234567890 hello, world";

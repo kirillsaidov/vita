@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "../../inc/vita/system/path.h"
+#include "vita/system/path.h"
 
 #define FILES_IN_DIR 18
 

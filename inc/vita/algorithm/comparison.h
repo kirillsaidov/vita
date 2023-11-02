@@ -7,7 +7,7 @@
     - vt_cmp_clampT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
 */
 
-#include "../core/core.h"
+#include "vita/core/core.h"
 
 /** Compares 2 values and returns the minimum value
     @param x fist value

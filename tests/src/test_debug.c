@@ -1,7 +1,7 @@
 #include <assert.h>
 
 // #define NDEBUG
-#include "../../inc/vita/util/debug.h"
+#include "vita/util/debug.h"
 
 int32_t main(void) {
     // prints to stderr

@@ -17,8 +17,8 @@
 */
 
 #include <stdarg.h>
-#include "path.h"
-#include "../util/debug.h"
+#include "vita/system/path.h"
+#include "vita/util/debug.h"
 
 /** Reads contents of a file in 'r' mode
     @param filename file name

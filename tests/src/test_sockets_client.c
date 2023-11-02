@@ -1,7 +1,7 @@
-#include "../../inc/vita/vita.h"
+#include "vita/vita.h"
 
 int32_t main(void) {
-    printf("client: hello!\n")
+    printf("client: hello!\n");
     return 0;
 }
 
