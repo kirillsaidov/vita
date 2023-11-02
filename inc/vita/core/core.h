@@ -96,6 +96,8 @@ enum VitaTypeInfo {
     VT_TYPE_STR,      // vt_str_t
     VT_TYPE_VEC,      // vt_vec_t
     VT_TYPE_PLIST,    // vt_plist_t
+    VT_TYPE_SPAN,     // vt_span_t
+    VT_TYPE_HASHMAP,  // vt_hashmap_t
 
     VT_TYPE_UNKNOWN,  // unknown data type
     VT_TYPE_COUNT     // number of elements
@@ -111,7 +113,7 @@ enum VitaRemoveStrategy {
     VT_REMOVE_STRATEGY_COUNT    // number of elements
 };
 
-// define all vita errors
+// define all vita errors (`_i_` stands for internal)
 #define VT_i_GENERATE_VITA_STATUS(apply) \
     apply(VT_STATUS_ERROR_IS_NULL)                  /* element wasn't initialized or is NULL */ \
     apply(VT_STATUS_ERROR_ALLOCATION)               /* failed to allocate or reallocate memory */ \
