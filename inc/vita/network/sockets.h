@@ -25,7 +25,7 @@
     #include <winsock2.h>
 
     // unix socklen_t
-    typedef uint32_t socklen_t;
+    typedef int32_t socklen_t;
 #else
     #include <arpa/inet.h>
     #include <sys/socket.h>
