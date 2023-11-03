@@ -112,8 +112,8 @@ const bool vec_isEmpty = vt_vec_is_empty(vec);
 
 // push data
 const int32_t var = 33;
-vt_vec_push(vec, &var);
-vt_vec_pushi32(vec, 33);     // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
+vt_vec_push_back(vec, &var);
+vt_vec_push_backi32(vec, 33);     // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
 
 // set data
 vt_vec_set(vec, &var, 0);    // assign vector[0] = var

@@ -131,7 +131,35 @@ void vt_vec_resize(vt_vec_t *const v, const size_t n) {
     v->len = v->capacity = n;
 }
 
-void vt_vec_push(vt_vec_t *const v, const void *const val) {
+void vt_vec_push_front(vt_vec_t *const v, const void *const val) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // push value
+    if (vt_vec_len(v)) vt_vec_insert(v, val, 0);
+    else vt_vec_push_back(v, val);
+}
+
+#define VT_INSTANTIATE_VEC_PUSH_FRONT(T, t)                     \
+    void vt_vec_push_front##t(vt_vec_t *const v, const T val) { \
+        vt_vec_push_front(v, &val);                             \
+    }
+VT_INSTANTIATE_VEC_PUSH_FRONT(int8_t, i8)
+VT_INSTANTIATE_VEC_PUSH_FRONT(uint8_t, u8)
+VT_INSTANTIATE_VEC_PUSH_FRONT(int16_t, i16)
+VT_INSTANTIATE_VEC_PUSH_FRONT(uint16_t, u16)
+VT_INSTANTIATE_VEC_PUSH_FRONT(int32_t, i32)
+VT_INSTANTIATE_VEC_PUSH_FRONT(uint32_t, u32)
+VT_INSTANTIATE_VEC_PUSH_FRONT(int64_t, i64)
+VT_INSTANTIATE_VEC_PUSH_FRONT(uint64_t, u64)
+VT_INSTANTIATE_VEC_PUSH_FRONT(float, f)
+VT_INSTANTIATE_VEC_PUSH_FRONT(double, d)
+VT_INSTANTIATE_VEC_PUSH_FRONT(real, r)
+#undef VT_INSTANTIATE_VEC_PUSH_FRONT
+
+void vt_vec_push_back(vt_vec_t *const v, const void *const val) {
     // check for invalid input
     VT_DEBUG_ASSERT(v != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(v->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
@@ -146,22 +174,22 @@ void vt_vec_push(vt_vec_t *const v, const void *const val) {
     memcpy(((char*)(v->ptr) + v->len++ * v->elsize), val, v->elsize);
 }
 
-#define VT_INSTANTIATE_VEC_PUSH(T, t)                     \
-    void vt_vec_push##t(vt_vec_t *const v, const T val) { \
-        vt_vec_push(v, &val);                             \
+#define VT_INSTANTIATE_VEC_PUSH_BACK(T, t)                     \
+    void vt_vec_push_back##t(vt_vec_t *const v, const T val) { \
+        vt_vec_push_back(v, &val);                             \
     }
-VT_INSTANTIATE_VEC_PUSH(int8_t, i8)
-VT_INSTANTIATE_VEC_PUSH(uint8_t, u8)
-VT_INSTANTIATE_VEC_PUSH(int16_t, i16)
-VT_INSTANTIATE_VEC_PUSH(uint16_t, u16)
-VT_INSTANTIATE_VEC_PUSH(int32_t, i32)
-VT_INSTANTIATE_VEC_PUSH(uint32_t, u32)
-VT_INSTANTIATE_VEC_PUSH(int64_t, i64)
-VT_INSTANTIATE_VEC_PUSH(uint64_t, u64)
-VT_INSTANTIATE_VEC_PUSH(float, f)
-VT_INSTANTIATE_VEC_PUSH(double, d)
-VT_INSTANTIATE_VEC_PUSH(real, r)
-#undef VT_INSTANTIATE_VEC_PUSH
+VT_INSTANTIATE_VEC_PUSH_BACK(int8_t, i8)
+VT_INSTANTIATE_VEC_PUSH_BACK(uint8_t, u8)
+VT_INSTANTIATE_VEC_PUSH_BACK(int16_t, i16)
+VT_INSTANTIATE_VEC_PUSH_BACK(uint16_t, u16)
+VT_INSTANTIATE_VEC_PUSH_BACK(int32_t, i32)
+VT_INSTANTIATE_VEC_PUSH_BACK(uint32_t, u32)
+VT_INSTANTIATE_VEC_PUSH_BACK(int64_t, i64)
+VT_INSTANTIATE_VEC_PUSH_BACK(uint64_t, u64)
+VT_INSTANTIATE_VEC_PUSH_BACK(float, f)
+VT_INSTANTIATE_VEC_PUSH_BACK(double, d)
+VT_INSTANTIATE_VEC_PUSH_BACK(real, r)
+#undef VT_INSTANTIATE_VEC_PUSH_BACK
 
 void vt_vec_pop(vt_vec_t *const v) {
     // check for invalid input

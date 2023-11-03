@@ -24,7 +24,7 @@ int main(void) {
         vt_vec_apply(v, func);
         assert(vt_vec_getd(v, 1) == 0.5);
 
-        vt_vec_pushd(v, 3.125);
+        vt_vec_push_backd(v, 3.125);
         assert(vt_vec_getd(v, vt_vec_len(v)-1) == 3.125);
         assert(vt_vec_len(v) == 11);
         assert(vt_vec_capacity(v) == 30);
@@ -75,13 +75,13 @@ int main(void) {
         assert(vt_vec_capacity(v) == 1);
         assert(vt_vec_has_space(v) == 0);
 
-        vt_vec_pushd(v, 3.125);
+        vt_vec_push_backd(v, 3.125);
         assert(vt_vec_getd(v, vt_vec_len(v)-1) == 3.125);
         assert(vt_vec_len(v) == 2);
         assert(vt_vec_capacity(v) == 3);
         assert(vt_vec_has_space(v) == 1);
 
-        vt_vec_pushd(v, 4);
+        vt_vec_push_backd(v, 4);
         assert(vt_vec_getd(v, vt_vec_len(v)-1) == 4);
         assert(vt_vec_len(v) == 3);
         assert(vt_vec_capacity(v) == 3);
@@ -127,13 +127,13 @@ int main(void) {
     // testing element removal
     vt_vec_t *myvec = vt_vec_create(7, sizeof(int32_t), alloctr);
     {
-        vt_vec_pushi32(myvec, 1);
-        vt_vec_pushi32(myvec, 2);
-        vt_vec_pushi32(myvec, 3);
-        vt_vec_pushi32(myvec, 4);
-        vt_vec_pushi32(myvec, 5);
-        vt_vec_pushi32(myvec, 6);
-        vt_vec_pushi32(myvec, 7);
+        vt_vec_push_backi32(myvec, 1);
+        vt_vec_push_backi32(myvec, 2);
+        vt_vec_push_backi32(myvec, 3);
+        vt_vec_push_backi32(myvec, 4);
+        vt_vec_push_backi32(myvec, 5);
+        vt_vec_push_backi32(myvec, 6);
+        vt_vec_push_backi32(myvec, 7);
         assert(vt_vec_len(myvec) == 7);
         assert(vt_vec_geti32(myvec, 0) == 1);
 

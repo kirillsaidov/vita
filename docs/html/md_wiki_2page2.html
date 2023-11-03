@@ -180,8 +180,8 @@ Dynamic arrays with &lt;tt&gt;vt_vec_t&lt;/tt&gt;</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// push data</span></div>
 <div class="line"><span class="keyword">const</span> int32_t var = 33;</div>
-<div class="line">vt_vec_push(vec, &amp;var);</div>
-<div class="line">vt_vec_pushi32(vec, 33);     <span class="comment">// vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r</span></div>
+<div class="line">vt_vec_push_back(vec, &amp;var);</div>
+<div class="line">vt_vec_push_backi32(vec, 33);     <span class="comment">// vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// set data</span></div>
 <div class="line">vt_vec_set(vec, &amp;var, 0);    <span class="comment">// assign vector[0] = var</span></div>

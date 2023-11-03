@@ -88,7 +88,7 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a2db604a71c51b3080dd9208279c51abd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a2db604a71c51b3080dd9208279c51abd">VT_PROTOTYPE_VEC_PUSH</a>(T,  t)&#160;&#160;&#160;extern void <a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push</a>##t(<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const T val)</td></tr>
+<tr class="memitem:a2db604a71c51b3080dd9208279c51abd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a2db604a71c51b3080dd9208279c51abd">VT_PROTOTYPE_VEC_PUSH</a>(T,  t)&#160;&#160;&#160;extern void <a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push_back</a>##t(<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const T val)</td></tr>
 <tr class="separator:a2db604a71c51b3080dd9208279c51abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae273925769c054cd79d61dd9c09b3ae1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#ae273925769c054cd79d61dd9c09b3ae1">VT_PROTOTYPE_VEC_POP_GET</a>(T,  t)&#160;&#160;&#160;extern T <a class="el" href="vec_8h.html#ae7920647410b408f994aaf40ab78c996">vt_vec_pop_get</a>##t(<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v)</td></tr>
 <tr class="separator:ae273925769c054cd79d61dd9c09b3ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,7 +130,7 @@ Functions</h2></td></tr>
 <tr class="separator:a6888e26acbf03dc9ed408120f380738a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45e744e7f829c65fff6724b3f7f8d692"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#a45e744e7f829c65fff6724b3f7f8d692">vt_vec_resize</a> (<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const size_t n)</td></tr>
 <tr class="separator:a45e744e7f829c65fff6724b3f7f8d692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7047550bb92fac98f366249c35c72c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push</a> (<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const void *const val)</td></tr>
+<tr class="memitem:ad7047550bb92fac98f366249c35c72c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push_back</a> (<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const void *const val)</td></tr>
 <tr class="separator:ad7047550bb92fac98f366249c35c72c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab47b6f56ed727f1cb74d559385b2500d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vec_8h.html#ab47b6f56ed727f1cb74d559385b2500d">VT_PROTOTYPE_VEC_PUSH</a> (int8_t, i8)</td></tr>
 <tr class="separator:ab47b6f56ed727f1cb74d559385b2500d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -452,7 +452,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;extern void <a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push</a>##t(<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const T val)</td>
+          <td></td><td>&#160;&#160;&#160;extern void <a class="el" href="vec_8h.html#ad7047550bb92fac98f366249c35c72c0">vt_vec_push_back</a>##t(<a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const v, const T val)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -525,8 +525,8 @@ Functions</h2></td></tr>
 <li>vt_vec_clear</li>
 <li>vt_vec_reserve</li>
 <li>vt_vec_resize</li>
-<li>vt_vec_push</li>
-<li>vt_vec_pushT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)</li>
+<li>vt_vec_push_back</li>
+<li>vt_vec_push_backT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)</li>
 <li>vt_vec_pop</li>
 <li>vt_vec_pop_get</li>
 <li>vt_vec_pop_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)</li>
@@ -2821,13 +2821,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="ad7047550bb92fac98f366249c35c72c0" name="ad7047550bb92fac98f366249c35c72c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7047550bb92fac98f366249c35c72c0">&#9670;&#160;</a></span>vt_vec_push()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7047550bb92fac98f366249c35c72c0">&#9670;&#160;</a></span>vt_vec_push_back()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void vt_vec_push </td>
+          <td class="memname">void vt_vec_push_back </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="vec_8h.html#acf467f3c14dbc20a6da7cd43b89a2be7">vt_vec_t</a> *const&#160;</td>
           <td class="paramname"><em>v</em>, </td>
