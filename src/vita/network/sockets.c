@@ -30,7 +30,7 @@ struct VitaSocketAddress vt_socket_make_address(const int16_t port, const char *
     };
 }
 
-vt_socket_t vt_socket_startup_server(const int32_t type, const int32_t port, const int32_t backlog) {
+vt_socket_t vt_socket_startup_server(const enum VitaSocketType type, const int32_t port, const int32_t backlog) {
     // create socket
     const vt_socket_t sock_fd = socket(AF_INET, type, 0);
     if(sock_fd == VT_SOCKET_STATUS_INVALID) {
@@ -66,7 +66,7 @@ vt_socket_t vt_socket_startup_server(const int32_t type, const int32_t port, con
     return sock_fd;
 }
 
-vt_socket_t vt_socket_startup_client(const int32_t type, const struct VitaSocketAddress address) {
+vt_socket_t vt_socket_startup_client(const enum VitaSocketType type, const struct VitaSocketAddress address) {
     // create socket
     const vt_socket_t sock_fd = socket(AF_INET, type, 0);
     if (sock_fd == VT_SOCKET_STATUS_INVALID) {
@@ -122,9 +122,9 @@ bool vt_socket_close(const vt_socket_t sock_fd) {
     return true;
 }
 
-int64_t vt_socket_send(const vt_socket_t sock_fd, const char *const data_buf, const size_t data_len) {
+int32_t vt_socket_send(const vt_socket_t sock_fd, const char *const data_buf, const size_t data_len) {
     // send data
-    const int64_t size_sent = send(sock_fd, data_buf, data_len, 0);
+    const int32_t size_sent = send(sock_fd, data_buf, data_len, 0);
 
     // check for errors
     if (size_sent < 0) {
@@ -135,7 +135,7 @@ int64_t vt_socket_send(const vt_socket_t sock_fd, const char *const data_buf, co
     return size_sent;
 }
 
-int64_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddress address, const char *const data_buf, const size_t data_len) {
+int32_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddress address, const char *const data_buf, const size_t data_len) {
     // setup destination socket address
     struct sockaddr_in dst_addr = {0};  
     dst_addr.sin_family = AF_INET;
@@ -143,7 +143,7 @@ int64_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddr
     dst_addr.sin_port = address.port;
 
     // send data
-    const int64_t size_sent = sendto(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&dst_addr, sizeof(dst_addr));
+    const int32_t size_sent = sendto(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&dst_addr, sizeof(dst_addr));
     
     // check for errors
     if (size_sent < 0) {
@@ -154,9 +154,9 @@ int64_t vt_socket_send_to(const vt_socket_t sock_fd, const struct VitaSocketAddr
     return size_sent;
 }
 
-int64_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const size_t data_len) {
+int32_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const size_t data_len) {
     // receive data
-    const int64_t size_received = recv(sock_fd, data_buf, data_len, 0);
+    const int32_t size_received = recv(sock_fd, data_buf, data_len, 0);
 
     // check for errors
     if (size_received < 0) {
@@ -167,13 +167,13 @@ int64_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const
     return size_received;
 }
 
-int64_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddress *const address, char *data_buf, const size_t data_len) {
+int32_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddress *const address, char *data_buf, const size_t data_len) {
     // setup source socket address of incoming packets
     struct sockaddr_in src_addr = {0};
     int addrlen = sizeof(src_addr);
     
     // receive data
-    const int64_t size_received = recvfrom(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&src_addr, &addrlen);
+    const int32_t size_received = recvfrom(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&src_addr, &addrlen);
     
     // check for errors
     if (size_received < 0) {
@@ -186,5 +186,56 @@ int64_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddre
     address->addr = src_addr.sin_addr.s_addr;
     
     return size_received;
+}
+
+int32_t vt_socket_poll(struct pollfd *const pfd, const size_t pfd_size, const uint32_t timeout) {
+    int32_t ret = 0;
+
+    // poll events
+    #if defined(_WIN32) || defined(_WIN64)
+        ret = WSAPoll(pfd, (unsigned long)pfd_size, timeout);
+    #else
+        ret = poll(pfd, (nfds_t)pfd_size, timeout);
+    #endif
+
+    return (ret < 0) ? VT_SOCKET_STATUS_ERROR_POLL : ret;
+}
+
+int32_t vt_socket_receive_timed(const vt_socket_t sock_fd, char *data_buf, const size_t data_len, const uint32_t timeout) {
+    // create poll file descriptor
+    struct pollfd pfd = {
+        .fd = sock_fd, 
+        .events = POLLIN
+    };
+
+    // poll events
+    const int32_t poll_ret = vt_socket_poll(&pfd, 1, timeout);
+    if (poll_ret < 0) return VT_SOCKET_STATUS_ERROR_POLL;
+
+    // receive data
+    if (poll_ret > 0 && (pfd.revents & POLLIN)) {
+        return vt_socket_receive(sock_fd, data_buf, data_len);
+    }
+
+    return 0;
+}
+
+int32_t vt_socket_receive_timed_from(const vt_socket_t sock_fd, struct VitaSocketAddress *const address, char *data_buf, const size_t data_len, const uint32_t timeout) {
+    // create poll file descriptor
+    struct pollfd pfd = {
+        .fd = sock_fd, 
+        .events = POLLIN
+    };
+
+    // poll events
+    const int32_t poll_ret = vt_socket_poll(&pfd, 1, timeout);
+    if (poll_ret < 0) return VT_SOCKET_STATUS_ERROR_POLL;
+
+    // receive data
+    if (poll_ret > 0 && (pfd.revents & POLLIN)) {
+        return vt_socket_receive_from(sock_fd, address, data_buf, data_len);
+    }
+
+    return 0;
 }
 

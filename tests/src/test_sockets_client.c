@@ -3,16 +3,23 @@
 #define PORT 8080
 #define IP_ADDRESS "127.0.0.1"
 
+void client_simple(void);
 int32_t user_get_msg(char *buffer, const size_t buffer_size);
 
 int32_t main(void) {
     VT_LOG_INFO("This is a client device.");
 
+    client_simple();
+
+    return 0;
+}
+
+void client_simple(void) {
     assert(vt_socket_init() == true);
     {
         VT_LOG_INFO("Starting up the client and connecting to server...");
         const struct VitaSocketAddress server_address = vt_socket_make_address(PORT, IP_ADDRESS);
-        const vt_socket_t server_id = vt_socket_startup_client(SOCK_STREAM, server_address);
+        const vt_socket_t server_id = vt_socket_startup_client(VT_SOCKET_TYPE_TCP, server_address);
         assert(server_id >= 0);
 
         // loop: only send messagges
@@ -26,12 +33,12 @@ int32_t main(void) {
                 VT_LOG_INFO("Message entered: [%s] | bytes: %zu", buffer, msg_len);
 
                 VT_LOG_INFO("Sending message...");
-                const int64_t size_sent = vt_socket_send(server_id, buffer, msg_len);
+                const int32_t size_sent = vt_socket_send(server_id, buffer, msg_len);
                 assert(size_sent == msg_len);
             }
 
             // VT_LOG_INFO("Waiting for server reply...");
-            // const int64_t size_received = vt_socket_receive(server_id, buffer, sizeof(buffer));
+            // const int32_t size_received = vt_socket_receive(server_id, buffer, sizeof(buffer));
             // assert(size_received > 0);
 
             // VT_LOG_WARN("Data received: [%s] | bytes: %zu", buffer, size_received);
@@ -41,8 +48,6 @@ int32_t main(void) {
         assert(vt_socket_close(server_id) == true);
     }
     assert(vt_socket_quit() == true);
-
-    return 0;
 }
 
 // returns -1:quit, 0:skip, 1:otherwise
