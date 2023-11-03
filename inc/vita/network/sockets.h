@@ -23,9 +23,13 @@
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <winsock2.h>
+
+    // unix socklen_t
+    typedef uint32_t socklen_t;
 #else
     #include <arpa/inet.h>
     #include <sys/socket.h>
+    #include <poll.h>
     #include <unistd.h>
 #endif
 

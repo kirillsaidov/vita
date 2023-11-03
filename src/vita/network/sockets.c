@@ -92,7 +92,7 @@ vt_socket_t vt_socket_startup_client(const enum VitaSocketType type, const struc
 vt_socket_t vt_socket_accept_client(vt_socket_t sock_fd) {
     // prepare
     struct sockaddr_in client = {0};
-    int sockaddr_len = sizeof(struct sockaddr_in);
+    socklen_t sockaddr_len = sizeof(struct sockaddr_in);
 
     // accpet incoming connection
     const vt_socket_t client_sock_fd = accept(sock_fd , (struct sockaddr*)&client, &sockaddr_len);
@@ -170,7 +170,7 @@ int32_t vt_socket_receive(const vt_socket_t sock_fd, char *const data_buf, const
 int32_t vt_socket_receive_from(const vt_socket_t sock_fd, struct VitaSocketAddress *const address, char *data_buf, const size_t data_len) {
     // setup source socket address of incoming packets
     struct sockaddr_in src_addr = {0};
-    int addrlen = sizeof(src_addr);
+    socklen_t addrlen = sizeof(src_addr);
     
     // receive data
     const int32_t size_received = recvfrom(sock_fd, data_buf, data_len, 0, (struct sockaddr*)&src_addr, &addrlen);
