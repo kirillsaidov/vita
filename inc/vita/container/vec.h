@@ -12,8 +12,10 @@
     - vt_vec_clear
     - vt_vec_reserve
     - vt_vec_resize
-    - vt_vec_push
-    - vt_vec_pushT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_push_front
+    - vt_vec_push_frontT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_push_back
+    - vt_vec_push_backT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_pop
     - vt_vec_pop_get
     - vt_vec_pop_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
@@ -106,29 +108,53 @@ extern void vt_vec_reserve(vt_vec_t *const v, const size_t n);
 */
 extern void vt_vec_resize(vt_vec_t *const v, const size_t n);
 
-/** Push an element at the end of vt_vec_t
+/** Push an element at the begining
     @param v vt_vec_t instance
     @param val value to push
 */
-extern void vt_vec_push(vt_vec_t *const v, const void *const val);
+extern void vt_vec_push_front(vt_vec_t *const v, const void *const val);
+
+/** Push an element at the begining
+    @param v vt_vec_t instance
+    @param val value to push
+*/
+#define VT_PROTOTYPE_VEC_PUSH_FRONT(T, t) extern void vt_vec_push_front##t(vt_vec_t *const v, const T val)
+VT_PROTOTYPE_VEC_PUSH_FRONT(int8_t, i8);
+VT_PROTOTYPE_VEC_PUSH_FRONT(uint8_t, u8);
+VT_PROTOTYPE_VEC_PUSH_FRONT(int16_t, i16);
+VT_PROTOTYPE_VEC_PUSH_FRONT(uint16_t, u16);
+VT_PROTOTYPE_VEC_PUSH_FRONT(int32_t, i32);
+VT_PROTOTYPE_VEC_PUSH_FRONT(uint32_t, u32);
+VT_PROTOTYPE_VEC_PUSH_FRONT(int64_t, i64);
+VT_PROTOTYPE_VEC_PUSH_FRONT(uint64_t, u64);
+VT_PROTOTYPE_VEC_PUSH_FRONT(float, f);
+VT_PROTOTYPE_VEC_PUSH_FRONT(double, d);
+VT_PROTOTYPE_VEC_PUSH_FRONT(real, r);
+#undef VT_PROTOTYPE_VEC_PUSH_FRONT
 
 /** Push an element at the end of vt_vec_t
     @param v vt_vec_t instance
     @param val value to push
 */
-#define VT_PROTOTYPE_VEC_PUSH(T, t) extern void vt_vec_push##t(vt_vec_t *const v, const T val)
-VT_PROTOTYPE_VEC_PUSH(int8_t, i8);
-VT_PROTOTYPE_VEC_PUSH(uint8_t, u8);
-VT_PROTOTYPE_VEC_PUSH(int16_t, i16);
-VT_PROTOTYPE_VEC_PUSH(uint16_t, u16);
-VT_PROTOTYPE_VEC_PUSH(int32_t, i32);
-VT_PROTOTYPE_VEC_PUSH(uint32_t, u32);
-VT_PROTOTYPE_VEC_PUSH(int64_t, i64);
-VT_PROTOTYPE_VEC_PUSH(uint64_t, u64);
-VT_PROTOTYPE_VEC_PUSH(float, f);
-VT_PROTOTYPE_VEC_PUSH(double, d);
-VT_PROTOTYPE_VEC_PUSH(real, r);
-#undef VT_PROTOTYPE_VEC_PUSH
+extern void vt_vec_push_back(vt_vec_t *const v, const void *const val);
+
+/** Push an element at the end of vt_vec_t
+    @param v vt_vec_t instance
+    @param val value to push
+*/
+#define VT_PROTOTYPE_VEC_PUSH_BACK(T, t) extern void vt_vec_push_back##t(vt_vec_t *const v, const T val)
+VT_PROTOTYPE_VEC_PUSH_BACK(int8_t, i8);
+VT_PROTOTYPE_VEC_PUSH_BACK(uint8_t, u8);
+VT_PROTOTYPE_VEC_PUSH_BACK(int16_t, i16);
+VT_PROTOTYPE_VEC_PUSH_BACK(uint16_t, u16);
+VT_PROTOTYPE_VEC_PUSH_BACK(int32_t, i32);
+VT_PROTOTYPE_VEC_PUSH_BACK(uint32_t, u32);
+VT_PROTOTYPE_VEC_PUSH_BACK(int64_t, i64);
+VT_PROTOTYPE_VEC_PUSH_BACK(uint64_t, u64);
+VT_PROTOTYPE_VEC_PUSH_BACK(float, f);
+VT_PROTOTYPE_VEC_PUSH_BACK(double, d);
+VT_PROTOTYPE_VEC_PUSH_BACK(real, r);
+#undef VT_PROTOTYPE_VEC_PUSH_BACK
 
 /** Pops off the last element
     @param v vt_vec_t instance

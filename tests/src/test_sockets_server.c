@@ -3,14 +3,16 @@
 #define PORT 8080
 
 void server_simple(void);
-void server_with_timeout(void);
+void server_simple_send(void);
+void server_with_timeout(const uint32_t timeout);
 int32_t user_get_msg(char *buffer, const size_t buffer_size);
 
 int32_t main(void) {
     VT_LOG_INFO("This is a server device.");
 
     // server_simple();
-    server_with_timeout();
+    server_simple_send();
+    // server_with_timeout(5000);
 
     return 0;
 }
@@ -55,7 +57,37 @@ void server_simple(void) {
     assert(vt_socket_quit() == true);
 }
 
-void server_with_timeout(void) {
+void server_simple_send(void) {
+    assert(vt_socket_init() == true);
+    {
+        VT_LOG_INFO("Starting up the server...");
+        const vt_socket_t server_id = vt_socket_startup_server(VT_SOCKET_TYPE_TCP, PORT, 3);
+        assert(server_id >= 0);
+
+        // msg
+        const char msg[] = "hello - from server.";
+        const size_t msg_len = sizeof(msg);
+
+        // loop: only receive messages
+        while (true) {
+            VT_LOG_INFO("Waiting for client...");
+            const vt_socket_t client_id = vt_socket_accept_client(server_id);
+            assert(client_id >= 0);
+
+            VT_LOG_INFO("Connected. Sending message...");
+            const int32_t size_sent = vt_socket_send(client_id, msg, msg_len);
+            assert(size_sent == msg_len);
+            VT_LOG_WARN("Data sent: [%s] | bytes: %zu", msg, size_sent);
+            VT_LOG_INFO("Done.");
+        }
+
+        VT_LOG_INFO("Closing the socket...");
+        assert(vt_socket_close(server_id) == true);
+    }
+    assert(vt_socket_quit() == true);
+}
+
+void server_with_timeout(const uint32_t timeout) {
     assert(vt_socket_init() == true);
     {
         VT_LOG_INFO("Starting up the server...");

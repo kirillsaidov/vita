@@ -21,7 +21,7 @@ int32_t main(void) {
     {   
         // init
         VT_FOREACH(i, 0, vt_vec_capacity(v)) {
-            vt_vec_pushi32(v, i);
+            vt_vec_push_backi32(v, i);
         }
         assert(vt_vec_geti32(v, 3) == 3);
 

@@ -188,7 +188,7 @@ var searchData=
   ['vt_5fvec_5flen_185',['vt_vec_len',['../vec_8h.html#ad4654358f9cfdb8872cabfd841493f3a',1,'vec.h']]],
   ['vt_5fvec_5fpop_186',['vt_vec_pop',['../vec_8h.html#ace714edbbf7d001a4da559f54448ef6a',1,'vec.h']]],
   ['vt_5fvec_5fpop_5fget_187',['vt_vec_pop_get',['../vec_8h.html#ae7920647410b408f994aaf40ab78c996',1,'vec.h']]],
-  ['vt_5fvec_5fpush_188',['vt_vec_push',['../vec_8h.html#ad7047550bb92fac98f366249c35c72c0',1,'vec.h']]],
+  ['vt_5fvec_5fpush_188',['vt_vec_push_back',['../vec_8h.html#ad7047550bb92fac98f366249c35c72c0',1,'vec.h']]],
   ['vt_5fvec_5fremove_189',['vt_vec_remove',['../vec_8h.html#a963d65ce506a77d725c1e5c7f59adfac',1,'vec.h']]],
   ['vt_5fvec_5freserve_190',['vt_vec_reserve',['../vec_8h.html#a6888e26acbf03dc9ed408120f380738a',1,'vec.h']]],
   ['vt_5fvec_5fresize_191',['vt_vec_resize',['../vec_8h.html#a45e744e7f829c65fff6724b3f7f8d692',1,'vec.h']]],
