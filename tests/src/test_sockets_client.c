@@ -4,12 +4,16 @@
 #define IP_ADDRESS "127.0.0.1"
 
 void client_simple(void);
+void client_simple_send(void);
+void client_simple_send_receive(void);
 int32_t user_get_msg(char *buffer, const size_t buffer_size);
 
 int32_t main(void) {
     VT_LOG_INFO("This is a client device.");
 
-    client_simple();
+    // client_simple();
+    // client_simple_send();
+    client_simple_send_receive();
 
     return 0;
 }
@@ -42,6 +46,66 @@ void client_simple(void) {
             // assert(size_received > 0);
 
             // VT_LOG_WARN("Data received: [%s] | bytes: %zu", buffer, size_received);
+        }
+
+        VT_LOG_INFO("Closing the socket...");
+        assert(vt_socket_close(server_id) == true);
+    }
+    assert(vt_socket_quit() == true);
+}
+
+void client_simple_send(void) {
+    assert(vt_socket_init() == true);
+    {
+        VT_LOG_INFO("Starting up the client and connecting to server...");
+        const struct VitaSocketAddress server_address = vt_socket_make_address(PORT, IP_ADDRESS);
+        const vt_socket_t server_id = vt_socket_startup_client(VT_SOCKET_TYPE_TCP, server_address);
+        assert(server_id >= 0);
+
+        // loop: only send message
+        while (true) {
+            VT_LOG_INFO("Connected.");
+            static char buffer[VT_STR_TMP_BUFFER_SIZE] = "0";
+            const size_t msg_len = strlen(buffer);
+
+            VT_LOG_INFO("Sending message...");
+            const int32_t size_sent = vt_socket_send(server_id, buffer, msg_len);
+            if (size_sent == msg_len) break;
+        }
+
+        VT_LOG_INFO("Closing the socket...");
+        assert(vt_socket_close(server_id) == true);
+    }
+    assert(vt_socket_quit() == true);
+}
+
+void client_simple_send_receive(void) {
+    assert(vt_socket_init() == true);
+    {
+        VT_LOG_INFO("Starting up the client and connecting to server...");
+        const struct VitaSocketAddress server_address = vt_socket_make_address(PORT, IP_ADDRESS);
+        const vt_socket_t server_id = vt_socket_startup_client(VT_SOCKET_TYPE_TCP, server_address);
+        assert(server_id >= 0);
+
+        // loop: only send message
+        while (true) {
+            VT_LOG_INFO("Connected.");
+            const char *buffer_send = "0";
+            const size_t msg_len = strlen(buffer_send);
+
+            VT_LOG_INFO("Sending message...");
+            const int32_t size_sent = vt_socket_send(server_id, buffer_send, msg_len);
+            assert(size_sent == msg_len);
+
+            VT_LOG_INFO("Waiting for server reply...");
+            static char buffer[VT_STR_TMP_BUFFER_SIZE] = {0};
+            const int32_t size_received = vt_socket_receive(server_id, buffer, VT_STR_TMP_BUFFER_SIZE);
+            assert(buffer[0] == '{');
+            assert(size_received > 0);
+
+            VT_LOG_WARN("Data received: bytes: %zu", size_received);
+            printf("-----------\n%s\n------------\n", buffer);
+            break;
         }
 
         VT_LOG_INFO("Closing the socket...");
