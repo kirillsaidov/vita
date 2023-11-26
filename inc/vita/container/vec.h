@@ -265,7 +265,7 @@ VT_PROTOTYPE_VEC_INSERT(double, d);
 VT_PROTOTYPE_VEC_INSERT(real, r);
 #undef VT_PROTOTYPE_VEC_INSERT
 
-/** Removes an element from vt_vec_t
+/** Removes an indexed element from vt_vec_t
     @param v vt_vec_t instance
     @param at index of the value
     @param rs choose a VitaRemoveStrategy (see Notes)

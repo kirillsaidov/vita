@@ -151,7 +151,7 @@ extern void vt_plist_pop(vt_plist_t *const p);
 */
 extern void *vt_plist_pop_get(vt_plist_t *const p);
 
-/** Removes a pointer from a plist
+/** Removes an indexed pointer from a plist
     @param p vt_plist_t pointer
     @param at index
 
