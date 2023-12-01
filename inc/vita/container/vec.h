@@ -163,13 +163,15 @@ extern void vt_vec_pop(vt_vec_t *const v);
 
 /** Pops off and returns the last element
     @param v vt_vec_t instance
-    @returns void*
+    @returns void* if len > 0 else NULL
 */
 extern void *vt_vec_pop_get(vt_vec_t *const v);
 
 /** Pops off and returns the last element
     @param v vt_vec_t instance
-    @returns element of type T
+    @returns element of type T if len > 0 else 0
+    
+    @note use with `vt_vec_len()` if using a loop to check for length!
 */
 #define VT_PROTOTYPE_VEC_POP_GET(T, t) extern T vt_vec_pop_get##t(vt_vec_t *const v)
 VT_PROTOTYPE_VEC_POP_GET(int8_t, i8);

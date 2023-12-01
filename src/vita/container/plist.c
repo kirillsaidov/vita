@@ -238,7 +238,7 @@ void *vt_plist_pop_get(vt_plist_t *const p) {
         return p->ptr2[--p->len];
     }
 
-    return p->ptr2;
+    return NULL;
 }
 
 void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemoveStrategy rs) {

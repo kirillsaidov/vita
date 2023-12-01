@@ -117,6 +117,21 @@ int main(void) {
     }
     vt_plist_destroy(list);
 
+    // pop_get
+    list = vt_plist_create(5, alloctr);
+    {
+        vt_plist_push_back(list, h);
+        vt_plist_push_back(list, w);
+        vt_plist_push_back(list, t);
+
+        assert(vt_plist_pop_get(list) == t);
+        assert(vt_plist_pop_get(list) == w);
+        assert(vt_plist_pop_get(list) == h);
+        assert(vt_plist_pop_get(list) == NULL);
+        assert(vt_plist_pop_get(list) == NULL);
+    }
+    vt_plist_destroy(list);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }

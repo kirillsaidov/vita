@@ -147,7 +147,7 @@ extern void vt_plist_pop(vt_plist_t *const p);
 
 /** Get and pop the last value from the end
     @param p vt_plist_t pointer
-    @returns void*
+    @returns void* or NULL if there is nothing to return
 */
 extern void *vt_plist_pop_get(vt_plist_t *const p);
 

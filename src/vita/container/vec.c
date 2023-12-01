@@ -212,12 +212,13 @@ void *vt_vec_pop_get(vt_vec_t *const v) {
         return ((char*)(v->ptr) + --v->len * v->elsize);
     }
 
-    return v->ptr;
+    return NULL;
 }
 
 #define VT_INSTANTIATE_VEC_POP_GET(T, t)        \
     T vt_vec_pop_get##t(vt_vec_t *const v) {    \
-        return *(T*)vt_vec_pop_get(v);          \
+        void *ptr = vt_vec_pop_get(v);          \
+        return ptr ? *(T*)ptr : 0;              \
     }
 VT_INSTANTIATE_VEC_POP_GET(int8_t, i8)
 VT_INSTANTIATE_VEC_POP_GET(uint8_t, u8)
