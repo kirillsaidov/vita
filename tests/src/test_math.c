@@ -28,7 +28,7 @@ int main(void) {
 
     printf("INT in range %% 255:\n");
     VT_FOREACH(i, 0, N_GEN) {
-        printf("%zu\n", vt_math_random_u64() % 255 + 1);
+        printf("%llu\n", vt_math_random_u64() % 255 + 1);
         // printf("%llu\n", vt_math_random_u64());
     }
 
