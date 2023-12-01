@@ -562,7 +562,6 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     size_t *sLen = &s->len;
     size_t cLen = strlen(c);
     char *start = s->ptr;
-    char *sdup = strdup(start);
 
     // remove all specitified characters
     bool copy = true;
@@ -580,7 +579,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
         // copy data
         if (copy) {
             last_index = i - offset;
-            sdup[last_index] = start[i];
+            start[last_index] = start[i];
         } else {
             copy = true;
         }
@@ -588,15 +587,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     
     // update length
     *sLen -= offset;
-
-    // update ptr data
-    if (s->alloctr) {
-        VT_ALLOCATOR_FREE(s->alloctr, start);
-    } else {
-        VT_FREE(start);
-    }
-    sdup[*sLen] = '\0';
-    s->ptr = sdup;
+    start[*sLen] = '\0';
 }
 
 void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub) {
