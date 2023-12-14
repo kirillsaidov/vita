@@ -27,7 +27,8 @@ int32_t main(void) {
         assert(vt_str_capacity(mystr) == 65 + 13);
         assert(vt_str_has_space(mystr) == 65);
 
-        vt_str_set(mystr, "Apples are sweet!");
+        vt_str_clear(mystr);
+        vt_str_append(mystr, "Apples are sweet!");
         assert(vt_str_len(mystr) == 17);
         assert(vt_str_capacity(mystr) == 65 + 13);
         assert(vt_str_has_space(mystr) == 65 + 13 - 17);
@@ -78,9 +79,20 @@ int32_t main(void) {
 
     // appending
     vt_str_t *sss = vt_str_create("hello ", alloctr); {
+        assert(vt_str_len(sss) == 6);
+        assert(vt_str_capacity(sss) == 6);
+        assert(vt_str_has_space(sss) == 0);
+
         vt_str_appendf(sss, "%s", "world");
+        assert(vt_str_len(sss) == 11);
+        assert(vt_str_capacity(sss) == 11);
+        assert(vt_str_has_space(sss) == 0);
+        assert(vt_str_equals_z(vt_str_z(sss), "hello world"));
+
         vt_str_append(sss, "!");
         vt_str_insert(sss, ",", 5);
+        assert(vt_str_equals_z(vt_str_z(sss), "hello, world!"));
+
         vt_str_append(sss, " hello ");
         vt_str_appendf(sss, "%s", "world!");
         assert(vt_str_equals_z(vt_str_z(sss), "hello, world! hello world!"));
@@ -132,7 +144,7 @@ int32_t main(void) {
         assert(vt_str_has_space(ns) == 0);
 
         vt_str_append(ns, "hello");
-        assert(vt_str_equals_z(vt_str_z(ns), " hello"));
+        assert(vt_str_equals_z(vt_str_z(ns), "?hello"));
 
         // fails, because vt_str_len(ns) < strlen("hello, world") => append instead
         // assert(vt_str_set(ns, "hello, world"));
@@ -242,7 +254,8 @@ int32_t main(void) {
     vt_str_set(s_strip, "123");
     assert(vt_str_is_numeric(s_strip));
 
-    vt_str_set(s_strip, "564.025");
+    vt_str_clear(s_strip);
+    vt_str_append(s_strip, "564.025");
     assert(vt_str_is_numeric(s_strip));
     vt_str_destroy(s_strip);
 
@@ -295,23 +308,45 @@ int32_t main(void) {
     // replace
     vt_str_t *text = vt_str_create(";apple;orange;potato;mango;strawberry;papaya;kiwi;", NULL);
     {
+        assert(vt_str_len(text) == 50);
+        assert(vt_str_capacity(text) == 50);
+
         // replace chars
         vt_str_replace_c(text, ";aot", ",AO");
         assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge,pOOAOO,mAngO,sOrAwberry,pApAyA,kiwi,"));
+        assert(vt_str_len(text) == 50);
+        assert(vt_str_capacity(text) == 50);
 
         // replace all substrings
         vt_str_replace(text, ",", ";");
+        // printf("[%s]\n", vt_str_z(text)); // TODO: remove
         assert(vt_str_equals_z(vt_str_z(text), ";Apple;OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA;kiwi;"));
+        assert(vt_str_len(text) == 50);
+        assert(vt_str_capacity(text) == 50);
 
         // replace first substrings
         vt_str_replace_first(text, ";", ",");
         vt_str_replace_first(text, ";", ",");
         assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA;kiwi;"));
 
-        // replace last substrings
+        // // replace last substrings
         vt_str_replace_last(text, ";", ",");
         vt_str_replace_last(text, ";", ",");
         assert(vt_str_equals_z(vt_str_z(text), ",Apple,OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA,kiwi,"));
+    }
+    vt_str_destroy(text);
+
+    // vt_str_set_at and vt_str_set_c
+    text = vt_str_create("hello, world", NULL); 
+    {
+        vt_str_set_at(text, "Artem", 7);
+        assert(vt_str_equals_z(vt_str_z(text), "hello, Artem"));
+
+        vt_str_set_at(text, "A", 11);
+        assert(vt_str_equals_z(vt_str_z(text), "hello, ArteA"));
+
+        vt_str_set_c(text, 'm', vt_str_len(text)-1);
+        assert(vt_str_equals_z(vt_str_z(text), "hello, Artem"));
     }
     vt_str_destroy(text);
 

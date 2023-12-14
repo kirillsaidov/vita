@@ -195,18 +195,36 @@ extern void vt_str_resize(vt_str_t *const s, const size_t n);
     @param s vt_str_t instance
     @param z raw C string
 
+    @returns None
+*/
+extern void vt_str_set(vt_str_t *const s, const char *z);
+
+/** Set string at position overriding everything else
+    @param s vt_str_t instance
+    @param z raw C string
+    @param at position index
+
     @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_set(vt_str_t *const s, const char *z);
+extern enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at);
+
+/** Set a single character 
+    @param s vt_str_t instance
+    @param c character
+    @param at position index
+
+    @returns enum VitaStatus
+*/
+extern enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at);
 
 /** Assigns n characters of raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
     @param n number of characters
 
-    @returns enum VitaStatus
+    @returns None
 */
-extern enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n);
+extern void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n);
 
 /** Appends a raw C string at the end of vt_str_t
     @param s vt_str_t instance

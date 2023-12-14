@@ -1,6 +1,7 @@
 #include "vita/container/str.h"
 
-static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args);
+static vt_str_t *vt_str_vfmt_set(vt_str_t *s, const char *const fmt, va_list args);
+static vt_str_t *vt_str_vfmt_append(vt_str_t *s, const char *const fmt, va_list args);
 
 vt_str_t vt_str_create_static(const char *const z) {
     // check for invalid input
@@ -21,14 +22,11 @@ vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create str
-    vt_str_t *s = vt_str_create_len(strlen(z), alloctr);
+    const size_t zLen = strlen(z);
+    vt_str_t *s = vt_str_create_len(zLen, alloctr);
 
     // set z to str
-    if (vt_str_set(s, z) != VT_STATUS_OPERATION_SUCCESS) {
-        VT_DEBUG_PRINTF("Failed to copy \"%s\" to vt_str_t!", z);
-        vt_str_destroy(s);
-        return NULL;
-    }
+    vt_str_set_n(s, z, zLen);
 
     return s;
 }
@@ -48,7 +46,7 @@ vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const 
     };
 
     // default initiaze it to whitespace
-    vt_memset(s->ptr, ' ', s->len);
+    vt_memset(s->ptr, '?', s->len);
 
     return s;
 }
@@ -193,6 +191,9 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
     s->ptr = s->alloctr 
         ? VT_ALLOCATOR_REALLOC(s->alloctr, s->ptr, (s->capacity + n + 1) * s->elsize) 
         : VT_REALLOC(s->ptr, (s->capacity + n + 1) * s->elsize);
+    // s->ptr = s->alloctr 
+    //     ? VT_ALLOCATOR_REALLOC(s->alloctr, s->ptr, (s->capacity + n) * s->elsize) 
+    //     : VT_REALLOC(s->ptr, (s->capacity + n) * s->elsize);
 
     // update
     s->capacity += n;
@@ -220,32 +221,80 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
     ((char*)s->ptr)[s->capacity] = '\0';
 }
 
-enum VitaStatus vt_str_set(vt_str_t *const s, const char *z) {
+void vt_str_set(vt_str_t *const s, const char *z) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    return vt_str_set_n(s, z, strlen(z));
+    vt_str_set_n(s, z, strlen(z));
 }
 
-enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
+enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(
+        at < s->len,
+        "%s: Assigning at %zu, but vt_str_t length is %zu!\n", 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
+        at, 
+        s->len
+    );
+
+    // ensure that z fits into vt_str_t
+    const size_t zLen = strlen(z);
+    VT_ENFORCE(
+        zLen <= s->len - at,
+        "%s: Supplied string length is %zu, but available space is %zu!\n",
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_MEMORY),
+        zLen,
+        s->len - at
+    );
+
+    // remove data from `at` till end
+    vt_str_remove(s, at, s->len - at);
+
+    // append new string
+    vt_str_append_n(s, z, zLen);
+
+    return VT_STATUS_OPERATION_SUCCESS;
+}
+
+enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(
+        at < s->len,
+        "%s: Assigning at %zu, but vt_str_t length is %zu!\n", 
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
+        at, 
+        s->len
+    );
+    
+    // add the '\0' terminator
+    ((char*)s->ptr)[at] = c;
+
+    return VT_STATUS_OPERATION_SUCCESS;
+}
+
+void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // check if it has enough space
-    if (s->capacity < n) {
-        VT_DEBUG_PRINTF(
-            "%s: Supplied string length is %zu, but vt_str_t length is %zu!\n", 
-            vt_status_to_str(VT_STATUS_ERROR_OUT_OF_MEMORY), 
-            n, 
-            s->len
-        );
-        return VT_STATUS_ERROR_OUT_OF_MEMORY;
-    }
+    // ensure that z fits into vt_str_t
+    VT_ENFORCE(
+        n <= s->len,
+        "%s: Supplied string length is %zu, but available space is %zu!\n",
+        vt_status_to_str(VT_STATUS_ERROR_OUT_OF_MEMORY),
+        n,
+        s->len
+    );
 
     // copy z data to vt_str_t
     vt_memmove(s->ptr, z, (n * s->elsize));
@@ -255,8 +304,6 @@ enum VitaStatus vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
 
     // update values
     s->len = n;
-
-    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_append(vt_str_t *const s, const char *z) {
@@ -277,7 +324,7 @@ enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     // iterate over all arguments
     va_list args; 
     va_start(args, fmt); 
-    if (vt_str_vfmt(s, fmt, args) == NULL) {
+    if (vt_str_vfmt_append(s, fmt, args) == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_STATUS_OPERATION_FAILURE;
     }
@@ -314,7 +361,7 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
-        at <= s->len,
+        at < s->len,
         "%s: Inserts at %zu, but vt_str_t length is %zu!\n", 
         vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         at, 
@@ -375,8 +422,8 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
             vt_str_insert(s, tmp_buf, at);
         } else {
             // append data to a temporary vt_str_t instance
-            vt_str_t *tmp_str = vt_str_create_capacity(len, s->alloctr);
-            if (vt_str_vfmt(tmp_str, fmt, args) == NULL) {
+            vt_str_t *tmp_str = vt_str_create_len(len, s->alloctr);
+            if (vt_str_vfmt_set(tmp_str, fmt, args) == NULL) {
                 VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
                 return VT_STATUS_OPERATION_FAILURE;
             }
@@ -459,7 +506,7 @@ void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
-        from <= s->len,
+        from < s->len,
         "%s: Start from %zu, but vt_str_t length is %zu!\n", 
         vt_status_to_str(VT_STATUS_ERROR_OUT_OF_BOUNDS_ACCESS), 
         from, 
@@ -606,8 +653,15 @@ void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const 
     const char *ptr = NULL;
     while ((ptr = vt_str_find(s, sub))) {
         const ptrdiff_t at_idx = ptr - vt_str_z(s);
-        vt_str_remove(s, at_idx, subLen);
-        vt_str_insert(s, rsub, at_idx);
+
+        // replace
+        if (subLen == rsubLen) {
+            vt_memcopy((char*)s->ptr + at_idx * s->elsize, rsub, rsubLen);
+        } else {
+            vt_str_remove(s, at_idx, subLen);
+            if (at_idx < (ptrdiff_t)vt_str_len(s)) vt_str_insert(s, rsub, at_idx);
+            else vt_str_append(s, rsub);
+        }
     }
 }
 
@@ -627,8 +681,15 @@ void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *
     const char *const ptr = vt_str_find(s, sub);
     if (ptr) {
         const ptrdiff_t at_idx = ptr - vt_str_z(s);
-        vt_str_remove(s, at_idx, subLen);
-        vt_str_insert(s, rsub, at_idx);
+
+        // replace
+        if (subLen == rsubLen) {
+            vt_memcopy((char*)s->ptr + at_idx * s->elsize, rsub, rsubLen);
+        } else {
+            vt_str_remove(s, at_idx, subLen);
+            if (at_idx < (ptrdiff_t)vt_str_len(s)) vt_str_insert(s, rsub, at_idx);
+            else vt_str_append(s, rsub);
+        }
     }
 }
 
@@ -654,8 +715,15 @@ void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *c
     // find number of instances to be replaced
     if (lastInstance) {
         const ptrdiff_t at_idx = lastInstance - vt_str_z(s);
-        vt_str_remove(s, at_idx, subLen);
-        vt_str_insert(s, rsub, at_idx);
+
+        // replace
+        if (subLen == rsubLen) {
+            vt_memcopy((char*)s->ptr + at_idx * s->elsize, rsub, rsubLen);
+        } else {
+            vt_str_remove(s, at_idx, subLen);
+            if (at_idx < (ptrdiff_t)vt_str_len(s)) vt_str_insert(s, rsub, at_idx);
+            else vt_str_append(s, rsub);
+        }
     }
 }
 
@@ -893,12 +961,7 @@ vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *co
             vt_str_t *tempStr = vt_str_create_len(copyLen, p->alloctr ? p->alloctr : NULL);
 
             // set the value and push it to the list
-            const enum VitaStatus ret = vt_str_set_n(tempStr, head, copyLen);
-            if (ret != VT_STATUS_OPERATION_SUCCESS) {
-                VT_DEBUG_PRINTF("%s\n", vt_status_to_str(ret));
-                vt_str_destroy(tempStr);
-                return p;
-            }
+            vt_str_set_n(tempStr, head, copyLen);
             vt_plist_push_back(p, tempStr);
             
             // update head
@@ -1033,7 +1096,7 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
 
     // create vt_str_t instance
     vt_str_t *spop = (sr == NULL) 
-        ? vt_str_create_capacity(copyLen, NULL) 
+        ? vt_str_create_len(copyLen, NULL) 
         : sr;
 
     // if not enough space, reserve more
@@ -1088,7 +1151,7 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
 
     // create vt_str_t instance
     vt_str_t *spop = (sr == NULL) 
-        ? vt_str_create_capacity(copyLen, NULL) 
+        ? vt_str_create_len(copyLen, NULL) 
         : sr;
 
     // if not enough space, reserve more
@@ -1280,14 +1343,57 @@ void vt_str_slide_reset(vt_str_t *const s) {
 
 // -------------------------- PRIVATE -------------------------- //
 
-/** Prints a formatted string into a vt_str_t
+/** Sets a formatted string into a vt_str_t
     @param s vt_str_t instance
     @param fmt string print format
     @param args variable args list
 
     @returns `vt_str_t` instance upon success, NULL upon failure
 */
-static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
+static vt_str_t *vt_str_vfmt_set(vt_str_t *s, const char *const fmt, va_list args) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // format string
+    va_list args2; va_copy(args2, args); 
+    {
+        // check format length
+        const int64_t len = vsnprintf(NULL, (size_t)0, fmt, args) + 1;
+        if (len < 0) {
+            VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+            va_end(args2);
+            return NULL;
+        }
+
+        // check for space
+        const size_t hasSpace = vt_str_has_space(s);
+        if (hasSpace < (size_t)len) {
+            vt_str_reserve(s, (len - hasSpace));
+        }
+
+        // print data to s
+        // vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2); // TODO: remove
+        vsnprintf(s->ptr, len+1, fmt, args2);
+
+        // update
+        s->len = len;
+        ((char*)s->ptr)[s->len] = '\0';
+    }
+    va_end(args2);
+
+    return s;
+}
+
+/** Appends a formatted string into a vt_str_t
+    @param s vt_str_t instance
+    @param fmt string print format
+    @param args variable args list
+
+    @returns `vt_str_t` instance upon success, NULL upon failure
+*/
+static vt_str_t *vt_str_vfmt_append(vt_str_t *s, const char *const fmt, va_list args) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
@@ -1311,7 +1417,8 @@ static vt_str_t *vt_str_vfmt(vt_str_t *s, const char *const fmt, va_list args) {
         }
 
         // print data to s
-        vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2);
+        // vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2); // TODO: remove
+        vsnprintf((char*)s->ptr + s->len * s->elsize, len+1, fmt, args2);
 
         // update
         s->len += len;
