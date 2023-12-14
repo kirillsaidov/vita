@@ -359,7 +359,7 @@ void vt_vec_remove(vt_vec_t *const v, const size_t at, const enum VitaRemoveStra
 
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
-        vt_memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at) * v->elsize);
+        vt_memmove((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (at + 1) * v->elsize, (v->len - at - 1) * v->elsize);
     } else {
         vt_gswap((char*)(v->ptr) + at * v->elsize, (char*)(v->ptr) + (v->len - 1) * v->elsize, v->elsize);
     }
