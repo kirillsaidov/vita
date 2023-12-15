@@ -31,6 +31,9 @@ struct VitaBaseArrayType {
     size_t elsize;      // container element size
     size_t slider_idx;  // container slider that adjusts where ptr points to
 
+    // viewable (non-modifiable)
+    bool is_view;
+
     // data pointers
     union {
         void *ptr;

@@ -20,6 +20,8 @@
     - vt_str_reserve
     - vt_str_resize
     - vt_str_set
+    - vt_str_set_at
+    - vt_str_set_c
     - vt_str_set_n
     - vt_str_append
     - vt_str_appendf

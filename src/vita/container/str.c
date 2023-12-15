@@ -11,7 +11,8 @@ vt_str_t vt_str_create_static(const char *const z) {
     vt_str_t s = {
         .ptr = (void*)z,
         .len = strlen(z),
-        .elsize = sizeof(char)
+        .elsize = sizeof(char),
+        .is_view = true,
     };
 
     return s;
@@ -66,6 +67,11 @@ void vt_str_destroy(vt_str_t *s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // if vt_str_t is view, skip
+    if (s->is_view) {
+        return;
+    }
 
     // free the vt_str_t string and vt_str_t struct
     if (s->alloctr) {
@@ -151,6 +157,7 @@ void vt_str_shrink(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // if length and capacity are the same, exit the function
     if (s->len == s->capacity) {
@@ -186,14 +193,12 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // reserve memory for additional n elements
     s->ptr = s->alloctr 
         ? VT_ALLOCATOR_REALLOC(s->alloctr, s->ptr, (s->capacity + n + 1) * s->elsize) 
         : VT_REALLOC(s->ptr, (s->capacity + n + 1) * s->elsize);
-    // s->ptr = s->alloctr 
-    //     ? VT_ALLOCATOR_REALLOC(s->alloctr, s->ptr, (s->capacity + n) * s->elsize) 
-    //     : VT_REALLOC(s->ptr, (s->capacity + n) * s->elsize);
 
     // update
     s->capacity += n;
@@ -207,6 +212,7 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // resize memory to (n + 1) elements
     s->ptr = s->alloctr 
@@ -214,7 +220,7 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
         : VT_REALLOC(s->ptr, (n + 1) * s->elsize);
 
     // update
-    s->len = (s->len > n) ? n : s->len;
+    s->len = (n < s->len) ? n : s->len;
     s->capacity = n;
 
     // add '\0' terminator at the very end of vt_str_t
