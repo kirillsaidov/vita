@@ -35,4 +35,4 @@ printf("Compiler minor: %d\n", v.minor); // 0
 printf("Compiler patch: %d\n", v.patch); // 1
 ```
 
-**[ [Back](page8.md) | [Contents](page10.md) ]**
+**[ [Back](page8.md) | [Next](page10.md) ]**
