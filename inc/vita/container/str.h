@@ -52,6 +52,7 @@
     - vt_str_ends_with
     - vt_str_apply
     - vt_str_is_numeric
+    - vt_str_is_numeric_z
     - vt_str_to_uppercase
     - vt_str_to_lowercase
     - vt_str_index_of
