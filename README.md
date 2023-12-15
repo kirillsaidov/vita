@@ -9,9 +9,10 @@ A simple and intuitive standard library for your modern C project! Lightweight a
 * string manipulation
 * path and file handling
 * logging facility
-* command line arguments parsing
+* command line arguments parser
 * facilities to work with paths and directories
 * datetime utility
+* simple sockets wrapper
 
 ### Arguments parser showcase
 ```c
@@ -92,3 +93,4 @@ You can also closely follow the development process in Trello [board](https://tr
 
 ## LICENSE
 All code is licensed under the BSL license.
+

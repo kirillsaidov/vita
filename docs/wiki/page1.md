@@ -5,7 +5,7 @@ To use `Vita` either copy and paste the source code into your project or link th
 * `C compiler (GCC, Clang, MinGW)`
 * `CMake`
 
-**NOTE:** on Windows you need the MSYS2 toolchain to use the `build.bat` script; or use your own alternative. 
+**NOTE:** on Windows you need the MSYS2 toolchain to use the `build.bat` script; or use CMake directly.
 
 ## Building
 ```
