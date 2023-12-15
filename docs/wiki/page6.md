@@ -116,7 +116,7 @@ struct VitaDateTime diff = vt_datetime_diff(lhs, rhs);
 assert(diff.second == 58);
 assert(diff.minute == 8);
 assert(diff.hour == 22);
-assert(diff.month_day == 5);
+assert(diff.month_day == 5); // diff: 5 days, 22 hours, 8 minutes, 58 seconds
 ```
 
 ### Additional functionality
