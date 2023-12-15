@@ -6,6 +6,7 @@ In this chapter we are going to discuss how to read and write to files with `Vit
 * [Writing to files](page3.md#writing-to-files)
 
 ### Reading from files
+
 ```c
 #include "vita/system/fileio.h"
 
@@ -17,11 +18,18 @@ vt_str_t *str = vt_file_readb("other/myfile.txt", alloctr); // ditto
 
 // do you thing ...
 
-vt_str_destroy(str); // free data
+// free data
+vt_str_destroy(str); 
+
+// read into buffer
+char buf[512] = {0};
+vt_file_read_to_buffer("my_file.txt", buf, sizeof(buf));
+assert(vt_str_equals_z(buf, "hello, world")); 
 ```
 
 ### Writing to files
 Write data in one line of code:
+
 ```c
 // string to write to file
 const char *filename = "myfile.txt";

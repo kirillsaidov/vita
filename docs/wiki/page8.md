@@ -5,9 +5,11 @@
 1. [Assert and debug information](page8.md#assert-and-debug-information)
 2. [Enforcing conditions even in release builds](page8.md#enforcing-conditions-even-in-release-builds)
 3. [Redirect or disable debug output](page8.md#redirect-or-disable-debug-output)
+4. [Auxiliary utils](page8.md#auxiliary-utils)
 
 ### Assert and debug information
 If the specified condition fails, `Vita` assertions exit the program outputting an error message: 
+
 ```c
 #include "vita/util/debug.h"
 
@@ -21,6 +23,7 @@ void download_file(const char *const url) {
 ```
 
 In case you need only to output the debug information, then you can use `VT_DEBUG_PRINTF`:
+
 ```c
 Result parse_html(const char *const html) {
     if (!validate_html(html)) {
@@ -39,6 +42,7 @@ All funtionality that has `debug` in its name is removed in release builds! So `
 
 ### Enforcing conditions even in release builds
 You can also enforce a condition in release builds using `VT_ENFORCE`. Code below is taken from `Vita` [datetime](../../inc/vita/time/datetime.h) module:
+
 ```c
 struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
     // removed in relase builds
@@ -58,6 +62,7 @@ struct VitaDateTime vt_datetime_from_text(const char *timebuf) {
 ```
 
 You can also add runtime checks that only output a message if condition fails. It does not interrupt the program flow or exit:
+
 ```c
 VT_CHECK(
     1 == 2, 
@@ -67,12 +72,25 @@ VT_CHECK(
 ```
 
 ### Redirect or disable debug output
+
 ```c
 // redirect output to a file
 vt_debug_redirect_output("file.debug");
 
 // completely disable all debug output
 vt_debug_disable_output(true);
+```
+
+### Auxiliary utils
+
+```c
+// output info
+VT_NOTE("This is a note. It does not interrupt the program flow.");
+
+// output message, then exit the program
+VT_TODO("Will be added in the future release.");
+VT_REQUIRED("XYZ module is required to run this. Quitting...");
+VT_UNIMPLEMENTED("Wait for the next release.");
 ```
 
 For more usage examples, read [test_debug.c](../../tests/src/test_debug.c).

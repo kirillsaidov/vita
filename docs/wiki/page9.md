@@ -7,6 +7,7 @@ This chapter explains how to get compiler information. For more details refer to
 2. [Get compiler version](page9.md#get-compiler-version)
 
 ### Check for available compiler
+
 ```c
 if (VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
     // ...
@@ -18,6 +19,7 @@ if (VT_COMPILER_ID == VT_COMPILER_ID_CLANG) {
 ```
 
 ### Get compiler version
+
 ```c
 const vt_version_vt v = vt_compiler_get_version();
 
@@ -33,4 +35,4 @@ printf("Compiler minor: %d\n", v.minor); // 0
 printf("Compiler patch: %d\n", v.patch); // 1
 ```
 
-**[ [Back](page8.md) | [Contents](VITA.md) ]**
+**[ [Back](page8.md) | [Contents](page10.md) ]**

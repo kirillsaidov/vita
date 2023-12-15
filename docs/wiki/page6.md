@@ -6,9 +6,11 @@ This chapter describes how to use the functionality provided by the [`datetime`]
 2. [Create datetime and datetime operations](page6.md#create-datetime-and-datetime-operations)
 3. [Convert datetime to string](page6.md#convert-datetime-to-string)
 4. [Convert string to datetime](page6.md#convert-string-to-datetime)
-5. [Additional functionality](page6.md#additional-functionality)
+5. [Datetime arithmetic](page6.md#datetime-arithmetic)
+6. [Additional functionality](page6.md#additional-functionality)
 
 ### Get current time
+
 ```c
 #include "vita/time/datetime.h"
 
@@ -30,6 +32,7 @@ vt_datetime_get_now_as_text_pretty(timebuf, VT_DATETIME_BUFFER_SIZE); // "Fri Ju
 ```
 
 ### Create datetime and datetime operations
+
 ```c
 // create custom datetime object
 const struct VitaDateTime custom_time = vt_datetime_create(2023, 1, 1, 11, 24, 56, -1, -1);
@@ -47,6 +50,7 @@ assert(custom_time.year_day == 1); // ditto
 ```
 
 ### Convert datetime to string
+
 ```c
 // define time buffer
 char timebuf[VT_DATETIME_BUFFER_SIZE] = {0};
@@ -66,6 +70,7 @@ assert(vt_str_equals_z(timebuf, "Sun Jan  1 11:24:56 2023"));
 ```
 
 ### Convert string to datetime
+
 ```c
 // convert string time representation to datetime object
 struct VitaDateTime time_simple = vt_datetime_from_text("2023-05-19 20:31:01");
@@ -81,7 +86,44 @@ assert(time_iso_ext.minute == 31);
 assert(time_iso_ext.second == 1);
 ```
 
+### Datetime arithmetic
+
+```c
+// define datetime
+struct VitaDateTime datetime = vt_datetime_from_text("2023-05-19 20:31:01");
+
+// add 6 days and 9 minutes, substract 2 hours and 1 second
+struct VitaDateTime shifted = vt_datetime_op(datetime, (struct VitaDateTime) { 
+    .month_day = 6, 
+    .hour = -2, 
+    .minute = 9, 
+    .second = -1 
+});
+
+// check
+vt_datetime_to_text(shifted, timebuf, VT_DATETIME_BUFFER_SIZE);
+assert(vt_str_equals_z(timebuf, "2023-05-25 18:40:00"));
+
+// add 6 days (alternative)
+const time_t secs_in_one_day = 86400;
+const time_t secs_shifted = vt_datetime_to_secs(datetime) + 6 * secs_in_one_day;
+shifted = vt_datetime_from_secs(secs_shifted);
+
+// difference in secs, minutes, hours, days
+struct VitaDateTime vdt4 = vt_datetime_from_text("2023-05-25 18:40:00");
+struct VitaDateTime vdt5 = vt_datetime_from_text("2023-05-19 20:31:01");
+assert(vt_datetime_diff_days(vdt3, vdt2) == 5); // vt_datetime_diff_{secs, hours, minutes, days}(lhs, rhs)
+
+// difference
+struct VitaDateTime diff = vt_datetime_diff(lhs, rhs);
+assert(diff.second == 58);
+assert(diff.minute == 8);
+assert(diff.hour == 22);
+assert(diff.month_day == 5);
+```
+
 ### Additional functionality
+
 ```c
 // check if datetime string is valid
 assert(vt_datetime_is_valid_text("2023-12-27 23:12:02") == true);

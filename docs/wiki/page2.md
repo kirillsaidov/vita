@@ -1,19 +1,21 @@
 # Data structures
-In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 3 container types:
+In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 4 container types:
 
 ```
 * vt_str_t     // similar to std::string
 * vt_vec_t     // similar to std::vector or std::array
 * vt_plist_t   // an array of pointers
+* vt_span_t    // an viewable-only array
 ```
 
-Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#L131) struct.
+Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/container/common.h#L27) struct.
 
 ## Contents
 * [Using `vt_str_t` strings](page2.md#using-vt_str_t-strings)
 * [Dynamic arrays with `vt_vec_t`](page2.md#dynamic-arrays-with-vt_vec_t)
 * [Imitating 2d arrays with `vt_vec_t`](page2.md#imitating-2d-arrays-with-vt_vec_t)
 * [A list of pointers with `vt_plist_t`](page2.md#a-list-of-pointers-with-vt_plist_t)
+* [Using `vt_span_t`](page2.md#using-vt_span_t)
 
 ### Using `vt_str_t` strings
 `Vita` has a lot of string functions available to the user. `vt_str_starts_with, vt_str_split, vt_str_strip` just to name a few. To read more about available functions, check out the [vt_str_t](../../inc/vita/container/str.h) header file. It also handles `'\0'` internally, so you don't need to worry about it.
@@ -22,7 +24,7 @@ Every container is an alias of [`VitaBaseArrayType`](../../inc/vita/core/core.h#
 ```c
 #include "vita/container/str.h"
 
-// create static string (non-modifiable, pointer-length pair)
+// create static string (viewable, non-modifiable, pointer-length pair)
 const vt_str_t str = vt_str_create_static("hello, world!");
 
 // creates a dynamic string and sets its value to "hello, world!"
@@ -33,9 +35,9 @@ vt_str_t *str = vt_str_create_len(10, alloctr);          // 1. creates a string 
 vt_str_set(str, "hello, world!");                        // 2. sets its value to "hello, world!"
 
 // almost the same as above 
-vt_str_t *str = vt_str_create_capacity(32);              // creates an empty string with length of 0 and capacity of 32
-vt_str_append(str, "hello, world!");                     // appends "hello, world!"
-vt_str_appendf(str, "%s!", "hello, world");              // appends "hello, world!"
+vt_str_t *str = vt_str_create_capacity(32);              // 1. creates an empty string with length of 0 and capacity of 32
+vt_str_append(str, "hello, world!");                     // 2. appends "hello, world!"
+vt_str_appendf(str, "%s!", "hello, world");              // 3. appends "hello, world!"
 
 // create a copy
 vt_str_t *str_copy = vt_str_dup(str);
@@ -44,16 +46,16 @@ vt_str_t *str_copy = vt_str_dup(str);
     if alloctr == NULL, assumes plain calloc/free were used to allocate this data,
     otherwise give it the allocator that was used.
 */
-vt_str_t *str_heap_alloced = vt_str_take_ownership(strdup("hello, world"), alloctr); 
+vt_str_t *str_heap_alloced = vt_str_take_ownership(my_strdup("hello, world"), alloctr); 
 
 // get string info
-const size_t str_length = vt_str_len(str);
-const size_t str_capacity = vt_str_capacity(str);
-const size_t str_freeSpace = vt_str_has_space(str);
-const bool str_isEmpty = vt_str_is_empty(str);
+const size_t sLen = vt_str_len(str);
+const size_t sCap = vt_str_capacity(str);
+const size_t freeSpace = vt_str_has_space(str);
+const bool isEmpty = vt_str_is_empty(str);
 
 // accessing the raw string pointer
-const char *z_str = vt_str_z(str); // !!! don't free it
+const char *z = vt_str_z(str); // !!! don't free it
 
 // free memory
 vt_str_destroy(str);
@@ -62,16 +64,21 @@ vt_str_destroy(str_heap_alloced);
 ```
 
 ### String operations
+
 ```c
 // comparing strings
 assert(vt_str_equals_z(vt_str_z(str), "hello, world"));
 
 // checking if string is a numeric value
 const size_t max_check_len = 256;
-assert(vt_str_is_numeric("123", max_check_len) == true);
-assert(vt_str_is_numeric("99.3", max_check_len) == true);
-assert(vt_str_is_numeric("15,7", max_check_len) == false);
-assert(vt_str_is_numeric("this is a str 123", max_check_len) == false);
+assert(vt_str_is_numeric_z("123", max_check_len) == true);
+assert(vt_str_is_numeric_z("99.3", max_check_len) == true);
+assert(vt_str_is_numeric_z("15,7", max_check_len) == false);
+assert(vt_str_is_numeric_z("this is a str 123", max_check_len) == false);
+
+// ditto
+vt_str_t num = vt_str_create_static("2024");
+assert(vt_str_is_numeric(&num) == true);
 
 // basic operations
 vt_str_reserve(str, 100);              // reserve 100 chars
@@ -97,6 +104,7 @@ vt_str_strip_punct(",. \n hello, world!");  // strips leading and tailing punctu
 There are many more advanced functions available like `vt_str_starts_with, vt_str_vt_index_of` and `vt_str_to_uppercase`. For more details, please refer to [str.h](../../inc/vita/container/str.h) or [test_str.c](../../tests/src/test_str.c) files.
 
 ### Dynamic arrays with `vt_vec_t`
+
 ```c
 #include "vita/container/vec.h"
 
@@ -105,19 +113,23 @@ vt_vec_t *vec = vt_vec_create(10, sizeof(int32_t), alloctr); // if alloctr == NU
 vt_vec_destroy(vec);
 
 // get vector info
-const size_t vec_length = vt_vec_len(vec);
-const size_t vec_capacity = vt_vec_capacity(vec);
-const size_t vec_hasSpace = vt_vec_has_space(vec);
-const bool vec_isEmpty = vt_vec_is_empty(vec);
+const size_t vLen = vt_vec_len(vec);
+const size_t vCap = vt_vec_capacity(vec);
+const size_t hasSpace = vt_vec_has_space(vec);
+const bool isEmpty = vt_vec_is_empty(vec);
 
 // push data
 const int32_t var = 33;
-vt_vec_push_back(vec, &var);
-vt_vec_push_backi32(vec, 33);     // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
+vt_vec_push_back(vec, &var);  
+vt_vec_push_backi32(vec, 33);  // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
+
+// ditto
+vt_vec_push_front(vec, &var);  // push at the begining
+vt_vec_push_fronti32(vec, 33); // ditto
 
 // set data
-vt_vec_set(vec, &var, 0);    // assign vector[0] = var
-vt_vec_seti32(vec, 33, 0);   // ditto
+vt_vec_set(vec, &var, 0);      // assign vector[0] = var
+vt_vec_seti32(vec, 33, 0);     // ditto
 
 // get data
 const int32_t myVal = *(int32_t*)vt_vec_get(vec, 0);
@@ -229,5 +241,27 @@ vt_plist_slide_reset(p);
 ```
 
 For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or [test_plist.c](../../tests/src/test_plist.c) files.
+
+### Using `vt_span_t`
+
+```c
+// create vec
+vt_vec_t *v = vt_vec_create(10, sizeof(int32_t), NULL);
+
+// init vec: 1, 2, ..., 9
+VT_FOREACH(i, 0, vt_vec_capacity(v)) vt_vec_push_backi32(v, i);
+
+// create span from vec
+vt_span_t vec_view = vt_span_from_to(vt_array_head(v), 2, 5, vt_array_elsize(v));
+assert(vt_span_len(vec_view) == 3);
+assert(vt_span_geti32(vec_view, 0) == 2);
+assert(vt_span_geti32(vec_view, 1) == 3);
+assert(vt_span_geti32(vec_view, 2) == 4);
+
+// destroy vec
+vt_vec_destroy(v);
+```
+
+For more details, please refer to [span.h](../../inc/vita/container/span.h) or [test_span.c](../../tests/src/test_span.c) files.
 
 **[ [Back](page1.md) | [Next](page3.md) ]**

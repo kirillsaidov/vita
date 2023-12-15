@@ -23,7 +23,7 @@ int32_t main(const int32_t argc, const char *argv[]) {
 Secondly, we need to create an `vt_argopt_t` array instance and describe our variables so it knows what and how to parse:
 ```c
     vt_argopt_t optv[] = {
-        // long      short   description            argument                   type
+        // long       short   description            argument                   type
         { "--link",    "-l", "youtube link",   VT_ARGOPT(opt_youtube_link),  VT_TYPE_CSTR  },
         { "--quality", "-q", "video quality",  VT_ARGOPT(opt_video_quality), VT_TYPE_INT32 },
         { "--verbose", "-v", "verbose output", VT_ARGOPT(opt_verbose),       VT_TYPE_BOOL  },

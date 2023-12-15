@@ -11,6 +11,7 @@ Vita is a general purpose library for quick prototyping with C. It includes vari
 7. [Logger](page7.md)
 8. [Debugging](page8.md)
 9. [Get compiler information](page9.md)
+10. [Working with sockets](page10.md)
 
 Clone this repo and read more on the web documentation [here](../html). Once you have cloned the repository, open the `index.html` file in your browser.
 

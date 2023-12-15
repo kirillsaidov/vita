@@ -42,7 +42,7 @@ Let's build and run our project:
 ```
 $ gcc main.c -o main -lvita -L.
 $ ./main
-Vita version: 0.4.0
+Vita version: 0.5.0
 ```
 
 ## Debug vs Release builds
