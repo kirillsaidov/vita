@@ -1,5 +1,5 @@
 # Data structures
-In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` support 4 container types:
+In this chapter we are going to discuss how to use `Vita` containers. Currently, `Vita` supports 4 container types:
 
 ```
 * vt_str_t     // similar to std::string
