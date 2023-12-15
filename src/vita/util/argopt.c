@@ -216,11 +216,9 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
                     // check we need to reallocate
                     if (len > zLen) {
-                        char *ztmp = realloc(*zvalue, len - zLen);
-                        if (ztmp == NULL) {
-                            VT_DEBUG_PRINTF("%s: Failed to reallocate vt_str_z to assign a new value!\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
-                            return;
-                        }
+                        char *ztmp = alloctr 
+                            ? VT_ALLOCATOR_REALLOC(alloctr, *zvalue, len - zLen)
+                            : VT_REALLOC(*zvalue, len - zLen);
 
                         // save
                         *zvalue = ztmp;

@@ -1104,8 +1104,11 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
         vt_str_reserve(spop, copyLen - vt_str_len(spop));
     }
 
+    // clear
+    vt_str_clear(spop);
+
     // copy the string before the separator
-    vt_str_set_n(spop, s->ptr, copyLen);
+    vt_str_append_n(spop, s->ptr, copyLen);
 
     // pop the part of the string with the separator
     vt_str_remove(s, 0, copyLen + sepLen);
@@ -1159,8 +1162,11 @@ vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const
         vt_str_reserve(spop, copyLen - vt_str_len(spop) + 1);
     }
 
+    // clear
+    vt_str_clear(spop);
+
     // copy the string after the separator
-    vt_str_set_n(spop, lastInstance + sepLen, copyLen);
+    vt_str_append_n(spop, lastInstance + sepLen, copyLen);
 
     // pop the part of the string with the separator
     vt_str_remove(s, vt_str_len(s) - copyLen - sepLen, copyLen + sepLen);
