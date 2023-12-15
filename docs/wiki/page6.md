@@ -107,9 +107,9 @@ const time_t secs_shifted = vt_datetime_to_secs(datetime) + 6 * secs_in_one_day;
 shifted = vt_datetime_from_secs(secs_shifted);
 
 // difference in secs, minutes, hours, days
-struct VitaDateTime vdt4 = vt_datetime_from_text("2023-05-25 18:40:00");
-struct VitaDateTime vdt5 = vt_datetime_from_text("2023-05-19 20:31:01");
-assert(vt_datetime_diff_days(vdt3, vdt2) == 5); // vt_datetime_diff_{secs, hours, minutes, days}(lhs, rhs)
+struct VitaDateTime lhs = vt_datetime_from_text("2023-05-25 18:40:00");
+struct VitaDateTime rhs = vt_datetime_from_text("2023-05-19 20:31:01");
+assert(vt_datetime_diff_days(lhs, rhs) == 5); // vt_datetime_diff_{secs, hours, minutes, days}(lhs, rhs)
 
 // difference
 struct VitaDateTime diff = vt_datetime_diff(lhs, rhs);
