@@ -1,6 +1,6 @@
 # Working with sockets
 
-Vita provides a sockets minimal wrapper, but still allows for additonal configuration with the original API. It uses `winsock2` on windows and POSIX sockets on unix platforms. For more details refer to [`network/sockets.h`](../../inc/vita/network/sockets.h).
+Vita provides a minimal sockets wrapper, but still allows for additonal configuration with the original API. It uses `winsock2` on windows and POSIX sockets on unix platforms. For more details refer to [`network/sockets.h`](../../inc/vita/network/sockets.h).
 
 ## Contents
 1. [Server](page10.md#server)
