@@ -501,6 +501,13 @@ extern void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t));
 */
 extern bool vt_str_is_numeric(const vt_str_t *const s);
 
+/** Checks if the entire string is a number
+    @param z a raw C string
+    @param len maximum check length
+    @returns true upon z being a number
+*/
+extern bool vt_str_is_numeric_z(const char *const z, const size_t len);
+
 /** Converts characters to uppercase
     @param s vt_str_t
 */

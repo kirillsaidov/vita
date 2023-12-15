@@ -1275,6 +1275,21 @@ bool vt_str_is_numeric(const vt_str_t *const s) {
     return true;
 }
 
+bool vt_str_is_numeric_z(const char *const z, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // check if string is a number
+    for (size_t i = 0; i < len; i++) {
+        if (!isdigit(z[i]) && z[i] != '.') {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void vt_str_to_uppercase(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
