@@ -260,6 +260,9 @@ assert(vt_span_geti32(vec_view, 2) == 4);
 
 // destroy vec
 vt_vec_destroy(v);
+
+// reset; vec is invalid now
+vec_view = (vt_span_t){};
 ```
 
 For more details, please refer to [span.h](../../inc/vita/container/span.h) or [test_span.c](../../tests/src/test_span.c) files.
