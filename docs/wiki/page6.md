@@ -3,7 +3,7 @@ This chapter describes how to use the functionality provided by the [`datetime`]
 
 ## Contents
 1. [Get current time](page6.md#get-current-time)
-2. [Create datetime and datetime operations](page6.md#create-datetime-and-datetime-operations)
+2. [Create custom datetime](page6.md#create-custom-datetime)
 3. [Convert datetime to string](page6.md#convert-datetime-to-string)
 4. [Convert string to datetime](page6.md#convert-string-to-datetime)
 5. [Datetime arithmetic](page6.md#datetime-arithmetic)
@@ -31,7 +31,7 @@ vt_datetime_get_now_as_text(timebuf, VT_DATETIME_BUFFER_SIZE);        // "2023-0
 vt_datetime_get_now_as_text_pretty(timebuf, VT_DATETIME_BUFFER_SIZE); // "Fri Jun 30 12:11:27 2023"
 ```
 
-### Create datetime and datetime operations
+### Create custom datetime
 
 ```c
 // create custom datetime object
@@ -44,9 +44,6 @@ assert(custom_time.minute == 24);
 assert(custom_time.second == 56);
 assert(custom_time.week_day == 7); // calculates automatically if -1 is speicified
 assert(custom_time.year_day == 1); // ditto
-
-// no operations implemented for now
-// coming soon...
 ```
 
 ### Convert datetime to string
