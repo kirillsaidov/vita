@@ -15,7 +15,7 @@ If the specified condition fails, `Vita` assertions exit the program outputting 
 
 void download_file(const char *const url) {
     VT_DEBUG_ASSERT(url != NULL, "No url provided! Error code: %d", download_error_code);
-    // output: 2023-09-09 21:13:32 DEBUG ASSERTION FAILURE [url != NULL] download.c:main:4: No url provided! Error code: -1
+    // output: 2023-09-09 21:13:32 DEBUG ASSERTION FAILURE [url != NULL] download.c:download_file:4: No url provided! Error code: -1
     
     // do your thing
     // ...
