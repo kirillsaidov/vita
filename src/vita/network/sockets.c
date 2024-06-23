@@ -24,6 +24,8 @@ bool vt_socket_quit(void) {
 }
 
 struct VitaSocketAddress vt_socket_make_address(const int16_t port, const char *const address) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(address != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     return (struct VitaSocketAddress) {
         .port = htons(port),
         .addr = inet_addr(address)
