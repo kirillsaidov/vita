@@ -53,8 +53,7 @@ void test_path(void) {
 
         vt_plist_t *pdir = vt_path_listdir(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
-            vt_plist_apply(pdir, free_str);
-        } vt_plist_destroy(pdir);
+        } vt_path_dir_free(pdir);
 
         vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt", alloctr); {
             assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
@@ -90,8 +89,7 @@ void test_path(void) {
 
         vt_plist_t *pdir = vt_path_listdir(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
-            vt_plist_apply(pdir, free_str);
-        } vt_plist_destroy(pdir);
+        } vt_path_dir_free(pdir);
 
         vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
             assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
@@ -128,8 +126,7 @@ void test_path(void) {
 
         vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
-            vt_plist_apply(pdir, free_str);
-        } vt_plist_destroy(pdir);
+        } vt_path_dir_free(pdir);
 
         vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
             assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));

@@ -202,6 +202,22 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
     return pl;
 }
 
+void vt_path_dir_free(vt_plist_t *p) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // check if list is not empty
+    if (vt_plist_len(p)) {
+        vt_str_t *item = NULL;
+        while((item = vt_plist_slide_front(p)) != NULL) {
+            vt_str_destroy(item);
+        }
+    }
+
+    // destory list itself
+    vt_plist_destroy(p);
+}
+
 vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));

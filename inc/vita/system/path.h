@@ -114,6 +114,7 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @returns list of `vt_str_t*` upon success, `NULL` otherwise
 
     @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note use `vt_path_dir_free(p)` to free the directory tree.
 */
 extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
@@ -125,8 +126,15 @@ extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, con
     @returns list of `vt_str_t*` upon success, `NULL` otherwise
 
     @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note use `vt_path_dir_free(p)` to free the directory tree.
 */
 extern vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
+
+/** Free directory tree 
+    @param p dir container object
+    @returns None
+*/
+extern void vt_path_dir_free(vt_plist_t *p);
 
 /** Get path basename
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
