@@ -9,8 +9,8 @@
     - vt_path_is_dir
     - vt_path_is_file
     - vt_path_get_file_size
-    - vt_path_listdir
-    - vt_path_listdir_recurse
+    - vt_path_dir_list
+    - vt_path_dir_list_recurse
     - vt_path_basename
     - vt_path_mkdir
     - vt_path_mkdir_parents
@@ -116,7 +116,7 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
     @note use `vt_path_dir_free(p)` to free the directory tree.
 */
-extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
+extern vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /** Get all files and sub-directories recursively
     @param p container where to save the data; if NULL is passed, it is allocated
@@ -128,7 +128,7 @@ extern vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, con
     @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
     @note use `vt_path_dir_free(p)` to free the directory tree.
 */
-extern vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
+extern vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
 
 /** Free directory tree 
     @param p dir container object

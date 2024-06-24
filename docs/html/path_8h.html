@@ -115,9 +115,9 @@ Functions</h2></td></tr>
 <tr class="separator:a5f50c01947ef8c038a500de67a3934c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6065da352a6c1d1a9761a51a40e553e6"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a6065da352a6c1d1a9761a51a40e553e6">vt_path_get_file_size</a> (const char *const z)</td></tr>
 <tr class="separator:a6065da352a6c1d1a9761a51a40e553e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d882d954b62b3cb72dbb21ef3d37bc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a0d882d954b62b3cb72dbb21ef3d37bc3">vt_path_listdir</a> (<a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const p, const char *const z, const bool ignoreDotFiles)</td></tr>
+<tr class="memitem:a0d882d954b62b3cb72dbb21ef3d37bc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a0d882d954b62b3cb72dbb21ef3d37bc3">vt_path_dir_list</a> (<a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const p, const char *const z, const bool ignoreDotFiles)</td></tr>
 <tr class="separator:a0d882d954b62b3cb72dbb21ef3d37bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03faaabc82a557e49e37ef9bd8381a50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a03faaabc82a557e49e37ef9bd8381a50">vt_path_listdir_recurse</a> (<a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const p, const char *const z, const bool ignoreDotFiles)</td></tr>
+<tr class="memitem:a03faaabc82a557e49e37ef9bd8381a50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a03faaabc82a557e49e37ef9bd8381a50">vt_path_dir_list_recurse</a> (<a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const p, const char *const z, const bool ignoreDotFiles)</td></tr>
 <tr class="separator:a03faaabc82a557e49e37ef9bd8381a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7346a816697f2fc5a5a4789080e9c2a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="str_8h.html#a77f7735a6487ae265d7345efbf6b4044">vt_str_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="path_8h.html#a7346a816697f2fc5a5a4789080e9c2a1">vt_path_basename</a> (<a class="el" href="str_8h.html#a77f7735a6487ae265d7345efbf6b4044">vt_str_t</a> *const s, const char *const z)</td></tr>
 <tr class="separator:a7346a816697f2fc5a5a4789080e9c2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,8 +176,8 @@ Functions</h2></td></tr>
 <li>vt_path_is_dir</li>
 <li>vt_path_is_file</li>
 <li>vt_path_get_file_size</li>
-<li>vt_path_listdir</li>
-<li>vt_path_listdir_recurse</li>
+<li>vt_path_dir_list</li>
+<li>vt_path_dir_list_recurse</li>
 <li>vt_path_basename</li>
 <li>vt_path_mkdir</li>
 <li>vt_path_mkdir_parents</li>
@@ -500,13 +500,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a0d882d954b62b3cb72dbb21ef3d37bc3" name="a0d882d954b62b3cb72dbb21ef3d37bc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d882d954b62b3cb72dbb21ef3d37bc3">&#9670;&#160;</a></span>vt_path_listdir()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d882d954b62b3cb72dbb21ef3d37bc3">&#9670;&#160;</a></span>vt_path_dir_list()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> * vt_path_listdir </td>
+          <td class="memname"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> * vt_path_dir_list </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -544,13 +544,13 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a03faaabc82a557e49e37ef9bd8381a50" name="a03faaabc82a557e49e37ef9bd8381a50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03faaabc82a557e49e37ef9bd8381a50">&#9670;&#160;</a></span>vt_path_listdir_recurse()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a03faaabc82a557e49e37ef9bd8381a50">&#9670;&#160;</a></span>vt_path_dir_list_recurse()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> * vt_path_listdir_recurse </td>
+          <td class="memname"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> * vt_path_dir_list_recurse </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="plist_8h.html#a38458651ddfe121cc8bc431a4ab9b855">vt_plist_t</a> *const&#160;</td>
           <td class="paramname"><em>p</em>, </td>

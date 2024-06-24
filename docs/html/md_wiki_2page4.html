@@ -131,7 +131,7 @@ Create, delete, move</h2>
 <div class="line">vt_path_rmdir_recurse(mypath);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md43"></a>
 Listing directory contents</h2>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="struct_vita_base_array_type.html">vt_plist_t</a> *pdir = vt_path_listdir(NULL, <span class="stringliteral">&quot;media/dev&quot;</span>, <span class="keyword">true</span>); <span class="comment">// `true` here is for ignoring dot.files: .vim, .gitignore, etc...</span></div>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="struct_vita_base_array_type.html">vt_plist_t</a> *pdir = vt_path_dir_list(NULL, <span class="stringliteral">&quot;media/dev&quot;</span>, <span class="keyword">true</span>); <span class="comment">// `true` here is for ignoring dot.files: .vim, .gitignore, etc...</span></div>
 <div class="line">assert(vt_plist_len(pdir) == FILES_IN_DIR);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// do something</span></div>

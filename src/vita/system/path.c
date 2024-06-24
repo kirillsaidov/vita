@@ -86,7 +86,7 @@ int64_t vt_path_get_file_size(const char *const z) {
     return file_size;
 }
 
-vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -136,7 +136,7 @@ vt_plist_t *vt_path_listdir(vt_plist_t *const p, const char *const z, const bool
     return pl;
 }
 
-vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
+vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -178,7 +178,7 @@ vt_plist_t *vt_path_listdir_recurse(vt_plist_t *const p, const char *const z, co
         vt_str_append(st, dirtree->d_name);
 
         // check if current path is a directory; if false, then break
-        if (vt_path_is_dir(vt_str_z(st)) && vt_path_listdir_recurse(pl, vt_str_z(st), ignoreDotFiles) == NULL) {
+        if (vt_path_is_dir(vt_str_z(st)) && vt_path_dir_list_recurse(pl, vt_str_z(st), ignoreDotFiles) == NULL) {
             break;
         }
 
@@ -389,7 +389,7 @@ bool vt_path_rmdir_recurse(const char *const z) {
 
     // get all files in a directory
     // if none are found, delete the directory and return
-    vt_plist_t *dir_list = vt_path_listdir_recurse(NULL, z, false);
+    vt_plist_t *dir_list = vt_path_dir_list_recurse(NULL, z, false);
     if (dir_list == NULL || !vt_plist_len(dir_list)) {
         status = vt_path_rmdir(z);
         goto vt_path_rmdir_recurse_cleanup__;

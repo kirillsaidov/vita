@@ -68,7 +68,7 @@ vt_path_rmdir_recurse(mypath);
 ### Listing directory contents
 ```c
 // If NULL is passed, allocates a new instance, otherwise the passed instance is used and returned
-vt_plist_t *pdir = vt_path_listdir(NULL, "media/dev", true); // `true`: ignore dot.files: .vim, .gitignore, etc...
+vt_plist_t *pdir = vt_path_dir_list(NULL, "media/dev", true); // `true`: ignore dot.files: .vim, .gitignore, etc...
 assert(vt_plist_len(pdir) == FILES_IN_DIR);
 
 // do something

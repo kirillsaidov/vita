@@ -51,7 +51,7 @@ void test_path(void) {
         assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src"));
         assert(vt_path_is_file("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src\\test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src", true); {
+        vt_plist_t *pdir = vt_path_dir_list(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
         } vt_path_dir_free(pdir);
 
@@ -87,7 +87,7 @@ void test_path(void) {
         assert(vt_path_is_dir("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
         assert(vt_path_is_file("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
+        vt_plist_t *pdir = vt_path_dir_list(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
         } vt_path_dir_free(pdir);
 
@@ -124,7 +124,7 @@ void test_path(void) {
         assert(vt_path_is_dir("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
         assert(vt_path_is_file("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_listdir(NULL, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
+        vt_plist_t *pdir = vt_path_dir_list(NULL, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
             assert(vt_plist_len(pdir) == FILES_IN_DIR);
         } vt_path_dir_free(pdir);
 
