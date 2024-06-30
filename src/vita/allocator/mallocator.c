@@ -13,7 +13,7 @@ vt_mallocator_t *vt_mallocator_create(void) {
     // initialize object list
     *alloctr = (vt_mallocator_t) {
         .obj_list = VT_CALLOC(sizeof(struct VitaAllocatedObject) * VT_ARRAY_DEFAULT_INIT_ELEMENTS),
-        .obj_list_capacity = VT_ARRAY_DEFAULT_INIT_ELEMENTS
+        .obj_list_capacity = VT_ARRAY_DEFAULT_INIT_ELEMENTS,
     };
 
     // set up functions
