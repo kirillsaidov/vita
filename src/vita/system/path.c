@@ -250,7 +250,10 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     }
 
     // save the basename
-    if (ptr) vt_str_set(st, ptr);
+    if (ptr) {
+        vt_str_clear(st);
+        vt_str_set(st, ptr);
+    }
 
     return st;
 }

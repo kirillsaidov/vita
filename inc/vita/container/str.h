@@ -182,7 +182,7 @@ extern void vt_str_shrink(vt_str_t *const s);
 */
 extern void vt_str_clear(vt_str_t *const s);
 
-/** Reserves memory for vt_str_t
+/** Reserves memory (capacity) for vt_str_t
     @param s vt_str_t instance
     @param n how many elements to reserve
 */
