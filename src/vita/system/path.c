@@ -235,16 +235,16 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
 
     // find the basename
     const char *ptr = NULL;
-    const size_t sLen = vt_str_len(st);
-    for (size_t i = sLen - 1; i > 0; i--) {
-        if (z[i] == VT_PATH_SEPARATOR[0] && i != sLen - 1) {
+    const size_t zLen = strlen(z);
+    for (size_t i = zLen - 1; i > 0; i--) {
+        if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
             ptr = &z[i+1];
             break;
         }
     }
 
     // check if we have enough memory
-    const size_t zLen = ptr == NULL ? 0 : strlen(ptr);
+    const size_t sLen = vt_str_len(st);
     if (sLen < zLen) {
         vt_str_reserve(st, zLen - sLen);
     }
