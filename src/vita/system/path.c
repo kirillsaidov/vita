@@ -223,7 +223,8 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if path separator is present
-    if (!vt_str_can_find(s, VT_PATH_SEPARATOR)) {
+    vt_str_t sz = vt_str_create_static(z);
+    if (!vt_str_can_find(&sz, VT_PATH_SEPARATOR)) {
         return s;
     }
 
@@ -249,7 +250,7 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     }
 
     // save the basename
-    vt_str_set(st, ptr == NULL ? "" : ptr);
+    if (ptr) vt_str_set(st, ptr);
 
     return st;
 }
