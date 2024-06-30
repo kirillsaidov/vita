@@ -311,6 +311,11 @@ bool vt_path_mkdir_parents(const char *const z) {
         goto vt_label_path_mkdir_parents__;
     }
 
+    // prepend root VT_PATH_SEPARATOR if neccessary 
+    if (z[0] == VT_PATH_SEPARATOR[0]) {
+        vt_str_append(sfull, VT_PATH_SEPARATOR);
+    }
+
     // split string into directories
     dir_list = vt_str_split(NULL, s, VT_PATH_SEPARATOR);
     if (dir_list == NULL) {
