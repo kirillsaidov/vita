@@ -405,13 +405,11 @@ bool vt_path_rmdir_recurse(const char *const z) {
     }
     
     // iterate starting from the end and remove each element
-    // checking its type
+    // checking its type (file or directory)
     vt_str_t *path = NULL;
     while ((path = vt_plist_slide_front(dir_list)) != NULL) {
-        // prepend the dir structure
-
         // remove file/directory
-        status = vt_path_is_dir(vt_str_z(path)) ? vt_path_rmdir_recurse(vt_str_z(path)) : vt_path_remove(vt_str_z(path));
+        status = vt_path_is_dir(vt_str_z(path)) ? vt_path_rmdir(vt_str_z(path)) : vt_path_remove(vt_str_z(path));
 
         // check status
         if (!status) {
