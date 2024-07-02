@@ -60,7 +60,7 @@ vt_socket_t vt_socket_startup_server(const enum VitaSocketType type, const int32
     }
 
     // listen
-    if (type == SOCK_STREAM && listen(sock_fd , backlog) < 0) {
+    if (type == VT_SOCKET_TYPE_TCP && listen(sock_fd , backlog) < 0) {
         VT_DEBUG_PRINTF("%s: Error listening for connections!\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
         return VT_SOCKET_STATUS_ERROR_LISTEN;
     }
