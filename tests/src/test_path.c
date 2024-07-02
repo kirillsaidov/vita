@@ -72,8 +72,8 @@ void test_path(void) {
         assert(!vt_path_exists("hello_test_dir"));
 
         // remove nested directories
-        vt_path_rmdir_recurse("hello\\world\\of\\my\\");
-        assert(!vt_path_exists("hello\\world\\of\\my\\"));
+        vt_path_rmdir_recurse("hello");
+        assert(!vt_path_exists("hello"));
     #elif defined(__linux__)
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
@@ -108,8 +108,8 @@ void test_path(void) {
         assert(!vt_path_exists("hello_test_dir"));
 
         // remove nested directories
-        vt_path_rmdir_recurse("hello/world/of/my/");
-        assert(!vt_path_exists("hello/world/of/my/"));
+        vt_path_rmdir_recurse("hello");
+        assert(!vt_path_exists("hello"));
     #else
         vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
         printf("PATH: %s\n", vt_str_z(s));
@@ -152,8 +152,8 @@ void test_path(void) {
         assert(!vt_path_exists("hello_test_dir"));
 
         // remove nested directories
-        vt_path_rmdir_recurse("hello/world/of/my/");
-        assert(!vt_path_exists("hello/world/of/my/"));
+        vt_path_rmdir_recurse("hello");
+        assert(!vt_path_exists("hello"));
     #endif
     
     // rename file/dirs
