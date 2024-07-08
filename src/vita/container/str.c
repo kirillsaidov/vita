@@ -643,6 +643,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     start[*sLen] = '\0';
 }
 
+// FIXME: this here
 void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -656,18 +657,23 @@ void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const 
     if (!subLen || !rsubLen) return;
 
     // find number of instances to be replaced
-    const char *ptr = NULL;
-    while ((ptr = vt_str_find(s, sub))) {
+    const char *ptr = vt_str_z(s);
+    while ((ptr = strstr(ptr, sub)) != NULL) {
         const ptrdiff_t at_idx = ptr - vt_str_z(s);
 
         // replace
         if (subLen == rsubLen) {
-            vt_memcopy((char*)s->ptr + at_idx * s->elsize, rsub, rsubLen);
+            vt_memcopy((char*)ptr, rsub, rsubLen);
         } else {
             vt_str_remove(s, at_idx, subLen);
             if (at_idx < (ptrdiff_t)vt_str_len(s)) vt_str_insert(s, rsub, at_idx);
             else vt_str_append(s, rsub);
         }
+
+        // adjust the pointer:
+        // since `s` can be resized during iteration, we cannot use `rsubLen`
+        // and must use `vt_str_z(s)` to account for this
+        ptr = vt_str_z(s) + at_idx + rsubLen;
     }
 }
 

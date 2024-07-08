@@ -336,6 +336,13 @@ int32_t main(void) {
     }
     vt_str_destroy(text);
 
+    text = vt_str_create("hello/world/folder", NULL);
+    {
+        vt_str_replace(text, "world", "fishfish");
+        assert(vt_str_equals_z(vt_str_z(text), "hello/fishfish/folder"));
+    }
+    vt_str_destroy(text);
+
     // vt_str_set_at and vt_str_set_c
     text = vt_str_create("hello, world", NULL); 
     {
