@@ -643,7 +643,6 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     start[*sLen] = '\0';
 }
 
-// FIXME: this here
 void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub) {
     // check for invalid input
     VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
