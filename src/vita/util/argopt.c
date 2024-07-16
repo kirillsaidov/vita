@@ -209,7 +209,15 @@ static void vt_argopt_assign_value(vt_argopt_t *const opt, const char *const val
 
                 // check if we need to allocate
                 if (*zvalue == NULL) {
-                    *zvalue = strdup(value);
+                    const size_t len = strlen(value);
+
+                    // allocate buffer
+                    *zvalue = alloctr 
+                        ? VT_ALLOCATOR_ALLOC(alloctr, len + 1)
+                        : VT_CALLOC(len + 1); 
+
+                    // copy value
+                    strncat(*zvalue, value, len);
                 } else {
                     const size_t len = strlen(value);
                     const size_t zLen = strlen(*zvalue);
