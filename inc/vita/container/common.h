@@ -23,7 +23,7 @@
 #include "vita/util/debug.h"
 #include "vita/allocator/mallocator.h"
 
-// base array type for all array-like primitives
+/// base array type for all array-like primitives
 struct VitaBaseArrayType {
     // data information
     size_t len;         // container length
@@ -43,6 +43,13 @@ struct VitaBaseArrayType {
     // allocator: if `NULL`, then calloc/realloc/free is used
     struct VitaBaseAllocatorType *alloctr;
 };
+
+/// node object for single and doubly linked list
+typedef struct VitaNode {
+    void *data;
+    struct VitaNode *next;
+    struct VitaNode *prev;
+} vt_node_t;
 
 /** Allocates memory for VitaBaseArrayType structure
     @param alloctr allocator instance
