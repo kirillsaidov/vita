@@ -73,7 +73,6 @@ bool vt_array_is_view(const struct VitaBaseArrayType *const vbat) {
     return vbat->is_view;
 }
 
-
 bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat) {
     VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
