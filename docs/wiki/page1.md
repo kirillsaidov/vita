@@ -2,10 +2,10 @@
 To use `Vita` either copy and paste the source code into your project or link the `Vita` static library into your binary. You can [download](https://github.com/kirillsaidov/vita/releases) the precompiled static library or build it yourself.
 
 ## Requirements
-* `C compiler (GCC, Clang, MinGW)`
+* `C compiler`
 * `CMake`
 
-**NOTE:** on Windows you need the MSYS2 toolchain to use the `build.bat` script; or use CMake directly.
+**NOTE:** on Windows you need the MSYS2 toolchain to use the `build.bat` script; or use CMake directly yourself.
 
 ## Building
 ```
