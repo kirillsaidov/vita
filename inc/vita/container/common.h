@@ -100,6 +100,12 @@ extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 */
 extern bool vt_array_is_view(const struct VitaBaseArrayType *const vbat);
 
+/** Checks if VitaBaseArrayType a valid object (initialized)
+    @param vbat VitaBaseArrayType instance
+    @returns element size
+*/
+extern bool vt_array_is_valid_object(const struct VitaBaseArrayType *const vbat);
+
 /** Checks if VitaBaseArrayType has a valid allocator instance
     @returns ditto
 */

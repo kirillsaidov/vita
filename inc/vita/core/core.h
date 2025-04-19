@@ -124,6 +124,7 @@ enum VitaRemoveStrategy {
     apply(VT_STATUS_ERROR_CONVERSION)               /* failed to convert one type to another */ \
     apply(VT_STATUS_ERROR_ELEMENT_NOT_FOUND)        /* element was not found */ \
     apply(VT_STATUS_ERROR_IS_VIEW)                  /* trying to modify a viewable-only object */ \
+    apply(VT_STATUS_ERROR_IS_INVALID_OBJECT)        /* trying to use an invalid object */ \
     apply(VT_STATUS_OPERATION_FAILURE)              /* failed to perform an action */ \
     apply(VT_STATUS_OPERATION_SUCCESS)              /* all good */ \
     apply(VT_STATUS_COUNT)                          /* number of elements */

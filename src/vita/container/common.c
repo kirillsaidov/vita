@@ -12,7 +12,7 @@ struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloc
 
 void vt_array_free(struct VitaBaseArrayType *vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // free the VitaBaseArrayType
     if (vbat->alloctr) {
@@ -27,63 +27,52 @@ void vt_array_free(struct VitaBaseArrayType *vbat) {
 
 void *vt_array_head(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-    
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return vbat->ptr;
 }
 
 size_t vt_array_len(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return vbat->len;
 }
 
 size_t vt_array_capacity(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return vbat->capacity;
 }
 
 size_t vt_array_has_space(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return (vbat->capacity - vbat->len);
 }
 
 size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return vbat->elsize;
 }
 
 bool vt_array_is_view(const struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return vbat->is_view;
 }
 
-bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat) {
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+bool vt_array_is_valid_object(const struct VitaBaseArrayType *const vbat) {
+    return vbat != NULL && vbat->ptr != NULL;
+}
 
+bool vt_array_has_alloctr(const struct VitaBaseArrayType *const vbat) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return !(vbat->alloctr == NULL);
 }
 
 void *vt_array_get(const struct VitaBaseArrayType *const vbat, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(
         at < vbat->len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
@@ -97,8 +86,7 @@ void *vt_array_get(const struct VitaBaseArrayType *const vbat, const size_t at) 
 
 void vt_array_set(const struct VitaBaseArrayType *const vbat, const void *const val, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < vbat->len,
@@ -114,8 +102,7 @@ void vt_array_set(const struct VitaBaseArrayType *const vbat, const void *const 
 
 void *vt_array_slide_front(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // check bounds
     if (vbat->slider_idx < vbat->len) {
@@ -131,8 +118,7 @@ void *vt_array_slide_front(struct VitaBaseArrayType *const vbat) {
 
 void *vt_array_slide_back(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // check bounds
     if (vbat->slider_idx < vbat->len) {
@@ -148,8 +134,7 @@ void *vt_array_slide_back(struct VitaBaseArrayType *const vbat) {
 
 void vt_array_slide_reset(struct VitaBaseArrayType *const vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(vbat->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     vbat->slider_idx = 0;
 }
