@@ -12,7 +12,7 @@ struct VitaBaseArrayType *vt_array_new(struct VitaBaseAllocatorType *const alloc
 
 void vt_array_free(struct VitaBaseArrayType *vbat) {
     // check for invalid input
-    VT_DEBUG_ASSERT(vt_array_is_valid_object(vbat), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_DEBUG_ASSERT(vbat != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // free the VitaBaseArrayType
     if (vbat->alloctr) {

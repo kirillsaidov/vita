@@ -7,7 +7,7 @@ ifeq ($(OS), Windows_NT)
 		LFALGS += -lws2_32
 	endif
 else
-	CFLAGS += -fno-omit-frame-pointer -fsanitize=address
+	CFLAGS += -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -g
 endif
 
 all:
