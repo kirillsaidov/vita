@@ -94,6 +94,12 @@ extern size_t vt_array_has_space(const struct VitaBaseArrayType *const vbat);
 */
 extern size_t vt_array_elsize(const struct VitaBaseArrayType *const vbat);
 
+/** Checks if VitaBaseArrayType is read-only (locked)
+    @param vbat VitaBaseArrayType instance
+    @returns element size
+*/
+extern bool vt_array_is_view(const struct VitaBaseArrayType *const vbat);
+
 /** Checks if VitaBaseArrayType has a valid allocator instance
     @returns ditto
 */
