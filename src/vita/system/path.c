@@ -506,12 +506,13 @@ vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
     
     // retrieve this exe path
     int64_t pathLen = 0;
+    char buffer[PATH_MAX] = {0};
     #if defined(_WIN32) || defined(_WIN64)
-        pathLen = GetModuleFileName(NULL, spath->ptr, PATH_MAX);
+        pathLen = GetModuleFileName(NULL, buffer, PATH_MAX);
     #elif defined(__APPLE__) || defined(__MACH__)
-        pathLen = proc_pidpath(getpid(), spath->ptr, PATH_MAX);
+        pathLen = proc_pidpath(getpid(), buffer, PATH_MAX);
     #else
-        pathLen = readlink("/proc/self/exe", spath->ptr, PATH_MAX);
+        pathLen = readlink("/proc/self/exe", buffer, PATH_MAX);
     #endif
 
     // check for errors
@@ -521,7 +522,7 @@ vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
         vt_str_destroy(spath);
         return NULL;
     }
-    spath->len = pathLen;
+    vt_str_append_n(spath, buffer, pathLen);
 
     return spath;
 }
