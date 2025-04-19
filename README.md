@@ -1,25 +1,27 @@
-<img src="imgs/v-flaticon.png" width="64" height="64" align="left"></img>
+<img src="imgs/icon.png" width="64" height="64" align="left"></img>
 # Vita
 
-A simple and intuitive standard library for your modern C project! Lightweight and no dependencies. `Vita` strives to provide all common functionality other modern libraries have to ease prototyping with C and simplify the development process.
+A simple and intuitive standard library for your modern C project! Lightweight and no dependencies. 
+
+`Vita` strives to provide all common functionality other modern libraries support to ease prototyping with C and simplify the development process.
 
 ## Features
-* written in C11
-* containers
-* string manipulation
-* path and file handling
-* logging facility
-* command line arguments parser
-* facilities to work with paths and directories
-* datetime utility
-* simple sockets wrapper
+* Written in C11
+* Containers
+* String manipulation
+* Path and file handling
+* Logging facility
+* Command line arguments parser
+* Facilities to work with paths and directories
+* Datetime utility
+* Simple sockets wrapper
 
 ### Arguments parser showcase
 ```c
 // argopt_showcase.c
 #include "vita/vita.h"
 
-int32_t main(const int32_t argc, const char *argv[]) {
+int main(const int argc, const char *argv[]) {
     char   *opt_link = NULL;
     char   *opt_save = strdup("~/Desktop");
     bool    opt_verbose = false;
