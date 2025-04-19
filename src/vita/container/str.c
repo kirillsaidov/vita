@@ -65,8 +65,7 @@ vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *c
 
 void vt_str_destroy(vt_str_t *s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // if vt_str_t is view, skip
     if (s->is_view) {
@@ -88,8 +87,7 @@ void vt_str_destroy(vt_str_t *s) {
 
 vt_str_t *vt_str_dup(const vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     
     return vt_str_create(s->ptr, s->alloctr);
 }
@@ -116,8 +114,7 @@ vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorTyp
 
 const char *vt_str_z(const vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     return (const char*)(s->ptr);
 }
@@ -140,8 +137,7 @@ bool vt_str_is_empty(const vt_str_t *const s) {
 
 size_t vt_str_validate_len(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // calculate valid length
     const size_t s_len = strnlen(s->ptr, s->capacity);
@@ -155,8 +151,7 @@ size_t vt_str_validate_len(vt_str_t *const s) {
 
 void vt_str_shrink(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // if length and capacity are the same, exit the function
@@ -178,8 +173,7 @@ void vt_str_shrink(vt_str_t *const s) {
 
 void vt_str_clear(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // set C string to ""
     ((char*)s->ptr)[0] = '\0';
@@ -190,8 +184,7 @@ void vt_str_clear(vt_str_t *const s) {
 
 void vt_str_reserve(vt_str_t *const s, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
@@ -209,8 +202,7 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
 
 void vt_str_resize(vt_str_t *const s, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
@@ -229,8 +221,7 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
 
 void vt_str_set(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     vt_str_set_n(s, z, strlen(z));
@@ -238,8 +229,7 @@ void vt_str_set(vt_str_t *const s, const char *z) {
 
 enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < s->len,
@@ -270,8 +260,7 @@ enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at)
 
 enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(
         at < s->len,
         "%s: Assigning at %zu, but vt_str_t length is %zu!\n", 
@@ -288,8 +277,7 @@ enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
 
 void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -314,8 +302,7 @@ void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
 
 void vt_str_append(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     vt_str_append_n(s, z, strlen(z));
@@ -323,8 +310,7 @@ void vt_str_append(vt_str_t *const s, const char *z) {
 
 enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // iterate over all arguments
@@ -341,8 +327,7 @@ enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
 
 void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -363,8 +348,7 @@ void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
 
 void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < s->len,
@@ -396,8 +380,7 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
 
 enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *const fmt, ...) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // iterate over all arguments
@@ -448,8 +431,7 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
 
 void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -474,8 +456,7 @@ void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const si
 
 void vt_str_insert_before(vt_str_t *const s, const char *const sub, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -491,8 +472,7 @@ void vt_str_insert_before(vt_str_t *const s, const char *const sub, const char *
 
 void vt_str_insert_after(vt_str_t *const s, const char *const sub, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -508,8 +488,7 @@ void vt_str_insert_after(vt_str_t *const s, const char *const sub, const char *c
 
 void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         from < s->len,
@@ -536,8 +515,7 @@ void vt_str_remove(vt_str_t *const s, const size_t from, size_t n) {
 
 enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find a substring in strbuf; if substring wasn't found, return
@@ -565,8 +543,7 @@ enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z) {
 
 enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find the last instance of sep
@@ -593,8 +570,7 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
 
 enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove all instances of substring
@@ -605,8 +581,7 @@ enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z) {
 
 void vt_str_remove_c(vt_str_t *const s, const char *const c) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // prepare
@@ -645,8 +620,7 @@ void vt_str_remove_c(vt_str_t *const s, const char *const c) {
 
 void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const rsub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -678,8 +652,7 @@ void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const 
 
 void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *const rsub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -706,8 +679,7 @@ void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *
 
 void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *const rsub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -740,8 +712,7 @@ void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *c
 
 void vt_str_replace_c(vt_str_t *const s, const char *const c, const char *const r) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(r != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -768,8 +739,7 @@ void vt_str_replace_c(vt_str_t *const s, const char *const c, const char *const 
 
 void vt_str_strip(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // prepare
     size_t offset = 0;
@@ -802,8 +772,7 @@ void vt_str_strip(vt_str_t *const s) {
 
 void vt_str_strip_punct(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // prepare
     size_t offset = 0;
@@ -836,8 +805,7 @@ void vt_str_strip_punct(vt_str_t *const s) {
 
 void vt_str_strip_c(vt_str_t *const s, const char *const c) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(c != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // prepare
@@ -896,8 +864,7 @@ void vt_str_strip_c(vt_str_t *const s, const char *const c) {
 
 const char *vt_str_find(const vt_str_t *const s, const char *sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_ENFORCE(strlen(sub) <= vt_str_len(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
@@ -906,8 +873,7 @@ const char *vt_str_find(const vt_str_t *const s, const char *sub) {
 
 size_t vt_str_can_find(const vt_str_t *const s, const char *sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // substring (needle) cannot be longer than z (haystack)
@@ -926,8 +892,7 @@ size_t vt_str_can_find(const vt_str_t *const s, const char *sub) {
 
 vt_plist_t *vt_str_split(vt_plist_t *ps, const vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check if s contains sep substring
@@ -1083,8 +1048,7 @@ vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n
 
 vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check sep len is valid
@@ -1129,8 +1093,7 @@ vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const char *cons
 
 vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const sep) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // check sep len is valid
@@ -1224,8 +1187,7 @@ bool vt_str_equals(const vt_str_t *const s1, const vt_str_t *const s2) {
 
 bool vt_str_starts_with(const vt_str_t *const s, const char *const sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t subLen = strlen(sub);
@@ -1238,8 +1200,7 @@ bool vt_str_starts_with(const vt_str_t *const s, const char *const sub) {
 
 bool vt_str_ends_with(const vt_str_t *const s, const char *const sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t sLen = vt_str_len(s);
@@ -1253,8 +1214,7 @@ bool vt_str_ends_with(const vt_str_t *const s, const char *const sub) {
 
 void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(func != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     const size_t len = vt_str_len(s);
@@ -1265,8 +1225,7 @@ void vt_str_apply(const vt_str_t *const s, void (*func)(char*, size_t)) {
 
 bool vt_str_is_numeric(const vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // check if string is a number
     const char *const z = vt_str_z(s);
@@ -1297,8 +1256,7 @@ bool vt_str_is_numeric_z(const char *const z, const size_t len) {
 
 void vt_str_to_uppercase(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // to uppercase
     char *const z = s->ptr;
@@ -1310,8 +1268,7 @@ void vt_str_to_uppercase(vt_str_t *const s) {
 
 void vt_str_to_lowercase(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // to lowercase
     char *const z = s->ptr;
@@ -1323,8 +1280,7 @@ void vt_str_to_lowercase(vt_str_t *const s) {
 
 int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     const char *const ztmp = strchr(vt_str_z(s), z);
     if (ztmp == NULL) {
@@ -1336,8 +1292,7 @@ int64_t vt_str_index_of(const vt_str_t *const s, const char z) {
 
 int64_t vt_str_index_find(const vt_str_t *const s, const char *sub) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // find substring
@@ -1351,24 +1306,21 @@ int64_t vt_str_index_find(const vt_str_t *const s, const char *sub) {
 
 char *vt_str_slide_front(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     return (char*)vt_array_slide_front(s);
 }
 
 char *vt_str_slide_back(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     return (char*)vt_array_slide_back(s);
 }
 
 void vt_str_slide_reset(vt_str_t *const s) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     vt_array_slide_reset(s);
 }
@@ -1384,8 +1336,7 @@ void vt_str_slide_reset(vt_str_t *const s) {
 */
 static vt_str_t *vt_str_vfmt_set(vt_str_t *s, const char *const fmt, va_list args) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // format string
@@ -1427,8 +1378,7 @@ static vt_str_t *vt_str_vfmt_set(vt_str_t *s, const char *const fmt, va_list arg
 */
 static vt_str_t *vt_str_vfmt_append(vt_str_t *s, const char *const fmt, va_list args) {
     // check for invalid input
-    VT_DEBUG_ASSERT(s != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(s->ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // format string
