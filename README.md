@@ -65,9 +65,17 @@ cleanup:
 }
 ```
 
-Building and running:
+Folder structure:
+```c
+📁 project  
+├── 📁 vita         // vita includes
+├── 📄 main.c       // our program
+└── 📄 libvita.a    // pre-built static library
 ```
-$ gcc argopt_showcase.c -o downloader -lvita -L.
+
+Building and running:
+```sh
+$ gcc main.c -o downloader -lvita -L.
 $ ./downloader --link "www.abs.com/video" -s ~/Desktop/media --verbose
 ==============================================
 Downloading video with the following options:
