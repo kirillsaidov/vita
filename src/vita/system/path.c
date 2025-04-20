@@ -498,7 +498,7 @@ vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType
 }
 
 vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
-    vt_str_t *spath = vt_str_create_capacity(PATH_MAX, alloctr);
+    vt_str_t *spath = vt_str_create_capacity(VT_PATH_MAX, alloctr);
     if (spath == NULL) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
         return NULL;
@@ -506,13 +506,13 @@ vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
     
     // retrieve this exe path
     int64_t pathLen = 0;
-    char buffer[PATH_MAX] = {0};
+    char buffer[VT_PATH_MAX] = {0};
     #if defined(_WIN32) || defined(_WIN64)
-        pathLen = GetModuleFileName(NULL, buffer, PATH_MAX);
+        pathLen = GetModuleFileName(NULL, buffer, VT_PATH_MAX);
     #elif defined(__APPLE__) || defined(__MACH__)
-        pathLen = proc_pidpath(getpid(), buffer, PATH_MAX);
+        pathLen = proc_pidpath(getpid(), buffer, VT_PATH_MAX);
     #else
-        pathLen = readlink("/proc/self/exe", buffer, PATH_MAX);
+        pathLen = readlink("/proc/self/exe", buffer, VT_PATH_MAX);
     #endif
 
     // check for errors

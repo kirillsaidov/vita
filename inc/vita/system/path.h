@@ -57,6 +57,9 @@
     #define VT_DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif
 
+/// max path length
+#define VT_PATH_MAX 4096
+
 /** Builds path from raw C strings
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param p array of raw C strings
