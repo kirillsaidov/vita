@@ -2,7 +2,7 @@
 #include "vita/core/compiler.h"
 #include "vita/container/str.h"
 
-int32_t main(void) {    
+int32_t main(void) {
     const vt_version_t v = vt_compiler_get_version();
 
     #if defined(_WIN32) || defined(_WIN64)
@@ -10,7 +10,7 @@ int32_t main(void) {
         printf("windows: %s\n", VT_COMPILER_NAME);
         assert(VT_COMPILER_ID == VT_COMPILER_ID_GCC);
     #elif defined(__linux__)
-        assert(vt_str_equals_z(v.str, "11.3.0"));
+        assert(vt_str_equals_z(v.str, "13.3.0"));
         printf("linux: %s\n", VT_COMPILER_NAME);
         assert(VT_COMPILER_ID == VT_COMPILER_ID_GCC);
     #else
@@ -18,6 +18,6 @@ int32_t main(void) {
         printf("macos: %s\n", VT_COMPILER_NAME);
         assert(VT_COMPILER_ID == VT_COMPILER_ID_CLANG);
     #endif
-    
+
     return 0;
 }

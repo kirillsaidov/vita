@@ -104,17 +104,21 @@ void test_expand_tilda(void) {
 
 void test_selfpath(void) {
     vt_str_t *selfpath = vt_path_get_this_exe_location(alloctr);
-    VT_DEBUG_ASSERT(selfpath != NULL, "selfpath is NULL");
+    assert(selfpath != NULL);
 
-    #if defined(_WIN32) || defined(_WIN64)
-        assert(vt_str_equals_z(vt_str_z(selfpath), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\bin\\test_path.exe"));
-    #elif defined(__linux__)
-        assert(vt_str_equals_z(vt_str_z(selfpath), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
-    #else
-        assert(vt_str_equals_z(vt_str_z(selfpath), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
-    #endif
-
-    VT_DEBUG_PRINTF("this exe path: %s\n", vt_str_z(selfpath));
+    // get cwd to check exe path below
+    vt_str_t *cwd = vt_path_get_cwd(NULL);
+    {
+        // append exe path
+        #if defined(_WIN32) || defined(_WIN64)
+            vt_str_append(cwd, "\\bin\\test_path.exe");
+        #else
+            vt_str_append(cwd, "/bin/test_path");
+        #endif
+        printf("<%s> == <%s>\n", vt_str_z(selfpath), vt_str_z(cwd));
+        assert(vt_str_equals(selfpath, cwd));
+    }
+    vt_str_destroy(cwd);
     vt_str_destroy(selfpath);
 }
 
