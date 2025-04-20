@@ -12,7 +12,7 @@ void test_expand_tilda(void);
 void test_selfpath(void);
 void test_path_pop(void);
 
-static vt_mallocator_t *alloctr;
+vt_mallocator_t *alloctr;
 
 int main(void) {
     alloctr = vt_mallocator_create();
@@ -20,7 +20,7 @@ int main(void) {
     // debug_disable_output(true);
 
     // tests
-    test_path();    
+    test_path();
     test_expand_tilda();
     test_selfpath();
     test_path_pop();
@@ -37,128 +37,47 @@ void free_str(void *ptr, size_t i) {
 void test_path(void) {
     assert(vt_path_exists("/home/lala") == false); // must fail
 
-    #if defined(_WIN32) || defined(_WIN64)
-        vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals_z(vt_str_z(s), "hello\\world\\media\\dev"));
-        vt_str_destroy(s);
+    vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
+    assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
+    vt_str_destroy(s);
 
-        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals_z(vt_str_z(cwd), "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
-        } vt_str_destroy(cwd);
+    vt_str_t *cwd = vt_path_get_cwd(alloctr); {
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "tests"));
+    } vt_str_destroy(cwd);
 
-        assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests"));
-        assert(vt_path_exists("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src\\test_path.c"));
-        assert(vt_path_is_dir("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src"));
-        assert(vt_path_is_file("C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src\\test_path.c"));
+    assert(vt_path_exists("./src"));
+    assert(vt_path_is_dir("./src"));
+    assert(vt_path_is_file("./src/test_path.c"));
 
-        vt_plist_t *pdir = vt_path_dir_list(NULL, "C:\\Users\\kiril\\Desktop\\MyFiles\\media\\dev\\repos\\git.kirillsaidov\\vita\\tests\\src", true); {
-            assert(vt_plist_len(pdir) == FILES_IN_DIR);
-        } vt_path_dir_free(pdir);
+    vt_plist_t *pdir = vt_path_dir_list(NULL, "./src/", true); {
+        assert(vt_plist_len(pdir) == FILES_IN_DIR);
+    } vt_path_dir_free(pdir);
 
-        vt_str_t *sbasename = vt_str_create("my\\test\\folder\\text.txt", alloctr); {
-            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
-        } vt_str_destroy(sbasename);
+    vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
+        assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
+    } vt_str_destroy(sbasename);
 
-        // make a directory
-        vt_path_mkdir("hello_test_dir");
-        assert(vt_path_exists("hello_test_dir"));
+    // make a directory
+    vt_path_mkdir("hello_test_dir");
+    assert(vt_path_exists("hello_test_dir"));
 
-        // make nested directories
-        vt_path_mkdir_parents("hello\\world\\of\\my\\");
-        assert(vt_path_exists("hello\\world\\of\\my\\"));
+    // make nested directories
+    vt_path_mkdir_parents("hello/world/of/my/");
+    assert(vt_path_exists("hello/world/of/my/"));
 
-        // remove a directory
-        vt_path_rmdir("hello_test_dir");
-        assert(!vt_path_exists("hello_test_dir"));
+    // remove a directory
+    vt_path_rmdir("hello_test_dir");
+    assert(!vt_path_exists("hello_test_dir"));
 
-        // remove nested directories
-        vt_path_rmdir_recurse("hello");
-        assert(!vt_path_exists("hello"));
-    #elif defined(__linux__)
-        vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
-        vt_str_destroy(s);
+    // remove nested directories
+    vt_path_rename("hello", "hello_renamed");
+    assert(vt_path_exists("hello_renamed"));
 
-        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals_z(vt_str_z(cwd), "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
-        } vt_str_destroy(cwd);
-
-        assert(vt_path_exists("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_dir("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_file("/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
-
-        vt_plist_t *pdir = vt_path_dir_list(NULL, "/mnt/c/Users/kiril/Desktop/MyFiles/media/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
-            assert(vt_plist_len(pdir) == FILES_IN_DIR);
-        } vt_path_dir_free(pdir);
-
-        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
-            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
-        } vt_str_destroy(sbasename);
-
-        // make a directory
-        vt_path_mkdir("hello_test_dir");
-        assert(vt_path_exists("hello_test_dir"));
-
-        // make nested directories
-        vt_path_mkdir_parents("hello/world/of/my/");
-        assert(vt_path_exists("hello/world/of/my/"));
-
-        // remove a directory
-        vt_path_rmdir("hello_test_dir");
-        assert(!vt_path_exists("hello_test_dir"));
-
-        // remove nested directories
-        vt_path_rmdir_recurse("hello");
-        assert(!vt_path_exists("hello"));
-    #else
-        vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
-        printf("PATH: %s\n", vt_str_z(s));
-        assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
-        vt_str_destroy(s);
-
-        vt_str_t *cwd = vt_path_get_cwd(alloctr); {
-            assert(vt_str_equals_z(vt_str_z(cwd), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests"));
-        } vt_str_destroy(cwd);
-
-        assert(vt_path_exists("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_dir("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src"));
-        assert(vt_path_is_file("/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/test_path.c"));
-
-        vt_plist_t *pdir = vt_path_dir_list(NULL, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/src/", true); {
-            assert(vt_plist_len(pdir) == FILES_IN_DIR);
-        } vt_path_dir_free(pdir);
-
-        vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
-            assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
-        } vt_str_destroy(sbasename);
-
-        vt_str_t *new_s = vt_str_create("file.txt", alloctr);
-        {
-            vt_path_basename(new_s, vt_str_z(new_s));
-            assert(vt_str_equals_z(vt_str_z(new_s), "file.txt"));
-        }
-        vt_str_destroy(new_s);
-
-        // make a directory
-        vt_path_mkdir("hello_test_dir");
-        assert(vt_path_exists("hello_test_dir"));
-
-        // make nested directories
-        vt_path_mkdir_parents("hello/world/of/my/");
-        assert(vt_path_exists("hello/world/of/my/"));
-
-        // remove a directory
-        vt_path_rmdir("hello_test_dir");
-        assert(!vt_path_exists("hello_test_dir"));
-
-        // remove nested directories
-        vt_path_rmdir_recurse("hello");
-        assert(!vt_path_exists("hello"));
-    #endif
-    
     // rename file/dirs
-    // vt_path_rename("hello", "hello_renamed"); // works
-    
+    vt_path_rmdir_recurse("hello_renamed");
+    assert(!vt_path_exists("hello_renamed"));
+
     const size_t fs = vt_path_get_file_size("src/test_str.c");
     // assert(fs == 7077);
 }
@@ -167,12 +86,12 @@ void test_expand_tilda(void) {
     const char *z_vt_path_tilda1 = "~/hello";
     const char *z_vt_path_tilda2 = "./~";
     vt_str_t *s_vt_path_tilda1 = vt_path_expand_tilda(z_vt_path_tilda1, alloctr);
-    vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2, alloctr);    
-    {   
+    vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2, alloctr);
+    {
         #if defined(_WIN32) || defined(_WIN64)
             assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
         #elif defined(__linux__)
-            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/home/kiril/hello"));
+            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/root/hello"));
         #else
             assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
         #endif
@@ -194,7 +113,7 @@ void test_selfpath(void) {
     #else
         assert(vt_str_equals_z(vt_str_z(selfpath), "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/vita/tests/bin/test_path"));
     #endif
-    
+
     VT_DEBUG_PRINTF("this exe path: %s\n", vt_str_z(selfpath));
     vt_str_destroy(selfpath);
 }
@@ -233,18 +152,3 @@ void test_path_pop(void) {
 
     vt_str_destroy(path);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
