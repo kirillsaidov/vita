@@ -121,19 +121,19 @@ const bool isEmpty = vt_vec_is_empty(vec);
 // push data
 const int32_t var = 33;
 vt_vec_push_back(vec, &var);  
-vt_vec_push_backi32(vec, 33);  // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
+vt_vec_push_back_i32(vec, 33);  // vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r
 
 // ditto
 vt_vec_push_front(vec, &var);  // push at the begining
-vt_vec_push_fronti32(vec, 33); // ditto
+vt_vec_push_front_i32(vec, 33); // ditto
 
 // set data
 vt_vec_set(vec, &var, 0);      // assign vector[0] = var
-vt_vec_seti32(vec, 33, 0);     // ditto
+vt_vec_set_i32(vec, 33, 0);     // ditto
 
 // get data
 const int32_t myVal = *(int32_t*)vt_vec_get(vec, 0);
-const int32_t myVal = vt_vec_geti32(vec, 0);
+const int32_t myVal = vt_vec_get_i32(vec, 0);
 
 // remove data
 const int32_t index = vt_vec_can_find(vec, &myVal);
@@ -181,18 +181,18 @@ assert(vt_vec_capacity(vec2d) == r*c);
 assert(vt_vec_has_space(vec2d) == 0);
 
 // fill with 1s to create an Identity matrix
-vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(0, 0, w));
-vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(1, 1, w));
-vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(2, 2, w));
-vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(3, 3, w));
-vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(4, 4, w));
+vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(0, 0, w));
+vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(1, 1, w));
+vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(2, 2, w));
+vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(3, 3, w));
+vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(4, 4, w));
 
 // check values along the diagonal of the Identity matrix
-assert(vt_vec_geti32(vec2d, 0) == 1);
-assert(vt_vec_geti32(vec2d, 6) == 1);
-assert(vt_vec_geti32(vec2d, 12) == 1);
-assert(vt_vec_geti32(vec2d, 18) == 1);
-assert(vt_vec_geti32(vec2d, 24) == 1);
+assert(vt_vec_get_i32(vec2d, 0) == 1);
+assert(vt_vec_get_i32(vec2d, 6) == 1);
+assert(vt_vec_get_i32(vec2d, 12) == 1);
+assert(vt_vec_get_i32(vec2d, 18) == 1);
+assert(vt_vec_get_i32(vec2d, 24) == 1);
 
 // free resources
 vt_vec_destroy(vec2d);
@@ -249,7 +249,7 @@ For more details, please refer to [plist.h](../../inc/vita/container/plist.h) or
 vt_vec_t *v = vt_vec_create(10, sizeof(int32_t), NULL);
 
 // init vec: 1, 2, ..., 9
-VT_FOREACH(i, 0, vt_vec_capacity(v)) vt_vec_push_backi32(v, i);
+VT_FOREACH(i, 0, vt_vec_capacity(v)) vt_vec_push_back_i32(v, i);
 
 // create span from vec
 vt_span_t vec_view = vt_span_from_to(vt_array_head(v), 2, 5, vt_array_elsize(v));

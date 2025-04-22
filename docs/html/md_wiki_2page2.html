@@ -181,15 +181,15 @@ Dynamic arrays with &lt;tt&gt;vt_vec_t&lt;/tt&gt;</h2>
 <div class="line"><span class="comment">// push data</span></div>
 <div class="line"><span class="keyword">const</span> int32_t var = 33;</div>
 <div class="line">vt_vec_push_back(vec, &amp;var);</div>
-<div class="line">vt_vec_push_backi32(vec, 33);     <span class="comment">// vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r</span></div>
+<div class="line">vt_vec_push_back_i32(vec, 33);     <span class="comment">// vt_vec_xxxT: T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// set data</span></div>
 <div class="line">vt_vec_set(vec, &amp;var, 0);    <span class="comment">// assign vector[0] = var</span></div>
-<div class="line">vt_vec_seti32(vec, 33, 0);   <span class="comment">// ditto</span></div>
+<div class="line">vt_vec_set_i32(vec, 33, 0);   <span class="comment">// ditto</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// get data</span></div>
 <div class="line"><span class="keyword">const</span> int32_t myVal = *(int32_t*)vt_vec_get(vec, 0);</div>
-<div class="line"><span class="keyword">const</span> int32_t myVal = vt_vec_geti32(vec, 0);</div>
+<div class="line"><span class="keyword">const</span> int32_t myVal = vt_vec_get_i32(vec, 0);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// remove data</span></div>
 <div class="line"><span class="keyword">const</span> int32_t index = vt_vec_can_find(vec, &amp;myVal);</div>
@@ -228,18 +228,18 @@ Imitating 2d arrays with &lt;tt&gt;vt_vec_t&lt;/tt&gt;</h2>
 <div class="line">assert(vt_vec_has_space(vec2d) == 0);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// fill with 1s to create an Identity matrix</span></div>
-<div class="line">vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(0, 0, w));</div>
-<div class="line">vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(1, 1, w));</div>
-<div class="line">vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(2, 2, w));</div>
-<div class="line">vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(3, 3, w));</div>
-<div class="line">vt_vec_seti32(vec2d, 1, vt_index_2d_to_1d(4, 4, w));</div>
+<div class="line">vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(0, 0, w));</div>
+<div class="line">vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(1, 1, w));</div>
+<div class="line">vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(2, 2, w));</div>
+<div class="line">vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(3, 3, w));</div>
+<div class="line">vt_vec_set_i32(vec2d, 1, vt_index_2d_to_1d(4, 4, w));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// check values along the diagonal of the Identity matrix</span></div>
-<div class="line">assert(vt_vec_geti32(vec2d, 0) == 1);</div>
-<div class="line">assert(vt_vec_geti32(vec2d, 6) == 1);</div>
-<div class="line">assert(vt_vec_geti32(vec2d, 12) == 1);</div>
-<div class="line">assert(vt_vec_geti32(vec2d, 18) == 1);</div>
-<div class="line">assert(vt_vec_geti32(vec2d, 24) == 1);</div>
+<div class="line">assert(vt_vec_get_i32(vec2d, 0) == 1);</div>
+<div class="line">assert(vt_vec_get_i32(vec2d, 6) == 1);</div>
+<div class="line">assert(vt_vec_get_i32(vec2d, 12) == 1);</div>
+<div class="line">assert(vt_vec_get_i32(vec2d, 18) == 1);</div>
+<div class="line">assert(vt_vec_get_i32(vec2d, 24) == 1);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// free resources</span></div>
 <div class="line">vt_vec_destroy(vec2d);</div>
