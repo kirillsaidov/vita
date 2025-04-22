@@ -43,9 +43,45 @@ typedef struct VitaBaseArrayType vt_vec_t;
 
     @returns `vt_vec_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
 */
 extern vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaBaseAllocatorType *const alloctr);
+
+/** Allocates and constructs vt_vec_t from an array of elements
+    @param n number of elements
+    @param elsize element size
+    @param vals array of values
+    @param alloctr allocator instance
+
+    @returns `vt_vec_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+*/
+extern vt_vec_t *vt_vec_create_from(const size_t n, const size_t elsize, const void *vals, struct VitaBaseAllocatorType *const alloctr);
+
+/** Allocates and constructs vt_vec_t from an array of elements
+    @param n number of elements
+    @param elsize element size
+    @param vals array of values
+    @param alloctr allocator instance
+
+    @returns `vt_vec_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+*/
+#define VT_PROTOTYPE_VEC_CREATE_FROM(T, t) extern vt_vec_t *vt_vec_create_from_##t(const size_t n, const T vals[], struct VitaBaseAllocatorType *const alloctr)
+VT_PROTOTYPE_VEC_CREATE_FROM(int8_t, i8);
+VT_PROTOTYPE_VEC_CREATE_FROM(uint8_t, u8);
+VT_PROTOTYPE_VEC_CREATE_FROM(int16_t, i16);
+VT_PROTOTYPE_VEC_CREATE_FROM(uint16_t, u16);
+VT_PROTOTYPE_VEC_CREATE_FROM(int32_t, i32);
+VT_PROTOTYPE_VEC_CREATE_FROM(uint32_t, u32);
+VT_PROTOTYPE_VEC_CREATE_FROM(int64_t, i64);
+VT_PROTOTYPE_VEC_CREATE_FROM(uint64_t, u64);
+VT_PROTOTYPE_VEC_CREATE_FROM(float, f);
+VT_PROTOTYPE_VEC_CREATE_FROM(double, d);
+VT_PROTOTYPE_VEC_CREATE_FROM(real, r);
+#undef VT_PROTOTYPE_VEC_CREATE_FROM
 
 /** Deallocates and destroys vt_vec_t
     @param v vt_vec_t pointer
@@ -58,7 +94,7 @@ extern void vt_vec_destroy(vt_vec_t *v);
 
     @returns vt_vec_t* instance upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
 */
 extern vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorType *const alloctr);
 
@@ -118,7 +154,7 @@ extern void vt_vec_push_front(vt_vec_t *const v, const void *const val);
     @param v vt_vec_t instance
     @param val value to push
 */
-#define VT_PROTOTYPE_VEC_PUSH_FRONT(T, t) extern void vt_vec_push_front##t(vt_vec_t *const v, const T val)
+#define VT_PROTOTYPE_VEC_PUSH_FRONT(T, t) extern void vt_vec_push_front_##t(vt_vec_t *const v, const T val)
 VT_PROTOTYPE_VEC_PUSH_FRONT(int8_t, i8);
 VT_PROTOTYPE_VEC_PUSH_FRONT(uint8_t, u8);
 VT_PROTOTYPE_VEC_PUSH_FRONT(int16_t, i16);
@@ -142,7 +178,7 @@ extern void vt_vec_push_back(vt_vec_t *const v, const void *const val);
     @param v vt_vec_t instance
     @param val value to push
 */
-#define VT_PROTOTYPE_VEC_PUSH_BACK(T, t) extern void vt_vec_push_back##t(vt_vec_t *const v, const T val)
+#define VT_PROTOTYPE_VEC_PUSH_BACK(T, t) extern void vt_vec_push_back_##t(vt_vec_t *const v, const T val)
 VT_PROTOTYPE_VEC_PUSH_BACK(int8_t, i8);
 VT_PROTOTYPE_VEC_PUSH_BACK(uint8_t, u8);
 VT_PROTOTYPE_VEC_PUSH_BACK(int16_t, i16);
@@ -173,7 +209,7 @@ extern void *vt_vec_pop_get(vt_vec_t *const v);
     
     @note use with `vt_vec_len()` if using a loop to check for length!
 */
-#define VT_PROTOTYPE_VEC_POP_GET(T, t) extern T vt_vec_pop_get##t(vt_vec_t *const v)
+#define VT_PROTOTYPE_VEC_POP_GET(T, t) extern T vt_vec_pop_get_##t(vt_vec_t *const v)
 VT_PROTOTYPE_VEC_POP_GET(int8_t, i8);
 VT_PROTOTYPE_VEC_POP_GET(uint8_t, u8);
 VT_PROTOTYPE_VEC_POP_GET(int16_t, i16);
@@ -199,7 +235,7 @@ extern void vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at
     @param val value
     @param at index to set the value
 */
-#define VT_PROTOTYPE_VEC_SET(T, t) extern void vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at)
+#define VT_PROTOTYPE_VEC_SET(T, t) extern void vt_vec_set_##t(vt_vec_t *const v, const T val, const size_t at)
 VT_PROTOTYPE_VEC_SET(int8_t, i8);
 VT_PROTOTYPE_VEC_SET(uint8_t, u8);
 VT_PROTOTYPE_VEC_SET(int16_t, i16);
@@ -227,7 +263,7 @@ extern void* vt_vec_get(const vt_vec_t *const v, const size_t at);
 
     @returns value
 */
-#define VT_PROTOTYPE_VEC_GET(T, t) extern T vt_vec_get##t(const vt_vec_t *const v, const size_t at)
+#define VT_PROTOTYPE_VEC_GET(T, t) extern T vt_vec_get_##t(const vt_vec_t *const v, const size_t at)
 VT_PROTOTYPE_VEC_GET(int8_t, i8);
 VT_PROTOTYPE_VEC_GET(uint8_t, u8);
 VT_PROTOTYPE_VEC_GET(int16_t, i16);
@@ -253,7 +289,7 @@ extern void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t
     @param val value to insert
     @param at index to set the value
 */
-#define VT_PROTOTYPE_VEC_INSERT(T, t) extern void vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at)
+#define VT_PROTOTYPE_VEC_INSERT(T, t) extern void vt_vec_insert_##t(vt_vec_t *const v, const T val, const size_t at)
 VT_PROTOTYPE_VEC_INSERT(int8_t, i8);
 VT_PROTOTYPE_VEC_INSERT(uint8_t, u8);
 VT_PROTOTYPE_VEC_INSERT(int16_t, i16);
@@ -293,7 +329,7 @@ extern int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val);
 
     @returns index to first val instance, `-1` upon failure
 */
-#define VT_PROTOTYPE_VEC_CAN_FIND(T, t) extern int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val)
+#define VT_PROTOTYPE_VEC_CAN_FIND(T, t) extern int64_t vt_vec_can_find_##t(const vt_vec_t *const v, const T val)
 VT_PROTOTYPE_VEC_CAN_FIND(int8_t, i8);
 VT_PROTOTYPE_VEC_CAN_FIND(uint8_t, u8);
 VT_PROTOTYPE_VEC_CAN_FIND(int16_t, i16);

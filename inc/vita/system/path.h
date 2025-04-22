@@ -81,7 +81,7 @@ extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
     @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
 */
 extern vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr);
 

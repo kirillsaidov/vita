@@ -85,7 +85,7 @@ extern vt_str_t vt_str_create_static(const char *const z);
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
 */
 extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 
@@ -98,7 +98,7 @@ extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType
     @note
         Its length is n, thus, appending to it, will add a string to the end (after n elements). 
         It won't start appending from the begining. Use `vt_str_set` for that. 
-        If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
+        If `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
 */
 extern vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
@@ -111,7 +111,7 @@ extern vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType 
     @note
         Its length is 0, capacity is n. Appending to it will start from the begining. 
         `vt_str_set` won't work this time, because not enough space (length 0).
-        If `alloctr = NULL` is specified, then vt_calloc/realloc/free is used.
+        If `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
 */
 extern vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 

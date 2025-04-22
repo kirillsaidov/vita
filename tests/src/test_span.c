@@ -21,9 +21,9 @@ int32_t main(void) {
     {   
         // init
         VT_FOREACH(i, 0, vt_vec_capacity(v)) {
-            vt_vec_push_backi32(v, i);
+            vt_vec_push_back_i32(v, i);
         }
-        assert(vt_vec_geti32(v, 3) == 3);
+        assert(vt_vec_get_i32(v, 3) == 3);
 
         // create span
         vt_span_t span2 = vt_span_from_to(vt_array_head(v), 2, 5, vt_array_elsize(v));

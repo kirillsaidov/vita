@@ -18,6 +18,39 @@ vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaBaseAllo
     return v;
 }
 
+vt_vec_t *vt_vec_create_from(const size_t n, const size_t elsize, const void *vals, struct VitaBaseAllocatorType *const alloctr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vals != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // create vector instance
+    vt_vec_t *v = vt_vec_create(n, elsize, alloctr);
+    v->len = n;
+
+    // copy values to vector
+    vt_memmove(v->ptr, vals, n * elsize);
+
+    return v;
+}
+
+#define VT_PROTOTYPE_VEC_CREATE_FROM(T, t)                                                                          \
+    vt_vec_t *vt_vec_create_from_##t(const size_t n, const T vals[], struct VitaBaseAllocatorType *const alloctr) { \
+        return vt_vec_create_from(n, sizeof(T), vals, alloctr);                                                     \
+    }
+VT_PROTOTYPE_VEC_CREATE_FROM(int8_t, i8)
+VT_PROTOTYPE_VEC_CREATE_FROM(uint8_t, u8)
+VT_PROTOTYPE_VEC_CREATE_FROM(int16_t, i16)
+VT_PROTOTYPE_VEC_CREATE_FROM(uint16_t, u16)
+VT_PROTOTYPE_VEC_CREATE_FROM(int32_t, i32)
+VT_PROTOTYPE_VEC_CREATE_FROM(uint32_t, u32)
+VT_PROTOTYPE_VEC_CREATE_FROM(int64_t, i64)
+VT_PROTOTYPE_VEC_CREATE_FROM(uint64_t, u64)
+VT_PROTOTYPE_VEC_CREATE_FROM(float, f)
+VT_PROTOTYPE_VEC_CREATE_FROM(double, d)
+VT_PROTOTYPE_VEC_CREATE_FROM(real, r)
+#undef VT_PROTOTYPE_VEC_CREATE_FROM
+
 void vt_vec_destroy(vt_vec_t *v) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(v), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
@@ -136,7 +169,7 @@ void vt_vec_push_front(vt_vec_t *const v, const void *const val) {
 }
 
 #define VT_INSTANTIATE_VEC_PUSH_FRONT(T, t)                     \
-    void vt_vec_push_front##t(vt_vec_t *const v, const T val) { \
+    void vt_vec_push_front_##t(vt_vec_t *const v, const T val) {\
         vt_vec_push_front(v, &val);                             \
     }
 VT_INSTANTIATE_VEC_PUSH_FRONT(int8_t, i8)
@@ -167,7 +200,7 @@ void vt_vec_push_back(vt_vec_t *const v, const void *const val) {
 }
 
 #define VT_INSTANTIATE_VEC_PUSH_BACK(T, t)                     \
-    void vt_vec_push_back##t(vt_vec_t *const v, const T val) { \
+    void vt_vec_push_back_##t(vt_vec_t *const v, const T val) {\
         vt_vec_push_back(v, &val);                             \
     }
 VT_INSTANTIATE_VEC_PUSH_BACK(int8_t, i8)
@@ -206,7 +239,7 @@ void *vt_vec_pop_get(vt_vec_t *const v) {
 }
 
 #define VT_INSTANTIATE_VEC_POP_GET(T, t)        \
-    T vt_vec_pop_get##t(vt_vec_t *const v) {    \
+    T vt_vec_pop_get_##t(vt_vec_t *const v) {   \
         void *ptr = vt_vec_pop_get(v);          \
         return ptr ? *(T*)ptr : 0;              \
     }
@@ -240,7 +273,7 @@ void vt_vec_set(vt_vec_t *const v, const void *const val, const size_t at) {
 }
 
 #define VT_INSTANTIATE_VEC_SET(T, t)                                      \
-    void vt_vec_set##t(vt_vec_t *const v, const T val, const size_t at) { \
+    void vt_vec_set_##t(vt_vec_t *const v, const T val, const size_t at) {\
         vt_vec_set(v, &val, at);                                          \
     }
 VT_INSTANTIATE_VEC_SET(int8_t, i8)
@@ -271,7 +304,7 @@ void *vt_vec_get(const vt_vec_t *const v, const size_t at) {
 }
 
 #define VT_INSTANTIATE_VEC_GET(T, t)                            \
-    T vt_vec_get##t(const vt_vec_t *const v, const size_t at) { \
+    T vt_vec_get_##t(const vt_vec_t *const v, const size_t at) {\
         return *(T*)(vt_vec_get(v, at));                        \
     }
 VT_INSTANTIATE_VEC_GET(int8_t, i8)
@@ -315,7 +348,7 @@ void vt_vec_insert(vt_vec_t *const v, const void *const val, const size_t at) {
 }
 
 #define VT_INSTANTIATE_VEC_INSERT(T, t)                                       \
-    void vt_vec_insert##t(vt_vec_t *const v, const T val, const size_t at) {  \
+    void vt_vec_insert_##t(vt_vec_t *const v, const T val, const size_t at) { \
         vt_vec_insert(v, &val, at);                                           \
     }
 VT_INSTANTIATE_VEC_INSERT(int8_t, i8)
@@ -370,7 +403,7 @@ int64_t vt_vec_can_find(const vt_vec_t *const v, const void *const val) {
 }
 
 #define VT_INSTANTIATE_VEC_CAN_FIND(T, t)                               \
-    int64_t vt_vec_can_find##t(const vt_vec_t *const v, const T val) {  \
+    int64_t vt_vec_can_find_##t(const vt_vec_t *const v, const T val) { \
         return vt_vec_can_find(v, &val);                                \
     }
 VT_INSTANTIATE_VEC_CAN_FIND(int8_t, i8)

@@ -36,7 +36,7 @@ typedef struct VitaBaseArrayType vt_plist_t;
 
     @returns `vt_plist_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
 */
 extern vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
@@ -56,7 +56,7 @@ extern void vt_plist_destroy(vt_plist_t *p);
 
     @returns vt_vec_t* instance upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then vt_calloc/realloc/free is used
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
 */
 extern vt_plist_t *vt_plist_dup(const vt_plist_t *const p, struct VitaBaseAllocatorType *const alloctr);
 
