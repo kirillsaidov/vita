@@ -17,6 +17,21 @@ vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const 
     return p;
 }
 
+vt_plist_t *vt_plist_create_from(const size_t n, void **vals, struct VitaBaseAllocatorType *const alloctr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vals != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // create vt_plist_t instance
+    vt_plist_t *p = vt_plist_create(n, alloctr);
+    vt_plist_resize(p, n);
+
+    // copy values to vt_plist_t
+    vt_memmove(p->ptr, vals, n * sizeof(void*));
+
+    return p;
+}
+
 void vt_plist_destroy(vt_plist_t *p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));

@@ -30,7 +30,7 @@
 // new pointer list type
 typedef struct VitaBaseArrayType vt_plist_t;
 
-/** Allocates and constructs vt_plist_t
+/** Allocates and constructs vt_plist_t with specified capacity
     @param n number of elements
     @param alloctr allocator instance
 
@@ -39,6 +39,17 @@ typedef struct VitaBaseArrayType vt_plist_t;
     @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
 */
 extern vt_plist_t *vt_plist_create(const size_t n, struct VitaBaseAllocatorType *const alloctr);
+
+/** Allocates and constructs vt_plist_t from an array of pointers
+    @param n number of elements
+    @param vals array of pointers
+    @param alloctr allocator instance
+
+    @returns `vt_plist_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+*/
+extern vt_plist_t *vt_plist_create_from(const size_t n, void **vals, struct VitaBaseAllocatorType *const alloctr);
 
 /** Transfer memory ownership to allocator
     @param p vt_plist_t instance

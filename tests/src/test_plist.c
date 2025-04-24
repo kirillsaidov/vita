@@ -14,8 +14,9 @@ int main(void) {
     char *a = "Aaaa";
     char *b = "Bbbb";
     char *c = "Cccc";
-    char *d = "Dddd";
-    
+    char *d = "Dddd";    
+
+    // test general functionality
     vt_plist_t *p = vt_plist_create(5, alloctr); {
         assert(vt_plist_len(p) == 0);
         assert(vt_plist_capacity(p) == 5);
@@ -69,6 +70,17 @@ int main(void) {
         // resize
         vt_plist_resize(p, 3);
         assert(vt_plist_len(p) == 3);
+    } vt_plist_destroy(p);
+    
+    // test create from
+    char *array[] = {a, b, c, d};
+    const size_t n = sizeof(array)/sizeof(array[0]);
+    p = vt_plist_create_from(n, (void**)array, alloctr); {
+        assert(vt_plist_len(p) == n);
+        assert(vt_str_equals_z(vt_plist_get(p, 0), a));
+        assert(vt_str_equals_z(vt_plist_get(p, 1), b));
+        assert(vt_str_equals_z(vt_plist_get(p, 2), c));
+        assert(vt_str_equals_z(vt_plist_get(p, 3), d));
     } vt_plist_destroy(p);
 
     // testing elements removal
