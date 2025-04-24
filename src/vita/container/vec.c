@@ -24,11 +24,11 @@ vt_vec_t *vt_vec_create_from(const size_t n, const size_t elsize, const void *va
     VT_DEBUG_ASSERT(elsize > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(vals != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    // create vector instance
+    // create vt_vec_t instance
     vt_vec_t *v = vt_vec_create(n, elsize, alloctr);
-    v->len = n;
+    vt_vec_resize(v, n);
 
-    // copy values to vector
+    // copy values to vt_vec_t
     vt_memmove(v->ptr, vals, n * elsize);
 
     return v;
