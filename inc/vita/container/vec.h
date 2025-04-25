@@ -3,7 +3,10 @@
 
 /** VEC MODULE (dynamic array)
     - vt_vec_create
+    - vt_vec_create_from
+    - vt_vec_create_from_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_destroy
+    - vt_vec_dup
     - vt_vec_len
     - vt_vec_capacity
     - vt_vec_has_space
@@ -13,21 +16,24 @@
     - vt_vec_reserve
     - vt_vec_resize
     - vt_vec_push_front
-    - vt_vec_push_frontT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_push_front_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_push_back
-    - vt_vec_push_backT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_push_back_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_pop
     - vt_vec_pop_get
-    - vt_vec_pop_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_pop_get_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_set
-    - vt_vec_setT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_set_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_get
-    - vt_vec_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_get_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_insert
-    - vt_vec_insertT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_insert_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
     - vt_vec_remove
     - vt_vec_can_find
-    - vt_vec_containsT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_can_find_T (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
+    - vt_vec_slide_front
+    - vt_vec_slide_back
+    - vt_vec_slide_reset
     - vt_vec_apply
 */
 

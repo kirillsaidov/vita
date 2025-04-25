@@ -35,6 +35,9 @@
     - vt_str_remove_first
     - vt_str_remove_all
     - vt_str_remove_c
+    - vt_str_replace
+    - vt_str_replace_first
+    - vt_str_replace_last
     - vt_str_replace_c
     - vt_str_strip
     - vt_str_strip_punct
@@ -43,6 +46,8 @@
     - vt_str_can_find
     - vt_str_split
     - vt_str_split_between
+    - vt_str_join
+    - vt_str_join_n
     - vt_str_pop_get_first
     - vt_str_pop_get_last
     - vt_str_equals_z

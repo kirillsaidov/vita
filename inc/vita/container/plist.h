@@ -3,13 +3,17 @@
 
 /** PLIST MODULE (dynamic array(list) of pointers)
     - vt_plist_create
+    - vt_plist_create_from
     - vt_plist_destroy
+    - vt_plist_dup
     - vt_plist_len
     - vt_plist_capacity
     - vt_plist_has_space
     - vt_plist_is_empty
     - vt_plist_reserve
     - vt_plist_shrink
+    - vt_plist_resize
+    - vt_plist_insert
     - vt_plist_clear
     - vt_plist_set
     - vt_plist_get
@@ -19,6 +23,7 @@
     - vt_plist_pop_get
     - vt_plist_remove
     - vt_plist_remove_element
+    - vt_plist_can_find
     - vt_plist_slide_front
     - vt_plist_slide_back
     - vt_plist_slide_reset
