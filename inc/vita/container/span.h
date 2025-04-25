@@ -16,10 +16,9 @@
 #include "vita/container/str.h"
 #include "vita/container/plist.h"
 
-/// A reference type of contiguous sequence of values of type T. 
-/// It never allocates, nor deallocates anything.
-/// You can view and modify the contents, but not the object itself. 
-/// Thus, memory-dependent operations won't work (reserve, resize, etc...)
+/// A reference type of contiguous sequence of objects or values of type T. 
+/// It does not own the data, hence memory-dependent operations won't work (reserve, resize, etc...)
+/// You can still view and modify its contents, but not the object itself. 
 typedef struct {
     struct VitaBaseArrayType instance;
 } vt_span_t;
