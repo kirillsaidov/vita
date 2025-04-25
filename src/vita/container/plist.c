@@ -232,7 +232,6 @@ void vt_plist_push_back(vt_plist_t *const p, const void *ptr) {
 void vt_plist_pop(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // pop the last element
     if (p->len > 0) {
@@ -243,7 +242,6 @@ void vt_plist_pop(vt_plist_t *const p) {
 void *vt_plist_pop_get(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // pop the last element
     if (p->len > 0) {
@@ -264,7 +262,6 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
         at, 
         p->len
     );
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
@@ -282,7 +279,6 @@ void vt_plist_remove_element(vt_plist_t *const p, const void *const ptr, const e
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rs < VT_REMOVE_STRATEGY_COUNT, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // find element and remove element
     const int64_t idx = vt_plist_can_find(p, ptr);
