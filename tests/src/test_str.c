@@ -275,6 +275,12 @@ int32_t main(void) {
 
     } vt_str_destroy(s_val_test);
 
+    s_val_test = vt_str_create("0", alloctr); {
+        assert(vt_str_validate_len(s_val_test) == 0);
+        assert(vt_str_len(s_val_test) == 0);
+        assert(vt_str_capacity(s_val_test) == 1);
+    } vt_str_destroy(s_val_test);
+
     vt_str_t *ntmp_str = vt_str_create("Hello, World! How are you?", alloctr); {
         int64_t idx = vt_str_index_of(ntmp_str, 'o');
         assert(idx == 4);

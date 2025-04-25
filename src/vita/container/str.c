@@ -66,6 +66,7 @@ vt_str_t *vt_str_create_capacity(const size_t n, struct VitaBaseAllocatorType *c
 void vt_str_destroy(vt_str_t *s) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // if vt_str_t is view, skip
     if (s->is_view) {
@@ -140,7 +141,8 @@ size_t vt_str_validate_len(vt_str_t *const s) {
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // calculate valid length
-    const size_t s_len = strnlen(s->ptr, s->capacity);
+    const size_t max_len = s->capacity ? s->capacity - 1 : 0;
+    const size_t s_len = strnlen(s->ptr, max_len);
 
     // reset
     ((char*)s->ptr)[s_len] = '\0';
@@ -152,7 +154,7 @@ size_t vt_str_validate_len(vt_str_t *const s) {
 void vt_str_shrink(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // if length and capacity are the same, exit the function
     if (s->len == s->capacity) {
@@ -174,6 +176,7 @@ void vt_str_shrink(vt_str_t *const s) {
 void vt_str_clear(vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // set C string to ""
     ((char*)s->ptr)[0] = '\0';
@@ -186,7 +189,7 @@ void vt_str_reserve(vt_str_t *const s, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // reserve memory for additional n elements
     s->ptr = s->alloctr 
@@ -204,7 +207,7 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!s->is_view, "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // resize memory to (n + 1) elements
     s->ptr = s->alloctr 
@@ -304,6 +307,7 @@ void vt_str_append(vt_str_t *const s, const char *z) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     vt_str_append_n(s, z, strlen(z));
 }
@@ -312,6 +316,7 @@ enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // iterate over all arguments
     va_list args; 
@@ -330,6 +335,7 @@ void vt_str_append_n(vt_str_t *const s, const char *z, const size_t n) {
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check if new memory needs to be allocated
     if (vt_str_has_space(s) < n) {
@@ -357,6 +363,7 @@ void vt_str_insert(vt_str_t *const s, const char *z, const size_t at) {
         at, 
         s->len
     );
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check if new memory needs to be allocated
     const size_t zLen = strlen(z);
@@ -382,6 +389,7 @@ enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *c
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(fmt != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // iterate over all arguments
     va_list args; va_start(args, fmt); 
@@ -434,6 +442,7 @@ void vt_str_insert_n(vt_str_t *const s, const char *z, const size_t at, const si
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check if new memory needs to be allocated
     const size_t hasSpace = vt_str_has_space(s);
@@ -459,6 +468,7 @@ void vt_str_insert_before(vt_str_t *const s, const char *const sub, const char *
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // find the substring
     const int64_t idx = vt_str_index_find(s, sub);
@@ -475,6 +485,7 @@ void vt_str_insert_after(vt_str_t *const s, const char *const sub, const char *c
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // find the substring
     const int64_t idx = vt_str_index_find(s, sub);
@@ -623,6 +634,7 @@ void vt_str_replace(vt_str_t *const s, const char *const sub, const char *const 
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check length and do nothing if empty
     const size_t subLen = strlen(sub);
@@ -655,6 +667,7 @@ void vt_str_replace_first(vt_str_t *const s, const char *const sub, const char *
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check length and do nothing if empty
     const size_t subLen = strlen(sub);
@@ -682,6 +695,7 @@ void vt_str_replace_last(vt_str_t *const s, const char *const sub, const char *c
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rsub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check length and do nothing if empty
     const size_t subLen = strlen(sub);
