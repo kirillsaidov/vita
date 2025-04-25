@@ -35,7 +35,7 @@ vt_plist_t *vt_plist_create_from(const size_t n, void **vals, struct VitaBaseAll
 void vt_plist_destroy(vt_plist_t *p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // free vt_plist_t contents
     if (p->alloctr) {
@@ -85,7 +85,7 @@ void vt_plist_reserve(vt_plist_t *const p, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // reserve memory for additional n elements
     p->ptr2 = p->alloctr 
@@ -99,7 +99,7 @@ void vt_plist_reserve(vt_plist_t *const p, const size_t n) {
 void vt_plist_shrink(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // if length and capacity are the same, exit the function
     if (p->len == p->capacity) {
@@ -120,7 +120,7 @@ void vt_plist_resize(vt_plist_t *const p, const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     if (n == p->capacity) {
         p->len = p->capacity;
@@ -147,7 +147,7 @@ void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at
         at, 
         p->len
     );
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check if new memory needs to be allocated
     if (!vt_plist_has_space(p)) {
@@ -167,7 +167,7 @@ void vt_plist_insert(vt_plist_t *const p, const void *const ptr, const size_t at
 void vt_plist_clear(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // update length
     p->len = 0;
@@ -207,7 +207,7 @@ void vt_plist_push_front(vt_plist_t *const p, const void *const ptr) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // push value
     if (vt_plist_len(p)) vt_plist_insert(p, ptr, 0);
@@ -218,7 +218,7 @@ void vt_plist_push_back(vt_plist_t *const p, const void *ptr) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
     
     // check if new memory needs to be allocated
     if (!vt_plist_has_space(p)) {
@@ -232,7 +232,7 @@ void vt_plist_push_back(vt_plist_t *const p, const void *ptr) {
 void vt_plist_pop(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // pop the last element
     if (p->len > 0) {
@@ -243,7 +243,7 @@ void vt_plist_pop(vt_plist_t *const p) {
 void *vt_plist_pop_get(vt_plist_t *const p) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // pop the last element
     if (p->len > 0) {
@@ -264,7 +264,7 @@ void vt_plist_remove(vt_plist_t *const p, const size_t at, const enum VitaRemove
         at, 
         p->len
     );
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // check remove strategy
     if (rs == VT_REMOVE_STRATEGY_STABLE) {
@@ -282,7 +282,7 @@ void vt_plist_remove_element(vt_plist_t *const p, const void *const ptr, const e
     VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(ptr != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(rs < VT_REMOVE_STRATEGY_COUNT, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    VT_ENFORCE(!vt_array_is_view(p), "%s: Cannot modify a viewable-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
     // find element and remove element
     const int64_t idx = vt_plist_can_find(p, ptr);
