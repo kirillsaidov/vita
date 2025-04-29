@@ -10,6 +10,7 @@ vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsize) {
         .instance.ptr = ptr,
         .instance.len = length,
         .instance.elsize = elsize,
+        .instance.is_view = true,
     };
 }
 
@@ -24,14 +25,39 @@ vt_span_t vt_span_from_to(void *ptr, const size_t from_idx, const size_t to_idx,
         .instance.ptr = (char*)ptr + from_idx * elsize,
         .instance.len = to_idx - from_idx,
         .instance.elsize = elsize,
+        .instance.is_view = true,
     };
 }
 
+vt_span_t vt_span_from_vba(const struct VitaBaseArrayType *const vba) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(vba), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    struct VitaBaseArrayType ref = *vba;
+    ref.is_view = true; // ensure it's a viewable object!
+    return (vt_span_t) {.instance = ref};
+}
+
+vt_span_t vt_span_from_vec(const vt_vec_t *const v) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(v), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    return vt_span_from_vba(v);
+}
+
+vt_span_t vt_span_from_str(const vt_str_t *const s) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    return vt_span_from_vba(s);
+}
+
+vt_span_t vt_span_from_plist(const vt_vec_t *const p) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    return vt_span_from_vba(p);
+}
+
 size_t vt_span_len(const vt_span_t span) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(&span.instance), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return span.instance.len;
 }
 
 void *vt_span_get(const vt_span_t span, const size_t at) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(&span.instance), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(
         at < span.instance.len,
         "%s: Out of bounds memory access at %zu, but length is %zu!\n", 
@@ -44,7 +70,7 @@ void *vt_span_get(const vt_span_t span, const size_t at) {
 }
 
 #define VT_INSTANTIATE_SPAN_GET(T, t)                         \
-    T vt_span_get##t(const vt_span_t span, const size_t at) { \
+    T vt_span_get_##t(const vt_span_t span, const size_t at) {\
         return *(T*)(vt_span_get(span, at));                  \
     }
 VT_INSTANTIATE_SPAN_GET(int8_t, i8)
@@ -62,6 +88,7 @@ VT_INSTANTIATE_SPAN_GET(real, r)
 
 void vt_span_set(vt_span_t span, const void *const val, const size_t at) {
     // check for invalid input
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(&span.instance), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(val != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(
         at < span.instance.len,
@@ -75,7 +102,7 @@ void vt_span_set(vt_span_t span, const void *const val, const size_t at) {
 }
 
 #define VT_INSTANTIATE_SPAN_SET(T, t)                                   \
-    void vt_span_set##t(vt_span_t span, const T val, const size_t at) { \
+    void vt_span_set_##t(vt_span_t span, const T val, const size_t at) {\
         vt_span_set(span, &val, at);                                    \
     }
 VT_INSTANTIATE_SPAN_SET(int8_t, i8)
@@ -90,3 +117,5 @@ VT_INSTANTIATE_SPAN_SET(float, f)
 VT_INSTANTIATE_SPAN_SET(double, d)
 VT_INSTANTIATE_SPAN_SET(real, r)
 #undef VT_INSTANTIATE_SPAN_SET
+
+

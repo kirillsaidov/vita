@@ -4,6 +4,9 @@
 /** SPAN MODULE (view)
     - vt_span_from
     - vt_span_from_to
+    - vt_span_from_vec
+    - vt_span_from_str
+    - vt_span_from_plist
     - vt_span_len
     - vt_span_get
     - vt_span_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
@@ -19,6 +22,7 @@
 /// A reference type of contiguous sequence of objects or values of type T. 
 /// It does not own the data, hence memory-dependent operations won't work (reserve, resize, etc...)
 /// You can still view and modify its contents, but not the object itself. 
+/// Span does not have capacity, has_space, empty properties, since it does not allow memory operations
 typedef struct {
     struct VitaBaseArrayType instance;
 } vt_span_t;
@@ -40,6 +44,30 @@ extern vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsiz
 */
 extern vt_span_t vt_span_from_to(void *ptr, const size_t from_idx, const size_t to_idx, const size_t elsize);
 
+/** Creates a span from VitaBaseArrayType
+    @param vba VitaBaseArrayType instance
+    @returns vt_span_t
+*/
+extern vt_span_t vt_span_from_vba(const struct VitaBaseArrayType *const vba);
+
+/** Creates a span from vt_vec_t
+    @param v vector object
+    @returns vt_span_t
+*/
+extern vt_span_t vt_span_from_vec(const vt_vec_t *const v);
+
+/** Creates a span from vt_str_t
+    @param s vt_str_t object
+    @returns vt_span_t
+*/
+extern vt_span_t vt_span_from_str(const vt_str_t *const s);
+
+/** Creates a span from vt_plist_t
+    @param p vt_plist_t object
+    @returns vt_span_t
+*/
+extern vt_span_t vt_span_from_plist(const vt_vec_t *const p);
+
 /** Returns vt_span_t length
     @param span vt_span_t instance
     @returns size_t
@@ -58,7 +86,7 @@ extern void *vt_span_get(const vt_span_t span, const size_t at);
     @param at index
     @returns value
 */
-#define VT_PROTOTYPE_SPAN_GET(T, t) extern T vt_span_get##t(const vt_span_t span, const size_t at)
+#define VT_PROTOTYPE_SPAN_GET(T, t) extern T vt_span_get_##t(const vt_span_t span, const size_t at)
 VT_PROTOTYPE_SPAN_GET(int8_t, i8);
 VT_PROTOTYPE_SPAN_GET(uint8_t, u8);
 VT_PROTOTYPE_SPAN_GET(int16_t, i16);
@@ -84,7 +112,7 @@ extern void vt_span_set(vt_span_t span, const void *const val, const size_t at);
     @param val value
     @param at index to set the value
 */
-#define VT_PROTOTYPE_SPAN_SET(T, t) extern void vt_span_set##t(vt_span_t span, const T val, const size_t at)
+#define VT_PROTOTYPE_SPAN_SET(T, t) extern void vt_span_set_##t(vt_span_t span, const T val, const size_t at)
 VT_PROTOTYPE_SPAN_SET(int8_t, i8);
 VT_PROTOTYPE_SPAN_SET(uint8_t, u8);
 VT_PROTOTYPE_SPAN_SET(int16_t, i16);
@@ -97,6 +125,7 @@ VT_PROTOTYPE_SPAN_SET(float, f);
 VT_PROTOTYPE_SPAN_SET(double, d);
 VT_PROTOTYPE_SPAN_SET(real, r);
 #undef VT_PROTOTYPE_SPAN_SET
+
 
 #endif // VITA_CONTAINER_SPAN_H
 

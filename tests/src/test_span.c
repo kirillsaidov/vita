@@ -12,7 +12,7 @@ int32_t main(void) {
     assert(((char*)vt_span_get(span, 2))[0] == '3');
 
     // modify span
-    vt_span_setu8(span, 'X', 0);
+    vt_span_set_u8(span, 'X', 0);
     assert(buffer[0] == 'X');
     assert(((char*)vt_span_get(span, 0))[0] == 'X');
 
@@ -28,9 +28,27 @@ int32_t main(void) {
         // create span
         vt_span_t span2 = vt_span_from_to(vt_array_head(v), 2, 5, vt_array_elsize(v));
         assert(vt_span_len(span2) == 3);
-        assert(vt_span_geti32(span2, 0) == 2);
-        assert(vt_span_geti32(span2, 1) == 3);
-        assert(vt_span_geti32(span2, 2) == 4);
+        assert(vt_span_get_i32(span2, 0) == 2);
+        assert(vt_span_get_i32(span2, 1) == 3);
+        assert(vt_span_get_i32(span2, 2) == 4);
+    }
+    vt_vec_destroy(v);
+
+    // create span from vec (try 2)
+    v = vt_vec_create(10, sizeof(int32_t), NULL);
+    {   
+        // init
+        VT_FOREACH(i, 0, vt_vec_capacity(v)) {
+            vt_vec_push_back_i32(v, i);
+        }
+        assert(vt_vec_get_i32(v, 3) == 3);
+
+        // create span
+        vt_span_t span2 = vt_span_from_vec(v);
+        assert(vt_span_len(span2) == 10);
+        assert(vt_span_get_i32(span2, 0) == 0);
+        assert(vt_span_get_i32(span2, 1) == 1);
+        assert(vt_span_get_i32(span2, 2) == 2);
     }
     vt_vec_destroy(v);
 

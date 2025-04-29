@@ -254,9 +254,9 @@ VT_FOREACH(i, 0, vt_vec_capacity(v)) vt_vec_push_back_i32(v, i);
 // create span from vec
 vt_span_t vec_view = vt_span_from_to(vt_array_head(v), 2, 5, vt_array_elsize(v));
 assert(vt_span_len(vec_view) == 3);
-assert(vt_span_geti32(vec_view, 0) == 2);
-assert(vt_span_geti32(vec_view, 1) == 3);
-assert(vt_span_geti32(vec_view, 2) == 4);
+assert(vt_span_get_i32(vec_view, 0) == 2);
+assert(vt_span_get_i32(vec_view, 1) == 3);
+assert(vt_span_get_i32(vec_view, 2) == 4);
 
 // destroy vec
 vt_vec_destroy(v);
