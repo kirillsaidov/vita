@@ -4,6 +4,7 @@
 /** SPAN MODULE (view)
     - vt_span_from
     - vt_span_from_to
+    - vt_span_from_vba
     - vt_span_from_vec
     - vt_span_from_str
     - vt_span_from_plist
