@@ -32,7 +32,8 @@
 
 #include "vita/container/common.h"
 
-// new pointer list type
+/// new pointer list type
+/// see container/common.h for definitions
 typedef struct VitaBaseArrayType vt_plist_t;
 
 /** Allocates and constructs vt_plist_t with specified capacity

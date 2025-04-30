@@ -39,7 +39,8 @@
 
 #include "vita/container/common.h"
 
-// see core/core.h for definition
+/// vector object
+/// see container/common.h for definitions
 typedef struct VitaBaseArrayType vt_vec_t;
 
 /** Allocates and constructs vt_vec_t

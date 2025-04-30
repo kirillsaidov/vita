@@ -75,7 +75,8 @@
 // temporary buffer size
 #define VT_STR_TMP_BUFFER_SIZE 1024
 
-// see core/core.h for definition
+/// zero-terminated string object
+/// see container/common.h for definitions
 typedef struct VitaBaseArrayType vt_str_t;
 
 /** Creates a static string with length
