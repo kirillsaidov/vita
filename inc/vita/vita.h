@@ -18,7 +18,6 @@
 #include "container/plist.h"
 #include "container/span.h"
 
-#include "algorithm/search.h"
 #include "algorithm/comparison.h"
 
 #include "network/sockets.h"
