@@ -32,6 +32,19 @@ vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const
     return s;
 }
 
+vt_str_t *vt_str_create_n(const char *const z, const size_t n, struct VitaBaseAllocatorType *const alloctr) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // create str
+    vt_str_t *s = vt_str_create_len(n, alloctr);
+
+    // set z to str
+    vt_str_set_n(s, z, n);
+
+    return s;
+}
+
 vt_str_t *vt_str_create_len(const size_t n, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -90,7 +103,7 @@ vt_str_t *vt_str_dup(const vt_str_t *const s) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     
-    return vt_str_create(s->ptr, s->alloctr);
+    return vt_str_create_n(s->ptr, s->len, s->alloctr);
 }
 
 vt_str_t *vt_str_take_ownership(const char *const z, struct VitaBaseAllocatorType *const alloctr) {

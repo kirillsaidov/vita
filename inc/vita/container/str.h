@@ -4,6 +4,7 @@
 /** STR MODULE (dynamic string)
     - vt_str_create_static
     - vt_str_create
+    - vt_str_create_n
     - vt_str_create_len
     - vt_str_create_capacity
     - vt_str_destroy
@@ -94,6 +95,17 @@ extern vt_str_t vt_str_create_static(const char *const z);
     @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
 */
 extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr);
+
+/** Creates a new dynamic string from a non-zero terminated C string with specified length N (allocates additional memory for '\0')
+    @param z raw C string
+    @param n string length
+    @param alloctr allocator instance
+
+    @returns `vt_str_t*` upon success, `NULL` otherwise
+
+    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+*/
+extern vt_str_t *vt_str_create_n(const char *const z, const size_t n, struct VitaBaseAllocatorType *const alloctr);
 
 /** Creates a dynamic string of specified length and fills it with zeros (allocates additional memory for '\0')
     @param n number of elements
