@@ -137,8 +137,15 @@ int32_t main(void) {
         vt_str_insert_after(tmp_str, "not_found", " [1, 2, 3]");
         assert(vt_str_equals_z(vt_str_z(tmp_str), "hello [1, 2, 3] world [4, 5, 6] APPEND"));
     } vt_str_destroy(tmp_str);
+
+    vt_str_t *ns = vt_str_create_n("hello_world", 11, alloctr); {
+        assert(vt_str_len(ns) == 11);
+        assert(vt_str_capacity(ns) == 11);
+        assert(vt_str_has_space(ns) == 0);
+        assert(vt_str_equals_z(vt_str_z(ns), "hello_world"));
+    } vt_str_destroy(ns);
     
-    vt_str_t *ns = vt_str_create_len(1, alloctr); {
+    ns = vt_str_create_len(1, alloctr); {
         assert(vt_str_len(ns) == 1);
         assert(vt_str_capacity(ns) == 1);
         assert(vt_str_has_space(ns) == 0);
