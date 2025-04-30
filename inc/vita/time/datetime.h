@@ -2,8 +2,7 @@
 #define VITA_TIME_DATETIME_H
 
 /** DATETIME MODULE 
- * This is a datetime handling module. By defaut it will always return the VitaDateTime struct.
- * If a function has `text` in its name, then it returns data in textual format.
+ * This is a datetime handling module.
     - vt_datetime_get_now
     - vt_datetime_get_now_as_text
     - vt_datetime_get_now_as_text_pretty
