@@ -370,6 +370,13 @@ int32_t main(void) {
     }
     vt_str_destroy(text);
 
+    // join strings
+    text = vt_str_join(NULL, ";", "hello", "world");
+    {
+        assert(vt_str_equals_z(vt_str_z(text), "hello;world"));
+    }
+    vt_str_destroy(text);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }

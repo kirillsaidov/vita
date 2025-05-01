@@ -37,7 +37,7 @@ void free_str(void *ptr, size_t i) {
 void test_path(void) {
     assert(vt_path_exists("/home/lala") == false); // must fail
 
-    vt_str_t *s = vt_path_build_n(NULL, 4, "hello", "world", "media", "dev");
+    vt_str_t *s = vt_path_join(NULL, "hello", "world", "media", "dev");
     assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
     vt_str_destroy(s);
 
@@ -115,7 +115,7 @@ void test_selfpath(void) {
         #else
             vt_str_append(cwd, "/bin/test_path");
         #endif
-        printf("<%s> == <%s>\n", vt_str_z(selfpath), vt_str_z(cwd));
+        // printf("<%s> == <%s>\n", vt_str_z(selfpath), vt_str_z(cwd));
         assert(vt_str_equals(selfpath, cwd));
     }
     vt_str_destroy(cwd);
