@@ -1,27 +1,14 @@
 #include "vita/system/path.h"
 
-vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p) {
-    return vt_str_join(s, VT_PATH_SEPARATOR, p);
+vt_str_t *vt_path_join_list(vt_str_t *const s, const vt_plist_t *const p) {
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    return vt_str_join_list(s, VT_PATH_SEPARATOR, p);
 }
 
-vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...) {
-    // save args to list
-    vt_plist_t *const p = vt_plist_create(n, s == NULL ? NULL : s->alloctr);
-    va_list args; va_start(args, n);
-    for (size_t i = 0; i < n; i++) {
-        // get next item
-        char *z = va_arg(args, char*);
-        vt_plist_push_back(p, z);
-    }
-    va_end(args);
-    
-    // join
-    vt_str_t *st = vt_str_join(s, VT_PATH_SEPARATOR, p);
-
-    // cleanup
-    vt_plist_destroy(p);
-    
-    return st;
+vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], const size_t n) {
+    VT_DEBUG_ASSERT(array != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    return vt_str_join_array(s, VT_PATH_SEPARATOR, array, n);
 }
 
 vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr) {

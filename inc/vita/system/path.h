@@ -2,8 +2,9 @@
 #define VITA_SYSTEM_PATH_H
 
 /** PATH MODULE
-    - vt_path_build
-    - vt_path_build_n
+    - vt_path_join
+    - vt_path_join_list
+    - vt_path_join_array
     - vt_path_get_cwd
     - vt_path_exists
     - vt_path_is_dir
@@ -60,22 +61,30 @@
 /// max path length
 #define VT_PATH_MAX 4096
 
-/** Builds path from raw C strings
+/** Builds path from zero-terminated C strings
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
-    @param p array of raw C strings
+    @param p array of zero-terminated C strings
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern vt_str_t *vt_path_build(vt_str_t *const s, const vt_plist_t *const p);
+extern vt_str_t *vt_path_join_list(vt_str_t *const s, const vt_plist_t *const p);
 
-/** Builds path from raw C strings
+/** Builds path from zero-terminated C strings
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
-    @param n number of strings to concatenate into path
-    @param ... c strings to combine into path
+    @param array array of zero-terminated strings
+    @param n number of strings to join
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
 */
-extern vt_str_t *vt_path_build_n(vt_str_t *const s, const size_t n, ...);
+extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], const size_t n);
+
+/** Builds path from zero-terminated C strings
+    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
+    @param ... zero-terminated strings
+
+    @returns `vt_str_t` joined string, `NULL` upon failure
+*/
+#define vt_path_join(s, ...) vt_path_join_array(s, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Get current working directory
     @param alloctr allocator instance
