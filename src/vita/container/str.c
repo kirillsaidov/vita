@@ -1018,11 +1018,10 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
     return NULL;
 }
 
-vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
+vt_str_t *vt_str_join_list(vt_str_t *const s, const char *const sep, const vt_plist_t *const p) {
     // check for invalid input
-    VT_DEBUG_ASSERT(p != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_DEBUG_ASSERT(p->ptr2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(p), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
 
     // create vt_str_t if needed
     vt_str_t *st = (s == NULL)
@@ -1042,33 +1041,25 @@ vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t
     return st;
 }
 
-vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...) {
+vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *array[], const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(array != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // create a new vt_str_t instance
-    vt_str_t *st = (s == NULL) 
+    // create vt_str_t if needed
+    vt_str_t *st = (s == NULL)
         ? vt_str_create_capacity(VT_ARRAY_DEFAULT_INIT_ELEMENTS, NULL) 
         : s;
 
-    // append
-    va_list args;
-    va_start(args, n);
-    const char* z = NULL;
-    for (size_t i = 0; i < n; i++) {
-        // get next item
-        z = va_arg(args, char*);
-        
-        // append item
-        vt_str_append(st, z);
+    // append the first part
+    vt_str_append(st, array[0]);
 
-        // do not append the separator at the very end
-        if (i < n-1) {
-            vt_str_append(st, sep);
-        }
+    // continue appending
+    for (size_t i = 1; i < n; i++) {
+        vt_str_append(st, sep);
+        vt_str_append(st, array[i]);
     }
-    va_end(args);
 
     return st;
 }

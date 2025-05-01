@@ -48,7 +48,8 @@
     - vt_str_split
     - vt_str_split_between
     - vt_str_join
-    - vt_str_join_n
+    - vt_str_join_list
+    - vt_str_join_array
     - vt_str_pop_get_first
     - vt_str_pop_get_last
     - vt_str_equals_z
@@ -433,21 +434,30 @@ extern vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, co
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates
     @param sep C string separator that will be used to join strings together
-    @param p list of strings
+    @param p list of zero-terminated C strings
 
     @returns `vt_str_t` joined string, `NULL` upon failure
 */
-extern vt_str_t *vt_str_join(vt_str_t *const s, const char *const sep, const vt_plist_t *const p);
+extern vt_str_t *vt_str_join_list(vt_str_t *const s, const char *const sep, const vt_plist_t *const p);
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates
     @param sep C string separator that will be used to join strings together
+    @param array array of zero-terminated strings
     @param n number of strings to join
-    @param ... strings to join
 
     @returns `vt_str_t` joined string, `NULL` upon failure
 */
-extern vt_str_t *vt_str_join_n(vt_str_t *const s, const char *const sep, const size_t n, ...);
+extern vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *array[], const size_t n);
+
+/** Joins strings by separator
+    @param s vt_str_t instance where the result will be saved, if `NULL` allocates
+    @param sep C string separator that will be used to join strings together
+    @param ... zero-terminated strings
+
+    @returns `vt_str_t` joined string, `NULL` upon failure
+*/
+#define vt_str_join(s, sep, ...) vt_str_join_array(s, sep, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Pops off the first part of the string before the separator
     @param sr vt_str_t instance where the result will be saved, if NULL is passed, it's allocated
@@ -467,7 +477,7 @@ extern vt_str_t *vt_str_pop_get_first(vt_str_t *sr, vt_str_t *const s, const cha
 */
 extern vt_str_t *vt_str_pop_get_last(vt_str_t *sr, vt_str_t *const s, const char *const sep);
 
-/** Checks if two raw C strings are the same
+/** Checks if two zero-terminated C strings are the same
     @param z1 raw C string
     @param z2 raw C string
 
