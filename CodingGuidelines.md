@@ -2,9 +2,11 @@
 This is a list of guidelines that I adhere to while developing Vita library.
 
 ## A few notes for future revision
-* Don't use MACROS if a function can be used instead.
 * Avoid ambiguity.
-* There must be only one way to do something.
+* Avoid allocations if possible.
+* Return spans (views) to data. Let the user manually allocate an object if neccessary. 
+* Don't use MACROS if a function can be used instead.
+* There must be only one way to do something specific: DRY.
 
 ---
 
