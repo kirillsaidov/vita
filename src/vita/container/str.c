@@ -228,11 +228,11 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
         : VT_REALLOC(s->ptr, (n + 1) * s->elsize);
 
     // update
-    s->len = (n < s->len) ? n : s->len;
+    s->len = n;
     s->capacity = n;
 
     // add '\0' terminator at the very end of vt_str_t
-    ((char*)s->ptr)[s->capacity] = '\0';
+    ((char*)s->ptr)[n] = '\0';
 }
 
 void vt_str_set(vt_str_t *const s, const char *z) {
@@ -1007,7 +1007,7 @@ vt_str_t *vt_str_split_between(vt_str_t *const s, const char *const z, const cha
     // check if lsub < rsub
     if (lsub < rsub) {
         ptrdiff_t sub_len = rsub - lsub - strlen(zl);
-        vt_str_resize(st, sub_len);
+        vt_str_reserve(st, sub_len);
 
         // append sub
         vt_str_append_n(st, rsub - sub_len, sub_len);
