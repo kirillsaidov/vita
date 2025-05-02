@@ -222,10 +222,11 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
 
-    // resize memory to (n + 1) elements
-    s->ptr = s->alloctr 
-        ? VT_ALLOCATOR_REALLOC(s->alloctr, s->ptr, (n + 1) * s->elsize) 
-        : VT_REALLOC(s->ptr, (n + 1) * s->elsize);
+    // check length to avoid unnecessary reallocations
+    // reserve more memory if needed
+    if (vt_str_len(s) < n) {
+        vt_str_reserve(s, n - vt_str_len(s));
+    }
 
     // update
     s->len = n;
