@@ -268,6 +268,8 @@ int32_t main(void) {
 
     vt_str_t *sbetween = vt_str_split_between(NULL, "https :1.8.8.8@ world", ":", "@");
     assert(vt_str_equals_z(vt_str_z(sbetween), "1.8.8.8"));
+    vt_str_resize(sbetween, 10);
+    assert(vt_str_len(sbetween) == vt_str_capacity(sbetween));
     vt_str_destroy(sbetween);
 
     vt_str_t *s_val_test = vt_str_create("123456789", alloctr); {
