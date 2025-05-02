@@ -43,7 +43,106 @@ void test_path(void) {
 
     vt_str_t *cwd = vt_path_get_cwd(alloctr); {
         cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "tests"));
+
+        // test basename 1
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "hello/world");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "hello/world/");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "world");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "world/");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "/world/");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_basename(cwd, "/world");
+        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
+
+        // test basename 2
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "apple/juice");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "apple/juice/");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "juice");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "juice/");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "/juice/");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "/juice");
+        cwd = vt_path_basename(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
+
+        // test dirname 1
+        vt_str_clear(cwd);
+        cwd = vt_path_dirname(cwd, "this/is/path/file.txt");
+        printf("LOG: %s\n", vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "this/is/path"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_dirname(cwd, "this/is/path");
+        printf("LOG: %s\n", vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "this/is"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_dirname(cwd, "this/is/path/");
+        printf("LOG: %s\n", vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "this/is"));
+
+        vt_str_clear(cwd);
+        cwd = vt_path_dirname(cwd, "this");
+        printf("LOG: %s\n", vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "."));
+
+        // test dirname 2
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "another/one/here.txt");
+        cwd = vt_path_dirname(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "another/one"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "another/one/");
+        cwd = vt_path_dirname(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "another"));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "another");
+        cwd = vt_path_dirname(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "."));
+
+        vt_str_clear(cwd);
+        vt_str_append(cwd, "/another");
+        cwd = vt_path_dirname(cwd, vt_str_z(cwd));
+        assert(vt_str_equals_z(vt_str_z(cwd), "."));
     } vt_str_destroy(cwd);
 
     assert(vt_path_exists("./src"));
@@ -91,7 +190,7 @@ void test_expand_tilda(void) {
         #if defined(_WIN32) || defined(_WIN64)
             assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
         #elif defined(__linux__)
-            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/root/hello"));
+            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/home/kirillsaidov/hello"));
         #else
             assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
         #endif

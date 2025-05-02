@@ -205,42 +205,55 @@ void vt_path_dir_free(vt_plist_t *p) {
     vt_plist_destroy(p);
 }
 
-vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
+vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // check if path separator is present
-    vt_str_t sz = vt_str_create_static(z);
-    if (!vt_str_can_find(&sz, VT_PATH_SEPARATOR)) {
-        return s;
-    }
-
     // create a new vt_str_t instance
-    vt_str_t *st = (s == NULL)
-        ? vt_str_create_len(strlen(z), NULL) 
-        : s;
-
-    // find the basename
-    const char *ptr = NULL;
     const size_t zLen = strlen(z);
+    vt_str_t *st = (s == NULL)
+        ? vt_str_create_len(zLen, NULL) 
+        : s;
+    
+    // find the basename
+    size_t offset = 0;
     for (size_t i = zLen - 1; i > 0; i--) {
         if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
-            ptr = &z[i+1];
+            offset = i;
             break;
         }
     }
 
-    // check if we have enough memory
-    const size_t sLen = vt_str_len(st);
-    if (sLen < zLen) {
-        vt_str_reserve(st, zLen - sLen);
-    }
+    // extract basename
+    vt_str_ensure_len(st, offset ? offset : 1);
+    vt_str_set_n(st, offset ? z : ".", offset ? offset : 1);
 
-    // save the basename
-    if (ptr) {
-        vt_str_clear(st);
-        vt_str_append(st, ptr);
+    return st;
+}
+
+vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // create a new vt_str_t instance
+    const size_t zLen = strlen(z);
+    vt_str_t *st = (s == NULL)
+        ? vt_str_create_len(zLen, NULL) 
+        : s;
+    
+    // find the basename
+    size_t offset = 0;
+    for (size_t i = zLen - 1; i > 0; i--) {
+        if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
+            offset = i + 1;
+            break;
+        }
     }
+    if (z[offset] == VT_PATH_SEPARATOR[0]) offset++;
+
+    // extract basename
+    vt_str_ensure_len(st, zLen - offset);
+    vt_str_set_n(st, z + offset, zLen - offset);
 
     return st;
 }
@@ -528,8 +541,8 @@ void vt_path_pop(char *const z) {
         return;
     }
 
-    // check if path contains path separator, if it does not, return
-    if (vt_str_find(&s, VT_PATH_SEPARATOR) == NULL) {
+    // check if path contains path separator
+    if (!vt_str_find(&s, VT_PATH_SEPARATOR)) {
         return;
     }
 

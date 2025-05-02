@@ -12,6 +12,7 @@
     - vt_path_get_file_size
     - vt_path_dir_list
     - vt_path_dir_list_recurse
+    - vt_path_dirname
     - vt_path_basename
     - vt_path_mkdir
     - vt_path_mkdir_parents
@@ -65,7 +66,7 @@
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param p array of zero-terminated C strings
 
-    @returns `vt_str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `s` otherwise
 */
 extern vt_str_t *vt_path_join_list(vt_str_t *const s, const vt_plist_t *const p);
 
@@ -74,7 +75,7 @@ extern vt_str_t *vt_path_join_list(vt_str_t *const s, const vt_plist_t *const p)
     @param array array of zero-terminated strings
     @param n number of strings to join
 
-    @returns `vt_str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `s` otherwise
 */
 extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], const size_t n);
 
@@ -123,9 +124,9 @@ extern int64_t vt_path_get_file_size(const char *const z);
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns list of `vt_str_t*` upon success, `NULL` otherwise
+    @returns list of `vt_str_t*` upon success, `p` otherwise
 
-    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
     @note use `vt_path_dir_free(p)` to free the directory tree.
 */
 extern vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
@@ -135,9 +136,9 @@ extern vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, co
     @param z path
     @param ignoreDotFiles skip hidden .files
 
-    @returns list of `vt_str_t*` upon success, `NULL` otherwise
+    @returns list of `vt_str_t*` upon success, `p` otherwise
 
-    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
     @note use `vt_path_dir_free(p)` to free the directory tree.
 */
 extern vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles);
@@ -148,13 +149,23 @@ extern vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *con
 */
 extern void vt_path_dir_free(vt_plist_t *p);
 
+/** Get path directory name
+    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
+    @param z path
+
+    @returns `vt_str_t*` upon success, `s` otherwise
+
+    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
+*/
+extern vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z);
+
 /** Get path basename
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param z path
 
-    @returns `vt_str_t*` upon success, `NULL` otherwise
+    @returns `vt_str_t*` upon success, `s` otherwise
 
-    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
 */
 extern vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z);
 
@@ -210,7 +221,7 @@ extern vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAlloca
     @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note passing in `NULL` for the container instance results in vt_calloc/realloc/free being used.
+    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
 */
 extern vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr);
 
@@ -219,7 +230,7 @@ extern vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *all
 */
 extern void vt_path_pop(char *const z);
 
-/** Validates the path and attempts to fix it if neccessary
+/** Validates the path and attempts to fix the VT_PATH_SEPARATOR if neccessary
     @param z path
 */
 extern void vt_path_validate(char *const z);
