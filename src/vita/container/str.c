@@ -236,6 +236,22 @@ void vt_str_resize(vt_str_t *const s, const size_t n) {
     ((char*)s->ptr)[n] = '\0';
 }
 
+void vt_str_ensure_len(vt_str_t *const s, const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    if (s->len < n) vt_str_resize(s, n);
+}
+
+void vt_str_ensure_capacity(vt_str_t *const s, const size_t n) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_array_is_view(s), "%s: Cannot modify a read-only object!\n", vt_status_to_str(VT_STATUS_ERROR_IS_VIEW));
+    if (s->capacity < n) vt_str_reserve(s, n - s->capacity);
+}
+
 void vt_str_set(vt_str_t *const s, const char *z) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));

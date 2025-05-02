@@ -213,6 +213,22 @@ extern void vt_str_reserve(vt_str_t *const s, const size_t n);
 */
 extern void vt_str_resize(vt_str_t *const s, const size_t n);
 
+/** Ensures that the specified length is available. 
+ * If instance length is less, then additional length is extended or allocated. 
+ * If instance length is more, nothing is done. 
+    @param s vt_str_t instance
+    @param n resize
+*/
+extern void vt_str_ensure_len(vt_str_t *const s, const size_t n);
+
+/** Ensures that the specified capacity is available. 
+ * If instance capacity is less, then additional capacity is reserved. 
+ * If instance capacity is more, nothing is done. 
+    @param s vt_str_t instance
+    @param n resize
+*/
+extern void vt_str_ensure_capacity(vt_str_t *const s, const size_t n);
+
 /** Assigns a new raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
