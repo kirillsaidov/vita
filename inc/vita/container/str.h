@@ -416,9 +416,25 @@ extern void vt_str_strip_c(vt_str_t *const s, const char *const c);
     @param s vt_str_t haystack
     @param sub substring needle
 
-    @returns pointer to the begining of a substring in a string, or `NULL` upon failure
+    @returns a valid pointer to substring, or `NULL` upon failure
 */
 extern const char *vt_str_find(const vt_str_t *const s, const char *sub);
+
+/** Find the first occurance of a substring in a string
+    @param s vt_str_t haystack
+    @param sub substring needle
+
+    @returns a valid pointer to substring, or `NULL` upon failure
+*/
+extern const char *vt_str_find_first(const vt_str_t *const s, const char *sub);
+
+/** Find the last occurance of a substring in a string
+    @param s vt_str_t haystack
+    @param sub substring needle
+
+    @returns a valid pointer to substring, or `NULL` upon failure
+*/
+extern const char *vt_str_find_last(const vt_str_t *const s, const char *sub);
 
 /** Checks if vt_str_t contains a substring
     @param s vt_str_t haystack

@@ -383,6 +383,26 @@ int32_t main(void) {
     }
     vt_str_destroy(text);
 
+    // find, find_first, find_last
+    vt_str_t *t1 = vt_str_create("hello and world and I and am and happy!", alloctr); {
+        const char *ret = vt_str_find(t1, "and");
+        assert(vt_str_equals_z(ret, "and world and I and am and happy!"));
+
+        ret = vt_str_find_first(t1, "and");
+        assert(vt_str_equals_z(ret, "and world and I and am and happy!"));
+
+        ret = vt_str_find_last(t1, "and");
+        assert(vt_str_equals_z(ret, "and happy!"));
+
+        vt_str_set(t1, "hello");
+        ret = vt_str_find(t1, "and");
+        assert(ret == NULL);
+        ret = vt_str_find_first(t1, "and");
+        assert(ret == NULL);
+        ret = vt_str_find_last(t1, "and");
+        assert(ret == NULL);
+    } vt_str_destroy(t1);
+
     vt_mallocator_destroy(alloctr);
     return 0;
 }

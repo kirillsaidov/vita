@@ -910,9 +910,33 @@ const char *vt_str_find(const vt_str_t *const s, const char *sub) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
-    VT_ENFORCE(strlen(sub) <= vt_str_len(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    const size_t subLen = strlen(sub);
+    VT_ENFORCE(subLen <= vt_str_len(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));   
+    return vt_strnstr(vt_str_z(s), vt_str_len(s), sub, subLen);
+}
 
-    return strstr(vt_str_z(s), sub);
+const char *vt_str_find_first(const vt_str_t *const s, const char *sub) {
+    return vt_str_find(s, sub);
+}
+
+const char *vt_str_find_last(const vt_str_t *const s, const char *sub) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
+    VT_DEBUG_ASSERT(sub != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    const size_t subLen = strlen(sub);
+    VT_ENFORCE(subLen <= vt_str_len(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));   
+    
+    const char *ret = NULL;
+    const char *ptr = vt_strnstr(vt_str_z(s), vt_str_len(s), sub, subLen);
+    while (ptr) {
+        // save the previous needle occurance
+        ret = ptr;
+
+        // try to find the next one
+        ptr = vt_strnstr(ptr + subLen * sizeof(char), strlen(ptr) - subLen, sub, subLen);
+    }
+
+    return ret;
 }
 
 size_t vt_str_can_find(const vt_str_t *const s, const char *sub) {
