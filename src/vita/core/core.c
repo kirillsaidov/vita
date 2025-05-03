@@ -111,6 +111,25 @@ bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
     return (memcmp(lhs, rhs, bytes) == 0);
 }
 
+const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len) {
+    assert(haystack != NULL);
+    assert(needle != NULL);
+    
+    // check for invalid inputs
+    if (!needle_len) return haystack;
+    if (haystack_len < needle_len) return NULL;
+
+    // find needle in haystack
+    size_t max_index = haystack_len - needle_len;
+    for (size_t i = 0; i <= max_index; i++) {
+        if (vt_memcmp(haystack + i, needle, needle_len)) {
+            return (haystack + i);
+        }
+    }
+
+    return NULL;
+}
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 void vt_gswap(void* a, void* b, const size_t elsize) {

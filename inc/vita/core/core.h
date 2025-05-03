@@ -191,7 +191,7 @@ extern void vt_free(void *ptr);
     @param bytes number of bytes to copy
     @returns dest: a pointer to the destination
 
-    @note asserts upon failure
+    @note asserts if inputs are invalid
 */
 extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
 
@@ -201,7 +201,7 @@ extern void *vt_memmove(void *dest, const void *const src, const size_t bytes);
     @param bytes number of bytes to copy
     @returns dest: a pointer to the destination
 
-    @note asserts upon failure
+    @note asserts if inputs are invalid
     @note buffers must not intersect
 */
 extern void *vt_memcopy(void *dest, const void *const src, const size_t bytes);
@@ -212,7 +212,7 @@ extern void *vt_memcopy(void *dest, const void *const src, const size_t bytes);
     @param bytes number of bytes to set
     @returns ptr
 
-    @note asserts upon failure
+    @note asserts if inputs are invalid
 */
 extern void *vt_memset(void *ptr, const int32_t value, const size_t bytes);
 
@@ -222,9 +222,20 @@ extern void *vt_memset(void *ptr, const int32_t value, const size_t bytes);
     @param bytes number of bytes to compare
     @returns true if `lhs` and `rhs` are equal
 
-    @note asserts upon failure
+    @note asserts if inputs are invalid
 */
 extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
+
+/** Find substring (needle) in a string (haystack). Safer version with bounds checking.
+    @param haystack string to search within
+    @param haystack_len ditto
+    @param needle substring to search for
+    @param needle_len ditto
+    @returns valid pointer to substring, or `NULL` if `needle` is not found in `haystack`
+
+    @note asserts if inputs are invalid
+*/
+extern const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 

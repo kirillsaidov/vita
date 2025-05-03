@@ -27,6 +27,12 @@ int32_t main(void) {
     assert(col == 0);
     assert(depth == 1);
 
+    // test strnstr
+    const char *needle = "world";
+    const char *haystack = "hello, world! Yes, hello!";
+    const char *ret = vt_strnstr(haystack, strlen(haystack), needle, strlen(needle));
+    assert(vt_memcmp(ret, "world! Yes, hello!", sizeof(ret)));
+
     return 0;
 }
 
