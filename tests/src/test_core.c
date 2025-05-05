@@ -33,6 +33,10 @@ int32_t main(void) {
     const char *ret = vt_strnstr(haystack, strlen(haystack), needle, strlen(needle));
     assert(vt_memcmp(ret, "world! Yes, hello!", sizeof(ret)));
 
+    // test strnlen
+    assert(vt_strnlen(needle, 64) == 5);
+    assert(vt_strnlen(haystack, 64) == 25);
+
     return 0;
 }
 
