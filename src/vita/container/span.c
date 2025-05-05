@@ -56,8 +56,11 @@ void *vt_span_head(const vt_span_t span) {
 }
 
 size_t vt_span_len(const vt_span_t span) {
-    VT_DEBUG_ASSERT(vt_array_is_valid_object(&span.instance), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return span.instance.len;
+}
+
+bool vt_span_is_valid_object(const vt_span_t span) {
+    return vt_span_head(span) != NULL && vt_span_len(span) > 0;
 }
 
 void *vt_span_get(const vt_span_t span, const size_t at) {

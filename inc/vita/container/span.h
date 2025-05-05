@@ -73,14 +73,26 @@ extern vt_span_t vt_span_from_plist(const vt_vec_t *const p);
 /** Returns span's ptr head
     @param vbat VitaBaseArrayType instance
     @returns void*
+
+    @note it does not check if span is a valid object, since it's just a non-owning view over data.
 */
 extern void *vt_span_head(const vt_span_t span);
 
 /** Returns vt_span_t length
     @param span vt_span_t instance
     @returns size_t
+
+    @note it does not check if span is a valid object, since it's just a non-owning view over data.
 */
 extern size_t vt_span_len(const vt_span_t span);
+
+/** Checks if span is a valid object
+    @param span vt_span_t instance
+    @returns size_t
+
+    @note checks if `vt_span_head() != NULL` and `vt_span_len() > 0`
+*/
+extern bool vt_span_is_valid_object(const vt_span_t span);
 
 /** Returns value at index
     @param span vt_span_t instance
