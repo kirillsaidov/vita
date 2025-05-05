@@ -8,6 +8,7 @@
     - vt_span_from_vec
     - vt_span_from_str
     - vt_span_from_plist
+    - vt_span_head
     - vt_span_len
     - vt_span_get
     - vt_span_getT (T = i8, u8, i16, u16, i32, u32, i64, u64, f, d, r)
@@ -68,6 +69,12 @@ extern vt_span_t vt_span_from_str(const vt_str_t *const s);
     @returns vt_span_t
 */
 extern vt_span_t vt_span_from_plist(const vt_vec_t *const p);
+
+/** Returns span's ptr head
+    @param vbat VitaBaseArrayType instance
+    @returns void*
+*/
+extern void *vt_span_head(const vt_span_t span);
 
 /** Returns vt_span_t length
     @param span vt_span_t instance

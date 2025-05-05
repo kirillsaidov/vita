@@ -51,6 +51,10 @@ vt_span_t vt_span_from_plist(const vt_vec_t *const p) {
     return vt_span_from_vba(p);
 }
 
+void *vt_span_head(const vt_span_t span) {
+    return span.instance.ptr;
+}
+
 size_t vt_span_len(const vt_span_t span) {
     VT_DEBUG_ASSERT(vt_array_is_valid_object(&span.instance), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     return span.instance.len;
