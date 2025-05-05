@@ -226,7 +226,7 @@ extern void *vt_memset(void *ptr, const int32_t value, const size_t bytes);
 */
 extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
 
-/** Find string length. Safer bounded version up to max_len.
+/** Find C string length. Safer bounded version up to max_len.
     @param z pointer to a zero-terminated C string
     @param max_len maximum length to examine (fallback)
     @returns string length (up to max_len)

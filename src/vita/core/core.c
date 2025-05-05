@@ -49,10 +49,7 @@ void *vt_realloc(void *ptr, const size_t bytes, const char *const file, const ch
 }
 
 void vt_free(void *ptr) {
-    if (ptr == NULL) {
-        return;
-    }
-
+    if (ptr == NULL) return;
     free(ptr);
 }
 
@@ -61,9 +58,7 @@ void *vt_memmove(void *dest, const void *const src, const size_t bytes) {
     assert(dest != NULL);
 
     // do nothing
-    if (bytes == 0) {
-        return dest;
-    }
+    if (bytes == 0) return dest;
 
     // copy data
     memmove(dest, src, bytes);
@@ -76,9 +71,7 @@ void *vt_memcopy(void *dest, const void *const src, const size_t bytes) {
     assert(dest != NULL);
 
     // do nothing
-    if (bytes == 0) {
-        return dest;
-    }
+    if (bytes == 0) return dest;
 
     // copy data
     memcpy(dest, src, bytes);
@@ -90,9 +83,7 @@ void *vt_memset(void *ptr, const int32_t value, const size_t bytes) {
     assert(ptr != NULL);
 
     // do nothing
-    if (bytes == 0) {
-        return ptr;
-    }
+    if (bytes == 0) return ptr;
 
     // set value
     memset(ptr, value, bytes);
@@ -104,10 +95,7 @@ bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
     assert(lhs != NULL);
     assert(rhs != NULL);
 
-    if (bytes == 0) {
-        return false;
-    }
-
+    if (bytes == 0) return false;
     return (memcmp(lhs, rhs, bytes) == 0);
 }
 
