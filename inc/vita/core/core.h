@@ -226,6 +226,15 @@ extern void *vt_memset(void *ptr, const int32_t value, const size_t bytes);
 */
 extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
 
+/** Find string length. Safer bounded version up to max_len.
+    @param z pointer to a zero-terminated C string
+    @param max_len maximum length to examine (fallback)
+    @returns string length (up to max_len)
+
+    @note asserts if inputs are invalid
+*/
+size_t vt_strnlen(const char *const z, const size_t max_len);
+
 /** Find substring (needle) in a string (haystack). Safer version with bounds checking.
     @param haystack string to search within
     @param haystack_len ditto

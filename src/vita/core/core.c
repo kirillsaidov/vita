@@ -111,6 +111,17 @@ bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
     return (memcmp(lhs, rhs, bytes) == 0);
 }
 
+size_t vt_strnlen(const char *const z, const size_t max_len) {
+    assert(z != NULL);
+
+    // examine string length
+    size_t len = 0;
+    while (len < max_len && z[len] != '\0') {
+        len++;
+    }
+    return len;
+}
+
 const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len) {
     assert(haystack != NULL);
     assert(needle != NULL);
