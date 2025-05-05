@@ -28,6 +28,7 @@
 
 #include "vita/core/core.h"
 #include "vita/container/str.h"
+#include "vita/container/span.h"
 #include "vita/container/plist.h"
 
 #include <sys/types.h>
@@ -88,12 +89,15 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 #define vt_path_join(s, ...) vt_path_join_array(s, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Get current working directory
+    @param buf a valid buffer, or `NULL` to allocate a new buffer
+    @param len the size of the provided buffer, ignored if `buf = NULL`
     @param alloctr allocator instance
-    @returns `vt_str_t*` upon success, `NULL` otherwise
+    @returns `vt_span_t` instance over the buffer
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+    @note if `buf == NULL`, a new buffer large enough to hold the path is dynamically allocated.
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
-extern vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr);
+extern vt_span_t vt_path_get_cwd(char *const buf, const size_t len, struct VitaBaseAllocatorType *alloctr);
 
 /** Checks if path or file exists
     @param z path

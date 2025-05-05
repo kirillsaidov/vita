@@ -93,7 +93,7 @@ extern vt_str_t vt_str_create_static(const char *const z);
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType *const alloctr);
 
@@ -104,7 +104,7 @@ extern vt_str_t *vt_str_create(const char *const z, struct VitaBaseAllocatorType
 
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_str_t *vt_str_create_n(const char *const z, const size_t n, struct VitaBaseAllocatorType *const alloctr);
 

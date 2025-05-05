@@ -50,7 +50,7 @@ typedef struct VitaBaseArrayType vt_vec_t;
 
     @returns `vt_vec_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaBaseAllocatorType *const alloctr);
 
@@ -62,7 +62,7 @@ extern vt_vec_t *vt_vec_create(const size_t n, const size_t elsize, struct VitaB
 
     @returns `vt_vec_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_vec_t *vt_vec_create_from(const size_t n, const size_t elsize, const void *vals, struct VitaBaseAllocatorType *const alloctr);
 
@@ -74,7 +74,7 @@ extern vt_vec_t *vt_vec_create_from(const size_t n, const size_t elsize, const v
 
     @returns `vt_vec_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 #define VT_PROTOTYPE_VEC_CREATE_FROM(T, t) extern vt_vec_t *vt_vec_create_from_##t(const size_t n, const T vals[], struct VitaBaseAllocatorType *const alloctr)
 VT_PROTOTYPE_VEC_CREATE_FROM(int8_t, i8);
@@ -101,7 +101,7 @@ extern void vt_vec_destroy(vt_vec_t *v);
 
     @returns vt_vec_t* instance upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_vec_t *vt_vec_dup(const vt_vec_t *const v, struct VitaBaseAllocatorType *const alloctr);
 

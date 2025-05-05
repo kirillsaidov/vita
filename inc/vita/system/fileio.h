@@ -25,7 +25,7 @@
     @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType *const alloctr);
 
@@ -34,7 +34,7 @@ extern vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocat
     @param alloctr allocator instance
     @returns `vt_str_t*` upon success, `NULL` otherwise
 
-    @note if `alloctr = NULL` is specified, then `vt_calloc/realloc/free` is used.
+    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
 */
 extern vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType *const alloctr);
 
