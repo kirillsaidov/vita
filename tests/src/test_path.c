@@ -41,9 +41,17 @@ void test_path(void) {
     assert(vt_str_equals_z(vt_str_z(s), "hello/world/media/dev"));
     vt_str_destroy(s);
 
-    vt_str_t *cwd = vt_path_get_cwd(alloctr); {
+    // cwd
+    char buffer[VT_PATH_MAX] = {0};
+    vt_span_t _cwd = vt_path_get_cwd(buffer, 5);
+    assert(vt_span_len(_cwd) == 0);
+    assert(vt_span_head(_cwd) == NULL);
+    assert(!vt_span_is_valid_object(_cwd));
+    _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
+
+    char path_buf[VT_PATH_MAX] = {0};
+    vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr); {
         cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "tests"));
 
         // test basename 1
@@ -105,22 +113,18 @@ void test_path(void) {
         // test dirname 1
         vt_str_clear(cwd);
         cwd = vt_path_dirname(cwd, "this/is/path/file.txt");
-        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "this/is/path"));
 
         vt_str_clear(cwd);
         cwd = vt_path_dirname(cwd, "this/is/path");
-        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "this/is"));
 
         vt_str_clear(cwd);
         cwd = vt_path_dirname(cwd, "this/is/path/");
-        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "this/is"));
 
         vt_str_clear(cwd);
         cwd = vt_path_dirname(cwd, "this");
-        printf("LOG: %s\n", vt_str_z(cwd));
         assert(vt_str_equals_z(vt_str_z(cwd), "."));
 
         // test dirname 2
@@ -206,7 +210,10 @@ void test_selfpath(void) {
     assert(selfpath != NULL);
 
     // get cwd to check exe path below
-    vt_str_t *cwd = vt_path_get_cwd(NULL);
+    char buffer[VT_PATH_MAX] = {0};
+    vt_span_t _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
+
+    vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr);
     {
         // append exe path
         #if defined(_WIN32) || defined(_WIN64)

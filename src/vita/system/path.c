@@ -6,18 +6,27 @@ vt_str_t *vt_path_join_list(vt_str_t *const s, const vt_plist_t *const p) {
 }
 
 vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], const size_t n) {
-    VT_DEBUG_ASSERT(array != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(array != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(n > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     return vt_str_join_array(s, VT_PATH_SEPARATOR, array, n);
 }
 
-vt_str_t *vt_path_get_cwd(struct VitaBaseAllocatorType *alloctr) {
-    return vt_str_take_ownership(getcwd(NULL, 0), alloctr);
+vt_span_t vt_path_get_cwd(char *const buf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+
+    // get current working directory and check for failure
+    // failed: return empty structure with `head == NULL` and `len == 0`
+    if (!getcwd(buf, len)) return (vt_span_t) {0};
+
+    // wrap up the result in a span
+    return vt_span_from(buf, vt_strnlen(buf, len), sizeof(char));
 }
 
 bool vt_path_exists(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     struct stat info;
     return (stat(z, &info) == 0);
@@ -25,7 +34,7 @@ bool vt_path_exists(const char *const z) {
 
 bool vt_path_is_dir(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if given element exists and is a directory
     struct stat info;
@@ -34,7 +43,7 @@ bool vt_path_is_dir(const char *const z) {
 
 bool vt_path_is_file(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if given element exists and is a regular file
     struct stat info;
@@ -43,7 +52,7 @@ bool vt_path_is_file(const char *const z) {
 
 int64_t vt_path_get_file_size(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     if (!vt_path_exists(z)) {
         return -1;
@@ -75,7 +84,7 @@ int64_t vt_path_get_file_size(const char *const z) {
 
 vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if path exists
     if (!vt_path_exists(z)) {
@@ -125,7 +134,7 @@ vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const boo
 
 vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if path exists
     if (!vt_path_exists(z)) {
@@ -207,7 +216,7 @@ void vt_path_dir_free(vt_plist_t *p) {
 
 vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // create a new vt_str_t instance
     const size_t zLen = strlen(z);
@@ -233,7 +242,7 @@ vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z) {
 
 vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // create a new vt_str_t instance
     const size_t zLen = strlen(z);
@@ -260,7 +269,7 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
 
 bool vt_path_mkdir(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if directory exists, don't do anything
     if (vt_path_exists(z)) {
@@ -284,7 +293,7 @@ bool vt_path_mkdir(const char *const z) {
 
 bool vt_path_mkdir_parents(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // if directory exists, don't do anything
     if (vt_path_exists(z)) {
@@ -365,7 +374,7 @@ vt_label_path_mkdir_parents__:
 
 bool vt_path_rmdir(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if path exists
     if (!vt_path_exists(z)) {
@@ -384,7 +393,7 @@ bool vt_path_rmdir(const char *const z) {
 
 bool vt_path_rmdir_recurse(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if path exists
     if (!vt_path_exists(z)) {
@@ -436,7 +445,7 @@ vt_path_rmdir_recurse_cleanup__:
 
 bool vt_path_remove(const char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check if path exists
     if (!vt_path_exists(z)) {
@@ -467,7 +476,7 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
 
 vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // find tilda `~`
     vt_str_t *s_tilda = vt_str_create(z, alloctr);
@@ -529,7 +538,7 @@ vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
 
 void vt_path_pop(char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // create vt_str_t
     vt_str_t s = vt_str_create_static(z);
@@ -558,7 +567,7 @@ void vt_path_pop(char *const z) {
 
 void vt_path_validate(char *const z) {
     // check for invalid input
-    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // calculate length
     size_t zlen = strlen(z);

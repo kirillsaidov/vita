@@ -89,15 +89,13 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 #define vt_path_join(s, ...) vt_path_join_array(s, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Get current working directory
-    @param buf a valid buffer, or `NULL` to allocate a new buffer
-    @param len the size of the provided buffer, ignored if `buf = NULL`
-    @param alloctr allocator instance
-    @returns `vt_span_t` instance over the buffer
+    @param buf a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
 
-    @note if `buf == NULL`, a new buffer large enough to hold the path is dynamically allocated.
-    @note if `alloctr == NULL`, the default allocator (`vt_calloc`, `vt_realloc`, `vt_free`) is used for any dynamic allocations.
+    @note use `VT_PATH_MAX` to be safe.
 */
-extern vt_span_t vt_path_get_cwd(char *const buf, const size_t len, struct VitaBaseAllocatorType *alloctr);
+extern vt_span_t vt_path_get_cwd(char *const buf, const size_t len);
 
 /** Checks if path or file exists
     @param z path
