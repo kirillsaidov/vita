@@ -162,15 +162,14 @@ extern void vt_path_dir_free(vt_plist_t *p);
 extern vt_span_t vt_path_dirname(const char *const z, char *const buf, const size_t len);
 
 /** Get path basename
-    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
     @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
 
-    @returns `vt_str_t*` upon success, `s` otherwise
-
-    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
+    @note use `VT_PATH_MAX` to be safe.
 */
-extern vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z);
-// extern vt_span_t vt_path_basename(const char *const z, char *const buf, const size_t len);
+extern vt_span_t vt_path_basename(const char *const z, char *const buf, const size_t len);
 
 /** Creates a directory
     @param z a raw C string

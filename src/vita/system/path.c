@@ -240,18 +240,42 @@ vt_span_t vt_path_dirname(const char *const z, char *const buf, const size_t len
     return span;
 }
 
-vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
+// vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
+//     // check for invalid input
+//     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+//     // create a new vt_str_t instance
+//     const size_t zLen = strlen(z);
+//     vt_str_t *st = (s == NULL)
+//         ? vt_str_create_len(zLen, NULL) 
+//         : s;
+    
+//     // find the basename
+//     size_t offset = 0;
+//     for (size_t i = zLen - 1; i > 0; i--) {
+//         if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
+//             offset = i + 1;
+//             break;
+//         }
+//     }
+//     if (z[offset] == VT_PATH_SEPARATOR[0]) offset++;
+
+//     // extract basename
+//     vt_str_ensure_len(st, zLen - offset);
+//     vt_str_set_n(st, z + offset, zLen - offset);
+
+//     return st;
+// }
+
+vt_span_t vt_path_basename(const char *const z, char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // create a new vt_str_t instance
-    const size_t zLen = strlen(z);
-    vt_str_t *st = (s == NULL)
-        ? vt_str_create_len(zLen, NULL) 
-        : s;
-    
     // find the basename
     size_t offset = 0;
+    const size_t zLen = vt_strnlen(z, VT_PATH_MAX);
     for (size_t i = zLen - 1; i > 0; i--) {
         if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
             offset = i + 1;
@@ -260,11 +284,15 @@ vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
     }
     if (z[offset] == VT_PATH_SEPARATOR[0]) offset++;
 
-    // extract basename
-    vt_str_ensure_len(st, zLen - offset);
-    vt_str_set_n(st, z + offset, zLen - offset);
+    // check if we have enough size in buf (+1 account for '\0')
+    const size_t basename_len = zLen - offset;
+    if (basename_len + 1 > len) return (vt_span_t) {0}; 
 
-    return st;
+    // make span
+    vt_span_t span = vt_span_from(buf, basename_len, sizeof(char));
+    vt_str_set_n(&span.instance, z + offset * sizeof(char), basename_len);
+
+    return span;
 }
 
 bool vt_path_mkdir(const char *const z) {

@@ -52,73 +52,37 @@ void test_path(void) {
     _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
 
     vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr); {
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "tests"));
-
         // test basename 1
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "hello/world");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
+        char _buf_s[6] = {0};
+        span = vt_path_basename("hello/world", _buf_s, sizeof(_buf_s)/sizeof(_buf_s[0]));
+        assert(vt_span_is_valid_object(span));
+        assert(vt_str_equals_n("world", vt_span_head(span), vt_span_len(span)));
+        assert(vt_span_len(span) == 5);
 
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "hello/world/");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
+        const char *test_cases_basename[][2] = {
+            {vt_str_z(cwd), "tests"},
+            {"hello/world/", "world"},
+            {"world", "world"},
+            {"world/", "world"},
+            {"/world/", "world"},
+            {"/world", "world"},
+            {"apple/juice", "juice"},
+            {"apple/juice/", "juice"},
+        };
+        VT_FOREACH(i, 0, sizeof(test_cases_basename)/sizeof(test_cases_basename[0])) {
+            span = vt_path_basename(test_cases_basename[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
+            printf("%s <==> %s | %s\n", test_cases_basename[i][0], test_cases_basename[i][1], vt_span_head(span));
+            assert(vt_str_equals_n(test_cases_basename[i][1], vt_span_head(span), vt_span_len(span)));
+        }
 
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "world");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
-
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "world/");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
-
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "/world/");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world/"));
-
-        vt_str_clear(cwd);
-        cwd = vt_path_basename(cwd, "/world");
-        assert(vt_str_equals_z(vt_str_z(cwd), "world"));
-
-        // test basename 2
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "apple/juice");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
-
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "apple/juice/");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
-
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "juice");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
-
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "juice/");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
-
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "/juice/");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice/"));
-
-        vt_str_clear(cwd);
-        vt_str_append(cwd, "/juice");
-        cwd = vt_path_basename(cwd, vt_str_z(cwd));
-        assert(vt_str_equals_z(vt_str_z(cwd), "juice"));
-
-        // test dirname 1        
-        char _buf[13] = {0};
+        // test dirname 1
+        char _buf[13] = {0};    
         span = vt_path_dirname("this/is/path/file.txt", _buf, sizeof(_buf)/sizeof(_buf[0]));
         assert(vt_span_is_valid_object(span));
         assert(vt_str_equals_n("this/is/path", vt_span_head(span), vt_span_len(span)));
         assert(vt_span_len(span) == 12);
 
-        const char *test_cases[][2] = {
+        const char *test_cases_dirname[][2] = {
             {"this/is/path", "this/is"},
             {"this", "."},
             {"another/one/here.txt", "another/one"},
@@ -126,9 +90,9 @@ void test_path(void) {
             {"another", "."},
             {"/another", "."},
         };
-        VT_FOREACH(i, 0, sizeof(test_cases)/sizeof(test_cases[0])) {
-            span = vt_path_dirname(test_cases[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
-            assert(vt_str_equals_n(test_cases[i][1], vt_span_head(span), vt_span_len(span)));
+        VT_FOREACH(i, 0, sizeof(test_cases_dirname)/sizeof(test_cases_dirname[0])) {
+            span = vt_path_dirname(test_cases_dirname[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
+            assert(vt_str_equals_n(test_cases_dirname[i][1], vt_span_head(span), vt_span_len(span)));
         }
     } vt_str_destroy(cwd);
 
@@ -139,10 +103,6 @@ void test_path(void) {
     vt_plist_t *pdir = vt_path_dir_list(NULL, "./src/", true); {
         assert(vt_plist_len(pdir) == FILES_IN_DIR);
     } vt_path_dir_free(pdir);
-
-    vt_str_t *sbasename = vt_str_create("my/test/folder/text.txt", alloctr); {
-        assert(vt_str_equals_z(vt_str_z(vt_path_basename(sbasename, vt_str_z(sbasename))), "text.txt"));
-    } vt_str_destroy(sbasename);
 
     // make a directory
     vt_path_mkdir("hello_test_dir");
