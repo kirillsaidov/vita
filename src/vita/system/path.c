@@ -234,7 +234,7 @@ vt_span_t vt_path_dirname(const char *const z, char *const buf, const size_t len
     if (offset + 1 > len) return (vt_span_t) {0}; 
 
     // make span
-    vt_span_t span = vt_span_from(buf, offset, sizeof(char));
+    vt_span_t span = vt_span_from(buf, offset ? offset : 1, sizeof(char));
     vt_str_set_n(&span.instance, offset ? z : ".", offset ? offset : 1);
 
     return span;

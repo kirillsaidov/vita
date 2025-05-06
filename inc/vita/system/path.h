@@ -170,6 +170,7 @@ extern vt_span_t vt_path_dirname(const char *const z, char *const buf, const siz
     @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
 */
 extern vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z);
+// extern vt_span_t vt_path_basename(const char *const z, char *const buf, const size_t len);
 
 /** Creates a directory
     @param z a raw C string
