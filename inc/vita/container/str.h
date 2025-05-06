@@ -480,7 +480,7 @@ extern vt_str_t *vt_str_join_list(vt_str_t *const s, const char *const sep, cons
 
     @returns `vt_str_t` joined string, `NULL` upon failure
 */
-extern vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *const array[], const size_t n);
+extern vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *array[], const size_t n);
 
 /** Joins strings by separator
     @param s vt_str_t instance where the result will be saved, if `NULL` allocates

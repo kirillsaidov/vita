@@ -1082,7 +1082,7 @@ vt_str_t *vt_str_join_list(vt_str_t *const s, const char *const sep, const vt_pl
     return st;
 }
 
-vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *const array[], const size_t n) {
+vt_str_t *vt_str_join_array(vt_str_t *const s, const char *const sep, const char *array[], const size_t n) {
     // check for invalid input
     VT_DEBUG_ASSERT(sep != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
     VT_DEBUG_ASSERT(array != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
