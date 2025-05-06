@@ -89,7 +89,7 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 #define vt_path_join(s, ...) vt_path_join_array(s, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Get current working directory
-    @param buf a valid buffer
+    @param buf a pointer to a valid buffer
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
 
@@ -98,32 +98,32 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 extern vt_span_t vt_path_get_cwd(char *const buf, const size_t len);
 
 /** Checks if path or file exists
-    @param z path
+    @param z path, zero-terminated C string
     @returns `true` if directory or file exists
 */
 extern bool vt_path_exists(const char *const z);
 
 /** Checks if path is a directory
-    @param z path directory
+    @param z path, zero-terminated C string directory
     @returns `true` if directory exists
 */
 extern bool vt_path_is_dir(const char *const z);
 
 /** Checks if path is a file
-    @param z path to file
+    @param z path, zero-terminated C string to file
     @returns `true` if file exists
 */
 extern bool vt_path_is_file(const char *const z);
 
 /** Returns file size
-    @param z path to file
+    @param z path, zero-terminated C string to file
     @returns size_t filesize >= 0 upon success, -1 upon failure
 */
 extern int64_t vt_path_get_file_size(const char *const z);
 
 /** Get all directory contents
     @param p container where to save the data; if NULL is passed, it is allocated
-    @param z path
+    @param z path, zero-terminated C string
     @param ignoreDotFiles skip hidden .files
 
     @returns list of `vt_str_t*` upon success, `p` otherwise
@@ -135,7 +135,7 @@ extern vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, co
 
 /** Get all files and sub-directories recursively
     @param p container where to save the data; if NULL is passed, it is allocated
-    @param z path
+    @param z path, zero-terminated C string
     @param ignoreDotFiles skip hidden .files
 
     @returns list of `vt_str_t*` upon success, `p` otherwise
@@ -152,18 +152,18 @@ extern vt_plist_t *vt_path_dir_list_recurse(vt_plist_t *const p, const char *con
 extern void vt_path_dir_free(vt_plist_t *p);
 
 /** Get path directory name
-    @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
-    @param z path
+    @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
 
-    @returns `vt_str_t*` upon success, `s` otherwise
-
-    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
+    @note use `VT_PATH_MAX` to be safe.
 */
-extern vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z);
+extern vt_span_t vt_path_dirname(const char *const z, char *const buf, const size_t len);
 
 /** Get path basename
     @param s vt_str_t instance (if `NULL` is passed, vt_str_t is allocated)
-    @param z path
+    @param z path, zero-terminated C string
 
     @returns `vt_str_t*` upon success, `s` otherwise
 
@@ -228,12 +228,12 @@ extern vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAlloca
 extern vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr);
 
 /** Pops off directory / steps back up the directory tree
-    @param z path
+    @param z path, zero-terminated C string
 */
 extern void vt_path_pop(char *const z);
 
 /** Validates the path and attempts to fix the VT_PATH_SEPARATOR if neccessary
-    @param z path
+    @param z path, zero-terminated C string
 */
 extern void vt_path_validate(char *const z);
 

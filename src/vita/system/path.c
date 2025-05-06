@@ -214,18 +214,15 @@ void vt_path_dir_free(vt_plist_t *p) {
     vt_plist_destroy(p);
 }
 
-vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z) {
+vt_span_t vt_path_dirname(const char *const z, char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
-    // create a new vt_str_t instance
-    const size_t zLen = strlen(z);
-    vt_str_t *st = (s == NULL)
-        ? vt_str_create_len(zLen, NULL) 
-        : s;
-    
-    // find the basename
+    // find the directory name
     size_t offset = 0;
+    const size_t zLen = vt_strnlen(z, VT_PATH_MAX);
     for (size_t i = zLen - 1; i > 0; i--) {
         if (z[i] == VT_PATH_SEPARATOR[0] && i != zLen - 1) {
             offset = i;
@@ -233,11 +230,14 @@ vt_str_t *vt_path_dirname(vt_str_t *const s, const char *const z) {
         }
     }
 
-    // extract basename
-    vt_str_ensure_len(st, offset ? offset : 1);
-    vt_str_set_n(st, offset ? z : ".", offset ? offset : 1);
+    // check if we have enough size in buf (+1 account for '\0')
+    if (offset + 1 > len) return (vt_span_t) {0}; 
 
-    return st;
+    // make span
+    vt_span_t span = vt_span_from(buf, offset, sizeof(char));
+    vt_str_set_n(&span.instance, offset ? z : ".", offset ? offset : 1);
+
+    return span;
 }
 
 vt_str_t *vt_path_basename(vt_str_t *const s, const char *const z) {
