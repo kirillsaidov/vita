@@ -221,12 +221,14 @@ extern bool vt_path_rename(const char *const z1, const char *const z2);
 extern vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_t len);
 
 /** Returns executable path
-    @param alloctr allocator instance
-    @returns `vt_str_t*` upon success, `NULL` otherwise
+    @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
-    @note passing in `NULL` for the container instance results in that instance being allocated and managed with vt_calloc/realloc/free.
+    @note use `VT_PATH_MAX` to be safe.
 */
-extern vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr);
+extern vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len);
 
 /** Pops off directory / steps back up the directory tree
     @param z path, zero-terminated C string

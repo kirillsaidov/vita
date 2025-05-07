@@ -494,35 +494,59 @@ vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_
     return vt_span_from(buf, homepath_len + zLen - 1, sizeof(char)); // zLen-1 for tilda
 }
 
-vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
-    vt_str_t *spath = vt_str_create_capacity(VT_PATH_MAX, alloctr);
-    if (spath == NULL) {
-        VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
-        return NULL;
-    }
-    
+vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
     // retrieve this exe path
-    int64_t pathLen = 0;
+    int64_t path_len = 0;
     char buffer[VT_PATH_MAX] = {0};
     #if defined(_WIN32) || defined(_WIN64)
-        pathLen = GetModuleFileName(NULL, buffer, VT_PATH_MAX);
+        path_len = GetModuleFileName(NULL, buffer, VT_PATH_MAX);
     #elif defined(__APPLE__) || defined(__MACH__)
-        pathLen = proc_pidpath(getpid(), buffer, VT_PATH_MAX);
+        path_len = proc_pidpath(getpid(), buffer, VT_PATH_MAX);
     #else
-        pathLen = readlink("/proc/self/exe", buffer, VT_PATH_MAX);
+        path_len = readlink("/proc/self/exe", buffer, VT_PATH_MAX);
     #endif
 
     // check for errors
-    if (pathLen <= 0) {
-        VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
-        
-        vt_str_destroy(spath);
-        return NULL;
-    }
-    vt_str_append_n(spath, buffer, pathLen);
+    if (path_len <= 0 || path_len + 1 > (int64_t)len) return (vt_span_t) {0};
 
-    return spath;
+    // copy path to buf
+    vt_memmove(buf, buffer, path_len * sizeof(char));
+
+    return vt_span_from(buf, path_len, sizeof(char));
 }
+
+// vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
+//     vt_str_t *spath = vt_str_create_capacity(VT_PATH_MAX, alloctr);
+//     if (spath == NULL) {
+//         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_ERROR_ALLOCATION));
+//         return NULL;
+//     }
+    
+//     // retrieve this exe path
+//     int64_t pathLen = 0;
+//     char buffer[VT_PATH_MAX] = {0};
+//     #if defined(_WIN32) || defined(_WIN64)
+//         pathLen = GetModuleFileName(NULL, buffer, VT_PATH_MAX);
+//     #elif defined(__APPLE__) || defined(__MACH__)
+//         pathLen = proc_pidpath(getpid(), buffer, VT_PATH_MAX);
+//     #else
+//         pathLen = readlink("/proc/self/exe", buffer, VT_PATH_MAX);
+//     #endif
+
+//     // check for errors
+//     if (pathLen <= 0) {
+//         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        
+//         vt_str_destroy(spath);
+//         return NULL;
+//     }
+//     vt_str_append_n(spath, buffer, pathLen);
+
+//     return spath;
+// }
 
 void vt_path_pop(char *const z) {
     // check for invalid input

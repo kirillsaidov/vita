@@ -160,13 +160,14 @@ void test_expand_tilda(void) {
 }
 
 void test_selfpath(void) {
-    vt_str_t *selfpath = vt_path_get_this_exe_location(alloctr);
-    assert(selfpath != NULL);
+    char buffer[VT_PATH_MAX] = {0};
+
+    vt_span_t selfpath = vt_path_get_this_exe_location(buffer, sizeof(buffer)/sizeof(buffer[0]));
+    assert(vt_span_is_valid_object(selfpath));
 
     // get cwd to check exe path below
-    char buffer[VT_PATH_MAX] = {0};
-    vt_span_t _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
-
+    char buffer_cwd[VT_PATH_MAX] = {0};
+    vt_span_t _cwd = vt_path_get_cwd(buffer_cwd, VT_PATH_MAX);
     vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr);
     {
         // append exe path
@@ -176,10 +177,9 @@ void test_selfpath(void) {
             vt_str_append(cwd, "/bin/test_path");
         #endif
         // printf("<%s> == <%s>\n", vt_str_z(selfpath), vt_str_z(cwd));
-        assert(vt_str_equals(selfpath, cwd));
+        assert(vt_str_equals_z(vt_str_z(&selfpath.instance), vt_str_z(cwd)));
     }
     vt_str_destroy(cwd);
-    vt_str_destroy(selfpath);
 }
 
 void test_path_pop(void) {
