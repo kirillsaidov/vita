@@ -129,6 +129,35 @@ const char *vt_strnstr(const char *const haystack, const size_t haystack_len, co
     return NULL;
 }
 
+const char *vt_basename_n(const char *const path, const size_t len, const char *const sep) {
+    assert(path != NULL);
+
+    // check for empty string
+    if (!len) return ".";
+
+    // find end of relevant portion (skip trailing slashes)
+    size_t i = len;
+    while (i > 0 && path[i - 1] == sep[0]) {
+        i--;
+    }
+
+    // if all slashes, return the path separator
+    if (i == 0) return sep;
+
+    // Find the last path separator before position i
+    size_t last_slash = 0;
+    for (size_t j = 0; j < i; j++) {
+        if (path[j] == sep[0]) {
+            last_slash = j + 1;  // position after the path separator
+        }
+    }
+
+    // if path would be empty (e.g., path was all slashes), return the path separator
+    if (last_slash >= i) return sep;
+
+    return path + last_slash;
+}
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 void vt_gswap(void* a, void* b, const size_t elsize) {

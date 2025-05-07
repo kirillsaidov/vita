@@ -62,13 +62,13 @@
 #define VT_AS(type, x) ((type)(x))          // cast
 
 // foreach
-#define VT_FOREACH(iter, from, to) for (size_t iter = from; iter < to; iter++)
+#define VT_FOREACH(iter, from, to) for (size_t iter = (from); iter < (to); iter++)
 
 // foreach reverse
-#define VT_FOREACH_R(iter, from, to) for (size_t iter = to; iter > from; iter--)
+#define VT_FOREACH_R(iter, from, to) for (size_t iter = (to) - 1; iter + 1 > (from); iter--)
 
 // foreach with step
-#define VT_FOREACH_STEP(iter, from, to, step) for (size_t iter = from; iter < to; iter += step)
+#define VT_FOREACH_STEP(iter, from, to, step) for (size_t iter = (from); iter < (to); iter += (step))
 
 // data types for internal usage
 enum VitaTypeInfo {
@@ -245,6 +245,17 @@ size_t vt_strnlen(const char *const z, const size_t max_len);
     @note asserts if inputs are invalid
 */
 extern const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len);
+
+/** Return a reference pointer to a basename in the original string. Safer version with bounds checking.
+    @param path zero-terminated C string
+    @param len path length
+    @param sep path separator
+    @returns valid pointer to substring, or a completely new static string ("/", ".")
+
+    @note asserts if inputs are invalid
+    @note this function returns a pointer to the input string, and doesn't null-terminate the result explicitly
+*/
+const char *vt_basename_n(const char *const path, const size_t len, const char *const sep);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 

@@ -37,6 +37,24 @@ int32_t main(void) {
     assert(vt_strnlen(needle, 64) == 5);
     assert(vt_strnlen(haystack, 64) == 25);
 
+    // test basename_n
+    const char *test_cases_basename[][2] = {
+        {"hello/world", "world"},
+        {"hello/world/", "world/"},
+        {"world", "world"},
+        {"world/", "world/"},
+        {"/world/", "world/"},
+        {"/world", "world"},
+        {"/", "/"},
+        {"/////", "/"},
+        {"", "."},
+    };
+    VT_FOREACH(i, 0, sizeof(test_cases_basename)/sizeof(test_cases_basename[0])) {
+        const char *ret = vt_basename_n(test_cases_basename[i][0], vt_strnlen(test_cases_basename[i][0], 256), "/");
+        // printf("(%zu) [%s] \t==> [%s] \t?= [%s]\n", i, test_cases_basename[i][0], ret, test_cases_basename[i][1]);
+        assert(vt_memcmp(test_cases_basename[i][1], ret, vt_strnlen(ret, 256)));
+    }
+
     return 0;
 }
 
