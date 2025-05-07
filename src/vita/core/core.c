@@ -95,7 +95,7 @@ bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes) {
     assert(lhs != NULL);
     assert(rhs != NULL);
 
-    if (bytes == 0) return false;
+    if (bytes == 0) return true;
     return (memcmp(lhs, rhs, bytes) == 0);
 }
 
@@ -131,6 +131,7 @@ const char *vt_strnstr(const char *const haystack, const size_t haystack_len, co
 
 const char *vt_basename_n(const char *const path, const size_t len, const char *const sep) {
     assert(path != NULL);
+    assert(sep != NULL);
 
     // check for empty string
     if (!len) return ".";
@@ -144,7 +145,7 @@ const char *vt_basename_n(const char *const path, const size_t len, const char *
     // if all slashes, return the path separator
     if (i == 0) return sep;
 
-    // Find the last path separator before position i
+    // find the last path separator before position i
     size_t last_slash = 0;
     for (size_t j = 0; j < i; j++) {
         if (path[j] == sep[0]) {
@@ -156,6 +157,48 @@ const char *vt_basename_n(const char *const path, const size_t len, const char *
     if (last_slash >= i) return sep;
 
     return path + last_slash;
+}
+
+size_t vt_dirname_n(const char *const path, const size_t len, const char *const sep) {
+    assert(path != NULL);
+    assert(sep != NULL);
+
+    // check for empty string
+    if (!len) return 0; // "."
+
+    // strip trailing slashes
+    size_t i = len;
+    while (i > 0 && path[i - 1] == '/') {
+        i--;
+    }
+
+    // check if path is only slashes
+    if (i == 0) return 1;  // "/"
+
+    // find the last '/'
+    size_t last_slash = 0;
+    int found_slash = 0;
+    for (size_t j = 0; j < i; j++) {
+        if (path[j] == '/') {
+            last_slash = j;
+            found_slash = 1;
+        }
+    }
+
+    // no slash found, no dirname
+    if (!found_slash) return 0; // "."
+
+    // strip trailing slashes from the dirname portion
+    while (last_slash > 0 && path[last_slash - 1] == '/') {
+        last_slash--;
+    }
+
+    // dirname is root
+    if (last_slash == 0) {
+        return 1; // "/"
+    }
+
+    return last_slash;
 }
 
 /* ------------- OTHER FUNCTIONALITY ------------- */

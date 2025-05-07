@@ -257,6 +257,18 @@ extern const char *vt_strnstr(const char *const haystack, const size_t haystack_
 */
 const char *vt_basename_n(const char *const path, const size_t len, const char *const sep);
 
+/** Return dirname length. Safer version with bounds checking.
+    @param path zero-terminated C string
+    @param len path length
+    @param sep path separator
+    @returns returns the length of the directory portion. Returns 0 if there is no directory component.
+
+    @note asserts if inputs are invalid
+    @note special case 1: if the input does not contain a path separator or length is 0, the function returns 0, which signifies "." current working directory.
+    @note special case 2: if the input is entirely slashes (e.g., "///"), the function returns 1 ("/") for the path separator length.
+*/
+size_t vt_dirname_n(const char *const path, const size_t len, const char *const sep);
+
 /* ------------- OTHER FUNCTIONALITY ------------- */
 
 /** Generic value swap

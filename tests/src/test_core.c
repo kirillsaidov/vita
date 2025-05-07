@@ -55,6 +55,26 @@ int32_t main(void) {
         assert(vt_memcmp(test_cases_basename[i][1], ret, vt_strnlen(ret, 256)));
     }
 
+    // test dirname_n
+    const char *test_cases_dirname[][2] = {
+        {"hello/world", "hello"},
+        {"hello/world/", "hello"},
+        {"/hello/world/", "/hello"},
+        {"world", ""},
+        {"world/", ""},
+        {"/world/", "/"},
+        {"/world", "/"},
+        {"/", "/"},
+        {"/////", "/"},
+        {"", ""},
+    };
+    VT_FOREACH(i, 0, sizeof(test_cases_dirname)/sizeof(test_cases_dirname[0])) {
+        const size_t ret = vt_dirname_n(test_cases_dirname[i][0], vt_strnlen(test_cases_dirname[i][0], 256), "/");
+        // printf("(%zu) [%s] \t==> [%.*s] | ret: %d\n", i, test_cases_dirname[i][0], (int)ret, test_cases_dirname[i][0], (int)ret);
+        assert(ret == vt_strnlen(test_cases_dirname[i][1], 256));
+        assert(vt_memcmp(test_cases_dirname[i][0], test_cases_dirname[i][1], ret));
+    }
+
     return 0;
 }
 
