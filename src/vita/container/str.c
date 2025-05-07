@@ -260,7 +260,7 @@ void vt_str_set(vt_str_t *const s, const char *z) {
     vt_str_set_n(s, z, strlen(z));
 }
 
-enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at) {
+void vt_str_set_at(vt_str_t *const s, const char *z, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
@@ -287,11 +287,9 @@ enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at)
 
     // append new string
     vt_str_append_n(s, z, zLen);
-
-    return VT_STATUS_OPERATION_SUCCESS;
 }
 
-enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
+void vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(
@@ -304,8 +302,6 @@ enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
     
     // add the '\0' terminator
     ((char*)s->ptr)[at] = c;
-
-    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n) {
@@ -609,15 +605,13 @@ enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z) {
     return VT_STATUS_OPERATION_SUCCESS;
 }
 
-enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z) {
+void vt_str_remove_all(vt_str_t *const s, const char *z) {
     // check for invalid input
     VT_DEBUG_ASSERT(vt_array_is_valid_object(s), "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_INVALID_OBJECT));
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // remove all instances of substring
     while (vt_str_remove_first(s, z) == VT_STATUS_OPERATION_SUCCESS);
-
-    return VT_STATUS_OPERATION_SUCCESS;
 }
 
 void vt_str_remove_c(vt_str_t *const s, const char *const c) {

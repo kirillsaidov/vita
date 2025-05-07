@@ -232,8 +232,6 @@ extern void vt_str_ensure_capacity(vt_str_t *const s, const size_t n);
 /** Assigns a new raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
-
-    @returns None
 */
 extern void vt_str_set(vt_str_t *const s, const char *z);
 
@@ -241,26 +239,20 @@ extern void vt_str_set(vt_str_t *const s, const char *z);
     @param s vt_str_t instance
     @param z raw C string
     @param at position index
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_set_at(vt_str_t *const s, const char *z, const size_t at);
+extern void vt_str_set_at(vt_str_t *const s, const char *z, const size_t at);
 
 /** Set a single character 
     @param s vt_str_t instance
     @param c character
     @param at position index
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_set_c(vt_str_t *const s, const char c, const size_t at);
+extern void vt_str_set_c(vt_str_t *const s, const char c, const size_t at);
 
 /** Assigns n characters of raw C string to vt_str_t
     @param s vt_str_t instance
     @param z raw C string
     @param n number of characters
-
-    @returns None
 */
 extern void vt_str_set_n(vt_str_t *const s, const char *z, const size_t n);
 
@@ -351,10 +343,8 @@ extern enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z);
 /** Removes all instances of encountered substring from vt_str_t
     @param s vt_str_t instance
     @param z raw C string
-
-    @returns enum VitaStatus
 */
-extern enum VitaStatus vt_str_remove_all(vt_str_t *const s, const char *z);
+extern void vt_str_remove_all(vt_str_t *const s, const char *z);
 
 /** Removes all encountered characters specified by the user from vt_str_t
     @param s vt_str_t instance
