@@ -247,7 +247,7 @@ size_t vt_strnlen(const char *const z, const size_t max_len);
 extern const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len);
 
 /** Return a reference pointer to a basename in the original string. Safer version with bounds checking.
-    @param path zero-terminated C string
+    @param path pointer to the pathname string (may not be zero-terminated)
     @param len path length
     @param sep path separator
     @returns valid pointer to substring, or a completely new static string ("/", ".")
@@ -258,7 +258,7 @@ extern const char *vt_strnstr(const char *const haystack, const size_t haystack_
 const char *vt_basename_n(const char *const path, const size_t len, const char *const sep);
 
 /** Return dirname length. Safer version with bounds checking.
-    @param path zero-terminated C string
+    @param path pointer to the pathname string (may not be zero-terminated)
     @param len path length
     @param sep path separator
     @returns returns the length of the directory portion. Returns 0 if there is no directory component.
