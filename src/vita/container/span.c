@@ -9,6 +9,7 @@ vt_span_t vt_span_from(void *ptr, const size_t length, const size_t elsize) {
     return (vt_span_t) {
         .instance.ptr = ptr,
         .instance.len = length,
+        .instance.capacity = length,
         .instance.elsize = elsize,
         .instance.is_view = true,
     };
@@ -24,6 +25,7 @@ vt_span_t vt_span_from_to(void *ptr, const size_t from_idx, const size_t to_idx,
     return (vt_span_t) {
         .instance.ptr = (char*)ptr + from_idx * elsize,
         .instance.len = to_idx - from_idx,
+        .instance.capacity = to_idx - from_idx,
         .instance.elsize = elsize,
         .instance.is_view = true,
     };

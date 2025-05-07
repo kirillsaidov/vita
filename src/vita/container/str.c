@@ -8,9 +8,11 @@ vt_str_t vt_str_create_static(const char *const z) {
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // create vt_str_t instance
+    const size_t zLen = strlen(z);
     vt_str_t s = {
         .ptr = (void*)z,
-        .len = strlen(z),
+        .len = zLen,
+        .capacity = zLen,
         .elsize = sizeof(char),
         .is_view = true,
     };
