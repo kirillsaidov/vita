@@ -52,30 +52,7 @@ void test_path(void) {
     _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
 
     vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr); {
-        // test basename 1
-        char _buf_s[6] = {0};
-        span = vt_path_basename("hello/world", _buf_s, sizeof(_buf_s)/sizeof(_buf_s[0]));
-        assert(vt_span_is_valid_object(span));
-        assert(vt_str_equals_n("world", vt_span_head(span), vt_span_len(span)));
-        assert(vt_span_len(span) == 5);
-
-        const char *test_cases_basename[][2] = {
-            {vt_str_z(cwd), "tests"},
-            {"hello/world/", "world"},
-            {"world", "world"},
-            {"world/", "world"},
-            {"/world/", "world"},
-            {"/world", "world"},
-            {"apple/juice", "juice"},
-            {"apple/juice/", "juice"},
-        };
-        VT_FOREACH(i, 0, sizeof(test_cases_basename)/sizeof(test_cases_basename[0])) {
-            span = vt_path_basename(test_cases_basename[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
-            printf("%s <==> %s | %s\n", test_cases_basename[i][0], test_cases_basename[i][1], vt_span_head(span));
-            assert(vt_str_equals_n(test_cases_basename[i][1], vt_span_head(span), vt_span_len(span)));
-        }
-
-        // test dirname 1
+        // test dirname
         char _buf[13] = {0};    
         span = vt_path_dirname("this/is/path/file.txt", _buf, sizeof(_buf)/sizeof(_buf[0]));
         assert(vt_span_is_valid_object(span));
@@ -83,16 +60,45 @@ void test_path(void) {
         assert(vt_span_len(span) == 12);
 
         const char *test_cases_dirname[][2] = {
-            {"this/is/path", "this/is"},
-            {"this", "."},
-            {"another/one/here.txt", "another/one"},
-            {"another/one/", "another"},
-            {"another", "."},
-            {"/another", "."},
+            {"hello/world", "hello"},
+            {"hello/world/", "hello"},
+            {"/hello/world/", "/hello"},
+            {"world", "."},
+            {"world/", "."},
+            {"/world/", "/"},
+            {"/world", "/"},
+            {"/", "/"},
+            {"/////", "/"},
+            {"", "."},
         };
         VT_FOREACH(i, 0, sizeof(test_cases_dirname)/sizeof(test_cases_dirname[0])) {
             span = vt_path_dirname(test_cases_dirname[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
+            // printf("(%zu) [%s] \t==> [%s]\n", i, test_cases_dirname[i][0], (char*)vt_span_head(span));
             assert(vt_str_equals_n(test_cases_dirname[i][1], vt_span_head(span), vt_span_len(span)));
+        }
+
+        // test basename
+        char _buf_s[6] = {0};
+        span = vt_path_basename("hello/world", _buf_s, sizeof(_buf_s)/sizeof(_buf_s[0]));
+        assert(vt_span_is_valid_object(span));
+        assert(vt_str_equals_n("world", vt_span_head(span), vt_span_len(span)));
+        assert(vt_span_len(span) == 5);
+        
+        const char *test_cases_basename[][2] = {
+            {"hello/world", "world"},
+            {"hello/world/", "world/"},
+            {"world", "world"},
+            {"world/", "world/"},
+            {"/world/", "world/"},
+            {"/world", "world"},
+            {"/", "/"},
+            {"/////", "/"},
+            {"", "."},
+        };
+        VT_FOREACH(i, 0, sizeof(test_cases_basename)/sizeof(test_cases_basename[0])) {
+            span = vt_path_basename(test_cases_basename[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
+            printf("(%zu) [%s] \t==> [%s]\n", i, test_cases_basename[i][0], (char*)vt_span_head(span));
+            assert(vt_str_equals_n(test_cases_basename[i][1], vt_span_head(span), vt_span_len(span)));
         }
     } vt_str_destroy(cwd);
 

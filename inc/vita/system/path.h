@@ -91,7 +91,7 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 /** Get current working directory
     @param buf a pointer to a valid buffer
     @param len the size of the provided buffer
-    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
     @note use `VT_PATH_MAX` to be safe.
 */
@@ -155,7 +155,7 @@ extern void vt_path_dir_free(vt_plist_t *p);
     @param z path, zero-terminated C string
     @param buf a pointer to a valid buffer
     @param len the size of the provided buffer
-    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
     @note use `VT_PATH_MAX` to be safe.
 */
@@ -165,7 +165,7 @@ extern vt_span_t vt_path_dirname(const char *const z, char *const buf, const siz
     @param z path, zero-terminated C string
     @param buf a pointer to a valid buffer
     @param len the size of the provided buffer
-    @returns `vt_span_t` representing the resulting path. `vt_span_head(span) == NULL && vt_span_len(span) == 0` upon failure or insufficient buffer size.
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
     @note use `VT_PATH_MAX` to be safe.
 */
