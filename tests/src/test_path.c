@@ -75,6 +75,7 @@ void test_path(void) {
             span = vt_path_dirname(test_cases_dirname[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
             // printf("(%zu) [%s] \t==> [%s]\n", i, test_cases_dirname[i][0], (char*)vt_span_head(span));
             assert(vt_str_equals_n(test_cases_dirname[i][1], vt_span_head(span), vt_span_len(span)));
+            assert(vt_span_len(span) == strlen(test_cases_dirname[i][1]));
         }
 
         // test basename
@@ -97,8 +98,9 @@ void test_path(void) {
         };
         VT_FOREACH(i, 0, sizeof(test_cases_basename)/sizeof(test_cases_basename[0])) {
             span = vt_path_basename(test_cases_basename[i][0], buffer, sizeof(buffer)/sizeof(buffer[0]));
-            printf("(%zu) [%s] \t==> [%s]\n", i, test_cases_basename[i][0], (char*)vt_span_head(span));
+            // printf("(%zu) [%s] \t==> [%s]\n", i, test_cases_basename[i][0], (char*)vt_span_head(span));
             assert(vt_str_equals_n(test_cases_basename[i][1], vt_span_head(span), vt_span_len(span)));
+            assert(vt_span_len(span) == strlen(test_cases_basename[i][1]));
         }
     } vt_str_destroy(cwd);
 
@@ -135,23 +137,26 @@ void test_path(void) {
 }
 
 void test_expand_tilda(void) {
-    const char *z_vt_path_tilda1 = "~/hello";
-    const char *z_vt_path_tilda2 = "./~";
-    vt_str_t *s_vt_path_tilda1 = vt_path_expand_tilda(z_vt_path_tilda1, alloctr);
-    vt_str_t *s_vt_path_tilda2 = vt_path_expand_tilda(z_vt_path_tilda2, alloctr);
+    char buffer[VT_PATH_MAX] = {0};
+
+    const char *path_tilda = "~/hello/world";
+    vt_span_t span = vt_path_expand_tilda(path_tilda, buffer, sizeof(buffer)/sizeof(buffer[0]));
     {
         #if defined(_WIN32) || defined(_WIN64)
-            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "C:\\Users\\kiril/hello"));
+            assert(vt_str_equals_z(vt_str_z(&span.instance), "C:\\Users\\kiril/hello/world"));
+            assert(vt_span_len(span) == strlen("C:\\Users\\kiril/hello/world"));
         #elif defined(__linux__)
-            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/home/kirillsaidov/hello"));
+            assert(vt_str_equals_z(vt_str_z(&span.instance), "/home/kirillsaidov/hello/world"));
+            assert(vt_span_len(span) == strlen("/home/kirillsaidov/hello/world"));
         #else
-            assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda1), "/Users/krillos/hello"));
+            assert(vt_str_equals_z(vt_str_z(&span.instance), "/Users/krillos/hello/world"));
+            assert(vt_span_len(span) == strlen("/Users/krillos/hello/world"));
         #endif
-
-        assert(vt_str_equals_z(vt_str_z(s_vt_path_tilda2), z_vt_path_tilda2)); // since '~' does not start from [0] position, don't do anything
     }
-    vt_str_destroy(s_vt_path_tilda1);
-    vt_str_destroy(s_vt_path_tilda2);
+
+    path_tilda = "./~";
+    span = vt_path_expand_tilda(path_tilda, buffer, sizeof(buffer)/sizeof(buffer[0]));
+    assert(!vt_span_is_valid_object(span));
 }
 
 void test_selfpath(void) {

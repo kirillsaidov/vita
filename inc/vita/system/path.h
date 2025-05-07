@@ -210,14 +210,15 @@ extern bool vt_path_remove(const char *const z);
 extern bool vt_path_rename(const char *const z1, const char *const z2);
 
 /** Expands tilda `~` to HOMEPATH
-    @param z1 path
-    @param alloctr alloctr instance
+    @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
-    @returns a newly allocated `vt_str_t` path with the expanded tilda `~` upon success or the unmodified string otherwise
-
-    @note passing in `NULL` for the alloctr instance results in vt_calloc/realloc/free being used.
+    @note use `VT_PATH_MAX` to be safe.
+    @note fails if incorrect tilda position, insufficient buffer size or getenv returns invalid value.
 */
-extern vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType *const alloctr);
+extern vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_t len);
 
 /** Returns executable path
     @param alloctr allocator instance

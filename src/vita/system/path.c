@@ -459,36 +459,39 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
-vt_str_t *vt_path_expand_tilda(const char *const z, struct VitaBaseAllocatorType *const alloctr) {
+vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    // find tilda `~`
-    vt_str_t *s_tilda = vt_str_create(z, alloctr);
-    const int64_t tilda_pos = vt_str_index_of(s_tilda, '~');
-    if (!vt_str_len(s_tilda) || tilda_pos != 0) {
-        return s_tilda;
-    }
-    
+    // check if tilda `~` is in correct position and path length
+    const size_t zLen = vt_strnlen(z, VT_PATH_MAX);
+    if (!zLen || z[0] != '~') return (vt_span_t) {0};
+
     // get HOME path
-    const char *const z_homepath = 
+    const char *const homepath = 
     #if defined(_WIN32) || defined(_WIN64)
         getenv("USERPROFILE");
     #else
         getenv("HOME");
     #endif
-
+    
     // check return value from getenv
-    if (z_homepath == NULL) {
+    if (!homepath) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
-        return s_tilda;
+        return (vt_span_t) {0};
     }
 
-    // expand tilda
-    vt_str_remove(s_tilda, (size_t)tilda_pos, 1);           // remove tilda
-    vt_str_insert(s_tilda, z_homepath, (size_t)tilda_pos);  // insert HOME path inplace of tilda
+    // check if we have enough space (+1 for '\0' is already accounted in zLen instead of tilda `~`)
+    const size_t homepath_len = vt_strnlen(homepath, VT_PATH_MAX);
+    if (homepath_len + zLen > len) return (vt_span_t) {0};
 
-    return s_tilda;
+    // expand tilda
+    vt_memmove(buf, homepath, homepath_len * sizeof(char));
+    vt_memmove(buf + homepath_len * sizeof(char), z + 1 * sizeof(char), (zLen - 1) * sizeof(char));
+    buf[homepath_len + zLen] = '\0';
+
+    return vt_span_from(buf, homepath_len + zLen - 1, sizeof(char)); // zLen-1 for tilda
 }
 
 vt_str_t *vt_path_get_this_exe_location(struct VitaBaseAllocatorType *alloctr) {
