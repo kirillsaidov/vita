@@ -285,8 +285,14 @@ void vt_str_set_at(vt_str_t *const s, const char *z, const size_t at) {
     // remove data from `at` till end
     vt_str_remove(s, at, s->len - at);
 
-    // append new string
-    vt_str_append_n(s, z, zLen);
+    // copy z data to vt_str_t
+    vt_memmove((char*)s->ptr + s->len * s->elsize, z, (zLen * s->elsize));
+
+    // update length
+    s->len += zLen;
+
+    // add the '\0' terminator
+    ((char*)s->ptr)[s->len] = '\0';
 }
 
 void vt_str_set_c(vt_str_t *const s, const char c, const size_t at) {
