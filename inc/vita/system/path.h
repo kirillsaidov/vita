@@ -230,10 +230,15 @@ extern vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, cons
 */
 extern vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len);
 
-// /** Push an item up the directory tree
-//     @param z path, zero-terminated C string
-// */
-// extern void vt_path_push(char *const z);
+/** Push an item up the directory tree
+    @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
+
+    @note use `VT_PATH_MAX` to be safe.
+*/
+// extern const char *vt_path_push(const char *const z, char *const buf, const size_t len);
 
 /** Pops off directory "/" - i. e., steps back up the directory tree by modifying the original string
     @param z path, zero-terminated C string
@@ -242,7 +247,7 @@ extern vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len
     @note if returned path length is 0, then it is current path "."
     @note if you do not want to modify the original string use `vt_path_dirname`
 */
-extern const char *vt_path_pop(char *const z);
+extern vt_span_t vt_path_pop(char *const z);
 
 /** Validates the path and attempts to fix the VT_PATH_SEPARATOR if neccessary
     @param z path, zero-terminated C string

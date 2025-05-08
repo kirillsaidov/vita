@@ -183,6 +183,8 @@ void test_selfpath(void) {
 }
 
 void test_path_pop_push(void) {
+    vt_span_t span;
+
     // path_pop
     char test_cases[][2][32] = {
         {"hello/world", "hello"},
@@ -198,7 +200,7 @@ void test_path_pop_push(void) {
     };
     VT_FOREACH(i, 0, sizeof(test_cases)/sizeof(test_cases[0])) {
         printf("(%zu) [%s] ==> [%s]\n", i, test_cases[i][0], test_cases[i][1]);
-        const char *ret = vt_path_pop(test_cases[i][0]);
-        assert(vt_str_equals_z(ret, test_cases[i][1]));
+        span = vt_path_pop(test_cases[i][0]);
+        assert(vt_str_equals_z(vt_str_z(&span.instance), test_cases[i][1]));
     }
 }

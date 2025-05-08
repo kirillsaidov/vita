@@ -518,13 +518,13 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     return vt_span_from(buf, path_len, sizeof(char));
 }
 
-const char *vt_path_pop(char *const z) {
+vt_span_t vt_path_pop(char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
     // check length
     size_t zLen = vt_strnlen(z, VT_PATH_MAX);
-    if (!zLen) return z;
+    if (!zLen) return (vt_span_t) {0};
 
     // strip trailing slashes (but leave "/" alone)
     while (zLen > 1 && z[zLen - 1] == VT_PATH_SEPARATOR[0]) {
@@ -537,9 +537,9 @@ const char *vt_path_pop(char *const z) {
         // root case ==> leave "/"
         if (last_slash == z) z[1] = '\0';
         else last_slash[0] = '\0';
-    } 
+    }
 
-    return z;
+    return vt_span_from(z, vt_strnlen(z, VT_PATH_MAX), sizeof(char));
 }
 
 // void vt_path_pop(char *const z) {
