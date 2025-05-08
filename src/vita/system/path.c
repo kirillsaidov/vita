@@ -518,6 +518,41 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     return vt_span_from(buf, path_len, sizeof(char));
 }
 
+vt_span_t vt_path_push(const char *const z, char *const buf, const size_t capacity) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    // check if we have enough space (+1 account for '\0')
+    size_t buf_len = vt_strnlen(buf, VT_PATH_MAX);
+    const size_t zLen = vt_strnlen(z, VT_PATH_MAX);
+    const size_t sep_len = vt_strnlen(VT_PATH_SEPARATOR, VT_PATH_MAX);
+    if (buf_len + zLen + sep_len + 1 > capacity) return (vt_span_t) {0};
+
+    // make span
+    vt_span_t span = vt_span_from(buf, capacity, sizeof(char));
+    span.instance.len = buf_len;
+
+    // check append path size
+    if (!zLen) return span;
+
+    // append path separator
+    if (buf_len && buf[buf_len - 1] != VT_PATH_SEPARATOR[0]) {
+        vt_memmove(buf + buf_len * sizeof(char), VT_PATH_SEPARATOR, sep_len * sizeof(char));
+        buf_len += 1;
+    }
+
+    // append path item
+    vt_memmove(buf + buf_len * sizeof(char), z, zLen * sizeof(char));
+    buf_len += zLen;
+    buf[buf_len] = '\0';
+
+    // update span length
+    span.instance.len = buf_len;
+    
+    return span;
+}
+
 vt_span_t vt_path_pop(char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));

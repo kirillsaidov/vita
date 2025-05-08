@@ -185,8 +185,19 @@ void test_selfpath(void) {
 void test_path_pop_push(void) {
     vt_span_t span;
 
+    // path_push
+    char buffer[32] = {0};
+    char test_cases_push[8][64] = {"", "hello", "world/", "this", "is", "", "me", "very_long_something_folder_directory"};
+    size_t test_cases_push_len[8] = {0, 5, 12, 16, 19, 19, 22, 0};
+    VT_FOREACH(i, 0, sizeof(test_cases_push)/sizeof(test_cases_push[0])) {
+        span = vt_path_push(test_cases_push[i], buffer, sizeof(buffer)/sizeof(buffer[0]));
+        printf("(%zu) [%s] ==> [%s]\n", i, test_cases_push[i], buffer);
+        assert(vt_span_len(span) == test_cases_push_len[i]);
+        if (i == sizeof(test_cases_push)/sizeof(test_cases_push[0]) - 1) assert(!vt_span_is_valid_object(span));
+    }
+
     // path_pop
-    char test_cases[][2][32] = {
+    char test_cases_pop[][2][32] = {
         {"hello/world", "hello"},
         {"hello/world/", "hello"},
         {"/hello/world/", "/hello"},
@@ -198,9 +209,10 @@ void test_path_pop_push(void) {
         {"/////", "/"},
         {"", ""},
     };
-    VT_FOREACH(i, 0, sizeof(test_cases)/sizeof(test_cases[0])) {
-        printf("(%zu) [%s] ==> [%s]\n", i, test_cases[i][0], test_cases[i][1]);
-        span = vt_path_pop(test_cases[i][0]);
-        assert(vt_str_equals_z(vt_str_z(&span.instance), test_cases[i][1]));
+    VT_FOREACH(i, 0, sizeof(test_cases_pop)/sizeof(test_cases_pop[0])) {
+        // printf("(%zu) [%s] ==> [%s]\n", i, test_cases_pop[i][0], test_cases_pop[i][1]);
+        span = vt_path_pop(test_cases_pop[i][0]);
+        assert(vt_span_is_valid_object(span) == (bool)strlen(test_cases_pop[i][1]));
+        assert(vt_str_equals_z(test_cases_pop[i][0], test_cases_pop[i][1]));
     }
 }
