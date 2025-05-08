@@ -237,7 +237,9 @@ extern vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len
 
 /** Pops off directory "/" - i. e., steps back up the directory tree
     @param z path, zero-terminated C string
-    @returns modified path or a new static string if insufficient space
+    @returns modified path
+
+    @note if returned path length is 0, then it is current path "."
 */
 extern const char *vt_path_pop(char *const z);
 

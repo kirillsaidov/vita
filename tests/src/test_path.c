@@ -197,7 +197,7 @@ void test_path_pop_push(void) {
         {"", ""},
     };
     VT_FOREACH(i, 0, sizeof(test_cases)/sizeof(test_cases[0])) {
-        printf("(%zu) [%s]\n", i, test_cases[i][0]);
+        printf("(%zu) [%s] ==> [%s]\n", i, test_cases[i][0], test_cases[i][1]);
         const char *ret = vt_path_pop(test_cases[i][0]);
         assert(vt_str_equals_z(ret, test_cases[i][1]));
     }

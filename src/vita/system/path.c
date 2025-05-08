@@ -537,7 +537,7 @@ const char *vt_path_pop(char *const z) {
         // root case ==> leave "/"
         if (last_slash == z) z[1] = '\0';
         else last_slash[0] = '\0';
-    }
+    } 
 
     return z;
 }
