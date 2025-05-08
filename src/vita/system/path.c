@@ -518,34 +518,58 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     return vt_span_from(buf, path_len, sizeof(char));
 }
 
-void vt_path_pop(char *const z) {
+const char *vt_path_pop(char *const z) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
 
-    // create vt_str_t
-    vt_str_t s = vt_str_create_static(z);
-    
-    // check if path ends with path separator
-    size_t len = vt_str_len(&s);
-    if (z[len-1] == VT_PATH_SEPARATOR[0]) {
-        z[len-1] = '\0';
-        return;
+    // check length
+    size_t zLen = vt_strnlen(z, VT_PATH_MAX);
+    if (!zLen) return z;
+
+    // strip trailing slashes (but leave "/" alone)
+    while (zLen > 1 && z[zLen - 1] == VT_PATH_SEPARATOR[0]) {
+        z[--zLen] = '\0';
     }
 
-    // check if path contains path separator
-    if (!vt_str_find(&s, VT_PATH_SEPARATOR)) {
-        return;
+    // find last slash
+    char *last_slash = (char*)vt_strrnchr(z, zLen, VT_PATH_SEPARATOR[0]);
+    if (last_slash) {
+        // root case ==> leave "/"
+        if (last_slash == z) z[1] = '\0';
+        else last_slash[0] = '\0';
     }
 
-    // pop dir entry, step back the dir tree
-    while (len > 0) {
-        if (z[len-1] == VT_PATH_SEPARATOR[0]) {
-            z[len-1] = '\0';
-            return;
-        }
-        len--;
-    }
+    return z;
 }
+
+// void vt_path_pop(char *const z) {
+//     // check for invalid input
+//     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+//     // create vt_str_t
+//     vt_str_t s = vt_str_create_static(z);
+    
+//     // check if path ends with path separator
+//     size_t len = vt_str_len(&s);
+//     if (z[len-1] == VT_PATH_SEPARATOR[0]) {
+//         z[len-1] = '\0';
+//         return;
+//     }
+
+//     // check if path contains path separator
+//     if (!vt_str_find(&s, VT_PATH_SEPARATOR)) {
+//         return;
+//     }
+
+//     // pop dir entry, step back the dir tree
+//     while (len > 0) {
+//         if (z[len-1] == VT_PATH_SEPARATOR[0]) {
+//             z[len-1] = '\0';
+//             return;
+//         }
+//         len--;
+//     }
+// }
 
 void vt_path_validate(char *const z) {
     // check for invalid input

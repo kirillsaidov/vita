@@ -10,7 +10,7 @@ void free_str(void *ptr, size_t i);
 void test_path(void);
 void test_expand_tilda(void);
 void test_selfpath(void);
-void test_path_pop(void);
+void test_path_pop_push(void);
 
 vt_mallocator_t *alloctr;
 
@@ -23,7 +23,7 @@ int main(void) {
     test_path();
     test_expand_tilda();
     test_selfpath();
-    test_path_pop();
+    test_path_pop_push();
 
     vt_mallocator_destroy(alloctr);
     return 0;
@@ -182,37 +182,23 @@ void test_selfpath(void) {
     vt_str_destroy(cwd);
 }
 
-void test_path_pop(void) {
-    vt_str_t *path = vt_str_create("./hello/world/bin", alloctr);
-
-    #if defined(_WIN32) || defined(_WIN64)
-        vt_path_validate((char *const)vt_str_z(path));
-        assert(vt_str_equals_z(vt_str_z(path), ".\\hello\\world\\bin"));
-
-        vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals_z(vt_str_z(path), ".\\hello\\world"));
-        assert(vt_str_validate_len(path) == 13);
-
-        vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals_z(vt_str_z(path), ".\\hello"));
-        assert(vt_str_validate_len(path) == 7);
-    #else
-        vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals_z(vt_str_z(path), "./hello/world"));
-        assert(vt_str_validate_len(path) == 13);
-
-        vt_path_pop((char *const)vt_str_z(path));
-        assert(vt_str_equals_z(vt_str_z(path), "./hello"));
-        assert(vt_str_validate_len(path) == 7);
-    #endif
-
-    vt_path_pop((char *const)vt_str_z(path));
-    assert(vt_str_equals_z(vt_str_z(path), "."));
-    assert(vt_str_validate_len(path) == 1);
-
-    vt_path_pop((char *const)vt_str_z(path));
-    assert(vt_str_equals_z(vt_str_z(path), "."));
-    assert(vt_str_validate_len(path) == 1);
-
-    vt_str_destroy(path);
+void test_path_pop_push(void) {
+    // path_pop
+    char test_cases[][2][32] = {
+        {"hello/world", "hello"},
+        {"hello/world/", "hello"},
+        {"/hello/world/", "/hello"},
+        {"world", "world"},
+        {"world/", "world"},
+        {"/world/", "/"},
+        {"/world", "/"},
+        {"/", "/"},
+        {"/////", "/"},
+        {"", ""},
+    };
+    VT_FOREACH(i, 0, sizeof(test_cases)/sizeof(test_cases[0])) {
+        printf("(%zu) [%s]\n", i, test_cases[i][0]);
+        const char *ret = vt_path_pop(test_cases[i][0]);
+        assert(vt_str_equals_z(ret, test_cases[i][1]));
+    }
 }
