@@ -129,6 +129,32 @@ const char *vt_strnstr(const char *const haystack, const size_t haystack_len, co
     return NULL;
 }
 
+const char *vt_strnchr(const char *z, const size_t len, const int c) {
+    assert(z != NULL);
+
+    // search
+    for (size_t i = 0; i < len; ++i) {
+        if (z[i] == (char)c) {
+            return &z[i];
+        }
+    }
+    
+    return NULL;
+}
+
+const char *vt_strrnchr(const char *z, const size_t len, const int c) {
+    assert(z != NULL);
+
+    // search
+    for (size_t i = len; i > 0; --i) {
+        if (z[i - 1] == (char)c) {
+            return &z[i - 1];
+        }
+    }
+
+    return NULL;
+}
+
 const char *vt_basename_n(const char *const path, const size_t len, const char *const sep) {
     assert(path != NULL);
     assert(sep != NULL);

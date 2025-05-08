@@ -233,21 +233,41 @@ extern bool vt_memcmp(const void *lhs, const void *rhs, const size_t bytes);
 
     @note asserts if inputs are invalid
 */
-size_t vt_strnlen(const char *const z, const size_t max_len);
+extern size_t vt_strnlen(const char *const z, const size_t max_len);
 
 /** Find substring (needle) in a string (haystack). Safer version with bounds checking.
     @param haystack string to search within
-    @param haystack_len ditto
+    @param haystack_len haystack length
     @param needle substring to search for
-    @param needle_len ditto
+    @param needle_len needle length
     @returns valid pointer to substring, or `NULL` if `needle` is not found in `haystack`
 
     @note asserts if inputs are invalid
 */
 extern const char *vt_strnstr(const char *const haystack, const size_t haystack_len, const char *const needle, const size_t needle_len);
 
+/** Search for first occurence of the specified character in a string. Safer version with bounds checking.
+    @param z string to search within (does not need to be zero-terminated)
+    @param len string length
+    @param c character to search for
+    @returns pointer to first occurrence of character or `NULL`
+
+    @note asserts if inputs are invalid
+*/
+extern const char *vt_strnchr(const char *z, const size_t len, const int c);
+
+/** Search for last occurence of the specified character in a string. Safer version with bounds checking.
+    @param z string to search within (does not need to be zero-terminated)
+    @param len string length
+    @param c character to search for
+    @returns pointer to last occurrence of character or `NULL`
+
+    @note asserts if inputs are invalid
+*/
+extern const char *vt_strrnchr(const char *z, const size_t len, const int c);
+
 /** Return a reference pointer to a basename in the original string. Safer version with bounds checking.
-    @param path pointer to the pathname string (may not be zero-terminated)
+    @param path pointer to the pathname string (does not need to be zero-terminated)
     @param len path length
     @param sep path separator
     @returns valid pointer to substring, or a completely new static string ("/", ".")
@@ -255,10 +275,10 @@ extern const char *vt_strnstr(const char *const haystack, const size_t haystack_
     @note asserts if inputs are invalid
     @note this function returns a pointer to the input string, and doesn't null-terminate the result explicitly
 */
-const char *vt_basename_n(const char *const path, const size_t len, const char *const sep);
+extern const char *vt_basename_n(const char *const path, const size_t len, const char *const sep);
 
 /** Return dirname length. Safer version with bounds checking.
-    @param path pointer to the pathname string (may not be zero-terminated)
+    @param path pointer to the pathname string (does not need to be zero-terminated)
     @param len path length
     @param sep path separator
     @returns returns the length of the directory portion. Returns 0 if there is no directory component.
@@ -267,7 +287,7 @@ const char *vt_basename_n(const char *const path, const size_t len, const char *
     @note special case 1: if the input does not contain a path separator or length is 0, the function returns 0, which signifies "." current working directory.
     @note special case 2: if the input is entirely slashes (e.g., "///"), the function returns 1 ("/") for the path separator length.
 */
-size_t vt_dirname_n(const char *const path, const size_t len, const char *const sep);
+extern size_t vt_dirname_n(const char *const path, const size_t len, const char *const sep);
 
 /* ------------- OTHER FUNCTIONALITY ------------- */
 

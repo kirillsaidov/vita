@@ -37,6 +37,17 @@ int32_t main(void) {
     assert(vt_strnlen(needle, 64) == 5);
     assert(vt_strnlen(haystack, 64) == 25);
 
+    // test strnchr and strrnchr
+    const char *ex = "hello/world/this/is/a/test/";
+    const size_t ex_len = strlen(ex);
+    assert(vt_strnchr(ex, ex_len, '/')[0] == ex[5]);
+    assert(vt_strrnchr(ex, ex_len, '/')[0] == ex[ex_len - 1]);
+    
+    const char *ex2 = "";
+    const size_t ex_len2 = strlen(ex2);
+    assert(vt_strnchr(ex2, ex_len2, '/') == NULL);
+    assert(vt_strrnchr(ex2, ex_len2, '/') == NULL);
+
     // test basename_n
     const char *test_cases_basename[][2] = {
         {"hello/world", "world"},
