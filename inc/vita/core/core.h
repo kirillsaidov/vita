@@ -12,12 +12,26 @@
     - VT_PCAT
     - VT_STRING_OF
     - VT_AS
+    - VT_UNUSED
+    - VT_FOREACH
+    - VT_FOREACH_R
+    - VT_FOREACH_STEP
 
  * Functions:
     - vt_malloc
     - vt_calloc
     - vt_realloc
     - vt_free
+    - vt_memmove
+    - vt_memcopy
+    - vt_memset
+    - vt_memcmp
+    - vt_strnlen
+    - vt_strnstr
+    - vt_strnchr
+    - vt_strrnchr
+    - vt_basename_n
+    - vt_dirname_n
     - vt_gswap
     - vt_status_to_str
 */
@@ -60,6 +74,7 @@
 #define VT_PCAT(x, y) VT_i_PCAT_NX(x, y)    // preprocessor concatenation
 #define VT_STRING_OF(x) VT_i_STR_EXPAND(x)  // converts to string
 #define VT_AS(type, x) ((type)(x))          // cast
+#define VT_UNUSED(x) ((void)(x))            // unused
 
 // foreach
 #define VT_FOREACH(iter, from, to) for (size_t iter = (from); iter < (to); iter++)
