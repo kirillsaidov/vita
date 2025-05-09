@@ -22,6 +22,7 @@
     - vt_path_rename
     - vt_path_expand_tilda
     - vt_path_get_this_exe_location
+    - vt_path_push
     - vt_path_pop
     - vt_path_validate
 */
@@ -89,7 +90,7 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 #define vt_path_join(s, ...) vt_path_join_array(s, (const char*[]){__VA_ARGS__}, sizeof((const char*[]){__VA_ARGS__}) / sizeof(const char*))
 
 /** Get current working directory
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
@@ -153,7 +154,7 @@ extern void vt_path_dir_free(vt_plist_t *p);
 
 /** Get path directory name
     @param z path, zero-terminated C string
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
@@ -163,7 +164,7 @@ extern vt_span_t vt_path_dirname(const char *const z, char *const buf, const siz
 
 /** Get path basename
     @param z path, zero-terminated C string
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
@@ -211,7 +212,7 @@ extern bool vt_path_rename(const char *const z1, const char *const z2);
 
 /** Expands tilda `~` to HOMEPATH
     @param z path, zero-terminated C string
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
@@ -221,8 +222,7 @@ extern bool vt_path_rename(const char *const z1, const char *const z2);
 extern vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_t len);
 
 /** Returns executable path
-    @param z path, zero-terminated C string
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 
@@ -230,9 +230,19 @@ extern vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, cons
 */
 extern vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len);
 
+/** Returns the canonicalized absolute pathname
+    @param z path, zero-terminated C string
+    @param buf a pointer to a valid buffer to save the result
+    @param len the size of the provided buffer
+    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
+
+    @note use `VT_PATH_MAX` to be safe.
+*/
+extern vt_span_t vt_path_get_realpath(const char *const z, char *const buf, const size_t len);
+
 /** Push an item up the directory tree
     @param z path item, zero-terminated C string
-    @param buf a pointer to a valid buffer
+    @param buf a pointer to a valid buffer to save the result
     @param capacity the size of the provided buffer
     @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
 

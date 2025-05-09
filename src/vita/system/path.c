@@ -518,6 +518,17 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     return vt_span_from(buf, path_len, sizeof(char));
 }
 
+vt_span_t vt_path_get_realpath(const char *const z, char *const buf, const size_t len) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+    
+    // todo
+    VT_UNUSED(len);
+    VT_UNIMPLEMENTED("TODO");
+    return (vt_span_t) {0};
+}
+
 vt_span_t vt_path_push(const char *const z, char *const buf, const size_t capacity) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
