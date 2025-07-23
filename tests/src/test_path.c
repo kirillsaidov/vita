@@ -11,6 +11,7 @@ void test_path(void);
 void test_expand_tilda(void);
 void test_selfpath(void);
 void test_path_pop_push(void);
+void test_path_realpath(void);
 
 vt_mallocator_t *alloctr;
 
@@ -24,6 +25,7 @@ int main(void) {
     test_expand_tilda();
     test_selfpath();
     test_path_pop_push();
+    test_path_realpath();
 
     vt_mallocator_destroy(alloctr);
     return 0;
@@ -216,3 +218,14 @@ void test_path_pop_push(void) {
         assert(vt_str_equals_z(test_cases_pop[i][0], test_cases_pop[i][1]));
     }
 }
+
+void test_path_realpath(void) {
+    char buffer[VT_PATH_MAX] = {0};
+
+    vt_span_t path = vt_path_get_realpath("./", buffer, sizeof(buffer)/sizeof(buffer[0]));
+    assert(vt_span_is_valid_object(path));
+
+    path = vt_path_basename(buffer, buffer, sizeof(buffer)/sizeof(buffer[0]));
+    assert(vt_str_equals_z(buffer, "tests"));
+}
+
