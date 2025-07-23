@@ -68,7 +68,7 @@ int64_t vt_path_get_file_size(const char *const z) {
 			fsize.HighPart = fad.nFileSizeHigh;
 		}
 
-        file_size = (size_t)(fsize.QuadPart);
+        file_size = (int64_t)(fsize.QuadPart);
     #else
         // get file stats
         struct stat info;
