@@ -510,7 +510,10 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     #endif
 
     // check for errors
-    if (path_len <= 0 || path_len + 1 > (int64_t)len) return (vt_span_t) {0};
+    if (path_len <= 0 || path_len + 1 > (int64_t)len) {
+        VT_DEBUG_PRINTF("%s: Buffer length is insufficient. Provided %zu, but required %zu bytes.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), len, path_len);
+        return (vt_span_t) {0};
+    }
 
     // copy path to buf
     vt_memmove(buf, buffer, path_len * sizeof(char));
