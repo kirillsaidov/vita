@@ -338,7 +338,6 @@ int32_t main(void) {
 
         // replace all substrings
         vt_str_replace(text, ",", ";");
-        // printf("[%s]\n", vt_str_z(text)); // TODO: remove
         assert(vt_str_equals_z(vt_str_z(text), ";Apple;OrAnge;pOOAOO;mAngO;sOrAwberry;pApAyA;kiwi;"));
         assert(vt_str_len(text) == 50);
         assert(vt_str_capacity(text) == 50);

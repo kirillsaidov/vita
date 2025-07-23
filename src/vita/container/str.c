@@ -1418,7 +1418,6 @@ static vt_str_t *vt_str_vfmt_set(vt_str_t *s, const char *const fmt, va_list arg
         }
 
         // print data to s
-        // vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2); // TODO: remove
         vsnprintf(s->ptr, len+1, fmt, args2);
 
         // update
@@ -1460,7 +1459,6 @@ static vt_str_t *vt_str_vfmt_append(vt_str_t *s, const char *const fmt, va_list 
         }
 
         // print data to s
-        // vsprintf((char*)s->ptr + s->len * s->elsize, fmt, args2); // TODO: remove
         vsnprintf((char*)s->ptr + s->len * s->elsize, len+1, fmt, args2);
 
         // update
