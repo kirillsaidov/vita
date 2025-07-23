@@ -510,26 +510,70 @@ vt_span_t vt_path_get_this_exe_location(char *const buf, const size_t len) {
     #endif
 
     // check for errors
-    if (path_len <= 0 || path_len + 1 > (int64_t)len) {
-        VT_DEBUG_PRINTF("%s: Buffer length is insufficient. Provided %zu, but required %zu bytes.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), len, path_len);
+    if (path_len <= 0) {
+        VT_DEBUG_PRINTF("%s: Failed to get this exe location.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
+        return (vt_span_t) {0};
+    } else if (path_len >= (int64_t)len) {
+        VT_DEBUG_PRINTF("%s: Buffer length is insufficient. Provided %zu, but required %zu bytes.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), len, path_len+1);
         return (vt_span_t) {0};
     }
 
     // copy path to buf
     vt_memmove(buf, buffer, path_len * sizeof(char));
 
-    return vt_span_from(buf, path_len, sizeof(char));
+    return vt_span_from(buf, (size_t)path_len, sizeof(char));
 }
 
 vt_span_t vt_path_get_realpath(const char *const z, char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
-    
-    // todo
-    VT_UNUSED(len);
-    VT_UNIMPLEMENTED("TODO");
-    return (vt_span_t) {0};
+
+    // check if path exists
+    if (!vt_path_exists(z)) {
+        VT_DEBUG_PRINTF("%s: Path does not exist <%s>\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
+        return (vt_span_t) {0};
+    }
+
+    size_t path_len = 0;
+
+    #if defined(_WIN32) || defined(_WIN64)
+        // get the absolute path
+        const uint32_t result = GetFullPathName(z, (uint32_t)len, buf, NULL);
+        
+        // check for errors or insufficient buffer
+        if (result == 0) {
+            VT_DEBUG_PRINTF("%s: Failed to get real path for <%s>\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
+            return (vt_span_t) {0};
+        } else if (result >= len) {
+            VT_DEBUG_PRINTF("%s: Buffer length is insufficient. Provided %zu, but required %zu bytes.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), len, result+1);
+            return (vt_span_t) {0};
+        }
+        
+        path_len = (size_t)result;
+    #else
+        // use realpath for POSIX systems
+        char temp_buf[VT_PATH_MAX];
+        char *result = realpath(z, temp_buf);
+        
+        // check for failure
+        if (result == NULL) {
+            VT_DEBUG_PRINTF("%s: Failed to get real path for <%s>\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), z);
+            return (vt_span_t) {0};
+        }
+        
+        // check if result fits in buffer 
+        path_len = vt_strnlen(temp_buf, VT_PATH_MAX);
+        if (path_len >= len) {
+            VT_DEBUG_PRINTF("%s: Buffer length is insufficient. Provided %zu, but required %zu bytes.\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE), len, path_len+1);
+            return (vt_span_t) {0};
+        }
+
+        // copy including the zero terminaton
+        vt_memcopy(buf, temp_buf, path_len + 1);
+    #endif
+
+    return vt_span_from(buf, path_len, sizeof(char));
 }
 
 vt_span_t vt_path_push(const char *const z, char *const buf, const size_t capacity) {
