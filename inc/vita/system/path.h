@@ -116,7 +116,7 @@ extern bool vt_path_is_dir(const char *const z);
 */
 extern bool vt_path_is_file(const char *const z);
 
-/** Returns file size
+/** Returns file size in bytes
     @param z path, zero-terminated C string to file
     @returns size_t filesize >= 0 upon success, -1 upon failure
 */
