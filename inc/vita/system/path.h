@@ -210,6 +210,22 @@ extern bool vt_path_remove(const char *const z);
 */
 extern bool vt_path_rename(const char *const z1, const char *const z2);
 
+/** Copy a file
+    @param z1 file name
+    @param z2 new file name
+
+    @returns `true` upon success, `false` otherwise
+*/
+extern bool vt_path_copy_file(const char *const z1, const char *const z2);
+
+/** Copy an entire directory and its contents
+    @param z1 directory name
+    @param z2 new directory name
+
+    @returns `true` upon success, `false` otherwise
+*/
+extern bool vt_path_copy_dir(const char *const z1, const char *const z2);
+
 /** Expands tilda `~` to HOMEPATH
     @param z path, zero-terminated C string
     @param buf a pointer to a valid buffer to save the result

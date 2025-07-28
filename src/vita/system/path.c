@@ -459,6 +459,20 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
     #endif
 }
 
+bool vt_path_copy_file(const char *const z1, const char *const z2) {
+    VT_UNUSED(z1);
+    VT_UNUSED(z2);
+    VT_UNIMPLEMENTED("todo");
+    return false;
+}
+
+bool vt_path_copy_dir(const char *const z1, const char *const z2) {
+    VT_UNUSED(z1);
+    VT_UNUSED(z2);
+    VT_UNIMPLEMENTED("todo");
+    return false;
+}
+
 vt_span_t vt_path_expand_tilda(const char *const z, char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
