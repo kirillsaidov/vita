@@ -50,6 +50,50 @@ bool vt_path_is_file(const char *const z) {
     return (stat(z, &info) == 0 && S_ISREG(info.st_mode));
 }
 
+int64_t vt_path_get_file_size(const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    if (!vt_path_exists(z)) {
+        return -1;
+    }
+    
+    int64_t file_size = 0;
+
+    #if defined(_WIN32) || defined(_WIN64)
+        LARGE_INTEGER fsize = {0};
+        WIN32_FILE_ATTRIBUTE_DATA fad;
+		if (GetFileAttributesEx(z, GetFileExInfoStandard, &fad)){
+			fsize.LowPart = fad.nFileSizeLow;
+			fsize.HighPart = fad.nFileSizeHigh;
+		}
+
+        file_size = (int64_t)(fsize.QuadPart);
+    #else
+        // get file stats
+        struct stat info;
+        if (stat(z, &info) != 0) {
+            return -1;
+        }
+
+        file_size = (int64_t)(info.st_size);
+    #endif
+    
+    return file_size;
+}
+
+struct utimbuf vt_path_get_file_times(const char *const z) {
+    VT_UNUSED(z);
+    VT_UNIMPLEMENTED("todo");
+    return (struct utimbuf){0};
+}
+
+void vt_path_set_file_times(const char *const z, const struct utimbuf times) {
+    VT_UNUSED(z);
+    VT_UNUSED(times);
+    VT_UNIMPLEMENTED("todo");
+}
+
 vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
     // check for invalid input
     VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));

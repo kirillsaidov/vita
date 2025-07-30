@@ -157,7 +157,7 @@ Checking directory info</h2>
 <div class="line">assert(vt_path_is_dir(zpath));</div>
 <div class="line">assert(!vt_path_is_file(zpath));</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">const</span> int64_t file_size = vt_fileio_get_size(<span class="stringliteral">&quot;myfile.txt&quot;</span>);</div>
+<div class="line"><span class="keyword">const</span> int64_t file_size = vt_path_get_file_size(<span class="stringliteral">&quot;myfile.txt&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span>(file_size &lt; 0) {</div>
 <div class="line">    <span class="comment">// error ...</span></div>
 <div class="line">}</div>

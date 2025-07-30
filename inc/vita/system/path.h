@@ -9,6 +9,7 @@
     - vt_path_exists
     - vt_path_is_dir
     - vt_path_is_file
+    - vt_path_get_file_size
     - vt_path_dir_list
     - vt_path_dir_list_recurse
     - vt_path_dirname
@@ -34,6 +35,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <utime.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <io.h>
@@ -114,6 +116,24 @@ extern bool vt_path_is_dir(const char *const z);
     @returns `true` if file exists
 */
 extern bool vt_path_is_file(const char *const z);
+
+/** Returns file size in bytes
+    @param z path, zero-terminated C string to file
+    @returns filesize >= 0 upon success, -1 upon failure
+*/
+extern int64_t vt_path_get_file_size(const char *const z);
+
+/** Returns file access and modification times
+    @param z path, zero-terminated C string to file
+    @returns access and modification time upon success or zeros upon failure
+*/
+extern struct utimbuf vt_path_get_file_times(const char *const z);
+
+/** Set file access and modification times
+    @param z path, zero-terminated C string to file
+    @param times access and modification time
+*/
+extern void vt_path_set_file_times(const char *const z, const struct utimbuf times);
 
 /** Get all directory contents
     @param p container where to save the data; if NULL is passed, it is allocated

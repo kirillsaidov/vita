@@ -96,7 +96,7 @@ assert(vt_path_exists(zpath));
 assert(vt_path_is_dir(zpath));
 assert(!vt_path_is_file(zpath));
 
-const int64_t file_size = vt_fileio_get_size("myfile.txt");
+const int64_t file_size = vt_path_get_file_size("myfile.txt");
 if (file_size < 0) {
     // error ...
 }

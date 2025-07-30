@@ -133,6 +133,9 @@ void test_path(void) {
     // rename file/dirs
     vt_path_rmdir_recurse("hello_renamed");
     assert(!vt_path_exists("hello_renamed"));
+
+    const size_t fs = vt_path_get_file_size("src/test_str.c");
+    // assert(fs == 7077);
 }
 
 void test_expand_tilda(void) {
