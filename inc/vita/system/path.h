@@ -123,15 +123,15 @@ extern bool vt_path_is_file(const char *const z);
 */
 extern int64_t vt_path_get_file_size(const char *const z);
 
-/** Returns file access and modification times
+/** Returns file access and modification times in seconds
     @param z path, zero-terminated C string to file
-    @returns access and modification time upon success or zeros upon failure
+    @returns access and modification time in seconds upon success or zeros upon failure
 */
 extern struct utimbuf vt_path_get_file_times(const char *const z);
 
 /** Set file access and modification times
     @param z path, zero-terminated C string to file
-    @param times access and modification time
+    @param times access and modification time in seconds
 */
 extern void vt_path_set_file_times(const char *const z, const struct utimbuf times);
 

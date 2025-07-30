@@ -83,9 +83,54 @@ int64_t vt_path_get_file_size(const char *const z) {
 }
 
 struct utimbuf vt_path_get_file_times(const char *const z) {
-    VT_UNUSED(z);
-    VT_UNIMPLEMENTED("todo");
-    return (struct utimbuf){0};
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    struct utimbuf times = {0};
+    #ifdef _WIN32
+        HANDLE file_handle = CreateFileA(
+            z,
+            GENERIC_READ,
+            FILE_SHARE_READ | FILE_SHARE_WRITE,
+            NULL,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL,
+            NULL
+        );
+        
+        if (file_handle == INVALID_HANDLE_VALUE) {
+            return times;
+        }
+        
+        FILETIME creation_time, access_time, write_time;
+        BOOL result = GetFileTime(file_handle, &creation_time, &access_time, &write_time);
+        CloseHandle(file_handle);
+        
+        if (!result) {
+            return times;
+        }
+        
+        // convert FILETIME to time_t
+        // FILETIME is 100-nanosecond intervals since January 1, 1601 (UTC)
+        // time_t is seconds since January 1, 1970 (UTC)
+        const uint64_t EPOCH_DIFF = 11644473600ULL; // Seconds between 1601 and 1970
+        
+        uint64_t access_ns = ((uint64_t)access_time.dwHighDateTime << 32) | access_time.dwLowDateTime;
+        uint64_t write_ns = ((uint64_t)write_time.dwHighDateTime << 32) | write_time.dwLowDateTime;
+        
+        times->access_time = (time_t)(access_ns / 10000000ULL - EPOCH_DIFF);
+        times->modification_time = (time_t)(write_ns / 10000000ULL - EPOCH_DIFF);        
+    #else
+        struct stat file_stat;
+        if (stat(z, &file_stat) == -1) {
+            return times;
+        }
+        
+        times.actime = file_stat.st_atime;
+        times.modtime = file_stat.st_mtime;
+    #endif
+
+    return times;
 }
 
 void vt_path_set_file_times(const char *const z, const struct utimbuf times) {

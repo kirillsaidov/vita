@@ -12,6 +12,7 @@ void test_expand_tilda(void);
 void test_selfpath(void);
 void test_path_pop_push(void);
 void test_path_realpath(void);
+void test_path_file_attr(void);
 
 vt_mallocator_t *alloctr;
 
@@ -26,6 +27,7 @@ int main(void) {
     test_selfpath();
     test_path_pop_push();
     test_path_realpath();
+    test_path_file_attr();
 
     vt_mallocator_destroy(alloctr);
     return 0;
@@ -227,5 +229,26 @@ void test_path_realpath(void) {
 
     path = vt_path_basename(buffer, buffer, sizeof(buffer)/sizeof(buffer[0]));
     assert(vt_str_equals_z(buffer, "tests"));
+}
+
+void test_path_file_attr(void) {
+    char buffer[VT_DATETIME_BUFFER_SIZE] = {0};
+    struct utimbuf times = vt_path_get_file_times("src/test_math.c");
+
+    // access time
+    vt_datetime_to_text(
+        vt_datetime_from_secs(times.actime),
+        buffer, sizeof(buffer)
+    );
+    assert(vt_str_equals_z(buffer, "2025-07-30 08:24:53"));
+
+    // modification time
+    vt_datetime_to_text(
+        vt_datetime_from_secs(times.modtime),
+        buffer, sizeof(buffer)
+    );
+    assert(vt_str_equals_z(buffer, "2025-04-20 18:28:26"));
+
+    printf("ACTIME: %s\n", buffer);
 }
 
