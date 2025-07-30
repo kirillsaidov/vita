@@ -138,5 +138,12 @@ extern bool vt_file_writefln(const char *const filename, const char *const fmt, 
 */
 extern bool vt_file_writefc(const char *const filename, const bool use_binary_mode, const bool use_append_mode, const bool add_ln, const char *const fmt, ...);
 
+/** Returns file size in bytes
+    @param z path, zero-terminated C string to file
+    @returns filesize >= 0 upon success, -1 upon failure
+*/
+extern int64_t vt_fileio_get_size(const char *const z);
+
+
 #endif // VITA_SYSTEM_FILEIO_H
 

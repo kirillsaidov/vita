@@ -17,7 +17,7 @@ vt_str_t *vt_file_read(const char *const filename, struct VitaBaseAllocatorType 
     }
 
     // get file size
-    const int64_t fsize = vt_path_get_file_size(filename);
+    const int64_t fsize = vt_fileio_get_size(filename);
     if (fsize < 0) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
@@ -65,7 +65,7 @@ vt_str_t *vt_file_readb(const char *const filename, struct VitaBaseAllocatorType
     }
 
     // get file size
-    const int64_t fsize = vt_path_get_file_size(filename);
+    const int64_t fsize = vt_fileio_get_size(filename);
     if (fsize < 0) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
@@ -120,7 +120,7 @@ const char *vt_file_read_to_buffer(const char *const filename, char *const buffe
     }
 
     // get file size
-    const int64_t fsize = vt_path_get_file_size(filename);
+    const int64_t fsize = vt_fileio_get_size(filename);
     if (fsize < 0) {
         VT_DEBUG_PRINTF("%s\n", vt_status_to_str(VT_STATUS_OPERATION_FAILURE));
 
@@ -275,4 +275,35 @@ bool vt_file_writefc(const char *const filename, const bool use_binary_mode, con
     return true;
 }
 
+int64_t vt_fileio_get_size(const char *const z) {
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    if (!vt_path_exists(z)) {
+        return -1;
+    }
+    
+    int64_t file_size = 0;
+
+    #if defined(_WIN32) || defined(_WIN64)
+        LARGE_INTEGER fsize = {0};
+        WIN32_FILE_ATTRIBUTE_DATA fad;
+		if (GetFileAttributesEx(z, GetFileExInfoStandard, &fad)){
+			fsize.LowPart = fad.nFileSizeLow;
+			fsize.HighPart = fad.nFileSizeHigh;
+		}
+
+        file_size = (int64_t)(fsize.QuadPart);
+    #else
+        // get file stats
+        struct stat info;
+        if (stat(z, &info) != 0) {
+            return -1;
+        }
+
+        file_size = (int64_t)(info.st_size);
+    #endif
+    
+    return file_size;
+}
 

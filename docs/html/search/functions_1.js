@@ -79,7 +79,7 @@ var searchData=
   ['vt_5fpath_5fbuild_5fn_76',['vt_path_build_n',['../path_8h.html#a3a158015e267eadcf38e5ac89261a40d',1,'path.h']]],
   ['vt_5fpath_5fexists_77',['vt_path_exists',['../path_8h.html#a9f83b91021931f8efa29cb3240fa38af',1,'path.h']]],
   ['vt_5fpath_5fexpand_5ftilda_78',['vt_path_expand_tilda',['../path_8h.html#acd891c9ce53141dd753739ed58646966',1,'path.h']]],
-  ['vt_5fpath_5fget_5ffile_5fsize_79',['vt_path_get_file_size',['../path_8h.html#a6065da352a6c1d1a9761a51a40e553e6',1,'path.h']]],
+  ['vt_5fpath_5fget_5ffile_5fsize_79',['vt_fileio_get_size',['../path_8h.html#a6065da352a6c1d1a9761a51a40e553e6',1,'path.h']]],
   ['vt_5fpath_5fget_5fthis_5fexe_5flocation_80',['vt_path_get_this_exe_location',['../path_8h.html#ae5a75fcf8213e2cdb4f3d60f69561e1b',1,'path.h']]],
   ['vt_5fpath_5fgetcwd_81',['vt_path_get_cwd',['../path_8h.html#a1b0606705084822b830fe1ba3f9a963c',1,'path.h']]],
   ['vt_5fpath_5fis_5fdir_82',['vt_path_is_dir',['../path_8h.html#a201072efe017143950aa5483e1db3b4c',1,'path.h']]],

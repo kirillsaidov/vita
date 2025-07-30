@@ -9,7 +9,6 @@
     - vt_path_exists
     - vt_path_is_dir
     - vt_path_is_file
-    - vt_path_get_file_size
     - vt_path_dir_list
     - vt_path_dir_list_recurse
     - vt_path_dirname
@@ -115,12 +114,6 @@ extern bool vt_path_is_dir(const char *const z);
     @returns `true` if file exists
 */
 extern bool vt_path_is_file(const char *const z);
-
-/** Returns file size in bytes
-    @param z path, zero-terminated C string to file
-    @returns size_t filesize >= 0 upon success, -1 upon failure
-*/
-extern int64_t vt_path_get_file_size(const char *const z);
 
 /** Get all directory contents
     @param p container where to save the data; if NULL is passed, it is allocated

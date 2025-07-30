@@ -2,10 +2,12 @@
 #include "vita/system/fileio.h"
 
 void test_filewrite(void);
+void test_file_properties(void);
 
 int32_t main(void) {
     // tests
     test_filewrite();
+    test_file_properties();
 
     return 0;
 }
@@ -65,6 +67,11 @@ void test_filewrite(void) {
     #endif
 
     vt_mallocator_destroy(alloctr);
+}
+
+void test_file_properties(void) {
+    const int64_t fs = vt_fileio_get_size("src/test_fileio.c");
+    // assert(fs == 3130);
 }
 
 
