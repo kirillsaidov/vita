@@ -603,7 +603,7 @@ bool vt_path_copy_file(const char *const z1, const char *const z2) {
     // set access and modification times
     struct utimbuf dst_utime_buf = { .actime = src_stat.st_atime, .modtime = src_stat.st_mtime };
     if (utime(z2, &dst_utime_buf) != 0) {
-        exit(EXIT_FAILURE);
+        success = false;
     }
 
     return success;
