@@ -257,6 +257,10 @@ void test_path_file_attr(void) {
     );
     assert(vt_str_equals_z(buffer, "2025-07-31 16:05:56"));
 
-    printf("ACTIME: %s\n", buffer);
+    // copy file
+    vt_path_copy_file("src/test_math.c", "src/test_math.c2");
+    assert(vt_path_exists("src/test_math.c2"));
+    assert(vt_path_get_file_size("src/test_math.c") == vt_path_get_file_size("src/test_math.c2"));
+    vt_path_remove("src/test_math.c2");
 }
 

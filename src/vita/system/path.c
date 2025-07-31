@@ -550,10 +550,63 @@ bool vt_path_rename(const char *const z1, const char *const z2) {
 }
 
 bool vt_path_copy_file(const char *const z1, const char *const z2) {
-    VT_UNUSED(z1);
-    VT_UNUSED(z2);
-    VT_UNIMPLEMENTED("todo");
-    return false;
+    VT_DEBUG_ASSERT(z1 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_DEBUG_ASSERT(z2 != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(!vt_str_equals_z(z1, z2), "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
+    VT_ENFORCE(vt_path_exists(z1), "File does not exist: %s!\n", z1);
+
+    // open read/write file
+    FILE *src_file = fopen(z1, "rb");
+    FILE *dst_file = fopen(z2, "wb");
+
+    // check if file is empty
+    bool success = true;
+    const size_t kb = 1024;
+    const size_t mb = kb * kb;
+    const size_t filesize = vt_path_get_file_size(z1);
+    if (filesize) {
+        // copy the contents from source to destination
+        size_t bytesRead = 0;
+        const size_t buffer_size = filesize < (32 * mb) ? (16 * mb) : (64 * mb);
+        char *buffer = VT_CALLOC(buffer_size);
+        while ((bytesRead = fread(buffer, 1, buffer_size, src_file)) > 0) {
+            if (fwrite(buffer, 1, bytesRead, dst_file) != bytesRead) {
+                success = false;
+                break;
+            }
+        }
+        VT_FREE(buffer);
+
+        // check for read error
+        if (ferror(src_file)) {
+            success = false;
+        }
+    }
+
+    // close the files
+    fclose(src_file);
+    fclose(dst_file);
+
+    // get source file attributes
+    struct stat src_stat;
+    #if defined(_WIN32) || defined(_WIN64)
+        if (!success || _stat(z1, &src_stat) != 0) success = false;
+    #else
+        if (!success || stat(z1, &src_stat) != 0) success = false;
+    #endif 
+
+    // set file ownership of the destination file
+    if (!success || chown(z2, src_stat.st_uid, src_stat.st_gid) != 0) {
+        success = false;
+    }
+
+    // set access and modification times
+    struct utimbuf dst_utime_buf = { .actime = src_stat.st_atime, .modtime = src_stat.st_mtime };
+    if (utime(z2, &dst_utime_buf) != 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    return success;
 }
 
 bool vt_path_copy_dir(const char *const z1, const char *const z2) {
