@@ -233,14 +233,14 @@ void test_path_realpath(void) {
 
 void test_path_file_attr(void) {
     char buffer[VT_DATETIME_BUFFER_SIZE] = {0};
-    struct utimbuf times = vt_path_get_file_times("src/test_math.c");
 
-    // access time
-    vt_datetime_to_text(
-        vt_datetime_from_secs(times.actime),
-        buffer, sizeof(buffer)
-    );
-    assert(vt_str_equals_z(buffer, "2025-07-30 08:24:53"));
+    // set access time
+    struct utimbuf times = vt_path_get_file_times("src/test_math.c");
+    times.actime = vt_datetime_to_secs(vt_datetime_from_text("2025-07-31 16:05:56"));
+    vt_path_set_file_times("src/test_math.c", times);
+
+    // get times
+    times = vt_path_get_file_times("src/test_math.c");
 
     // modification time
     vt_datetime_to_text(
@@ -248,6 +248,14 @@ void test_path_file_attr(void) {
         buffer, sizeof(buffer)
     );
     assert(vt_str_equals_z(buffer, "2025-04-20 18:28:26"));
+
+
+    // access time
+    vt_datetime_to_text(
+        vt_datetime_from_secs(times.actime),
+        buffer, sizeof(buffer)
+    );
+    assert(vt_str_equals_z(buffer, "2025-07-31 16:05:56"));
 
     printf("ACTIME: %s\n", buffer);
 }

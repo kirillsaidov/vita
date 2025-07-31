@@ -113,19 +113,20 @@ struct utimbuf vt_path_get_file_times(const char *const z) {
         // convert FILETIME to time_t
         // FILETIME is 100-nanosecond intervals since January 1, 1601 (UTC)
         // time_t is seconds since January 1, 1970 (UTC)
-        const uint64_t EPOCH_DIFF = 11644473600ULL; // Seconds between 1601 and 1970
-        
+        const uint64_t EPOCH_DIFF = 11644473600ULL; // Seconds between 1601 and 1970        
         uint64_t access_ns = ((uint64_t)access_time.dwHighDateTime << 32) | access_time.dwLowDateTime;
         uint64_t write_ns = ((uint64_t)write_time.dwHighDateTime << 32) | write_time.dwLowDateTime;
-        
-        times->access_time = (time_t)(access_ns / 10000000ULL - EPOCH_DIFF);
-        times->modification_time = (time_t)(write_ns / 10000000ULL - EPOCH_DIFF);        
+
+        // set times        
+        times.actime = (time_t)(access_ns / 10000000ULL - EPOCH_DIFF);
+        times.modtime = (time_t)(write_ns / 10000000ULL - EPOCH_DIFF);        
     #else
         struct stat file_stat;
         if (stat(z, &file_stat) == -1) {
             return times;
         }
-        
+
+        // set times
         times.actime = file_stat.st_atime;
         times.modtime = file_stat.st_mtime;
     #endif
@@ -134,9 +135,41 @@ struct utimbuf vt_path_get_file_times(const char *const z) {
 }
 
 void vt_path_set_file_times(const char *const z, const struct utimbuf times) {
-    VT_UNUSED(z);
-    VT_UNUSED(times);
-    VT_UNIMPLEMENTED("todo");
+    // check for invalid input
+    VT_DEBUG_ASSERT(z != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
+
+    #ifdef _WIN32
+        HANDLE file_handle = CreateFileA(
+            z,
+            FILE_WRITE_ATTRIBUTES,
+            FILE_SHARE_READ | FILE_SHARE_WRITE,
+            NULL,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL,
+            NULL
+        );
+        
+        if (file_handle == INVALID_HANDLE_VALUE) {
+            return;
+        }
+        
+        // convert time_t to FILETIME
+        const uint64_t EPOCH_DIFF = 11644473600ULL; // seconds between 1601 and 1970
+        
+        uint64_t access_ns = ((uint64_t)times.actime + EPOCH_DIFF) * 10000000ULL;
+        uint64_t write_ns = ((uint64_t)times.modtime + EPOCH_DIFF) * 10000000ULL;
+        
+        FILETIME access_time, write_time;
+        access_time.dwLowDateTime = (DWORD)(access_ns & 0xFFFFFFFF);
+        access_time.dwHighDateTime = (DWORD)(access_ns >> 32);
+        write_time.dwLowDateTime = (DWORD)(write_ns & 0xFFFFFFFF);
+        write_time.dwHighDateTime = (DWORD)(write_ns >> 32);
+        
+        BOOL result = SetFileTime(file_handle, NULL, &access_time, &write_time);
+        CloseHandle(file_handle);        
+    #else
+        utime(z, &times);
+    #endif
 }
 
 vt_plist_t *vt_path_dir_list(vt_plist_t *const p, const char *const z, const bool ignoreDotFiles) {
