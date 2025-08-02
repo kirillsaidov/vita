@@ -31,11 +31,10 @@
 #include "vita/container/str.h"
 #include "vita/container/span.h"
 #include "vita/container/plist.h"
+#include "vita/util/result_type.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <dirent.h>
-#include <utime.h>
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <io.h>
@@ -57,6 +56,8 @@
     #include <unistd.h>
     #include <dirent.h>
     #include <libgen.h>
+    #include <dirent.h>
+    #include <utime.h>
 
     #define VT_PATH_SEPARATOR "/"
     #define VT_DIR_PERMISSIONS (S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)

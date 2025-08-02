@@ -28,6 +28,7 @@
 #include "util/argopt.h"
 #include "util/log.h"
 #include "util/debug.h"
+#include "util/result_type.h"
 
 #include "math/math.h"
 
