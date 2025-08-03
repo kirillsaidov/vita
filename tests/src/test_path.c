@@ -40,6 +40,7 @@ void free_str(void *ptr, size_t i) {
 
 void test_path(void) {
     vt_span_t span = {0};
+    struct VitaResultSpan ret = {0};
     char buffer[VT_PATH_MAX] = {0};
 
     assert(vt_path_exists("/home/lala") == false); // must fail
@@ -49,13 +50,19 @@ void test_path(void) {
     vt_str_destroy(s);
 
     // cwd
-    vt_span_t _cwd = vt_path_get_cwd(buffer, 5);
-    assert(vt_span_len(_cwd) == 0);
-    assert(vt_span_head(_cwd) == NULL);
-    assert(!vt_span_is_valid_object(_cwd));
-    _cwd = vt_path_get_cwd(buffer, VT_PATH_MAX);
+    ret = vt_path_get_cwd(buffer, 5);
+    span = ret.value;
+    assert(ret.error);
+    assert(vt_span_len(span) == 0);
+    assert(vt_span_head(span) == NULL);
+    assert(!vt_span_is_valid_object(span));
 
-    vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr); {
+    ret = vt_path_get_cwd(buffer, VT_PATH_MAX);
+    span = ret.value;
+    assert(!ret.error);
+    assert(vt_span_is_valid_object(span));
+
+    vt_str_t *cwd = vt_str_create(vt_span_head(span), alloctr); {
         // test dirname
         char _buf[13] = {0};    
         span = vt_path_dirname("this/is/path/file.txt", _buf, sizeof(_buf)/sizeof(_buf[0]));
@@ -165,14 +172,17 @@ void test_expand_tilda(void) {
 
 void test_selfpath(void) {
     char buffer[VT_PATH_MAX] = {0};
+    struct VitaResultSpan ret = {0}; 
 
     vt_span_t selfpath = vt_path_get_this_exe_location(buffer, sizeof(buffer)/sizeof(buffer[0]));
     assert(vt_span_is_valid_object(selfpath));
 
     // get cwd to check exe path below
     char buffer_cwd[VT_PATH_MAX] = {0};
-    vt_span_t _cwd = vt_path_get_cwd(buffer_cwd, VT_PATH_MAX);
-    vt_str_t *cwd = vt_str_create(vt_span_head(_cwd), alloctr);
+    ret = vt_path_get_cwd(buffer_cwd, VT_PATH_MAX);
+    assert(!ret.error);
+    assert(vt_span_is_valid_object(ret.value));
+    vt_str_t *cwd = vt_str_create(buffer_cwd, alloctr);
     {
         // append exe path
         #if defined(_WIN32) || defined(_WIN64)

@@ -11,17 +11,17 @@ vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], const size_
     return vt_str_join_array(s, VT_PATH_SEPARATOR, array, n);
 }
 
-vt_span_t vt_path_get_cwd(char *const buf, const size_t len) {
+struct VitaResultSpan vt_path_get_cwd(char *const buf, const size_t len) {
     // check for invalid input
     VT_DEBUG_ASSERT(buf != NULL, "%s\n", vt_status_to_str(VT_STATUS_ERROR_IS_NULL));
     VT_DEBUG_ASSERT(len > 0, "%s\n", vt_status_to_str(VT_STATUS_ERROR_INVALID_ARGUMENTS));
 
     // get current working directory and check for failure
     // failed: return empty structure with `head == NULL` and `len == 0`
-    if (!getcwd(buf, len)) return (vt_span_t) {0};
+    if (!getcwd(buf, len)) return VT_RESULT_ERROR(struct VitaResultSpan, "Failed to get current working directory or insufficient buffer size provided.");
 
     // wrap up the result in a span
-    return vt_span_from(buf, vt_strnlen(buf, len), sizeof(char));
+    return VT_RESULT_OK(struct VitaResultSpan, vt_span_from(buf, vt_strnlen(buf, len), sizeof(char)));
 }
 
 bool vt_path_exists(const char *const z) {

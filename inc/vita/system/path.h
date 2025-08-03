@@ -93,11 +93,11 @@ extern vt_str_t *vt_path_join_array(vt_str_t *const s, const char *array[], cons
 /** Get current working directory
     @param buf a pointer to a valid buffer to save the result
     @param len the size of the provided buffer
-    @returns `vt_span_t` representing the resulting path. Empty span upon failure or insufficient buffer size.
+    @returns `vt_span_t` representing the resulting path. Error upon failure or insufficient buffer size.
 
     @note use `VT_PATH_MAX` to be safe.
 */
-extern vt_span_t vt_path_get_cwd(char *const buf, const size_t len);
+extern struct VitaResultSpan vt_path_get_cwd(char *const buf, const size_t len);
 
 /** Checks if path or file exists
     @param z path, zero-terminated C string

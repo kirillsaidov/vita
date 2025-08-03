@@ -11,14 +11,14 @@
 #define VITA_DEFINE_RESULT_TYPE(type, name) \
     struct name {                \
         type value;              \
-        const char *const error; \
+        const char *error;       \
     }
 
 // result ok
-#define VT_RESULT_OK(rt, value) ((rt){.value=value})
+#define VT_RESULT_OK(rt, v) ((rt){.value=v})
 
 // result error
-#define VT_RESULT_ERROR(rt, error) ((rt){.error=error})
+#define VT_RESULT_ERROR(rt, e) ((rt){.error=e})
 
 // define specific result types
 VITA_DEFINE_RESULT_TYPE(int8_t, VitaResultI8);
