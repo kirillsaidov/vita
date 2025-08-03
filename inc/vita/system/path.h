@@ -31,7 +31,6 @@
 #include "vita/container/str.h"
 #include "vita/container/span.h"
 #include "vita/container/plist.h"
-#include "vita/util/result_type.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

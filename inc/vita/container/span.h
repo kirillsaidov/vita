@@ -20,6 +20,7 @@
 #include "vita/container/vec.h"
 #include "vita/container/str.h"
 #include "vita/container/plist.h"
+#include "vita/util/result_type.h"
 
 /// A reference type of contiguous sequence of objects or values of type T. 
 /// It does not own the data, hence memory-dependent operations won't work (reserve, resize, etc...)
@@ -28,6 +29,9 @@
 typedef struct {
     struct VitaBaseArrayType instance;
 } vt_span_t;
+
+// Define result type
+VITA_DEFINE_RESULT_TYPE(vt_span_t, VitaResultSpan);
 
 /** Creates a span from raw data of T*
     @param ptr data

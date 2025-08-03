@@ -6,9 +6,8 @@
 */
 
 #include "vita/core/core.h"
-#include "vita/container/common.h"
 
-// define result type
+/// Define result type macro
 #define VITA_DEFINE_RESULT_TYPE(type, name) \
     struct name {                \
         type value;              \
@@ -36,6 +35,5 @@ VITA_DEFINE_RESULT_TYPE(real, VitaResultR);
 VITA_DEFINE_RESULT_TYPE(bool, VitaResultBool);
 VITA_DEFINE_RESULT_TYPE(char, VitaResultChar);
 VITA_DEFINE_RESULT_TYPE(char*, VitaResultCstr);
-VITA_DEFINE_RESULT_TYPE(struct VitaBaseArrayType, VitaResultBaseArrayType);
 
 #endif // VITA_ITIL_RESULT_TYPE_H

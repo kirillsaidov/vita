@@ -267,7 +267,7 @@ extern void vt_str_append(vt_str_t *const s, const char *z);
     @param fmt format
     @param ... arguments
 
-    @returns enum VitaStatus
+    @returns enum VitaStatus `[VT_STATUS_OPERATION_FAILURE, VT_STATUS_OPERATION_SUCCESS]`
 */
 extern enum VitaStatus vt_str_appendf(vt_str_t *const s, const char *const fmt, ...);
 
@@ -291,7 +291,7 @@ extern void vt_str_insert(vt_str_t *const s, const char *z, const size_t at);
     @param fmt format
     @param ... arguments  
 
-    @returns enum VitaStatus      
+    @returns enum VitaStatus `[VT_STATUS_OPERATION_FAILURE, VT_STATUS_OPERATION_SUCCESS]`
 */
 extern enum VitaStatus vt_str_insertf(vt_str_t *const s, const size_t at, const char *const fmt, ...);
 
@@ -328,7 +328,7 @@ extern void vt_str_remove(vt_str_t *const s, const size_t from, size_t n);
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaStatus
+    @returns enum VitaStatus `[VT_STATUS_ERROR_ELEMENT_NOT_FOUND, VT_STATUS_OPERATION_SUCCESS]`
 */
 extern enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z);
 
@@ -336,7 +336,7 @@ extern enum VitaStatus vt_str_remove_first(vt_str_t *const s, const char *z);
     @param s vt_str_t instance
     @param z raw C string
 
-    @returns enum VitaStatus
+    @returns enum VitaStatus `[VT_STATUS_ERROR_ELEMENT_NOT_FOUND, VT_STATUS_OPERATION_SUCCESS]`
 */
 extern enum VitaStatus vt_str_remove_last(vt_str_t *s, const char *const z);
 
