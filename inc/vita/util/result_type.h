@@ -10,15 +10,19 @@
 /// Define result type macro
 #define VITA_DEFINE_RESULT_TYPE(type, name) \
     struct name {                \
+        int code;                \
         type value;              \
         const char *error;       \
     }
 
-// result ok
+/// Return result ok.
 #define VT_RESULT_OK(rt, v) ((rt){.value=v})
 
-// result error
-#define VT_RESULT_ERROR(rt, e) ((rt){.error=e})
+/// Return error message (with default code=-1)
+#define VT_RESULT_ERROR(rt, e) ((rt){.code=-1, .error=e})
+
+// result error message with custom code
+#define VT_RESULT_ERRORC(rt, c, e) ((rt){.code=c, .error=e})
 
 // define specific result types
 VITA_DEFINE_RESULT_TYPE(int8_t, VitaResultI8);
@@ -35,5 +39,6 @@ VITA_DEFINE_RESULT_TYPE(real, VitaResultR);
 VITA_DEFINE_RESULT_TYPE(bool, VitaResultBool);
 VITA_DEFINE_RESULT_TYPE(char, VitaResultChar);
 VITA_DEFINE_RESULT_TYPE(char*, VitaResultCstr);
+VITA_DEFINE_RESULT_TYPE(void*, VitaResultVoidPtr);
 
 #endif // VITA_ITIL_RESULT_TYPE_H
