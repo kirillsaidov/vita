@@ -30,7 +30,7 @@ typedef struct {
     struct VitaBaseArrayType instance;
 } vt_span_t;
 
-// Define result type
+// Result type for vt_span_t
 VITA_DEFINE_RESULT_TYPE(vt_span_t, VitaResultSpan);
 
 /** Creates a span from raw data of T*

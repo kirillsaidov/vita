@@ -7,7 +7,7 @@
 
 #include "vita/core/core.h"
 
-/// Define result type macro
+/// Result type with code, value and error fields
 #define VITA_DEFINE_RESULT_TYPE(type, name) \
     struct name {                \
         int code;                \
