@@ -18,7 +18,11 @@ struct VitaResultSpan vt_path_get_cwd(char *const buf, const size_t len) {
 
     // get current working directory and check for failure
     // failed: return empty structure with `head == NULL` and `len == 0`
-    if (!getcwd(buf, len)) return VT_RESULT_ERROR(struct VitaResultSpan, "Failed to get current working directory or insufficient buffer size provided.");
+    if (!getcwd(buf, len)) return VT_RESULT_ERRORC(
+        struct VitaResultSpan, 
+        VT_STATUS_ERROR_OUT_OF_MEMORY, 
+        "Failed to get current working directory or insufficient buffer size provided."
+    );
 
     // wrap up the result in a span
     return VT_RESULT_OK(struct VitaResultSpan, vt_span_from(buf, vt_strnlen(buf, len), sizeof(char)));
